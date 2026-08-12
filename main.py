@@ -124,6 +124,8 @@ async def websocket_endpoint(websocket: WebSocket):
         )
         while True:
             data = await websocket.receive_text()
+            # Broadcast the received message out to everyone
+            await ws_manager.broadcast(f"Client said: {data}")
             await websocket.send_json(
                 {
                     "type": "pong",
@@ -133,6 +135,7 @@ async def websocket_endpoint(websocket: WebSocket):
             )
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket)
+        await ws_manager.broadcast("A client disconnected")
 
 
 # ============================================================================
