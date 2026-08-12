@@ -1,0 +1,137 @@
+# =============================================================================
+# docker-compose.yml — PRODUCTION
+#
+# Fully self-contained production stack.
+# All services run hardened, with health checks, named networks, and volumes.
+#
+# Usage:
+#   docker-compose up -d --build          # Start in background
+#   docker-compose logs -f web            # Stream app logs
+#   docker-compose exec web alembic current  # Check DB migration state
+#   docker-compose down                   # Stop (data preserved)
+#   docker-compose down -v                # Stop + wipe all data
+#
+# Prerequisites:
+#   cp .env.example .env   # then edit .env with real credentials & API keys
+# =============================================================================
+
+services:
+
+  # ── PostgreSQL 14 ────────────────────────────────────────────────────────────
+  db:
+    image: postgres:14-alpine
+    container_name: crm_db_prod
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB:-ai_crm}
+      POSTGRES_USER:     ${POSTGRES_USER:-crm_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crm_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - crm_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-crm_user} -d ${POSTGRES_DB:-ai_crm}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── Redis 7 ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: crm_redis_prod
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - crm_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── FastAPI Application ───────────────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime          # Uses the lean multi-stage runtime layer
+    container_name: crm_web_prod
+    env_file:
+      - .env                   # Loads API keys, SECRET_KEY, feature flags
+    environment:
+      APP_ENV:      production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-crm_user}:${POSTGRES_PASSWORD:-crm_password}@db:5432/${POSTGRES_DB:-ai_crm}
+      REDIS_URL:    redis://redis:6379/0
+      DEBUG:        "False"
+    ports:
+      - "${PORT:-8000}:8000"
+    networks:
+      - crm_net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ── React + Nginx Frontend ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crm_frontend_prod
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - crm_net
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ── Named Volumes ─────────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+# ── Internal Network ──────────────────────────────────────────────────────────
+networks:
+  crm_net:
+    driver: bridge

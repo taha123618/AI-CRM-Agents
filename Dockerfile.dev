@@ -1,0 +1,41 @@
+# =============================================================================
+# Dockerfile.dev — DEVELOPMENT
+#
+# Purpose-built for local development. Key design decisions:
+#   - Single stage (no multi-stage — faster builds, includes build tools)
+#   - Source code is NOT copied in — docker-compose.dev.yml mounts .:/app
+#   - Rebuilds only when requirements.txt changes (dependency layer cached)
+#   - Uses entrypoint.dev.sh → runs migrations + uvicorn --reload
+#   - Runs as root (acceptable for local dev, saves bind-mount permission issues)
+#
+# Used exclusively by docker-compose.dev.yml (development).
+# =============================================================================
+
+FROM python:3.10-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    PORT=8000
+
+WORKDIR /app
+
+# System deps (build tools needed for psycopg2, cryptography, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first — this layer is cached until requirements.txt changes
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copy only the dev entrypoint — source code is mounted via volume at runtime
+COPY entrypoint.dev.sh .
+RUN chmod +x entrypoint.dev.sh
+
+EXPOSE 8000
+
+ENTRYPOINT ["./entrypoint.dev.sh"]

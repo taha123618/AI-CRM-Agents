@@ -1,0 +1,56 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment files (never copy secrets into image)
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing & coverage
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+pytest.ini
+
+# Development artifacts
+*.db
+*.sqlite3
+test.db
+
+# Docker itself
+Dockerfile
+Dockerfile.dev
+docker-compose*.yml
+.dockerignore
+entrypoint.dev.sh
+
+# Docs & agent config (not needed at runtime)
+*.md
+.agents/
+.cursorrules
+.clinerules
+.windsurfrules
+CLAUDE.md

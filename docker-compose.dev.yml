@@ -1,0 +1,121 @@
+# =============================================================================
+# docker-compose.dev.yml — DEVELOPMENT
+#
+# Fully self-contained development stack. Completely independent from
+# docker-compose.yml — no shared state, no inheritance, no override pattern.
+#
+# Features:
+#   ✅ Uvicorn --reload  (live code reload on every file save)
+#   ✅ Source code volume  (edit locally, container reflects instantly)
+#   ✅ All ports exposed  (DB + Redis accessible from host for tools like DBeaver/TablePlus)
+#   ✅ Verbose logging     (DEBUG=True, log-level=debug)
+#   ✅ Separate volumes    (dev data never pollutes production volumes)
+#
+# Usage:
+#   docker-compose -f docker-compose.dev.yml up --build    # Start
+#   docker-compose -f docker-compose.dev.yml logs -f web   # Stream app logs
+#   docker-compose -f docker-compose.dev.yml exec web bash # Shell into container
+#   docker-compose -f docker-compose.dev.yml down          # Stop (data preserved)
+#   docker-compose -f docker-compose.dev.yml down -v       # Stop + wipe dev data
+#
+# Prerequisites:
+#   cp .env.example .env   # then add your OPENAI_API_KEY / ANTHROPIC_API_KEY
+# =============================================================================
+
+services:
+
+  # ── PostgreSQL 14 ────────────────────────────────────────────────────────────
+  db:
+    image: postgres:14-alpine
+    container_name: crm_db_dev
+    environment:
+      POSTGRES_DB:       ai_crm_dev
+      POSTGRES_USER:     crm_user
+      POSTGRES_PASSWORD: crm_password
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"          # Exposed for DBeaver / TablePlus / psql
+    networks:
+      - crm_dev_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crm_user -d ai_crm_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # ── Redis 7 ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: crm_redis_dev
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data_dev:/data
+    ports:
+      - "6379:6379"          # Exposed for Redis Insight / redis-cli from host
+    networks:
+      - crm_dev_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  # ── FastAPI Application ───────────────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev    # Purpose-built dev image (single-stage, fast)
+    container_name: crm_web_dev
+    env_file:
+      - .env                   # Loads your API keys from .env
+    environment:
+      DATABASE_URL: postgresql://crm_user:crm_password@db:5432/ai_crm_dev
+      REDIS_URL:    redis://redis:6379/0
+      DEBUG:        "True"
+      LOG_LEVEL:    debug
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount local source code — every .py edit reloads instantly
+      - .:/app
+      # Keep container's installed packages, don't let local .venv override them
+      - /app/.venv
+    networks:
+      - crm_dev_net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── React + Nginx Frontend ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crm_frontend_dev
+    ports:
+      - "3000:80"
+    networks:
+      - crm_dev_net
+    depends_on:
+      - web
+    restart: unless-stopped
+
+# ── Named Volumes (dev-scoped, separate from production) ──────────────────────
+volumes:
+  postgres_data_dev:
+    driver: local
+  redis_data_dev:
+    driver: local
+
+# ── Isolated Dev Network ──────────────────────────────────────────────────────
+networks:
+  crm_dev_net:
+    driver: bridge

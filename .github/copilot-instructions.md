@@ -1,0 +1,111 @@
+# GitHub Copilot Instructions for AI-Powered CRM
+
+# Central AI Rules & Guidelines for AI-Powered CRM
+
+Welcome to the AI-Powered CRM project. This document serves as the **single source of truth** for all project standards, architecture, and development conventions. AI coding agents and human developers must adhere to these rules strictly.
+
+---
+
+## 🏗️ Project Architecture & Tech Stack
+
+This project is a production-ready CRM system powered by a multi-agent AI architecture.
+
+* **Frontend Framework**: React 18 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, and Nginx
+* **Backend Framework**: Python 3.9+ with FastAPI
+* **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM and Alembic migrations
+* **AI Orchestration**: LangChain-based custom agent framework with `TraceMixin` transparent LLM tracing, live OpenAI/Anthropic support (`AsyncOpenAI`, `AsyncAnthropic`), and `SmartFallbackLLM`
+* **Real-time Communication**: WebSockets (`/ws`) with `ConnectionManager` event stream
+* **Background Tasks**: FastAPI `BackgroundTasks` (async, in-process — no separate worker process needed)
+* **Caching & Event Bus**: Redis (pub/sub for agent event communication and response caching)
+* **Testing**: pytest and pytest-asyncio (21 unit/integration tests)
+* **Code Formatting**: Black (code formatter), Flake8 (linter), and Mypy (static type checker)
+* **Containerization**: Docker + Docker Compose (standalone `docker-compose.yml` for prod and `docker-compose.dev.yml` for dev)
+
+### Directory Layout
+* `/agents/`: Six specialized AI agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin`.
+* `/api/`: FastAPI routers and endpoints representing core CRM operations, agent triggers, and WebSocket telemetry.
+* `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), and DB connection setup (`connection.py`).
+* `/frontend/`: Production React + TypeScript SPA with Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
+* `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, events, and background tasks.
+
+---
+
+## 📜 Development Standards & Rules
+
+### 1. General Python Standards
+* **Formatting**: Follow PEP 8 style. Use `black` for formatting and `flake8` for linting.
+* **Typing**: Use static type hints for all function arguments and return values.
+* **Async Code**: Use `async`/`await` for I/O bound operations (FastAPI endpoints, network requests, DB queries when applicable).
+* **Logging**: Use `loguru` or the project's standard logger for structured logging. Avoid naked `print()` statements in production code.
+
+### 2. API Design & FastAPI Rules
+* **Routers**: Organize endpoints inside modular routers in `/api/`. Include all routers in `/main.py`.
+* **Request/Response Validation**: Always use Pydantic models (Pydantic V2) for validating incoming payloads and defining response schemas (`response_model`).
+* **Dependency Injection**: Use `Depends(get_db)` to manage database sessions cleanly and ensure connection cleanup.
+* **HTTP Exceptions**: Always raise standard `HTTPException` with meaningful detail strings instead of custom raw responses for client errors.
+
+### 3. Database Conventions
+* **ORM Usage**: Define all models in `database/models.py` inheriting from `Base`.
+* **UUID Keys**: Use UUIDs as primary keys for all tables (e.g. `uuid.uuid4`).
+* **Indexes**: Add index columns for high-query fields (e.g. `email` on contacts, `stage` on deals) to optimize lookup performance.
+* **Relationships**: Specify explicit `relationship()` definitions and `back_populates` for related tables to enable clean joins.
+
+### 4. Agent Development
+* **BaseAgent Inheritance**: All new agents must inherit from `BaseAgent` in `agents/base_agent.py`.
+* **Execution Flow**: Implement the `execute(self, task)` method to perform the agent's work.
+* **LLM Calls**: Use the `think(self, prompt)` method to invoke the agent's LLM.
+* **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
+* **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
+
+### 5. Testing Guidelines
+* **Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio`.
+* **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
+* **Directory**: Place tests in the `tests/` directory (create if not present) matching the structure of the application.
+
+### 6. Git Workflow
+* **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
+* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add lead scoring threshold configuration`).
+
+---
+
+## 🛠️ Project-Specific Skills Index
+
+We provide modular, project-specific AI skills inside `.agents/skills/`. Refer to them for deep guidelines:
+
+1. [Project Architecture](file:///Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md) - Understanding agent collaboration and workflow orchestration.
+2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints and schemas.
+3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents.
+4. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
+5. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
+6. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
+
+---
+
+## 🔄 Rules Synchronization
+
+To update configuration files for Cursor, Claude Code, Copilot, Cline/Roo Code, and Windsurf, update this file (`AGENTS.md`) or the skill files (`.agents/skills/*/SKILL.md`), and run:
+
+```bash
+python3 .agents/scripts/sync_rules.py
+```
+
+Do not edit the auto-generated tool-specific files directly in the root of the project.
+
+
+---
+
+## 🛠️ Project-Specific Skills Index
+
+* **agent-development**: Guide for creating, modifying, and orchestrating CRM agents that inherit from BaseAgent.
+  - File Path: [`.agents/skills/agent-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md)
+* **backend-development**: Guide for developing FastAPI routers, endpoints, dependencies, and Pydantic schemas.
+  - File Path: [`.agents/skills/backend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md)
+* **database-development**: Guide for updating SQLAlchemy ORM models, running migrations with Alembic, and maintaining database schemas.
+  - File Path: [`.agents/skills/database-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md)
+* **git-workflow**: Repository branching, commit styling, and pull request conventions.
+  - File Path: [`.agents/skills/git-workflow/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md)
+* **project-architecture**: Understand the layout, component design, multi-agent collaboration, and workflows of the CRM system.
+  - File Path: [`.agents/skills/project-architecture/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md)
+* **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, and mocks.
+  - File Path: [`.agents/skills/testing/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md)
+
