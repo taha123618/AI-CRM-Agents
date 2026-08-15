@@ -12,7 +12,7 @@ Use this skill when you need to understand the high-level architecture of the AI
 * `/agents/`: Definitions of autonomous agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin`.
 * `/api/`: Modular FastAPI routers containing REST endpoints.
 * `/database/`: Database configuration (`connection.py`), PostgreSQL schema (`schema.sql`), and SQLAlchemy ORM models (`models.py`).
-* `/frontend/`: Production React + TypeScript SPA with Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
+* `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`, `src/components/*`, `src/pages/*`, `src/app/*`), Vite, Tailwind CSS, TanStack Query v5, Zustand, Recharts, and Nginx.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, DB sessions, events, and background tasks.
 
 ## 🤖 Multi-Agent Collaboration & Database Session Rules

@@ -75,9 +75,10 @@ We provide modular, project-specific AI skills inside `.agents/skills/`. Refer t
 1. [Project Architecture](file:///Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md) - Understanding agent collaboration and workflow orchestration.
 2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints and schemas.
 3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents.
-4. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
-5. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
-6. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
+4. [Frontend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md) - Developing React 19 + TypeScript features, components, and TanStack Query state.
+5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
+6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
+7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
 
 ---
 
@@ -102,6 +103,8 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/backend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md)
 * **database-development**: Guide for updating SQLAlchemy ORM models, running migrations with Alembic, and maintaining database schemas.
   - File Path: [`.agents/skills/database-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md)
+* **frontend-development**: Guide for developing React 19 + TypeScript frontend features, components, queries, and state.
+  - File Path: [`.agents/skills/frontend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md)
 * **git-workflow**: Repository branching, commit styling, and pull request conventions.
   - File Path: [`.agents/skills/git-workflow/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md)
 * **project-architecture**: Understand the layout, component design, multi-agent collaboration, and workflows of the CRM system.

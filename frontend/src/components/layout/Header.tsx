@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Radio, Bot, Plus } from 'lucide-react';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useAgentStore } from '@/stores/use-agent-store';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { realtimeClient } from '@/lib/websocket/client';
 
 export function Header() {
+  const navigate = useNavigate();
   const { searchQuery, setSearchQuery, sidebarOpen, setLeadModalOpen, setDealModalOpen, setActivePage } = useUIStore();
   const { connectionStatus, setConnectionStatus, addEvent } = useAgentStore();
   const [backendHealth, setBackendHealth] = useState<'healthy' | 'checking' | 'error'>('checking');
@@ -71,7 +73,10 @@ export function Header() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setActivePage('agents')}
+          onClick={() => {
+            setActivePage('agents');
+            navigate('/agents');
+          }}
           className="hidden md:inline-flex"
         >
           <Bot className="w-4 h-4 text-brand-400" />

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -36,6 +37,12 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Sidebar() {
   const { activePage, setActivePage, sidebarOpen, toggleSidebar } = useUIStore();
+  const navigate = useNavigate();
+
+  const handleNav = (id: ActivePage) => {
+    setActivePage(id);
+    navigate(`/${id}`);
+  };
 
   return (
     <aside
@@ -73,7 +80,7 @@ export function Sidebar() {
           return (
             <button
               key={item.id}
-              onClick={() => setActivePage(item.id)}
+              onClick={() => handleNav(item.id)}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative',
                 isActive

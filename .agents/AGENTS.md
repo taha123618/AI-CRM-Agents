@@ -73,9 +73,10 @@ We provide modular, project-specific AI skills inside `.agents/skills/`. Refer t
 1. [Project Architecture](file:///Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md) - Understanding agent collaboration and workflow orchestration.
 2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints and schemas.
 3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents.
-4. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
-5. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
-6. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
+4. [Frontend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md) - Developing React 19 + TypeScript features, components, and TanStack Query state.
+5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
+6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
+7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
 
 ---
 
