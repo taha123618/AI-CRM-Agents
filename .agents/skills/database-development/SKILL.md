@@ -15,6 +15,7 @@ Use this skill when modifying database schemas, updating or creating SQLAlchemy 
    - Use `UUID(as_uuid=True)` for primary keys with a default of `uuid.uuid4`.
    - Always define explicit `CheckConstraint` blocks where logical bounds apply (e.g., scores must be 0-100).
    - Use indexes (`db.Index` or `index=True` on columns) for columns that are queried frequently (e.g. `email` on contacts).
+   - Use JSON `additional_metadata` columns for dynamic AI fields such as `recommended_actions`, `next_actions`, `forecast_close_date`, and `enriched_data`.
 
 2. **Managing Relationships**:
    - Explicitly define `relationship()` and link tables via `ForeignKey`.

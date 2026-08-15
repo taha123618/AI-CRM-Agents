@@ -25,6 +25,10 @@ Use this skill when creating new AI agents, modifying existing agent intelligenc
    - Always log agent milestones: `await self.log_activity("event_name", details_dict)`.
    - Publish events to coordinate with other agents: `await self.publish_event("event_type", payload)`.
 
+5. **Bulk Operations & Standardized Return Objects**:
+   - Agent workflows should support bulk execution targets (e.g. `customer_id == "all"`, `deal_id == "all"`) for batch fleet audits.
+   - Return objects should include nested updated entities (e.g. `updated_customer`, `updated_lead`) so frontend client hooks can perform instant state unwrapping and table row refetches.
+
 ## 📋 Example Agent Implementation
 
 ```python

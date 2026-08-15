@@ -15,17 +15,18 @@ Use this skill when you are modifying or creating FastAPI API routers, endpoints
    - Include the new router in `main.py` using `app.include_router(new_router, prefix="/api/...", tags=["..."])`.
 
 2. **Validation & Schemas**:
-   - Define all request payloads and response bodies as Pydantic models.
-   - Match the project's validation style (using `from_attributes = True` inside the nested `class Config` block for ORM serialization).
+   - Define all request payloads and response bodies as Pydantic V2 models.
+   - Match the project's validation style (using `from_attributes = True` inside `model_config` or nested `class Config` block for ORM serialization).
    - Ensure all response models are typed explicitly.
 
-3. **Database Integration**:
+3. **Database Integration & Session Lifecycles**:
    - Always inject database sessions into endpoints using FastAPI dependency injection:
      ```python
      db: Session = Depends(get_db)
      ```
-   - Perform read/write operations within `try`/`finally` blocks or using standard SQLAlchemy session transactions.
-   - Run `db.commit()` for writes and `db.refresh(db_obj)` if you need access to automatically populated database fields.
+   - **CRITICAL**: Do NOT pass request-scoped `db: Session` to `BackgroundTasks.add_task(...)` if the task requires writing to PostgreSQL after response delivery, because FastAPI closes the request session as soon as the response returns. Instead, await the orchestrator workflow synchronously in the endpoint or instantiate `SessionLocal()` inside background task runners.
+   - Support both string and UUID primary keys when querying models (e.g. attempting `uuid.UUID(id_str)` before falling back to string match).
+   - Run `db.commit()` for writes and `db.refresh(db_obj)` when returning updated models.
 
 4. **Error Handling**:
    - Avoid catching and silencing database or logic errors directly.
