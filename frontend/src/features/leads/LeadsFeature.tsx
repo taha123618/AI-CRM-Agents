@@ -11,6 +11,7 @@ import { Select } from '@/components/ui/Select';
 import { useLeads, useUpdateLead, useDeleteLead } from '@/hooks/use-leads';
 import { useTriggerLeadQualification } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { getScoreColor } from '@/lib/utils';
 import { Lead, LeadStatus } from '@/types/crm.types';
 
@@ -22,6 +23,8 @@ const STATUS_OPTIONS = [
 ];
 
 export function LeadsFeature() {
+  const { t } = useTranslation();
+  const { formatNumber } = useLocaleFormat();
   const { data: leads, isLoading, refetch } = useLeads();
   const updateLeadMutation = useUpdateLead();
   const deleteLeadMutation = useDeleteLead();
@@ -124,21 +127,21 @@ export function LeadsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Users className="w-6 h-6 text-brand-400" />
-            Lead Qualification Console
+            {t('leads.title', 'Lead Qualification Console')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Enriched contact profiles scored automatically by LeadQualificationAgent
+            {t('leads.subtitle', 'Enriched contact profiles scored automatically by LeadQualificationAgent')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleBulkQualify} isLoading={isBulkQualifying}>
             <Sparkles className="w-4 h-4 text-brand-400" />
-            <span>Run AI Fleet Qualification</span>
+            <span>{t('leads.run_fleet_qualification', 'Run AI Fleet Qualification')}</span>
           </Button>
           <Button onClick={() => setLeadModalOpen(true)}>
             <Plus className="w-4 h-4" />
-            <span>Add Lead</span>
+            <span>{t('leads.add_lead', 'Add Lead')}</span>
           </Button>
         </div>
       </div>
@@ -147,22 +150,25 @@ export function LeadsFeature() {
       <Card className="p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Status:</span>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              {t('common.status', 'Status')}:
+            </span>
             {['all', 'qualified', 'contacted', 'new', 'unqualified'].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-3 py-1 rounded-xl text-xs font-medium transition-all ${filterStatus === status
+                className={`px-3 py-1 rounded-xl text-xs font-medium transition-all ${
+                  filterStatus === status
                     ? 'bg-brand-600 text-white shadow-md'
                     : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
-                  }`}
+                }`}
               >
                 {status.toUpperCase()}
               </button>
             ))}
           </div>
           <span className="text-xs text-slate-500 font-mono">
-            Showing {filteredLeads.length} of {leads?.length || 0} leads
+            {filteredLeads.length} / {formatNumber(leads?.length || 0)}
           </span>
         </div>
       </Card>
@@ -170,7 +176,7 @@ export function LeadsFeature() {
       {/* Leads Table */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>All Prospects</CardTitle>
+          <CardTitle>{t('leads.all_prospects', 'All Prospects')}</CardTitle>
         </CardHeader>
         <div className="pt-2">
           {isLoading ? (
@@ -187,14 +193,14 @@ export function LeadsFeature() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>AI Score</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Buying Signals</TableHead>
-                  <TableHead>Routing</TableHead>
-                  <TableHead>Next Action</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('common.contact', 'Contact')}</TableHead>
+                  <TableHead>{t('common.email', 'Email')}</TableHead>
+                  <TableHead>{t('leads.lead_score', 'AI Score')}</TableHead>
+                  <TableHead>{t('common.status', 'Status')}</TableHead>
+                  <TableHead>{t('leads.buying_signals', 'Buying Signals')}</TableHead>
+                  <TableHead>{t('leads.routing', 'Routing')}</TableHead>
+                  <TableHead>{t('leads.next_action', 'Next Action')}</TableHead>
+                  <TableHead className="text-right">{t('common.actions', 'Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

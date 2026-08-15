@@ -7,11 +7,13 @@ import { PipelineChart } from '@/components/charts/PipelineChart';
 import { HealthDistributionChart } from '@/components/charts/HealthDistributionChart';
 import { useDashboardMetrics, usePipelineMetrics, useAnalyticsInsights } from '@/hooks/use-analytics';
 import { useTriggerAnalyticsAgent } from '@/hooks/use-agents';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useCustomers } from '@/hooks/use-customers';
 
 export function AnalyticsFeature() {
+  const { t } = useTranslation();
+  const { formatCurrency, formatNumber } = useLocaleFormat();
   const { data: metrics, isLoading: metricsLoading, refetch: refetchMetrics } = useDashboardMetrics();
   const { data: pipeline, isLoading: pipelineLoading, refetch: refetchPipeline } = usePipelineMetrics();
   const { data: customers } = useCustomers();
@@ -41,10 +43,10 @@ export function AnalyticsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <BarChart3 className="w-6 h-6 text-brand-400" />
-            Executive CRM Analytics & Forecasting
+            {t('analytics.title', 'Executive ARR & Predictive Analytics')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Real-time analytics and predictive insights powered by AnalyticsAgent
+            {t('analytics.subtitle', 'Live multi-agent strategic forecasting and pipeline trajectory')}
           </p>
         </div>
 
@@ -53,7 +55,7 @@ export function AnalyticsFeature() {
           isLoading={generateDashboardMutation.isPending}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Generate Forecast</span>
+          <span>{t('analytics.run_analytics', 'Generate Live AI Forecast')}</span>
         </Button>
       </div>
 

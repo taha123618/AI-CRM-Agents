@@ -351,23 +351,49 @@ CREATE TRIGGER update_meetings_updated_at BEFORE UPDATE ON meetings
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================================
--- SAMPLE DATA (Optional - for testing)
+-- MULTI-LANGUAGE & TRANSLATIONS
 -- ============================================================================
 
--- Insert sample company
-INSERT INTO companies (name, domain, industry, company_size) VALUES
-    ('Acme Corporation', 'acme.com', 'Technology', 'enterprise'),
-    ('TechStart Inc', 'techstart.io', 'SaaS', 'medium');
+CREATE TABLE languages (
+    code VARCHAR(10) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    english_name VARCHAR(100) NOT NULL,
+    direction VARCHAR(10) NOT NULL DEFAULT 'ltr' CHECK (direction IN ('ltr', 'rtl')),
+    is_default BOOLEAN NOT NULL DEFAULT false,
+    is_enabled BOOLEAN NOT NULL DEFAULT true,
+    flag_emoji VARCHAR(20) DEFAULT '🌐',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- Insert sample contacts
-INSERT INTO contacts (company_id, email, first_name, last_name, job_title, job_level, lead_score, lead_status)
-SELECT
-    id,
-    'john.doe@acme.com',
-    'John',
-    'Doe',
-    'VP of Engineering',
-    'executive',
-    85,
-    'qualified'
-FROM companies WHERE domain = 'acme.com';
+CREATE TABLE translations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    language_code VARCHAR(10) NOT NULL REFERENCES languages(code) ON DELETE CASCADE,
+    namespace VARCHAR(50) NOT NULL DEFAULT 'common',
+    key VARCHAR(150) NOT NULL,
+    value TEXT NOT NULL,
+    is_auto_translated BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_lang_namespace_key UNIQUE (language_code, namespace, key)
+);
+
+CREATE INDEX idx_translations_lang_ns ON translations(language_code, namespace);
+CREATE INDEX idx_translations_key ON translations(key);
+
+CREATE TRIGGER update_languages_updated_at BEFORE UPDATE ON languages
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_translations_updated_at BEFORE UPDATE ON translations
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Insert core languages
+INSERT INTO languages (code, name, english_name, direction, is_default, is_enabled, flag_emoji) VALUES
+    ('en', 'English', 'English', 'ltr', true, true, '🇺🇸'),
+    ('es', 'Español', 'Spanish', 'ltr', false, true, '🇪🇸'),
+    ('fr', 'Français', 'French', 'ltr', false, true, '🇫🇷'),
+    ('de', 'Deutsch', 'German', 'ltr', false, true, '🇩🇪'),
+    ('ar', 'العربية', 'Arabic', 'rtl', false, true, '🇸🇦'),
+    ('ja', '日本語', 'Japanese', 'ltr', false, true, '🇯🇵'),
+    ('zh', '中文 (简体)', 'Chinese (Simplified)', 'ltr', false, true, '🇨🇳');
+

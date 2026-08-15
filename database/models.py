@@ -11,6 +11,8 @@ from sqlalchemy import (
     Text,
     ForeignKey,
     CheckConstraint,
+    UniqueConstraint,
+    Index,
 )
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import declarative_base, relationship
@@ -340,3 +342,62 @@ class MetricsDaily(Base):
     avg_csat_score = Column(Float, default=0)
 
     created_at = Column(DateTime, server_default=func.now())
+
+
+class Language(Base):
+    __tablename__ = "languages"
+
+    code = Column(
+        String(10), primary_key=True
+    )  # e.g., 'en', 'es', 'fr', 'de', 'ar', 'ja', 'zh'
+    name = Column(
+        String(100), nullable=False
+    )  # Native name, e.g., 'Español', 'العربية'
+    english_name = Column(
+        String(100), nullable=False
+    )  # English name, e.g., 'Spanish', 'Arabic'
+    direction = Column(String(10), default="ltr", nullable=False)  # 'ltr' or 'rtl'
+    is_default = Column(Boolean, default=False, nullable=False)
+    is_enabled = Column(Boolean, default=True, nullable=False)
+    flag_emoji = Column(String(20), default="🌐")
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    translations = relationship(
+        "Translation",
+        back_populates="language",
+        cascade="all, delete-orphan",
+    )
+
+    __table_args__ = (
+        CheckConstraint("direction IN ('ltr', 'rtl')", name="check_language_direction"),
+    )
+
+
+class Translation(Base):
+    __tablename__ = "translations"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    language_code = Column(
+        String(10),
+        ForeignKey("languages.code", ondelete="CASCADE"),
+        nullable=False,
+    )
+    namespace = Column(String(50), nullable=False, default="common")
+    key = Column(String(150), nullable=False)
+    value = Column(Text, nullable=False)
+    is_auto_translated = Column(Boolean, default=False)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    language = relationship("Language", back_populates="translations")
+
+    __table_args__ = (
+        UniqueConstraint(
+            "language_code", "namespace", "key", name="uq_lang_namespace_key"
+        ),
+        Index("idx_translations_lang_ns", "language_code", "namespace"),
+        Index("idx_translations_key", "key"),
+    )

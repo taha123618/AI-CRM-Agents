@@ -11,7 +11,7 @@ from datetime import datetime
 
 from database.models import Base
 from database.connection import engine, get_db
-from api import leads, deals, customers, emails, meetings, analytics
+from api import leads, deals, customers, emails, meetings, analytics, languages
 from workflows.orchestrator import AgentOrchestrator
 
 
@@ -152,6 +152,7 @@ app.include_router(customers.router, prefix="/api/customers", tags=["Customers"]
 app.include_router(emails.router, prefix="/api/emails", tags=["Emails"])
 app.include_router(meetings.router, prefix="/api/meetings", tags=["Meetings"])
 app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"])
+app.include_router(languages.router, prefix="/api/languages", tags=["Languages"])
 
 
 # ============================================================================

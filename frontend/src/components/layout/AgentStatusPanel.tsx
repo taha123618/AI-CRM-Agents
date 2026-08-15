@@ -1,8 +1,10 @@
 import { Activity, Cpu, RefreshCw } from 'lucide-react';
 import { useAgentStore } from '@/stores/use-agent-store';
 import { Button } from '@/components/ui/Button';
+import { useTranslation } from '@/features/multi-language';
 
 export function AgentStatusPanel({ onRefresh }: { onRefresh?: () => void }) {
+  const { t } = useTranslation();
   const { agentStatuses } = useAgentStore();
   const agentsList = Object.values(agentStatuses);
 
@@ -17,7 +19,9 @@ export function AgentStatusPanel({ onRefresh }: { onRefresh?: () => void }) {
             <Cpu className="w-5 h-5 text-brand-400 animate-pulse" />
           </div>
           <div>
-            <span className="font-bold text-sm text-white block">Autonomous Agent Fleet</span>
+            <span className="font-bold text-sm text-white block">
+              {t('agents.title', 'Autonomous Agent Fleet')}
+            </span>
             <span className="text-[10px] text-slate-400">Multi-agent orchestrator panel</span>
           </div>
         </div>

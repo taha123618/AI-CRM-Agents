@@ -5,16 +5,24 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(amount);
+export function formatCurrency(amount: number, locale: string = 'en-US', currency: string = 'USD'): string {
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
+    }).format(amount);
+  } catch {
+    return `$${amount.toLocaleString('en-US')}`;
+  }
 }
 
-export function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
+export function formatNumber(value: number, locale: string = 'en-US'): string {
+  try {
+    return new Intl.NumberFormat(locale).format(value);
+  } catch {
+    return value.toLocaleString();
+  }
 }
 
 export function getScoreColor(score: number): string {

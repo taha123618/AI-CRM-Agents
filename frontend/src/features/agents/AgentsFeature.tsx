@@ -15,8 +15,10 @@ import {
 } from '@/hooks/use-agents';
 import { useDeals } from '@/hooks/use-deals';
 import { useCustomers } from '@/hooks/use-customers';
+import { useTranslation } from '@/features/multi-language';
 
 export function AgentsFeature() {
+  const { t } = useTranslation();
   const { agentStatuses, events, clearEvents } = useAgentStore();
   const agentsList = Object.values(agentStatuses);
   const [runningAgent, setRunningAgent] = useState<string | null>(null);
@@ -84,16 +86,16 @@ export function AgentsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Bot className="w-6 h-6 text-brand-400" />
-            Autonomous Agent Fleet Control Center
+            {t('agents.title', 'Autonomous Agent Fleet Control Center')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Manage, trigger, and inspect multi-agent AI execution logs and event bus telemetry
+            {t('agents.subtitle', 'Manage, trigger, and inspect multi-agent AI execution logs and event bus telemetry')}
           </p>
         </div>
 
         <Button variant="outline" size="sm" onClick={clearEvents}>
           <RefreshCw className="w-3.5 h-3.5" />
-          <span>Clear Event Logs</span>
+          <span>{t('agents.clear_events', 'Clear Event Logs')}</span>
         </Button>
       </div>
 
@@ -120,7 +122,7 @@ export function AgentsFeature() {
 
             <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
               <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Ready for tasks
+                <CheckCircle2 className="w-3.5 h-3.5" /> {t('agents.ready', 'Ready for tasks')}
               </span>
               <Button
                 size="sm"
@@ -129,7 +131,7 @@ export function AgentsFeature() {
                 onClick={() => handleRunAgent(agent.name)}
               >
                 <Play className="w-3.5 h-3.5 text-brand-400" />
-                <span>Trigger Run</span>
+                <span>{t('agents.trigger_run', 'Trigger Run')}</span>
               </Button>
             </div>
           </Card>

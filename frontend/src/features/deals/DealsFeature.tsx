@@ -22,19 +22,21 @@ import { Input } from '@/components/ui/Input';
 import { useDeals, useUpdateDealStage, useUpdateDeal, useDeleteDeal } from '@/hooks/use-deals';
 import { useTriggerSalesPipeline } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
-import { formatCurrency } from '@/lib/utils';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Deal, DealStage } from '@/types/crm.types';
 
-const STAGES: { id: DealStage; title: string; color: string; badgeColor: string }[] = [
-  { id: 'prospecting', title: 'Prospecting', color: 'border-slate-700', badgeColor: 'bg-slate-800 text-slate-300' },
-  { id: 'qualification', title: 'Qualification', color: 'border-brand-500/50', badgeColor: 'bg-brand-500/20 text-brand-300' },
-  { id: 'proposal', title: 'Proposal Sent', color: 'border-blue-500/50', badgeColor: 'bg-blue-500/20 text-blue-300' },
-  { id: 'negotiation', title: 'Negotiation', color: 'border-amber-500/50', badgeColor: 'bg-amber-500/20 text-amber-300' },
-  { id: 'closed_won', title: 'Closed Won', color: 'border-emerald-500/50', badgeColor: 'bg-emerald-500/20 text-emerald-300' },
-  { id: 'closed_lost', title: 'Closed Lost', color: 'border-rose-500/50', badgeColor: 'bg-rose-500/20 text-rose-300' },
+const STAGES: { id: DealStage; titleKey: string; defaultTitle: string; color: string; badgeColor: string }[] = [
+  { id: 'prospecting', titleKey: 'deals.stage_discovery', defaultTitle: 'Discovery', color: 'border-slate-700', badgeColor: 'bg-slate-800 text-slate-300' },
+  { id: 'qualification', titleKey: 'leads.qualification_status', defaultTitle: 'Qualification', color: 'border-brand-500/50', badgeColor: 'bg-brand-500/20 text-brand-300' },
+  { id: 'proposal', titleKey: 'deals.stage_proposal', defaultTitle: 'Proposal Sent', color: 'border-blue-500/50', badgeColor: 'bg-blue-500/20 text-blue-300' },
+  { id: 'negotiation', titleKey: 'deals.stage_negotiation', defaultTitle: 'Negotiation', color: 'border-amber-500/50', badgeColor: 'bg-amber-500/20 text-amber-300' },
+  { id: 'closed_won', titleKey: 'deals.stage_closed_won', defaultTitle: 'Closed Won', color: 'border-emerald-500/50', badgeColor: 'bg-emerald-500/20 text-emerald-300' },
+  { id: 'closed_lost', titleKey: 'deals.stage_closed_lost', defaultTitle: 'Closed Lost', color: 'border-rose-500/50', badgeColor: 'bg-rose-500/20 text-rose-300' },
 ];
 
 export function DealsFeature() {
+  const { t } = useTranslation();
+  const { formatCurrency, formatNumber } = useLocaleFormat();
   const { data: deals, isLoading, isError, error, refetch } = useDeals();
   const updateStageMutation = useUpdateDealStage();
   const updateDealMutation = useUpdateDeal();
@@ -189,21 +191,21 @@ export function DealsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Briefcase className="w-6 h-6 text-brand-400" />
-            Deals Pipeline Board
+            {t('deals.title', 'Sales Pipeline & Kanban Board')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Drag & Drop Kanban board monitored by SalesPipelineAgent
+            {t('deals.subtitle', 'Drag and drop deals across stages with automated AI deal health auditing')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleBulkAnalyze} isLoading={isBulkAnalyzing}>
             <Sparkles className="w-4 h-4 text-brand-400" />
-            <span>Run AI Fleet Deal Audit</span>
+            <span>{t('deals.run_pipeline_audit', 'Run AI Pipeline Health Audit')}</span>
           </Button>
           <Button onClick={() => setDealModalOpen(true)}>
             <Plus className="w-4 h-4" />
-            <span>New Opportunity</span>
+            <span>{t('deals.add_deal', 'New Deal')}</span>
           </Button>
         </div>
       </div>
@@ -277,9 +279,11 @@ export function DealsFeature() {
                   className={`p-3 rounded-xl bg-slate-950/80 border-t-2 ${topStripeClass} border-x border-b border-slate-800/80 flex flex-col gap-1 shadow-md shrink-0`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">{col.title}</h3>
+                    <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+                      {t(col.titleKey, col.defaultTitle)}
+                    </h3>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${col.badgeColor}`}>
-                      {colDeals.length}
+                      {formatNumber(colDeals.length)}
                     </span>
                   </div>
                   <span className="text-[10px] text-emerald-400 font-bold font-mono">
@@ -504,7 +508,7 @@ export function DealsFeature() {
                 >
                   {STAGES.map((s) => (
                     <option key={s.id} value={s.id}>
-                      {s.title}
+                      {t(s.titleKey, s.defaultTitle)}
                     </option>
                   ))}
                 </select>

@@ -10,6 +10,7 @@ import { Select } from '@/components/ui/Select';
 import { useMeetings, useUpdateMeeting, useDeleteMeeting } from '@/hooks/use-meetings';
 import { useTriggerMeetingScheduler } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Meeting } from '@/types/crm.types';
 
 const TYPE_OPTIONS = [
@@ -20,6 +21,8 @@ const TYPE_OPTIONS = [
 ];
 
 export function MeetingsFeature() {
+  const { t } = useTranslation();
+  const { formatDate } = useLocaleFormat();
   const { data: meetings, isLoading, refetch } = useMeetings();
   const updateMeetingMutation = useUpdateMeeting();
   const deleteMeetingMutation = useDeleteMeeting();
@@ -81,9 +84,26 @@ export function MeetingsFeature() {
     e.stopPropagation();
     try {
       await deleteMeetingMutation.mutateAsync(id);
+      if (selectedMeeting?.id === id) {
+        setSelectedMeeting(null);
+      }
       await refetch();
     } catch {
-      // ignore
+      // Error handled by mutation
+    }
+  };
+
+  const handleTriggerAgent = async (e: React.MouseEvent, meeting: Meeting) => {
+    e.stopPropagation();
+    try {
+      await triggerMeetingMutation.mutateAsync({
+        title: meeting.title,
+        meeting_type: meeting.meeting_type || 'Executive Demo',
+        attendee_email: 'buyer@acme.org',
+      });
+      await refetch();
+    } catch {
+      // Error handled by mutation
     }
   };
 
@@ -98,13 +118,16 @@ export function MeetingsFeature() {
   };
 
   const handleBulkSchedule = async () => {
+    if (!meetings || meetings.length === 0) return;
     setIsBulkScheduling(true);
     try {
-      await triggerMeetingMutation.mutateAsync({
-        title: 'Architecture & Enterprise Prep Session',
-        meeting_type: 'Executive Demo',
-        attendee_email: 'cto@enterprise.io',
-      });
+      for (const meeting of meetings.slice(0, 5)) {
+        await triggerMeetingMutation.mutateAsync({
+          title: meeting.title,
+          meeting_type: meeting.meeting_type || 'Executive Demo',
+          attendee_email: 'buyer@acme.org',
+        });
+      }
       await refetch();
     } finally {
       setIsBulkScheduling(false);
@@ -125,21 +148,21 @@ export function MeetingsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <CalendarIcon className="w-6 h-6 text-purple-400" />
-            AI Calendar & Meeting Intelligence
+            {t('meetings.title', 'Autonomous Meeting Scheduling & Briefings')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Automated briefing materials, agendas, and attendee preparation compiled by <span className="text-purple-400 font-semibold">MeetingSchedulerAgent</span>
+            {t('meetings.subtitle', 'Automated agenda builder, participant briefing generation, and CRM synchronization')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleBulkSchedule} isLoading={isBulkScheduling}>
             <Sparkles className="w-4 h-4 text-purple-400" />
-            <span>Run AI Fleet Prep Audit</span>
+            <span>{t('meetings.prep_materials', 'Run AI Fleet Prep Audit')}</span>
           </Button>
           <Button onClick={() => setMeetingModalOpen(true)}>
             <Sparkles className="w-4 h-4" />
-            <span>Schedule Meeting</span>
+            <span>{t('meetings.schedule_btn', 'Schedule AI Briefing')}</span>
           </Button>
         </div>
       </div>
@@ -192,7 +215,7 @@ export function MeetingsFeature() {
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-2 border-t border-slate-800">
                 <div className="flex items-center gap-1.5 font-mono">
                   <Clock className="w-3.5 h-3.5 text-brand-400" />
-                  <span>{new Date(meeting.scheduled_at).toLocaleString()}</span>
+                  <span>{formatDate(meeting.scheduled_at)}</span>
                 </div>
                 <div className="flex items-center gap-1 text-emerald-400 font-medium">
                   <UserCheck className="w-3.5 h-3.5" />
@@ -322,6 +345,15 @@ export function MeetingsFeature() {
 
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => handleTriggerAgent(e, selectedMeeting)}
+                  isLoading={triggerMeetingMutation.isPending}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                  <span>AI Re-Prep</span>
+                </Button>
                 <Button
                   variant="outline"
                   size="sm"

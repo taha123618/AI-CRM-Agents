@@ -9,7 +9,8 @@ export type ActivePage =
   | 'meetings'
   | 'analytics'
   | 'reports'
-  | 'agents';
+  | 'agents'
+  | 'languages';
 
 interface UIState {
   activePage: ActivePage;

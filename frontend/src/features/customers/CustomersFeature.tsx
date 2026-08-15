@@ -7,7 +7,8 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { useCustomers, useCustomerHealth } from '@/hooks/use-customers';
 import { useTriggerCustomerSuccess } from '@/hooks/use-agents';
 import { Modal } from '@/components/ui/Modal';
-import { formatCurrency, getScoreColor } from '@/lib/utils';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
+import { getScoreColor } from '@/lib/utils';
 import { Customer } from '@/types/crm.types';
 
 function ChurnGauge({ probability }: { probability: number }) {
@@ -52,6 +53,8 @@ function EngagementBar({ label, value, max = 100, unit = '' }: { label: string; 
 }
 
 export function CustomersFeature() {
+  const { t } = useTranslation();
+  const { formatCurrency, formatNumber } = useLocaleFormat();
   const { data: customers, isLoading, refetch } = useCustomers();
   const monitorCustomerMutation = useTriggerCustomerSuccess();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
@@ -121,16 +124,16 @@ export function CustomersFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Building2 className="w-6 h-6 text-emerald-400" />
-            Customer Success & Churn Risk Console
+            {t('customers.title', 'Account Health & Churn Risk Intelligence')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Health scores, churn probability, and engagement telemetry monitored by <span className="text-emerald-400 font-semibold">CustomerSuccessAgent</span>
+            {t('customers.subtitle', 'Customer retention telemetry, health scores, and automated intervention playbooks')}
           </p>
         </div>
 
         <Button onClick={handleBulkMonitor} isLoading={isBulkMonitoring}>
           <Sparkles className="w-4 h-4 text-emerald-400" />
-          <span>Run AI Fleet Health Audit</span>
+          <span>{t('customers.run_churn_audit', 'Run AI Fleet Retention Audit')}</span>
         </Button>
       </div>
 
@@ -142,10 +145,10 @@ export function CustomersFeature() {
         return (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Total Accounts', value: customers.length, icon: Users, color: 'text-brand-400' },
-              { label: 'High Churn Risk', value: highRisk, icon: AlertTriangle, color: 'text-rose-400', warn: highRisk > 0 },
-              { label: 'Avg Health Score', value: `${avgHealth}/100`, icon: Activity, color: 'text-emerald-400' },
-              { label: 'Total MRR', value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-amber-400' },
+              { label: t('customers.all_accounts', 'Total Accounts'), value: formatNumber(customers.length), icon: Users, color: 'text-brand-400' },
+              { label: t('customers.churn_risk', 'High Churn Risk'), value: formatNumber(highRisk), icon: AlertTriangle, color: 'text-rose-400', warn: highRisk > 0 },
+              { label: t('deals.health_score', 'Avg Health Score'), value: `${avgHealth}/100`, icon: Activity, color: 'text-emerald-400' },
+              { label: t('customers.mrr', 'Total MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-amber-400' },
             ].map(({ label, value, icon: Icon, color, warn }) => (
               <div key={label} className={`p-4 rounded-2xl border backdrop-blur-sm ${warn ? 'bg-rose-500/5 border-rose-500/20' : 'bg-slate-900/60 border-slate-800/60'}`}>
                 <div className="flex items-center gap-2 mb-2">
@@ -162,7 +165,7 @@ export function CustomersFeature() {
       {/* Customer Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Monitored Accounts</CardTitle>
+          <CardTitle>{t('customers.all_accounts', 'Monitored Accounts')}</CardTitle>
         </CardHeader>
         <div className="pt-2">
           {isLoading ? (
@@ -178,12 +181,12 @@ export function CustomersFeature() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Plan</TableHead>
-                  <TableHead>MRR</TableHead>
-                  <TableHead>Health</TableHead>
-                  <TableHead>Churn Risk</TableHead>
-                  <TableHead>Churn Probability</TableHead>
-                  <TableHead>Engagement</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('customers.mrr', 'MRR')}</TableHead>
+                  <TableHead>{t('deals.health_score', 'Health')}</TableHead>
+                  <TableHead>{t('customers.churn_risk', 'Churn Risk')}</TableHead>
+                  <TableHead>{t('customers.churn_risk', 'Churn Probability')}</TableHead>
+                  <TableHead>{t('customers.telemetry_usage', 'Engagement')}</TableHead>
+                  <TableHead className="text-right">{t('common.actions', 'Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
