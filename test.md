@@ -170,9 +170,9 @@ Agents communicate via:
 
 ## 🔮 Future Features
 
-- [ ] Voice AI for calls
-- [ ] WhatsApp integration
-- [ ] Advanced forecasting
+- [x] Voice AI for calls
+- [x] WhatsApp integration
+- [x] Advanced forecasting
 - [x] Multi-language support
 - [ ] Mobile app (React Native)
-- [ ] Custom agent builder (no-code)
+- [x] Custom agent builder (no-code)

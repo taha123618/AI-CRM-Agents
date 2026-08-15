@@ -396,8 +396,12 @@ def seed_database(db: Session):
     db.add_all([e1, e2])
     db.commit()
 
+    seed_languages_and_translations(db)
+    seed_custom_agents(db)
+    seed_voice_and_whatsapp(db)
+
     print(
-        "Database seeding completed successfully! Added 3 companies, 4 contacts, 2 customers, 3 deals, 2 meetings, and 2 emails."
+        "Database seeding completed successfully! Added companies, contacts, deals, customers, languages, custom agents, voice calls, and WhatsApp chats."
     )
 
 
@@ -1377,3 +1381,174 @@ def seed_languages_and_translations(db: Session):
     print(
         f"Seeded {len(languages_data)} languages and {len(translation_objects)} localized dictionary keys successfully."
     )
+
+
+def seed_custom_agents(db: Session):
+    """Seed sample production-ready custom agents."""
+    from database.models import CustomAgent
+
+    if db.query(CustomAgent).count() > 0:
+        return
+
+    print("Seeding sample Custom Agents studio blueprints...")
+
+    agents = [
+        CustomAgent(
+            id=uuid.uuid4(),
+            name="VIP Customer Onboarding Concierge",
+            description="Autonomous agent that prepares high-touch onboarding plans and welcome emails for Tier-1 Enterprise customers.",
+            icon="Crown",
+            trigger_type="event",
+            trigger_config={"event_name": "customer.tier1_created"},
+            model_provider="smart-fallback",
+            model_name="smart-fallback",
+            temperature=0.2,
+            system_prompt="You are the VIP Onboarding Concierge. Your mission is to analyze enterprise customer requirements, synthesize key milestones, and draft white-glove onboarding briefings.\n\nContext:\nCustomer: {{customer.name}}\nMRR: ${{customer.mrr}}\nPlan: {{customer.plan}}",
+            tools_enabled=["query_crm", "send_email", "schedule_meeting"],
+            is_active=True,
+            execution_count=12,
+        ),
+        CustomAgent(
+            id=uuid.uuid4(),
+            name="Contract Legal & Liability Sentinel",
+            description="Scans deal notes and meeting transcripts to flag non-standard liability clauses, indemnification limits, and payment delays.",
+            icon="ShieldAlert",
+            trigger_type="event",
+            trigger_config={"event_name": "deal.stage_changed"},
+            model_provider="smart-fallback",
+            model_name="smart-fallback",
+            temperature=0.1,
+            system_prompt="You are the Legal & Compliance Sentinel. Scan contract parameters for risk factors, liability caps, and custom billing terms.\n\nDeal: {{deal.name}}\nValue: ${{deal.value}}\nStage: {{deal.stage}}",
+            tools_enabled=["query_crm", "generate_summary", "update_deal"],
+            is_active=True,
+            execution_count=28,
+        ),
+        CustomAgent(
+            id=uuid.uuid4(),
+            name="Competitor Price Match Intelligence",
+            description="Detects competitor mentions in inbound prospect emails and calculates customized discount options within authorized margins.",
+            icon="Zap",
+            trigger_type="event",
+            trigger_config={"event_name": "email.competitor_detected"},
+            model_provider="smart-fallback",
+            model_name="smart-fallback",
+            temperature=0.3,
+            system_prompt="You are the Competitive Intelligence Agent. Identify competitor pricing objections and provide targeted counter-positioning points.\n\nProspect Email: {{lead.email}}\nSubject: {{email.subject}}",
+            tools_enabled=["query_crm", "send_email", "webhook_call"],
+            is_active=True,
+            execution_count=19,
+        ),
+    ]
+
+    db.add_all(agents)
+    db.commit()
+    print("Seeded 3 Custom Agents studio blueprints successfully.")
+
+
+def seed_voice_and_whatsapp(db: Session):
+    """Seed sample voice calls and WhatsApp conversation threads."""
+    from database.models import (
+        VoiceCall,
+        VoiceCallTranscript,
+        WhatsAppConversation,
+        WhatsAppMessage,
+    )
+
+    if db.query(VoiceCall).count() > 0:
+        return
+
+    print("Seeding Voice AI calls and WhatsApp conversations...")
+
+    # 1. Voice Calls & Transcripts
+    call1 = VoiceCall(
+        id=uuid.uuid4(),
+        contact_name="Marcus Vance",
+        phone_number="+1 (415) 890-2144",
+        direction="outbound",
+        status="completed",
+        duration_seconds=342,
+        sentiment="positive",
+        buyer_intent_score=88,
+        summary="Marcus is interested in replacing their legacy Gong setup with our autonomous AI agent CRM. Primary concern was migration timeline and custom SLA terms.",
+        action_items=[
+            "Send SOC2 Type II compliance pack to Marcus",
+            "Book technical deep-dive with Solutions Architect for Thursday",
+        ],
+        objections_handled=[
+            "Data Security & Isolation",
+            "Gong Replacement Feature Parity",
+        ],
+    )
+    db.add(call1)
+    db.commit()
+    db.refresh(call1)
+
+    t1 = VoiceCallTranscript(
+        id=uuid.uuid4(),
+        call_id=call1.id,
+        speaker="rep",
+        text="Hi Marcus, thanks for joining. I know you were exploring ways to automate your SDR lead qualification workflow.",
+        timestamp_seconds=2.0,
+        sentiment="neutral",
+    )
+    t2 = VoiceCallTranscript(
+        id=uuid.uuid4(),
+        call_id=call1.id,
+        speaker="prospect",
+        text="Yes, right now our reps spend 4 hours a day manually researching contacts. Is your platform compatible with Postgres databases?",
+        timestamp_seconds=14.5,
+        sentiment="neutral",
+        coaching_tip="💡 Highlight native PostgreSQL ORM integration and zero data-copy architecture.",
+    )
+    t3 = VoiceCallTranscript(
+        id=uuid.uuid4(),
+        call_id=call1.id,
+        speaker="prospect",
+        text="That sounds really great. What kind of ROI have other SaaS companies seen in the first quarter?",
+        timestamp_seconds=48.0,
+        sentiment="positive",
+        coaching_tip="💡 State benchmark: 3.4x faster pipeline velocity and 40% reduction in churn risk.",
+    )
+    db.add_all([t1, t2, t3])
+
+    # 2. WhatsApp Conversations & Messages
+    conv1 = WhatsAppConversation(
+        id=uuid.uuid4(),
+        contact_name="Elena Rostova",
+        phone_number="+44 20 7946 0912",
+        status="active",
+        unread_count=1,
+        ai_auto_pilot=True,
+        tags=["enterprise", "inbound_web"],
+    )
+    db.add(conv1)
+    db.commit()
+    db.refresh(conv1)
+
+    m1 = WhatsAppMessage(
+        id=uuid.uuid4(),
+        conversation_id=conv1.id,
+        sender_type="prospect",
+        text="Hi! We saw your autonomous multi-agent CRM demo on LinkedIn. How does the pricing work for a 25-rep sales team?",
+        intent="pricing_inquiry",
+        status="read",
+    )
+    m2 = WhatsAppMessage(
+        id=uuid.uuid4(),
+        conversation_id=conv1.id,
+        sender_type="bot",
+        text="Hi Elena! 👋 Thanks for reaching out. For a 25-rep team, our Enterprise Fleet tier is $49/seat/mo, which includes all 6 autonomous agents and custom workflow triggers. Would you like a 15-min live walkthrough?",
+        intent="pricing_inquiry",
+        status="delivered",
+    )
+    m3 = WhatsAppMessage(
+        id=uuid.uuid4(),
+        conversation_id=conv1.id,
+        sender_type="prospect",
+        text="Yes please! Does Thursday at 3:00 PM GMT work for your team?",
+        intent="meeting_request",
+        status="delivered",
+    )
+    db.add_all([m1, m2, m3])
+    db.commit()
+    print("Seeded Voice Calls and WhatsApp Conversations successfully.")
