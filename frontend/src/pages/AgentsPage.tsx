@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Bot, Play, Zap, Terminal, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Bot, Play, Zap, Terminal, RefreshCw, CheckCircle2, Sparkles } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { Modal } from '@/components/ui/Modal';
 import { useAgentStore } from '@/stores/use-agent-store';
 import {
   useTriggerLeadQualification,
@@ -20,6 +21,7 @@ export function AgentsPage() {
   const { agentStatuses, events, clearEvents } = useAgentStore();
   const agentsList = Object.values(agentStatuses);
   const [runningAgent, setRunningAgent] = useState<string | null>(null);
+  const [lastRunOutput, setLastRunOutput] = useState<{ agent: string; result: any } | null>(null);
 
   const { data: deals } = useDeals();
   const { data: customers } = useCustomers();
@@ -34,8 +36,10 @@ export function AgentsPage() {
   const handleRunAgent = async (name: string) => {
     setRunningAgent(name);
     try {
+      let res: any = null;
+
       if (name === 'LeadQualificationAgent') {
-        await triggerLead.mutateAsync({
+        res = await triggerLead.mutateAsync({
           email: 'sample.prospect@techcorp.io',
           first_name: 'Tech',
           last_name: 'Prospect',
@@ -43,34 +47,32 @@ export function AgentsPage() {
           company_name: 'TechCorp',
         });
       } else if (name === 'EmailIntelligenceAgent') {
-        await triggerEmail.mutateAsync({
+        res = await triggerEmail.mutateAsync({
           sender: 'lead@enterprise.com',
           subject: 'SLA and SOC2 compliance inquiry',
           body: 'We need enterprise SLA guarantees and custom data residency.',
         });
       } else if (name === 'SalesPipelineAgent') {
-        const dealId = deals && deals.length > 0 ? deals[0].id : '';
-        if (dealId) {
-          await triggerDeal.mutateAsync(dealId);
-        } else {
-          alert('No deals found in the database. Please create a deal opportunity first.');
-        }
+        const dealId = deals && deals.length > 0 ? deals[0].id : 'sample-deal-id';
+        res = await triggerDeal.mutateAsync(dealId);
       } else if (name === 'CustomerSuccessAgent') {
-        const customerId = customers && customers.length > 0 ? customers[0].id : '';
-        if (customerId) {
-          await triggerCustomer.mutateAsync(customerId);
-        } else {
-          alert('No customer records found in the database. Please onboard a customer first.');
-        }
+        const customerId = customers && customers.length > 0 ? customers[0].id : 'sample-customer-id';
+        res = await triggerCustomer.mutateAsync(customerId);
       } else if (name === 'MeetingSchedulerAgent') {
-        await triggerMeeting.mutateAsync({
+        res = await triggerMeeting.mutateAsync({
           title: 'Executive Architecture Demo',
           meeting_type: 'Executive Demo',
           attendee_email: 'buyer@acme.org',
         });
       } else if (name === 'AnalyticsAgent') {
-        await triggerAnalytics.mutateAsync('all');
+        res = await triggerAnalytics.mutateAsync('all');
       }
+
+      if (res) {
+        setLastRunOutput({ agent: name, result: res });
+      }
+    } catch (err: any) {
+      setLastRunOutput({ agent: name, result: { status: 'error', error: err?.message || 'Agent execution failed' } });
     } finally {
       setRunningAgent(null);
     }
@@ -170,6 +172,34 @@ export function AgentsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Agent Execution Result Modal */}
+      {lastRunOutput && (
+        <Modal
+          isOpen={Boolean(lastRunOutput)}
+          onClose={() => setLastRunOutput(null)}
+          title={`Agent Result — ${lastRunOutput.agent}`}
+          description={`Output returned by ${lastRunOutput.agent} background execution.`}
+        >
+          <div className="space-y-4">
+            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
+                <Sparkles className="w-4 h-4 text-brand-400" />
+                <span>Execution Response</span>
+              </div>
+              <pre className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
+                {JSON.stringify(lastRunOutput.result, null, 2)}
+              </pre>
+            </div>
+
+            <div className="flex justify-end pt-2 border-t border-slate-800">
+              <Button variant="outline" onClick={() => setLastRunOutput(null)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

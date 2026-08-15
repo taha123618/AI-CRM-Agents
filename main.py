@@ -46,6 +46,7 @@ Base.metadata.create_all(bind=engine)
 try:
     from database.seed import seed_database
     from database.connection import SessionLocal
+
     db_session = SessionLocal()
     try:
         seed_database(db_session)
@@ -125,11 +126,14 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = await websocket.receive_text()
             # Broadcast the received message out to everyone
-            await ws_manager.broadcast(f"Client said: {data}")
+            await ws_manager.broadcast(
+                {"type": "client_message", "message": f"Client said: {data}"}
+            )
             await websocket.send_json(
                 {
                     "type": "pong",
                     "received": data,
+                    # pyrefly: ignore [deprecated]
                     "timestamp": datetime.utcnow().isoformat(),
                 }
             )
@@ -158,52 +162,65 @@ app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"]
 @app.post("/api/agents/qualify-lead")
 async def qualify_lead(
     lead_data: Dict[str, Any],
-    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
     """Trigger Lead Qualification Agent"""
-    background_tasks.add_task(orchestrator.process_new_lead, lead_data, db)
-    return {"status": "processing", "message": "Lead qualification started"}
+    result = await orchestrator.process_new_lead(lead_data, db)
+    return {
+        "status": "success",
+        "message": "Lead qualification completed",
+        "result": result,
+    }
 
 
 @app.post("/api/agents/analyze-email")
 async def analyze_email(
     email_data: Dict[str, Any],
-    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
     """Trigger Email Intelligence Agent"""
-    background_tasks.add_task(orchestrator.process_email, email_data, db)
-    return {"status": "processing", "message": "Email analysis started"}
+    result = await orchestrator.process_email(email_data, db)
+    return {
+        "status": "success",
+        "message": "Email analysis completed",
+        "result": result,
+    }
 
 
 @app.post("/api/agents/analyze-deal/{deal_id}")
-async def analyze_deal(
-    deal_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)
-):
+async def analyze_deal(deal_id: str, db: Session = Depends(get_db)):
     """Trigger Sales Pipeline Agent"""
-    background_tasks.add_task(orchestrator.analyze_deal, deal_id, db)
-    return {"status": "processing", "message": "Deal analysis started"}
+    result = await orchestrator.analyze_deal(deal_id, db)
+    return {
+        "status": "success",
+        "message": f"Deal analysis completed for {deal_id}",
+        "result": result,
+    }
 
 
 @app.post("/api/agents/monitor-customer/{customer_id}")
-async def monitor_customer(
-    customer_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)
-):
+async def monitor_customer(customer_id: str, db: Session = Depends(get_db)):
     """Trigger Customer Success Agent"""
-    background_tasks.add_task(orchestrator.monitor_customer, customer_id, db)
-    return {"status": "processing", "message": "Customer monitoring started"}
+    result = await orchestrator.monitor_customer(customer_id, db)
+    return {
+        "status": "success",
+        "message": f"Customer monitoring completed for {customer_id}",
+        "result": result,
+    }
 
 
 @app.post("/api/agents/schedule-meeting")
 async def schedule_meeting(
     meeting_request: Dict[str, Any],
-    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
     """Trigger Meeting Scheduler Agent"""
-    background_tasks.add_task(orchestrator.schedule_meeting, meeting_request, db)
-    return {"status": "processing", "message": "Meeting scheduling started"}
+    result = await orchestrator.schedule_meeting(meeting_request, db)
+    return {
+        "status": "success",
+        "message": "Meeting scheduling completed",
+        "result": result,
+    }
 
 
 @app.post("/api/agents/generate-dashboard")
@@ -218,14 +235,29 @@ async def generate_dashboard(category: str = "all", db: Session = Depends(get_db
 # ============================================================================
 
 
+async def _bg_webhook_process_email(email_data: Dict[str, Any]):
+    db = SessionLocal()
+    try:
+        await orchestrator.process_email(email_data, db)
+    finally:
+        db.close()
+
+
+async def _bg_webhook_process_lead(form_data: Dict[str, Any]):
+    db = SessionLocal()
+    try:
+        await orchestrator.process_new_lead(form_data, db)
+    finally:
+        db.close()
+
+
 @app.post("/webhooks/email-received")
 async def email_webhook(
     email_data: Dict[str, Any],
     background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db),
 ):
     """Webhook for incoming emails"""
-    background_tasks.add_task(orchestrator.process_email, email_data, db)
+    background_tasks.add_task(_bg_webhook_process_email, email_data)
     return {"status": "received"}
 
 
@@ -233,10 +265,9 @@ async def email_webhook(
 async def form_webhook(
     form_data: Dict[str, Any],
     background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db),
 ):
     """Webhook for form submissions (new leads)"""
-    background_tasks.add_task(orchestrator.process_new_lead, form_data, db)
+    background_tasks.add_task(_bg_webhook_process_lead, form_data)
     return {"status": "received"}
 
 

@@ -7,6 +7,7 @@ import uuid
 
 from database.models import Company, Contact, Deal, Customer, Meeting, Email
 
+
 def seed_database(db: Session):
     """Seed the database with sample data if empty"""
     # Check if companies already exist
@@ -28,8 +29,8 @@ def seed_database(db: Session):
         timezone="PST",
         enrichment_data={
             "description": "Acme Corp is a global leader in manufacturing and distribution.",
-            "linkedin": "linkedin.com/company/acme"
-        }
+            "linkedin": "linkedin.com/company/acme",
+        },
     )
 
     techstart = Company(
@@ -43,8 +44,8 @@ def seed_database(db: Session):
         timezone="CST",
         enrichment_data={
             "description": "Next generation collaborative SaaS tools for software development.",
-            "linkedin": "linkedin.com/company/techstart"
-        }
+            "linkedin": "linkedin.com/company/techstart",
+        },
     )
 
     globalcorp = Company(
@@ -58,8 +59,8 @@ def seed_database(db: Session):
         timezone="EST",
         enrichment_data={
             "description": "Global financial services, brokerage, and risk advisory services.",
-            "linkedin": "linkedin.com/company/globalcorp"
-        }
+            "linkedin": "linkedin.com/company/globalcorp",
+        },
     )
 
     db.add_all([acme, techstart, globalcorp])
@@ -83,8 +84,8 @@ def seed_database(db: Session):
             "signals": ["SOC2 Inquiry", "Pricing Page Visit"],
             "buying_signals": ["SLA request", "High frequency usage"],
             "routing_team": "Enterprise East",
-            "recommended_action": "Send customized security document pack"
-        }
+            "recommended_action": "Send customized security document pack",
+        },
     )
 
     sarah = Contact(
@@ -104,8 +105,8 @@ def seed_database(db: Session):
             "signals": ["API Documentation Read", "Integrations Checked"],
             "buying_signals": ["Self-serve signup", "Developer API key created"],
             "routing_team": "Developer Growth",
-            "recommended_action": "Introduce customer support lead"
-        }
+            "recommended_action": "Introduce customer support lead",
+        },
     )
 
     bob = Contact(
@@ -123,8 +124,8 @@ def seed_database(db: Session):
         enrichment_data={
             "buying_signals": ["Budget constraint", "Competitor research"],
             "routing_team": "Finance Accounts",
-            "recommended_action": "Follow up with standard product deck"
-        }
+            "recommended_action": "Follow up with standard product deck",
+        },
     )
 
     alice = Contact(
@@ -138,7 +139,7 @@ def seed_database(db: Session):
         phone="555-0122",
         lead_score=60,
         lead_status="contacted",
-        lead_source="Referral"
+        lead_source="Referral",
     )
 
     db.add_all([john, sarah, bob, alice])
@@ -173,9 +174,9 @@ def seed_database(db: Session):
             "recommended_actions": [
                 "Schedule annual executive business review (QBR)",
                 "Propose seat expansion model to cover design team",
-                "Introduce new enterprise analytics reporting dashboard"
+                "Introduce new enterprise analytics reporting dashboard",
             ]
-        }
+        },
     )
 
     tech_cust = Customer(
@@ -206,9 +207,9 @@ def seed_database(db: Session):
             "recommended_actions": [
                 "Urgent reachout: Resolve outstanding open high-severity tickets",
                 "Setup product training session for newly onboarded engineers",
-                "Review payment delay issue with accounts receivable"
+                "Review payment delay issue with accounts receivable",
             ]
-        }
+        },
     )
 
     db.add_all([acme_cust, tech_cust])
@@ -232,9 +233,9 @@ def seed_database(db: Session):
             "close_probability": 75,
             "next_actions": [
                 "Confirm SLA review meeting with legal team",
-                "Verify standard payment terms (net 30)"
-            ]
-        }
+                "Verify standard payment terms (net 30)",
+            ],
+        },
     )
 
     techstart_deal = Deal(
@@ -255,9 +256,9 @@ def seed_database(db: Session):
             "forecast_close_date": "2026-10-31",
             "next_actions": [
                 "Provide executive discount justification sheet",
-                "Check custom integration possibilities"
-            ]
-        }
+                "Check custom integration possibilities",
+            ],
+        },
     )
 
     global_deal = Deal(
@@ -278,9 +279,9 @@ def seed_database(db: Session):
             "forecast_close_date": "2026-12-15",
             "next_actions": [
                 "Schedule pilot scope alignment call",
-                "Send security questionnaire docs"
-            ]
-        }
+                "Send security questionnaire docs",
+            ],
+        },
     )
 
     db.add_all([acme_deal, techstart_deal, global_deal])
@@ -296,14 +297,21 @@ def seed_database(db: Session):
         duration_minutes=45,
         location="https://meet.google.com/abc-defg-hij",
         attendees=["john.doe@acme.com", "seller@company.com"],
-        agenda=["1. SLA Expectations Review (15 mins)", "2. Security & SOC2 Review (20 mins)", "3. Net 30/Custom Billing (10 mins)"],
+        agenda=[
+            "1. SLA Expectations Review (15 mins)",
+            "2. Security & SOC2 Review (20 mins)",
+            "3. Net 30/Custom Billing (10 mins)",
+        ],
         prep_materials={
             "security_packet": "Sent on Monday",
-            "sla_terms_draft": "Draft version 1.4 attached"
+            "sla_terms_draft": "Draft version 1.4 attached",
         },
         notes="Customer accepted the standard SLA clauses but requested a minor review of the liability limit.",
-        followup_tasks=["Send updated liability limit clause", "Coordinate execution date"],
-        status="completed"
+        followup_tasks=[
+            "Send updated liability limit clause",
+            "Coordinate execution date",
+        ],
+        status="completed",
     )
 
     m2 = Meeting(
@@ -315,12 +323,14 @@ def seed_database(db: Session):
         duration_minutes=30,
         location="https://meet.google.com/xyz-qprs-tuv",
         attendees=["sarah.smith@techstart.io", "engineer@company.com"],
-        agenda=["1. Multi-tenant key configuration", "2. Data localization guidelines", "3. Support setup for engineers"],
-        prep_materials={
-            "api_docs_link": "https://docs.company.com/api"
-        },
+        agenda=[
+            "1. Multi-tenant key configuration",
+            "2. Data localization guidelines",
+            "3. Support setup for engineers",
+        ],
+        prep_materials={"api_docs_link": "https://docs.company.com/api"},
         notes="Sync session to ensure the expansion seats can leverage API capabilities.",
-        status="scheduled"
+        status="scheduled",
     )
 
     db.add_all([m1, m2])
@@ -343,7 +353,10 @@ def seed_database(db: Session):
         draft_response="Hi John, thank you for reaching out. We have sent our SLA guarantees and SOC2 Type II compliance reports. Let me know if you have any questions.",
         response_sent=True,
         received_at=datetime.utcnow() - timedelta(hours=6),
-        follow_up_suggestions=["Confirm receipt of SOC2 Type II report", "Ask if their legal team wants a direct discussion"]
+        follow_up_suggestions=[
+            "Confirm receipt of SOC2 Type II report",
+            "Ask if their legal team wants a direct discussion",
+        ],
     )
 
     e2 = Email(
@@ -362,10 +375,15 @@ def seed_database(db: Session):
         draft_response="Hi Sarah, I understand budget constraints. We can look at a 15% discount for a yearly upfront commitment.",
         response_sent=False,
         received_at=datetime.utcnow() - timedelta(hours=2),
-        follow_up_suggestions=["Offer annual commitment pricing", "Check if they can reduce the seat count initially"]
+        follow_up_suggestions=[
+            "Offer annual commitment pricing",
+            "Check if they can reduce the seat count initially",
+        ],
     )
 
     db.add_all([e1, e2])
     db.commit()
 
-    print("Database seeding completed successfully! Added 3 companies, 4 contacts, 2 customers, 3 deals, 2 meetings, and 2 emails.")
+    print(
+        "Database seeding completed successfully! Added 3 companies, 4 contacts, 2 customers, 3 deals, 2 meetings, and 2 emails."
+    )

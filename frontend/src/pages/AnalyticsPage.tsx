@@ -12,8 +12,8 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { useCustomers } from '@/hooks/use-customers';
 
 export function AnalyticsPage() {
-  const { data: metrics, isLoading: metricsLoading } = useDashboardMetrics();
-  const { data: pipeline, isLoading: pipelineLoading } = usePipelineMetrics();
+  const { data: metrics, isLoading: metricsLoading, refetch: refetchMetrics } = useDashboardMetrics();
+  const { data: pipeline, isLoading: pipelineLoading, refetch: refetchPipeline } = usePipelineMetrics();
   const { data: customers } = useCustomers();
   const { data: insights, isLoading: insightsLoading, refetch: refetchInsights } = useAnalyticsInsights();
   const generateDashboardMutation = useTriggerAnalyticsAgent();
@@ -28,6 +28,7 @@ export function AnalyticsPage() {
     try {
       const data = await generateDashboardMutation.mutateAsync('all');
       setForecastResult(data);
+      await Promise.all([refetchMetrics(), refetchPipeline(), refetchInsights()]);
     } catch {
       // Error handled by mutation
     }

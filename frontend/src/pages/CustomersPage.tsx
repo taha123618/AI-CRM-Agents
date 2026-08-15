@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Building2, Activity, Bot, TrendingDown, Zap, CheckCircle2, AlertTriangle, BarChart3, Users } from 'lucide-react';
+import { Building2, Activity, Bot, TrendingDown, Zap, CheckCircle2, AlertTriangle, BarChart3, Users, Sparkles } from 'lucide-react';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
@@ -52,22 +52,48 @@ function EngagementBar({ label, value, max = 100, unit = '' }: { label: string; 
 }
 
 export function CustomersPage() {
-  const { data: customers, isLoading } = useCustomers();
+  const { data: customers, isLoading, refetch } = useCustomers();
   const monitorCustomerMutation = useTriggerCustomerSuccess();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [monitoringId, setMonitoringId] = useState<string | null>(null);
   const [monitorResult, setMonitorResult] = useState<Record<string, any> | null>(null);
+  const [isBulkMonitoring, setIsBulkMonitoring] = useState(false);
 
   const { data: healthData, isLoading: healthLoading } = useCustomerHealth(selectedCustomer?.id || '');
 
   const handleMonitor = async (customer: Customer) => {
     setMonitoringId(customer.id);
     try {
-      const result = await monitorCustomerMutation.mutateAsync(customer.id);
-      setMonitorResult(result);
-      setSelectedCustomer(customer);
+      const response: any = await monitorCustomerMutation.mutateAsync(customer.id);
+      const payload = response?.result || response;
+      setMonitorResult(payload);
+
+      // Dynamically update selectedCustomer in state if returned
+      const updatedCust = payload?.updated_customer;
+      if (updatedCust) {
+        setSelectedCustomer((prev) => prev ? {
+          ...prev,
+          health_score: updatedCust.health_score ?? prev.health_score,
+          churn_risk: updatedCust.churn_risk ?? prev.churn_risk,
+          churn_probability: updatedCust.churn_probability ?? prev.churn_probability,
+          recommended_actions: updatedCust.recommended_actions ?? prev.recommended_actions,
+        } : customer);
+      } else {
+        setSelectedCustomer(customer);
+      }
+      await refetch();
     } finally {
       setMonitoringId(null);
+    }
+  };
+
+  const handleBulkMonitor = async () => {
+    setIsBulkMonitoring(true);
+    try {
+      await monitorCustomerMutation.mutateAsync('all');
+      await refetch();
+    } finally {
+      setIsBulkMonitoring(false);
     }
   };
 
@@ -82,6 +108,14 @@ export function CustomersPage() {
     return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
   };
 
+  // Helper variables for modal rendering
+  const activeAgentData = monitorResult?.result || monitorResult;
+  const currentHealthScore = activeAgentData?.health_score ?? selectedCustomer?.health_score ?? 0;
+  const currentChurnRisk = (activeAgentData?.churn_risk?.level || activeAgentData?.churn_risk || selectedCustomer?.churn_risk || 'low').toString();
+  const currentChurnProb = activeAgentData?.churn_risk?.probability ?? activeAgentData?.churn_probability ?? selectedCustomer?.churn_probability ?? 0;
+  const currentActions = activeAgentData?.recommended_actions || selectedCustomer?.recommended_actions || [];
+  const currentRiskFactors = activeAgentData?.churn_risk?.factors || [];
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -95,6 +129,11 @@ export function CustomersPage() {
             Health scores, churn probability, and engagement telemetry monitored by <span className="text-emerald-400 font-semibold">CustomerSuccessAgent</span>
           </p>
         </div>
+
+        <Button onClick={handleBulkMonitor} isLoading={isBulkMonitoring}>
+          <Sparkles className="w-4 h-4 text-emerald-400" />
+          <span>Run AI Fleet Health Audit</span>
+        </Button>
       </div>
 
       {/* Summary KPI row */}
@@ -153,10 +192,18 @@ export function CustomersPage() {
                 {customers.map((cust) => (
                   <TableRow key={cust.id} className="group cursor-pointer" onClick={() => handleViewHealth(cust)}>
                     <TableCell className="font-semibold text-white capitalize">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs">
-                        <Zap className="w-3 h-3 text-brand-400" />
-                        {cust.plan}
-                      </span>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs">
+                          <Zap className="w-3 h-3 text-brand-400" />
+                          {cust.plan}
+                        </span>
+                        {(Boolean(cust.recommended_actions?.length) || (selectedCustomer?.id === cust.id && Boolean(monitorResult))) && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider flex items-center gap-0.5">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            NEW AI DATA
+                          </span>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="font-mono font-bold text-emerald-400">{formatCurrency(cust.mrr)}</TableCell>
                     <TableCell>
@@ -220,20 +267,21 @@ export function CustomersPage() {
           onClose={() => { setSelectedCustomer(null); setMonitorResult(null); }}
           title="Customer Health & AI Analysis"
           description={`CustomerSuccessAgent telemetry for ${selectedCustomer.plan} plan account`}
+          className="max-w-2xl"
         >
           <div className="space-y-4">
             {/* Churn probability gauge + health score side by side */}
             <div className="flex items-center justify-around p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-              <ChurnGauge probability={selectedCustomer.churn_probability ?? 0} />
+              <ChurnGauge probability={currentChurnProb} />
               <div className="flex flex-col items-center gap-1">
-                <div className={`text-4xl font-black ${getScoreColor(selectedCustomer.health_score).split(' ')[0]}`}>
-                  {selectedCustomer.health_score}
+                <div className={`text-4xl font-black ${getScoreColor(currentHealthScore).split(' ')[0]}`}>
+                  {currentHealthScore}
                 </div>
                 <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Health Score</span>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <span className={`text-2xl font-bold px-3 py-1 rounded-xl border ${getRiskClass(selectedCustomer.churn_risk)}`}>
-                  {selectedCustomer.churn_risk.toUpperCase()}
+                <span className={`text-2xl font-bold px-3 py-1 rounded-xl border ${getRiskClass(currentChurnRisk)}`}>
+                  {currentChurnRisk.toUpperCase()}
                 </span>
                 <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Churn Risk</span>
               </div>
@@ -242,53 +290,65 @@ export function CustomersPage() {
             {/* Engagement bars */}
             {healthLoading ? (
               <Skeleton className="h-24 w-full" />
-            ) : healthData ? (
+            ) : (healthData || activeAgentData?.engagement) ? (
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
                   <Activity className="w-3.5 h-3.5 text-brand-400" />
                   Engagement Telemetry
                 </h4>
-                <EngagementBar label="Logins / Week" value={healthData.engagement.logins_per_week} max={20} />
-                <EngagementBar label="Features Active" value={healthData.engagement.features_used} max={15} />
-                <EngagementBar label="License Utilization" value={healthData.engagement.license_usage_percent} unit="%" />
+                <EngagementBar
+                  label="Logins / Week"
+                  value={activeAgentData?.engagement?.logins_per_week ?? healthData?.engagement?.logins_per_week ?? selectedCustomer.logins_per_week ?? 0}
+                  max={20}
+                />
+                <EngagementBar
+                  label="Features Active"
+                  value={activeAgentData?.engagement?.features_used ?? healthData?.engagement?.features_used ?? selectedCustomer.features_used ?? 0}
+                  max={15}
+                />
+                <EngagementBar
+                  label="License Utilization"
+                  value={activeAgentData?.engagement?.license_usage_percent ?? healthData?.engagement?.license_usage_percent ?? selectedCustomer.license_usage_percent ?? 0}
+                  unit="%"
+                />
               </div>
             ) : null}
 
             {/* AI Recommended Actions from CustomerSuccessAgent */}
-            {(selectedCustomer.recommended_actions?.length || monitorResult?.recommended_actions?.length) ? (
+            {currentActions.length > 0 && (
               <div className="p-4 rounded-2xl bg-brand-500/5 border border-brand-500/20 space-y-2">
                 <h4 className="text-xs font-bold text-brand-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Bot className="w-3.5 h-3.5" />
+                  <Bot className="w-3.5 h-3.5 text-brand-400" />
                   CustomerSuccessAgent Recommended Actions
                 </h4>
                 <ul className="space-y-1.5">
-                  {(monitorResult?.recommended_actions || selectedCustomer.recommended_actions || []).map((action: string, i: number) => (
+                  {currentActions.map((action: string, i: number) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
                       <CheckCircle2 className="w-3.5 h-3.5 text-brand-400 mt-0.5 shrink-0" />
-                      <span>{action}</span>
+                      <span className="break-words flex-1">{action}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            ) : null}
+            )}
 
             {/* Churn risk factors from agent result */}
-            {monitorResult?.churn_risk?.factors?.length ? (
+            {currentRiskFactors.length > 0 && (
               <div className="p-4 rounded-2xl bg-rose-500/5 border border-rose-500/20 space-y-2">
                 <h4 className="text-xs font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingDown className="w-3.5 h-3.5" />
+                  <TrendingDown className="w-3.5 h-3.5 text-rose-400" />
                   Risk Factors Detected
                 </h4>
                 <ul className="space-y-1.5">
-                  {monitorResult.churn_risk.factors.map((f: string, i: number) => (
+                  {currentRiskFactors.map((f: string, i: number) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-rose-300">
-                      <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
-                      <span>{f}</span>
+                      <AlertTriangle className="w-3.5 h-3.5 text-rose-400 mt-0.5 shrink-0" />
+                      <span className="break-words flex-1">{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            ) : null}
+            )}
 
             <div className="flex justify-end pt-2 border-t border-slate-800">
               <Button variant="outline" onClick={() => { setSelectedCustomer(null); setMonitorResult(null); }}>

@@ -1,7 +1,8 @@
-import { Activity, Cpu } from 'lucide-react';
+import { Activity, Cpu, RefreshCw } from 'lucide-react';
 import { useAgentStore } from '@/stores/use-agent-store';
+import { Button } from '@/components/ui/Button';
 
-export function AgentStatusPanel() {
+export function AgentStatusPanel({ onRefresh }: { onRefresh?: () => void }) {
   const { agentStatuses } = useAgentStore();
   const agentsList = Object.values(agentStatuses);
 
@@ -10,7 +11,7 @@ export function AgentStatusPanel() {
       {/* Decorative background glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 blur-3xl pointer-events-none rounded-full" />
 
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/60 mb-4 relative z-10">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-800/60 mb-4 relative z-10 gap-3">
         <div className="flex items-center gap-2.5">
           <div className="p-2 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
             <Cpu className="w-5 h-5 text-brand-400 animate-pulse" />
@@ -20,9 +21,18 @@ export function AgentStatusPanel() {
             <span className="text-[10px] text-slate-400">Multi-agent orchestrator panel</span>
           </div>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
-          <Activity className="w-3.5 h-3.5 animate-pulse" />
-          <span>6 Agents Online</span>
+
+        <div className="flex items-center gap-3">
+          {onRefresh && (
+            <Button variant="outline" size="sm" onClick={onRefresh}>
+              <RefreshCw className="w-3.5 h-3.5 text-brand-400" />
+              <span>Refresh Dynamic Metrics</span>
+            </Button>
+          )}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold shrink-0">
+            <Activity className="w-3.5 h-3.5 animate-pulse" />
+            <span>6 Agents Online</span>
+          </div>
         </div>
       </div>
 

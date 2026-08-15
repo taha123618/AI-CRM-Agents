@@ -14,8 +14,15 @@ class RealtimeWebSocketClient {
   private currentStatus: ConnectionStatus = 'CLOSED';
 
   constructor() {
-    const wsBaseUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
-    this.url = wsBaseUrl;
+    if (!import.meta.env.VITE_WS_URL && typeof window !== 'undefined') {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'localhost:8000'
+        : window.location.host;
+      this.url = `${protocol}//${host}/ws`;
+    } else {
+      this.url = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+    }
   }
 
   public connect() {

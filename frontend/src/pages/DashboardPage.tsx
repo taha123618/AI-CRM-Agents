@@ -19,15 +19,19 @@ import { formatCurrency, formatNumber } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export function DashboardPage() {
-  const { data: metrics, isLoading: metricsLoading } = useDashboardMetrics();
-  const { data: pipeline, isLoading: pipelineLoading } = usePipelineMetrics();
+  const { data: metrics, isLoading: metricsLoading, refetch: refetchMetrics } = useDashboardMetrics();
+  const { data: pipeline, isLoading: pipelineLoading, refetch: refetchPipeline } = usePipelineMetrics();
   const { events } = useAgentStore();
   const { setLeadModalOpen, setDealModalOpen, setEmailModalOpen, setActivePage } = useUIStore();
+
+  const handleRefreshMetrics = async () => {
+    await Promise.all([refetchMetrics(), refetchPipeline()]);
+  };
 
   return (
     <div className="space-y-6">
       {/* Agent Status Panel */}
-      <AgentStatusPanel />
+      <AgentStatusPanel onRefresh={handleRefreshMetrics} />
 
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

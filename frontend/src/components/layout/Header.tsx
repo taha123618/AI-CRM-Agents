@@ -17,9 +17,13 @@ export function Header() {
       addEvent(event);
     });
 
-    fetch('http://localhost:8000/health')
+    fetch('/health')
       .then((res) => (res.ok ? setBackendHealth('healthy') : setBackendHealth('error')))
-      .catch(() => setBackendHealth('error'));
+      .catch(() => {
+        fetch('http://localhost:8000/health')
+          .then((res) => (res.ok ? setBackendHealth('healthy') : setBackendHealth('error')))
+          .catch(() => setBackendHealth('error'));
+      });
 
     return () => {
       unsubStatus();

@@ -135,9 +135,11 @@ def test_websocket_endpoint():
         assert "agents" in data
 
         websocket.send_text("ping")
-        pong = websocket.receive_json()
-        assert pong["type"] == "pong"
-        assert pong["received"] == "ping"
+        msg = websocket.receive_json()
+        if msg.get("type") == "client_message":
+            msg = websocket.receive_json()
+        assert msg["type"] == "pong"
+        assert msg["received"] == "ping"
 
 
 def test_api_analytics_insights():

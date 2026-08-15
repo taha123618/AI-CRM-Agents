@@ -22,7 +22,7 @@ const STATUS_OPTIONS = [
 ];
 
 export function LeadsPage() {
-  const { data: leads, isLoading } = useLeads();
+  const { data: leads, isLoading, refetch } = useLeads();
   const updateLeadMutation = useUpdateLead();
   const deleteLeadMutation = useDeleteLead();
   const qualifyLeadMutation = useTriggerLeadQualification();
@@ -30,6 +30,7 @@ export function LeadsPage() {
 
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [qualifyingId, setQualifyingId] = useState<string | null>(null);
+  const [isBulkQualifying, setIsBulkQualifying] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
 
   // Edit Lead state
@@ -66,6 +67,7 @@ export function LeadsPage() {
         },
       });
       setEditingLead(null);
+      await refetch();
     } catch {
       // Error handled by mutation
     }
@@ -80,8 +82,27 @@ export function LeadsPage() {
         job_title: lead.job_title || 'Executive',
         company: lead.company_name || 'Prospect Company',
       });
+      await refetch();
     } finally {
       setQualifyingId(null);
+    }
+  };
+
+  const handleBulkQualify = async () => {
+    if (!leads || leads.length === 0) return;
+    setIsBulkQualifying(true);
+    try {
+      for (const lead of leads.slice(0, 5)) {
+        await qualifyLeadMutation.mutateAsync({
+          email: lead.email,
+          name: `${lead.first_name || ''} ${lead.last_name || ''}`.trim() || lead.email,
+          job_title: lead.job_title || 'Executive',
+          company: lead.company_name || 'Prospect Company',
+        });
+      }
+      await refetch();
+    } finally {
+      setIsBulkQualifying(false);
     }
   };
 
@@ -110,10 +131,16 @@ export function LeadsPage() {
           </p>
         </div>
 
-        <Button onClick={() => setLeadModalOpen(true)}>
-          <Plus className="w-4 h-4" />
-          <span>Add Lead</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleBulkQualify} isLoading={isBulkQualifying}>
+            <Sparkles className="w-4 h-4 text-brand-400" />
+            <span>Run AI Fleet Qualification</span>
+          </Button>
+          <Button onClick={() => setLeadModalOpen(true)}>
+            <Plus className="w-4 h-4" />
+            <span>Add Lead</span>
+          </Button>
+        </div>
       </div>
 
       {/* Filter Bar */}
@@ -174,9 +201,19 @@ export function LeadsPage() {
                 {filteredLeads.map((lead) => (
                   <TableRow key={lead.id}>
                     <TableCell className="font-semibold text-white">
-                      {lead.first_name || lead.last_name
-                        ? `${lead.first_name || ''} ${lead.last_name || ''}`.trim()
-                        : 'Prospect'}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span>
+                          {lead.first_name || lead.last_name
+                            ? `${lead.first_name || ''} ${lead.last_name || ''}`.trim()
+                            : 'Prospect'}
+                        </span>
+                        {lead.lead_status === 'qualified' && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-brand-500/20 text-brand-300 border border-brand-500/40 uppercase tracking-wider flex items-center gap-0.5">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            NEW AI QUALIFIED
+                          </span>
+                        )}
+                      </div>
                       {lead.job_title && <div className="text-xs text-slate-400 font-normal">{lead.job_title}</div>}
                     </TableCell>
                     <TableCell className="font-mono text-xs text-slate-300">{lead.email}</TableCell>

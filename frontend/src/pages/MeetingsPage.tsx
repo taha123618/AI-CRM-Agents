@@ -8,6 +8,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { useMeetings, useUpdateMeeting, useDeleteMeeting } from '@/hooks/use-meetings';
+import { useTriggerMeetingScheduler } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
 import { Meeting } from '@/types/crm.types';
 
@@ -19,13 +20,15 @@ const TYPE_OPTIONS = [
 ];
 
 export function MeetingsPage() {
-  const { data: meetings, isLoading } = useMeetings();
+  const { data: meetings, isLoading, refetch } = useMeetings();
   const updateMeetingMutation = useUpdateMeeting();
   const deleteMeetingMutation = useDeleteMeeting();
+  const triggerMeetingMutation = useTriggerMeetingScheduler();
   const { setMeetingModalOpen, searchQuery } = useUIStore();
 
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [editingMeeting, setEditingMeeting] = useState<Meeting | null>(null);
+  const [isBulkScheduling, setIsBulkScheduling] = useState(false);
 
   // Edit form state
   const [editTitle, setEditTitle] = useState('');
@@ -68,22 +71,43 @@ export function MeetingsPage() {
       if (selectedMeeting?.id === editingMeeting.id) {
         setSelectedMeeting(null);
       }
+      await refetch();
     } catch {
       // Error handled by mutation
     }
   };
 
-  const handleDeleteMeeting = (e: React.MouseEvent, id: string) => {
+  const handleDeleteMeeting = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    deleteMeetingMutation.mutate(id);
+    try {
+      await deleteMeetingMutation.mutateAsync(id);
+      await refetch();
+    } catch {
+      // ignore
+    }
   };
 
   const handleDeleteFromModal = async (id: string) => {
     try {
       await deleteMeetingMutation.mutateAsync(id);
       setSelectedMeeting(null);
+      await refetch();
     } catch {
       // Error handled by mutation
+    }
+  };
+
+  const handleBulkSchedule = async () => {
+    setIsBulkScheduling(true);
+    try {
+      await triggerMeetingMutation.mutateAsync({
+        title: 'Architecture & Enterprise Prep Session',
+        meeting_type: 'Executive Demo',
+        attendee_email: 'cto@enterprise.io',
+      });
+      await refetch();
+    } finally {
+      setIsBulkScheduling(false);
     }
   };
 
@@ -101,17 +125,23 @@ export function MeetingsPage() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <CalendarIcon className="w-6 h-6 text-purple-400" />
-            AI Calendar & Smart Meeting Prep
+            AI Calendar & Meeting Intelligence
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Context-aware scheduling and automatic meeting prep by MeetingSchedulerAgent
+            Automated briefing materials, agendas, and attendee preparation compiled by <span className="text-purple-400 font-semibold">MeetingSchedulerAgent</span>
           </p>
         </div>
 
-        <Button onClick={() => setMeetingModalOpen(true)}>
-          <Sparkles className="w-4 h-4" />
-          <span>Schedule Meeting</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleBulkSchedule} isLoading={isBulkScheduling}>
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span>Run AI Fleet Prep Audit</span>
+          </Button>
+          <Button onClick={() => setMeetingModalOpen(true)}>
+            <Sparkles className="w-4 h-4" />
+            <span>Schedule Meeting</span>
+          </Button>
+        </div>
       </div>
 
       {/* Meetings List / Agenda */}
@@ -181,40 +211,43 @@ export function MeetingsPage() {
           onClose={() => setSelectedMeeting(null)}
           title={`Meeting Prep — ${selectedMeeting.title}`}
           description={`Automated briefing created by MeetingSchedulerAgent for ${selectedMeeting.meeting_type}`}
+          className="max-w-2xl"
         >
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold">Scheduled Time</span>
-                <div className="text-xs font-mono text-white mt-1">
+          <div className="space-y-4 min-w-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 min-w-0">
+                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Scheduled Time</span>
+                <div className="text-xs font-mono text-white mt-1 break-words">
                   {new Date(selectedMeeting.scheduled_at).toLocaleString()} ({selectedMeeting.duration_minutes || 30} mins)
                 </div>
               </div>
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold">Location / Link</span>
-                <div className="text-xs font-medium text-brand-400 mt-1 flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{selectedMeeting.location || 'Google Meet (auto-generated)'}</span>
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 min-w-0">
+                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Location / Link</span>
+                <div className="text-xs font-medium text-brand-400 mt-1 flex items-center gap-1 min-w-0">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate block" title={selectedMeeting.location || 'Google Meet (auto-generated)'}>
+                    {selectedMeeting.location || 'Google Meet (auto-generated)'}
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Agenda section */}
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 min-w-0">
               <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-purple-400" />
+                <FileText className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                 Proposed Meeting Agenda
               </h4>
-              <ul className="text-xs text-slate-300 space-y-1.5 pl-2 pt-1">
+              <ul className="text-xs text-slate-300 space-y-1.5 pl-2 pt-1 min-w-0">
                 {Array.isArray(selectedMeeting.agenda) && selectedMeeting.agenda.length > 0 ? (
                   selectedMeeting.agenda.map((item: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-purple-400 font-bold">•</span>
-                      <span>{item}</span>
+                    <li key={idx} className="flex items-start gap-2 min-w-0">
+                      <span className="text-purple-400 font-bold shrink-0">•</span>
+                      <span className="break-words flex-1">{item}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-slate-400">
+                  <li className="text-slate-400 break-words">
                     1. Welcome & Alignment (5 mins)<br />
                     2. Product Architecture & Enterprise Security Review (15 mins)<br />
                     3. Custom Pricing & Implementation Next Steps (10 mins)
@@ -225,7 +258,7 @@ export function MeetingsPage() {
 
             {/* Context & Notes */}
             {selectedMeeting.notes && (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300">
+              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 break-words min-w-0">
                 <span className="text-slate-500 font-semibold block mb-1">Context Notes:</span>
                 {selectedMeeting.notes}
               </div>
@@ -233,16 +266,16 @@ export function MeetingsPage() {
 
             {/* Prep Materials from MeetingSchedulerAgent */}
             {selectedMeeting.prep_materials && typeof selectedMeeting.prep_materials === 'object' && (
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 min-w-0">
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <Bot className="w-3.5 h-3.5 text-brand-400" />
+                  <Bot className="w-3.5 h-3.5 text-brand-400 shrink-0" />
                   MeetingSchedulerAgent — Prep Materials
                 </h4>
-                <ul className="space-y-1">
+                <ul className="space-y-1 min-w-0">
                   {Object.entries(selectedMeeting.prep_materials).map(([k, v]) => (
-                    <li key={k} className="flex items-start gap-2 text-xs text-slate-300">
+                    <li key={k} className="flex items-start gap-2 text-xs text-slate-300 min-w-0">
                       <ChevronRight className="w-3 h-3 text-brand-400 mt-0.5 shrink-0" />
-                      <span><span className="font-semibold text-slate-400 capitalize">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
+                      <span className="break-all flex-1"><span className="font-semibold text-slate-400 capitalize">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
                     </li>
                   ))}
                 </ul>
@@ -251,16 +284,16 @@ export function MeetingsPage() {
 
             {/* Follow-up Tasks Checklist */}
             {selectedMeeting.followup_tasks?.length ? (
-              <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2">
+              <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2 min-w-0">
                 <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <CheckSquare className="w-3.5 h-3.5" />
+                  <CheckSquare className="w-3.5 h-3.5 shrink-0" />
                   Post-Meeting Follow-up Tasks
                 </h4>
-                <ul className="space-y-1.5">
+                <ul className="space-y-1.5 min-w-0">
                   {selectedMeeting.followup_tasks.map((task: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
+                    <li key={i} className="flex items-start gap-2 text-xs text-slate-300 min-w-0">
                       <CheckSquare className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0 opacity-60" />
-                      <span>{task}</span>
+                      <span className="break-words flex-1">{task}</span>
                     </li>
                   ))}
                 </ul>
@@ -269,17 +302,17 @@ export function MeetingsPage() {
 
             {/* Attendees */}
             {selectedMeeting.attendees && (
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1 min-w-0">
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-purple-400" />
+                  <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                   Attendees
                 </h4>
-                <div className="flex flex-wrap gap-1.5 pt-1">
+                <div className="flex flex-wrap gap-1.5 pt-1 min-w-0">
                   {(Array.isArray(selectedMeeting.attendees)
                     ? selectedMeeting.attendees
                     : Object.values(selectedMeeting.attendees || {})
                   ).map((a: any, i: number) => (
-                    <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 break-all">
                       {typeof a === 'string' ? a : a?.name || a?.email || JSON.stringify(a)}
                     </span>
                   ))}

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useEmails, useSendEmailResponse } from '@/hooks/use-emails';
+import { useTriggerEmailIntelligence } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
 import { Modal } from '@/components/ui/Modal';
 import { EmailMessage } from '@/types/crm.types';
@@ -45,12 +46,14 @@ function SentimentBar({ score }: { score: number | null | undefined }) {
 
 export function EmailsPage() {
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
-  const { data: emails, isLoading } = useEmails(0, 100, priorityFilter === 'all' ? undefined : priorityFilter);
+  const { data: emails, isLoading, refetch } = useEmails(0, 100, priorityFilter === 'all' ? undefined : priorityFilter);
   const { setEmailModalOpen, searchQuery } = useUIStore();
   const [selectedEmail, setSelectedEmail] = useState<EmailMessage | null>(null);
   const [editedResponse, setEditedResponse] = useState<string>('');
+  const [isBulkAnalyzing, setIsBulkAnalyzing] = useState(false);
 
   const sendResponseMutation = useSendEmailResponse();
+  const triggerEmailMutation = useTriggerEmailIntelligence();
 
   const handleOpenEmail = (email: EmailMessage) => {
     setSelectedEmail(email);
@@ -68,8 +71,26 @@ export function EmailsPage() {
         replyText: editedResponse,
       });
       setSelectedEmail(null);
+      await refetch();
     } catch {
       // Error handled by mutation
+    }
+  };
+
+  const handleBulkAnalyzeEmails = async () => {
+    if (!emails || emails.length === 0) return;
+    setIsBulkAnalyzing(true);
+    try {
+      for (const email of emails.slice(0, 5)) {
+        await triggerEmailMutation.mutateAsync({
+          subject: email.subject,
+          body: email.subject,
+          sender: 'prospect@enterprise.com',
+        });
+      }
+      await refetch();
+    } finally {
+      setIsBulkAnalyzing(false);
     }
   };
 
@@ -94,10 +115,16 @@ export function EmailsPage() {
           </p>
         </div>
 
-        <Button onClick={() => setEmailModalOpen(true)}>
-          <Sparkles className="w-4 h-4" />
-          <span>Analyze Email</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleBulkAnalyzeEmails} isLoading={isBulkAnalyzing}>
+            <Sparkles className="w-4 h-4 text-blue-400" />
+            <span>Run AI Fleet Sentiment Audit</span>
+          </Button>
+          <Button onClick={() => setEmailModalOpen(true)}>
+            <Sparkles className="w-4 h-4" />
+            <span>Analyze Email</span>
+          </Button>
+        </div>
       </div>
 
       {/* Priority Filter Bar */}

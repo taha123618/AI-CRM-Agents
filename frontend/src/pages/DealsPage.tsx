@@ -11,6 +11,7 @@ import {
   GripVertical,
   DollarSign,
   Activity,
+  Sparkles,
 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -34,7 +35,7 @@ const STAGES: { id: DealStage; title: string; color: string; badgeColor: string 
 ];
 
 export function DealsPage() {
-  const { data: deals, isLoading, isError, error } = useDeals();
+  const { data: deals, isLoading, isError, error, refetch } = useDeals();
   const updateStageMutation = useUpdateDealStage();
   const updateDealMutation = useUpdateDeal();
   const deleteDealMutation = useDeleteDeal();
@@ -42,6 +43,7 @@ export function DealsPage() {
   const { setDealModalOpen, searchQuery } = useUIStore();
 
   const [analyzingId, setAnalyzingId] = useState<string | null>(null);
+  const [isBulkAnalyzing, setIsBulkAnalyzing] = useState(false);
   const [draggedDealId, setDraggedDealId] = useState<string | null>(null);
   const [dragOverStage, setDragOverStage] = useState<DealStage | null>(null);
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
@@ -93,6 +95,7 @@ export function DealsPage() {
         },
       });
       setEditingDeal(null);
+      await refetch();
     } catch {
       // Handled by mutation error state
     }
@@ -103,6 +106,7 @@ export function DealsPage() {
     setDeletingId(id);
     try {
       await deleteDealMutation.mutateAsync(id);
+      await refetch();
     } finally {
       setDeletingId(null);
     }
@@ -117,8 +121,22 @@ export function DealsPage() {
     setAnalyzingId(dealId);
     try {
       await analyzeDealMutation.mutateAsync(dealId);
+      await refetch();
     } finally {
       setAnalyzingId(null);
+    }
+  };
+
+  const handleBulkAnalyze = async () => {
+    if (!deals || deals.length === 0) return;
+    setIsBulkAnalyzing(true);
+    try {
+      for (const d of deals.slice(0, 5)) {
+        await analyzeDealMutation.mutateAsync(d.id);
+      }
+      await refetch();
+    } finally {
+      setIsBulkAnalyzing(false);
     }
   };
 
@@ -178,10 +196,16 @@ export function DealsPage() {
           </p>
         </div>
 
-        <Button onClick={() => setDealModalOpen(true)}>
-          <Plus className="w-4 h-4" />
-          <span>New Opportunity</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleBulkAnalyze} isLoading={isBulkAnalyzing}>
+            <Sparkles className="w-4 h-4 text-brand-400" />
+            <span>Run AI Fleet Deal Audit</span>
+          </Button>
+          <Button onClick={() => setDealModalOpen(true)}>
+            <Plus className="w-4 h-4" />
+            <span>New Opportunity</span>
+          </Button>
+        </div>
       </div>
 
       {/* Mutation Error Notification Banner */}
@@ -295,7 +319,15 @@ export function DealsPage() {
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-1.5 flex-1">
                               <GripVertical className="w-4 h-4 text-slate-600 group-hover:text-slate-400 shrink-0 mt-0.5" />
-                              <h4 className="font-semibold text-xs text-white line-clamp-2">{deal.name}</h4>
+                              <div>
+                                <h4 className="font-semibold text-xs text-white line-clamp-2">{deal.name}</h4>
+                                {Boolean(deal.next_actions?.length) && (
+                                  <span className="mt-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-wider inline-flex items-center gap-0.5">
+                                    <Sparkles className="w-2.5 h-2.5" />
+                                    NEW AI ANALYZED
+                                  </span>
+                                )}
+                              </div>
                             </div>
 
                             <div className="flex items-center gap-1 shrink-0">

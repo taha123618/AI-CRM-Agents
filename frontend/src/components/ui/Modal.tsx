@@ -39,24 +39,24 @@ export function Modal({ isOpen, onClose, title, description, children, className
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full max-w-lg glass-panel rounded-2xl p-6 shadow-2xl border border-slate-800 z-10 max-h-[90vh] overflow-y-auto',
+          'relative w-full max-w-lg glass-panel rounded-2xl p-6 shadow-2xl border border-slate-800 z-10 max-h-[90vh] overflow-y-auto overflow-x-hidden',
           className
         )}
       >
         <div className="flex items-start justify-between pb-4 border-b border-slate-800">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-white">{title}</h2>
-            {description && <p className="mt-1 text-xs text-slate-400">{description}</p>}
+          <div className="min-w-0 flex-1 mr-3">
+            <h2 className="text-xl font-bold tracking-tight text-white leading-snug break-words">{title}</h2>
+            {description && <p className="mt-1 text-xs text-slate-400 leading-normal break-words">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="pt-4">{children}</div>
+        <div className="pt-4 min-w-0">{children}</div>
       </div>
     </div>
   );
