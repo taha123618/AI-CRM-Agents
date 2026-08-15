@@ -21,3 +21,20 @@ export interface WhatsAppConversation {
   last_message_at?: string | null;
   created_at?: string;
 }
+
+export interface WhatsAppStats {
+  total_conversations: number;
+  active_conversations: number;
+  auto_pilot_enabled: number;
+  handed_off_conversations: number;
+  total_messages: number;
+  bot_auto_reply_rate: number;
+  avg_response_time_seconds: number;
+  unread_total: number;
+}
+
+export interface BroadcastPayload {
+  phone_numbers: string[];
+  template_text: string;
+  contact_name_override?: string;
+}

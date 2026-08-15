@@ -32,3 +32,20 @@ export interface VoiceTurnAnalysis {
   coaching_tip?: string | null;
   timestamp: string;
 }
+
+export interface VoiceCallStats {
+  total_calls: number;
+  avg_buyer_intent_score: number;
+  avg_duration_seconds: number;
+  sentiment_distribution: {
+    positive: number;
+    neutral: number;
+    negative: number;
+  };
+  direction_split: {
+    inbound: number;
+    outbound: number;
+  };
+  top_objections: Array<{ objection: string; count: number }>;
+  calls_this_week: number;
+}

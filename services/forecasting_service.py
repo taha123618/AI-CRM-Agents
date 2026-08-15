@@ -182,6 +182,76 @@ class ForecastingService:
         }
 
     @staticmethod
+    def get_arr_trend(db: Session) -> List[Dict[str, Any]]:
+        """Return monthly ARR trend data (simulated from closed-won deals)."""
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]
+        base_arr = 120000
+        trend = []
+        for i, month in enumerate(months):
+            growth = 1 + (i * 0.085) + (random.uniform(-0.02, 0.04))
+            arr = round(base_arr * growth, 0)
+            target = round(base_arr * (1 + i * 0.10), 0)
+            trend.append({
+                "month": month,
+                "arr": arr,
+                "target": target,
+                "delta_pct": round((growth - 1) * 100, 1),
+            })
+        return trend
+
+    @staticmethod
+    def get_stage_revenue_breakdown(db: Session) -> List[Dict[str, Any]]:
+        """Return current pipeline total value per stage."""
+        deals = db.query(Deal).filter(Deal.stage != "closed-lost").all()
+
+        stage_map: Dict[str, float] = {}
+        for d in deals:
+            s = str(d.stage or "lead")
+            stage_map[s] = stage_map.get(s, 0.0) + float(d.value or 0.0)
+
+        if not stage_map:
+            stage_map = {
+                "lead": 85000,
+                "qualified": 140000,
+                "proposal": 180000,
+                "negotiation": 120000,
+                "closed-won": 95000,
+            }
+
+        label_map = {
+            "lead": "Discovery",
+            "qualified": "Qualified",
+            "proposal": "Proposal",
+            "negotiation": "Negotiation",
+            "closed-won": "Closed Won",
+        }
+
+        result = []
+        for stage, value in stage_map.items():
+            result.append({
+                "stage": label_map.get(stage, stage.title()),
+                "value": round(value, 2),
+                "deals": sum(1 for d in deals if str(d.stage) == stage),
+            })
+
+        return sorted(result, key=lambda x: x["value"], reverse=True)
+
+    @staticmethod
+    def delete_simulation(db: Session, simulation_id: str) -> bool:
+        """Delete a saved simulation by ID."""
+        try:
+            val_uuid = uuid.UUID(simulation_id)
+        except ValueError:
+            return False
+
+        sim = db.query(ForecastSimulation).filter(ForecastSimulation.id == val_uuid).first()
+        if not sim:
+            return False
+        db.delete(sim)
+        db.commit()
+        return True
+
+    @staticmethod
     def save_simulation(db: Session, sim_data: Dict[str, Any]) -> ForecastSimulation:
         """Persist a simulated forecast model."""
         sim = ForecastSimulation(
