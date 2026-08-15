@@ -9,7 +9,11 @@ export type ActivePage =
   | 'meetings'
   | 'analytics'
   | 'reports'
+  | 'forecasting'
+  | 'voice-ai'
+  | 'whatsapp'
   | 'agents'
+  | 'custom-agents'
   | 'languages';
 
 interface UIState {

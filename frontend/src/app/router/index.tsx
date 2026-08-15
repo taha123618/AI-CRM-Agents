@@ -18,6 +18,10 @@ import { MeetingsPage } from '@/pages/MeetingsPage';
 import { AnalyticsPage } from '@/pages/AnalyticsPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { AgentsPage } from '@/pages/AgentsPage';
+import { CustomAgentsPage } from '@/pages/CustomAgentsPage';
+import { VoiceAIPage } from '@/pages/VoiceAIPage';
+import { WhatsAppPage } from '@/pages/WhatsAppPage';
+import { ForecastingPage } from '@/pages/ForecastingPage';
 import { LanguagesPage } from '@/pages/LanguagesPage';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 
@@ -34,9 +38,13 @@ function RouteSync() {
       'customers',
       'emails',
       'meetings',
+      'voice-ai',
+      'whatsapp',
+      'forecasting',
       'analytics',
       'reports',
       'agents',
+      'custom-agents',
       'languages',
     ];
     const path: ActivePage = validPages.includes(rawPath as ActivePage)
@@ -81,9 +89,13 @@ export function AppRouter() {
           <Route path="/customers" element={<CustomersPage />} />
           <Route path="/emails" element={<EmailsPage />} />
           <Route path="/meetings" element={<MeetingsPage />} />
+          <Route path="/voice-ai" element={<VoiceAIPage />} />
+          <Route path="/whatsapp" element={<WhatsAppPage />} />
+          <Route path="/forecasting" element={<ForecastingPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/agents" element={<AgentsPage />} />
+          <Route path="/custom-agents" element={<CustomAgentsPage />} />
           <Route path="/languages" element={<LanguagesPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

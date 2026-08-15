@@ -435,3 +435,177 @@ class UserPreference(Base):
     timezone = Column(String(50), default="UTC")
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class CustomAgent(Base):
+    __tablename__ = "custom_agents"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(150), nullable=False)
+    description = Column(Text, nullable=True)
+    icon = Column(String(50), default="Bot")
+    trigger_type = Column(
+        String(50), default="manual", nullable=False
+    )  # 'manual', 'event', 'webhook', 'schedule'
+    trigger_config = Column(
+        JSONB, default=dict
+    )  # e.g. {"event_name": "lead.created"} or {"cron": "0 9 * * *"}
+    model_provider = Column(String(50), default="smart-fallback")
+    model_name = Column(String(100), default="smart-fallback")
+    temperature = Column(Float, default=0.3)
+    system_prompt = Column(Text, nullable=False)
+    tools_enabled = Column(
+        JSONB, default=list
+    )  # list of tool keys, e.g. ["query_crm", "update_deal", "send_email", "schedule_meeting"]
+    is_active = Column(Boolean, default=True)
+    execution_count = Column(Integer, default=0)
+    last_run_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    executions = relationship(
+        "CustomAgentExecution",
+        back_populates="agent",
+        cascade="all, delete-orphan",
+        order_by="desc(CustomAgentExecution.created_at)",
+    )
+
+
+class CustomAgentExecution(Base):
+    __tablename__ = "custom_agent_executions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    agent_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("custom_agents.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    status = Column(String(50), default="success")  # 'success', 'failed', 'running'
+    trigger_event = Column(String(100), default="manual")
+    input_payload = Column(JSONB, default=dict)
+    output_payload = Column(JSONB, default=dict)
+    thought_trace = Column(JSONB, default=list)
+    tool_calls = Column(JSONB, default=list)
+    duration_ms = Column(Integer, default=0)
+    tokens_used = Column(Integer, default=0)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+    # Relationships
+    agent = relationship("CustomAgent", back_populates="executions")
+
+
+class VoiceCall(Base):
+    __tablename__ = "voice_calls"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    contact_name = Column(String(150), nullable=False)
+    phone_number = Column(String(50), nullable=False)
+    direction = Column(String(20), default="outbound")  # outbound, inbound
+    status = Column(
+        String(50), default="completed"
+    )  # queued, in-progress, completed, missed
+    duration_seconds = Column(Integer, default=0)
+    sentiment = Column(String(20), default="positive")  # positive, neutral, negative
+    buyer_intent_score = Column(Integer, default=75)  # 0 to 100
+    summary = Column(Text, nullable=True)
+    recording_url = Column(String(255), nullable=True)
+    action_items = Column(JSONB, default=list)  # list of strings
+    objections_handled = Column(JSONB, default=list)  # battle-cards triggered
+    metadata_info = Column(JSONB, default=dict)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+    # Relationships
+    transcripts = relationship(
+        "VoiceCallTranscript",
+        back_populates="call",
+        cascade="all, delete-orphan",
+        order_by="VoiceCallTranscript.timestamp_seconds",
+    )
+
+
+class VoiceCallTranscript(Base):
+    __tablename__ = "voice_call_transcripts"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    call_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("voice_calls.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    speaker = Column(String(50), nullable=False)  # 'rep', 'prospect', 'ai_assistant'
+    text = Column(Text, nullable=False)
+    timestamp_seconds = Column(Float, default=0.0)
+    sentiment = Column(String(20), default="neutral")
+    coaching_tip = Column(Text, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+    # Relationships
+    call = relationship("VoiceCall", back_populates="transcripts")
+
+
+class WhatsAppConversation(Base):
+    __tablename__ = "whatsapp_conversations"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    contact_name = Column(String(150), nullable=False)
+    phone_number = Column(String(50), unique=True, nullable=False, index=True)
+    status = Column(String(50), default="active")  # active, archived, handed_off
+    unread_count = Column(Integer, default=0)
+    ai_auto_pilot = Column(Boolean, default=True)  # whether agent auto-replies
+    lead_id = Column(UUID(as_uuid=True), nullable=True)
+    tags = Column(JSONB, default=list)
+    last_message_at = Column(DateTime, server_default=func.now(), index=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+    # Relationships
+    messages = relationship(
+        "WhatsAppMessage",
+        back_populates="conversation",
+        cascade="all, delete-orphan",
+        order_by="WhatsAppMessage.created_at",
+    )
+
+
+class WhatsAppMessage(Base):
+    __tablename__ = "whatsapp_messages"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    conversation_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("whatsapp_conversations.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    sender_type = Column(String(20), default="prospect")  # 'prospect', 'agent', 'bot'
+    text = Column(Text, nullable=False)
+    media_url = Column(String(255), nullable=True)
+    media_type = Column(String(50), nullable=True)  # image, document, audio
+    status = Column(String(20), default="delivered")  # sent, delivered, read
+    intent = Column(String(50), nullable=True)  # pricing_query, meeting_request
+    confidence = Column(Float, default=0.9)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+    # Relationships
+    conversation = relationship("WhatsAppConversation", back_populates="messages")
+
+
+class ForecastSimulation(Base):
+    __tablename__ = "forecast_simulations"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(150), nullable=False)
+    target_quarter = Column(String(20), default="Q3 2026")
+    pipeline_total_value = Column(Float, default=0.0)
+    simulated_iterations = Column(Integer, default=1000)
+    p10_conservative = Column(Float, default=0.0)
+    p50_expected = Column(Float, default=0.0)
+    p90_optimistic = Column(Float, default=0.0)
+    stage_probabilities = Column(JSONB, default=dict)
+    deal_slippage_rate = Column(Float, default=0.15)
+    simulation_results = Column(
+        JSONB, default=dict
+    )  # distribution curve points, histogram
+    created_at = Column(DateTime, server_default=func.now(), index=True)
