@@ -31,7 +31,8 @@ frontend/src/
 │   ├── emails/                  # EmailsFeature (Smart inbox, emotion badges, editable AI reply drafts)
 │   ├── meetings/                # MeetingsFeature (Agenda builder, auto-prep materials, attendees)
 │   ├── analytics/               # AnalyticsFeature & ReportsFeature (Predictive forecasting & JSON export)
-│   └── agents/                  # AgentsFeature (Fleet control center, live WebSocket terminal stream)
+│   ├── agents/                  # AgentsFeature (Fleet control center, live WebSocket terminal stream)
+│   └── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Language & Translation Manager)
 ├── hooks/                       # Reusable TanStack Query & mutation hooks (use-leads, use-deals, etc.)
 ├── lib/                         # API client (Axios), WebSocket stream client, Query configuration, Utilities
 ├── stores/                      # Zustand global UI (useUIStore) and Agent event stores (useAgentStore)

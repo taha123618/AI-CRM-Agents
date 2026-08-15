@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { useEmails, useSendEmailResponse } from '@/hooks/use-emails';
 import { useTriggerEmailIntelligence } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
+import { useTranslation } from '@/features/multi-language';
 import { Modal } from '@/components/ui/Modal';
 import { EmailMessage } from '@/types/crm.types';
 
@@ -45,6 +46,7 @@ function SentimentBar({ score }: { score: number | null | undefined }) {
 }
 
 export function EmailsFeature() {
+  const { t } = useTranslation();
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const { data: emails, isLoading, refetch } = useEmails(0, 100, priorityFilter === 'all' ? undefined : priorityFilter);
   const { setEmailModalOpen, searchQuery } = useUIStore();
@@ -83,6 +85,7 @@ export function EmailsFeature() {
     try {
       for (const email of emails.slice(0, 5)) {
         await triggerEmailMutation.mutateAsync({
+          id: email.id,
           subject: email.subject,
           body: email.subject,
           sender: 'prospect@enterprise.com',
@@ -108,21 +111,21 @@ export function EmailsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Mail className="w-6 h-6 text-blue-400" />
-            Smart Inbox & Email Intelligence
+            {t('emails.title', 'Autonomous Email Intelligence & Sentiment')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Sentiment analysis, emotion detection, and AI drafts powered by <span className="text-blue-400 font-semibold">EmailIntelligenceAgent</span>
+            {t('emails.subtitle', 'Inbound triage, emotion detection, and automated AI response drafting')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleBulkAnalyzeEmails} isLoading={isBulkAnalyzing}>
             <Sparkles className="w-4 h-4 text-blue-400" />
-            <span>Run AI Fleet Sentiment Audit</span>
+            <span>{t('emails.analyze_btn', 'Analyze Inbound Email')}</span>
           </Button>
           <Button onClick={() => setEmailModalOpen(true)}>
             <Sparkles className="w-4 h-4" />
-            <span>Analyze Email</span>
+            <span>{t('emails.analyze_btn', 'Analyze Email')}</span>
           </Button>
         </div>
       </div>

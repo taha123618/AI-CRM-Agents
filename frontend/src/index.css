@@ -79,6 +79,25 @@
   animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* RTL Layout Utilities */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .ltr-only {
+  display: none;
+}
+
+[dir="ltr"] .rtl-only {
+  display: none;
+}
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -89,3 +108,4 @@
     transform: scale(0.98);
   }
 }
+

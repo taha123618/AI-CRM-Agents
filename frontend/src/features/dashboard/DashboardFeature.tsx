@@ -15,10 +15,12 @@ import { PipelineChart } from '@/components/charts/PipelineChart';
 import { useDashboardMetrics, usePipelineMetrics } from '@/hooks/use-analytics';
 import { useAgentStore } from '@/stores/use-agent-store';
 import { useUIStore } from '@/stores/use-ui-store';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export function DashboardFeature() {
+  const { t } = useTranslation();
+  const { formatCurrency, formatNumber } = useLocaleFormat();
   const { data: metrics, isLoading: metricsLoading, refetch: refetchMetrics } = useDashboardMetrics();
   const { data: pipeline, isLoading: pipelineLoading, refetch: refetchPipeline } = usePipelineMetrics();
   const { events } = useAgentStore();
@@ -38,7 +40,9 @@ export function DashboardFeature() {
         {/* Total Leads */}
         <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Leads</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {t('dashboard.total_leads', 'Total Monitored Leads')}
+            </span>
             <div className="p-2.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
               <Users className="w-5 h-5" />
             </div>
@@ -60,7 +64,9 @@ export function DashboardFeature() {
         {/* Pipeline Value */}
         <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Active Pipeline</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {t('dashboard.active_pipeline', 'Active Pipeline Value')}
+            </span>
             <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
               <Briefcase className="w-5 h-5" />
             </div>
@@ -73,7 +79,7 @@ export function DashboardFeature() {
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
               <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                <span className="text-blue-400 font-bold">{metrics?.deals.total || 0} Deals</span> in progress
+                <span className="text-blue-400 font-bold">{formatNumber(metrics?.deals.total || 0)} Deals</span> in progress
               </p>
             </div>
           )}
@@ -82,7 +88,9 @@ export function DashboardFeature() {
         {/* Total Customers */}
         <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-emerald">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Active Customers</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {t('dashboard.active_customers', 'Active Accounts')}
+            </span>
             <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <Building2 className="w-5 h-5" />
             </div>
@@ -105,7 +113,9 @@ export function DashboardFeature() {
         {/* Monthly Recurring Revenue */}
         <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-purple">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Monthly Revenue (MRR)</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {t('dashboard.monthly_revenue', 'Monthly Recurring Revenue (MRR)')}
+            </span>
             <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <DollarSign className="w-5 h-5" />
             </div>
@@ -131,9 +141,9 @@ export function DashboardFeature() {
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
-              <CardTitle>Sales Pipeline Distribution</CardTitle>
+              <CardTitle>{t('deals.title', 'Sales Pipeline Distribution')}</CardTitle>
               <p className="text-xs text-slate-400 mt-1">
-                Real-time opportunity values across stages managed by SalesPipelineAgent
+                {t('deals.subtitle', 'Real-time opportunity values across stages managed by SalesPipelineAgent')}
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={() => setActivePage('deals')}>
@@ -151,7 +161,7 @@ export function DashboardFeature() {
             <div>
               <CardTitle>
                 <Zap className="w-4 h-4 text-brand-400 animate-pulse" />
-                Live Agent Telemetry
+                {t('dashboard.agent_telemetry', 'Live Agent Telemetry')}
               </CardTitle>
               <p className="text-xs text-slate-400 mt-1">Real-time WebSocket event stream</p>
             </div>

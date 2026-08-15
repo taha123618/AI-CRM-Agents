@@ -9,34 +9,39 @@ import {
   BarChart3,
   FileText,
   Bot,
+  Globe,
   Sparkles,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
+import { useTranslation } from '@/features/multi-language';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
   id: ActivePage;
-  label: string;
+  labelKey: string;
+  defaultLabel: string;
   icon: React.ElementType;
   badge?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'leads', label: 'Leads', icon: Users, badge: 'AI' },
-  { id: 'deals', label: 'Deals Pipeline', icon: Briefcase },
-  { id: 'customers', label: 'Customer Success', icon: Building2 },
-  { id: 'emails', label: 'Smart Inbox', icon: Mail, badge: 'AI' },
-  { id: 'meetings', label: 'AI Calendar', icon: Calendar },
-  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-  { id: 'reports', label: 'AI Reports', icon: FileText, badge: 'AI' },
-  { id: 'agents', label: 'Agent Console', icon: Bot, badge: '6 Active' },
+  { id: 'dashboard', labelKey: 'nav.dashboard', defaultLabel: 'Dashboard', icon: LayoutDashboard },
+  { id: 'leads', labelKey: 'nav.leads', defaultLabel: 'Leads', icon: Users, badge: '' },
+  { id: 'deals', labelKey: 'nav.deals', defaultLabel: 'Deals Pipeline', icon: Briefcase },
+  { id: 'customers', labelKey: 'nav.customers', defaultLabel: 'Customer Success', icon: Building2 },
+  { id: 'emails', labelKey: 'nav.emails', defaultLabel: 'Smart Inbox', icon: Mail, badge: '' },
+  { id: 'meetings', labelKey: 'nav.meetings', defaultLabel: 'AI Calendar', icon: Calendar },
+  { id: 'analytics', labelKey: 'nav.analytics', defaultLabel: 'Analytics', icon: BarChart3 },
+  { id: 'reports', labelKey: 'nav.reports', defaultLabel: 'AI Reports', icon: FileText, badge: '' },
+  { id: 'agents', labelKey: 'nav.agents', defaultLabel: 'Agent Console', icon: Bot, badge: '' },
+  { id: 'languages', labelKey: 'nav.languages', defaultLabel: 'Languages & I18n', icon: Globe, badge: '' },
 ];
 
 export function Sidebar() {
   const { activePage, setActivePage, sidebarOpen, toggleSidebar } = useUIStore();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleNav = (id: ActivePage) => {
@@ -89,7 +94,7 @@ export function Sidebar() {
               )}
             >
               <Icon className={cn('w-5 h-5 shrink-0 transition-colors', isActive ? 'text-brand-400' : 'group-hover:text-slate-200')} />
-              {sidebarOpen && <span className="truncate">{item.label}</span>}
+              {sidebarOpen && <span className="truncate">{t(item.labelKey, item.defaultLabel)}</span>}
 
               {item.badge && sidebarOpen && (
                 <span

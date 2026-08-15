@@ -18,6 +18,7 @@ import { MeetingsPage } from '@/pages/MeetingsPage';
 import { AnalyticsPage } from '@/pages/AnalyticsPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { AgentsPage } from '@/pages/AgentsPage';
+import { LanguagesPage } from '@/pages/LanguagesPage';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 
 function RouteSync() {
@@ -36,6 +37,7 @@ function RouteSync() {
       'analytics',
       'reports',
       'agents',
+      'languages',
     ];
     const path: ActivePage = validPages.includes(rawPath as ActivePage)
       ? (rawPath as ActivePage)
@@ -82,6 +84,7 @@ export function AppRouter() {
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/agents" element={<AgentsPage />} />
+          <Route path="/languages" element={<LanguagesPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AppLayout>
