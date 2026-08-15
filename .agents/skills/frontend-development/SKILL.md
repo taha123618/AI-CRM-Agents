@@ -9,7 +9,7 @@ Use this skill when developing, refactoring, or extending the React + TypeScript
 
 ## 🏗️ Architectural Standards (Feature-Sliced Design)
 
-The frontend uses a modern, scalable, feature-sliced architecture:
+The frontend uses a modern, scalable, feature-sliced architecture with 13 domain features:
 
 ```
 frontend/src/
@@ -23,7 +23,7 @@ frontend/src/
 │   ├── tables/                  # Typed DataTable with sorting, searching, pagination
 │   ├── charts/                  # PipelineChart, RevenueChart, HealthDistributionChart (Recharts)
 │   └── layout/                  # Header, Sidebar, Container, AgentStatusPanel, Footer
-├── features/                    # Feature modules containing all business logic, queries, and views
+├── features/                    # Feature modules containing all domain logic, components, and views
 │   ├── dashboard/               # DashboardFeature (KPI metrics, agent activity feed, trigger banner)
 │   ├── leads/                   # LeadsFeature (Qualification table, live scores, edit modals)
 │   ├── deals/                   # DealsFeature (Drag-and-drop Kanban board, deal health score, probability)
@@ -32,8 +32,12 @@ frontend/src/
 │   ├── meetings/                # MeetingsFeature (Agenda builder, auto-prep materials, attendees)
 │   ├── analytics/               # AnalyticsFeature & ReportsFeature (Predictive forecasting & JSON export)
 │   ├── agents/                  # AgentsFeature (Fleet control center, live WebSocket terminal stream)
-│   └── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Language & Translation Manager)
-├── hooks/                       # Reusable TanStack Query & mutation hooks (use-leads, use-deals, etc.)
+│   ├── voice-ai/                # VoiceAIFeature (Call intelligence studio, real-time coaching, transcript modal)
+│   ├── whatsapp/                # WhatsAppFeature (Omnichannel chat hub, AI auto-pilot, broadcast campaigns)
+│   ├── forecasting/             # ForecastingFeature (Monte Carlo simulation, ARR trend, pipeline velocity)
+│   ├── custom-agents/           # CustomAgentsFeature (No-code visual agent builder & testing playground)
+│   └── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Translation manager)
+├── hooks/                       # Reusable TanStack Query & mutation hooks
 ├── lib/                         # API client (Axios), WebSocket stream client, Query configuration, Utilities
 ├── stores/                      # Zustand global UI (useUIStore) and Agent event stores (useAgentStore)
 ├── types/                       # TypeScript interfaces matching backend models & endpoints (crm.types.ts)
@@ -50,15 +54,15 @@ frontend/src/
 
 2. **Feature Encapsulation**:
    - Features encapsulate domain logic, local modals, interactive elements, and state.
-   - Barrel index files (`src/features/*/index.ts`) export both `XYZFeature` and `XYZView` for seamless import flexibility.
+   - Subdirectories inside features: `api/`, `components/`, `types/`, and the main `XYZFeature.tsx`.
 
 3. **Data Fetching with TanStack Query**:
-   - All server queries and mutations reside in `src/hooks/use-*.ts`.
-   - On mutations, always invalidate or refetch queries:
+   - All server queries and mutations use `useQuery` and `useMutation`.
+   - On mutations, always invalidate relevant query keys:
      ```typescript
      const queryClient = useQueryClient();
      // In mutation onSuccess:
-     queryClient.invalidateQueries({ queryKey: ['leads'] });
+     queryClient.invalidateQueries({ queryKey: ['voice-calls'] });
      ```
 
 4. **Real-time Telemetry (WebSocket + Event Bus)**:

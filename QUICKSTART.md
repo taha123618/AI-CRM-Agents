@@ -10,7 +10,7 @@ For full documentation, see [README.md](README.md).
 | Method | Requirements |
 |---|---|
 | **Docker** (recommended) | Docker Desktop 24.0+ |
-| **Local / no Docker** | Python 3.9+, PostgreSQL 14+, Redis 7+ |
+| **Local / no Docker** | Python 3.9+, PostgreSQL 14+, Redis 7+, Node.js 18+ |
 
 ---
 
@@ -114,6 +114,14 @@ alembic upgrade head
 python run.py
 ```
 
+### 5. Start the frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ---
 
 ## 🎯 Try the API
@@ -150,21 +158,54 @@ curl -X POST http://localhost:8000/api/agents/analyze-email \
 curl http://localhost:8000/api/analytics/dashboard
 ```
 
+### Voice AI — Get Call Stats
+
+```bash
+curl http://localhost:8000/api/voice-calls/stats
+```
+
+### WhatsApp — Send a Message
+
+```bash
+curl -X POST http://localhost:8000/api/whatsapp/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "phone_number": "+1234567890",
+    "text": "Hello from AI CRM!",
+    "sender_type": "agent"
+  }'
+```
+
+### Run a Monte Carlo Forecast
+
+```bash
+curl -X POST http://localhost:8000/api/forecasting/simulate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "num_simulations": 1000,
+    "time_horizon_days": 90,
+    "name": "Q3 Forecast"
+  }'
+```
+
 ---
 
 ## 🏗️ Project Structure
 
 ```
 ai-crm-agents/
-├── agents/                    # 6 AI Agents (BaseAgent subclasses)
-├── api/                       # FastAPI routers (leads, deals, customers…)
+├── agents/                    # 9 AI Agents (BaseAgent subclasses)
+├── api/                       # FastAPI routers (leads, deals, customers, voice-calls, whatsapp, forecasting, custom-agents, i18n…)
+├── services/                  # Business services (forecasting, i18n)
 ├── database/                  # SQLAlchemy models, connection, schema.sql
 ├── workflows/orchestrator.py  # Central agent coordinator
 ├── alembic/                   # Database migration scripts
 ├── tests/                     # Unit & integration tests
+├── frontend/                  # React 19 + TypeScript SPA (13 feature modules)
+├── docs/                      # Feature documentation (i18n)
 ├── .agents/                   # AI assistant configuration
 │   ├── AGENTS.md              #   Central rules (single source of truth)
-│   ├── skills/                #   6 modular skill files
+│   ├── skills/                #   7 modular skill files
 │   └── scripts/sync_rules.py #   Generates tool-specific configs
 ├── main.py                    # FastAPI application
 ├── run.py                     # Development server launcher
@@ -187,6 +228,9 @@ ai-crm-agents/
 | 🎉 Customer Success | `POST /api/agents/monitor-customer/{customer_id}` |
 | 📅 Meeting Scheduler | `POST /api/agents/schedule-meeting` |
 | 📊 Analytics | `POST /api/agents/generate-dashboard` |
+| 🎙️ Voice Call Intelligence | `POST /api/voice-calls` |
+| 💬 WhatsApp Hub | `POST /api/whatsapp/send` |
+| 🔧 Custom Agent Builder | `POST /api/custom-agents` |
 
 ---
 
@@ -202,6 +246,20 @@ ai-crm-agents/
 | `GET /api/customers/{id}/health` | Customer health metrics |
 | `GET /api/analytics/dashboard` | Main dashboard |
 | `GET /api/analytics/pipeline` | Pipeline metrics |
+| `GET/POST /api/voice-calls` | List and create voice calls |
+| `GET /api/voice-calls/stats` | Call intelligence stats |
+| `GET/POST /api/whatsapp/conversations` | WhatsApp conversations |
+| `POST /api/whatsapp/send` | Send WhatsApp message |
+| `POST /api/whatsapp/broadcast` | Broadcast template message |
+| `POST /api/forecasting/simulate` | Run Monte Carlo simulation |
+| `GET /api/forecasting/simulations` | List saved scenarios |
+| `GET /api/forecasting/arr-trend` | ARR trend data |
+| `GET /api/forecasting/stage-breakdown` | Pipeline stage breakdown |
+| `GET/POST /api/custom-agents` | Custom agent CRUD |
+| `POST /api/custom-agents/{id}/test` | Test custom agent |
+| `GET /api/i18n/languages` | List languages |
+| `POST /api/i18n/languages` | Create language |
+| `GET /api/i18n/translations/{lang}` | Get translations |
 
 ---
 

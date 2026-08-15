@@ -11,8 +11,8 @@ This directory contains the production-ready React + TypeScript frontend applica
   * **TanStack React Query v5**: Server-state caching, automatic refetching & mutation management
   * **Zustand**: Client-side UI state (navigation, sidebar collapse, theme, search queries, modals)
 * **Real-time Telemetry**: Custom WebSocket stream client with automatic reconnection & cache invalidation
-* **Data Visualization**: Recharts (Pipeline distribution chart, Revenue/MRR growth area chart, Customer health distribution chart)
-* **Forms & Modals**: Reusable forms (LeadForm, DealForm, EmailAnalyzerForm, MeetingSchedulerForm)
+* **Data Visualization**: Recharts (Pipeline distribution, Revenue/MRR growth, Customer health, Monte Carlo distributions, ARR trends, Objection analytics)
+* **Forms & Modals**: Reusable forms (LeadForm, DealForm, EmailAnalyzerForm, MeetingSchedulerForm, BroadcastModal, NewConversationModal, CallTranscriptModal)
 * **Typed Data Tables**: Reusable DataTable with sorting, searching, and pagination
 * **Icons**: Lucide React
 
@@ -44,7 +44,29 @@ frontend/
 │   │   ├── emails/                    # Smart Inbox, Sentiment analysis badges, AI Draft responses
 │   │   ├── meetings/                  # AI Calendar, Meeting scheduler trigger
 │   │   ├── analytics/                 # Comprehensive CRM metrics & Pipeline breakdown
-│   │   └── agents/                    # Agent Control Center, execution triggers, LLM event stream
+│   │   ├── agents/                    # Agent Control Center, execution triggers, LLM event stream
+│   │   ├── voice-ai/                  # Voice AI Call Intelligence Studio
+│   │   │   ├── VoiceAIFeature.tsx     #   Stats strip, search/filter, call records, analytics tabs
+│   │   │   ├── api/                   #   API client (getCallStats, searchCalls, deleteCall)
+│   │   │   ├── types/                 #   VoiceCallStats, VoiceCall interfaces
+│   │   │   └── components/            #   CallTranscriptModal (speaker bubbles, coaching highlights)
+│   │   ├── whatsapp/                  # WhatsApp Business Multi-Agent Hub
+│   │   │   ├── WhatsAppFeature.tsx    #   Chat UI, conversation list, AI auto-pilot toggle
+│   │   │   ├── api/                   #   API client (sendBroadcast, archiveConversation, updateTags)
+│   │   │   ├── types/                 #   WhatsAppStats, BroadcastPayload interfaces
+│   │   │   └── components/            #   BroadcastModal, NewConversationModal
+│   │   ├── forecasting/              # Advanced Monte Carlo Revenue Forecasting
+│   │   │   ├── ForecastingFeature.tsx #   4-tab interface (Monte Carlo, ARR Trend, Pipeline, Scenarios)
+│   │   │   ├── api/                   #   API client (simulate, getArrTrend, getStageBreakdown)
+│   │   │   └── types/                 #   ArrTrendPoint, StageRevenueBreakdown interfaces
+│   │   ├── custom-agents/             # No-Code Custom Agent Builder
+│   │   │   ├── CustomAgentsFeature.tsx #  Visual agent creator, prompt editor, test playground
+│   │   │   ├── api/                   #   CRUD + test execution API client
+│   │   │   └── types/                 #   CustomAgent, CustomAgentCreate interfaces
+│   │   └── multi-language/            # Multi-Language I18n Support
+│   │       ├── MultiLanguageFeature.tsx # Language manager, translation editor, RTL/LTR sync
+│   │       ├── api/                   #   Language and translation API client
+│   │       └── types/                 #   Language, TranslationKey, Translation interfaces
 │   ├── hooks/
 │   │   ├── use-leads.ts               # TanStack Query hooks for leads API & mutations
 │   │   ├── use-deals.ts               # TanStack Query hooks for deals API & stage patch
@@ -52,7 +74,7 @@ frontend/
 │   │   ├── use-emails.ts              # TanStack Query hooks for emails API & analysis
 │   │   ├── use-meetings.ts            # TanStack Query hooks for meetings API & scheduler
 │   │   ├── use-analytics.ts           # TanStack Query hooks for dashboard & pipeline metrics
-│   │   └── use-agents.ts              # TanStack Query hooks for triggering all 6 agents
+│   │   └── use-agents.ts              # TanStack Query hooks for triggering all agents
 │   ├── lib/
 │   │   ├── api/                       # Axios / fetch API client with typed request/response
 │   │   ├── websocket/                 # WebSocket client with auto-reconnect & cache invalidation

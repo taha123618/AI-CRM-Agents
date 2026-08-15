@@ -1,5 +1,5 @@
 ## 🏗️ Architecture
-### **6 Autonomous Agents**
+### **9 Autonomous Agents**
 
 1. **Lead Qualification Agent** 🎯
    - Scores incoming leads automatically
@@ -37,6 +37,26 @@
    - Performance insights
    - Custom reports
 
+7. **Voice Call Intelligence Agent** 🎙️
+   - Real-time speech turn analysis
+   - Buyer intent scoring (0–100)
+   - Dynamic objection battle-cards
+   - Post-call CRM synthesis & action items
+   - Sentiment distribution analytics
+
+8. **WhatsApp Business Agent** 💬
+   - 24/7 AI Auto-Pilot messaging
+   - Customer intent classification
+   - Broadcast template campaigns
+   - Conversation tagging & archiving
+   - Read receipts & unread tracking
+
+9. **Custom Agent Builder** 🔧
+   - No-code visual agent creation
+   - Custom prompt & trigger configuration
+   - Toolkit selection & integration
+   - Live testing playground
+
 ## 🚀 Features
 
 ### **Core CRM**
@@ -62,29 +82,67 @@
 - Meeting coordination
 - Data enrichment
 
+### **Voice AI Call Intelligence**
+- Real-time speech turn analysis
+- Buyer intent scoring & coaching
+- Objection frequency analytics
+- Call sentiment distribution
+- Interactive transcript viewer
+- Post-call action item extraction
+
+### **WhatsApp Business Hub**
+- Omnichannel AI chat
+- Broadcast template campaigns
+- Conversation search & tagging
+- Auto-pilot toggle per conversation
+- New conversation & bulk send modals
+
+### **Advanced Revenue Forecasting**
+- Monte Carlo stochastic simulations (P10/P50/P90)
+- Monthly ARR progression vs targets
+- Pipeline stage velocity & conversion matrix
+- Saved scenario comparison & executive charts
+- Per-stage win rate probability editor
+
+### **Multi-Language Support (I18n)**
+- Dynamic language creation with RTL/LTR auto-detection
+- Translation key management
+- Bulk translation editing
+- Full UI localization (Urdu, Arabic, Spanish, etc.)
+
+### **No-Code Custom Agent Builder**
+- Visual agent creator interface
+- Configurable prompts, triggers, toolkits
+- Testing playground with live execution
+- Agent lifecycle management (active/inactive/draft)
+
 
 ## 🛠️ Tech Stack
 **Backend:**
 - Python + FastAPI
 - PostgreSQL database
 - Redis for caching
-- Celery for async tasks
+- FastAPI BackgroundTasks for async
 
 **AI/ML:**
 - LangChain for agent orchestration
 - Claude/GPT-4 for intelligence
-- Vector DB for context storage
+- SmartFallbackLLM for zero-config mode
 - Sentiment analysis models
 
 **Frontend:**
-- React + TypeScript
+- React 19 + TypeScript
+- Vite build system
 - TailwindCSS
+- TanStack Query v5 + Zustand
+- Recharts for data visualization
 - Real-time updates (WebSocket)
-- Charts & analytics
 
 **Integrations:**
 - Gmail/Outlook API
 - Google Calendar
+- WhatsApp Business API
+- Voice/Telephony integration
 - LinkedIn enrichment
 - Slack notifications
 - Zapier webhooks
@@ -111,6 +169,21 @@ Deal Created → Health Monitoring → Risk Detection → Action Recommendations
 Customer Activity → Health Score → Churn Risk → Retention Trigger → Success Team Alert
 ```
 
+### Voice Call Intelligence Flow
+```
+Call Started → Speech Turn Analysis → Objection Detection → Battle-Card → Post-Call Summary → CRM Sync
+```
+
+### WhatsApp Conversational Flow
+```
+Inbound Message → Intent Classification → Auto-Pilot Reply → Tag & Archive → Sales Handoff
+```
+
+### Revenue Forecasting Flow
+```
+Active Deals → Monte Carlo Simulation → P10/P50/P90 Bounds → ARR Trend → Scenario Save
+```
+
 ## 🎨 UI Components
 
 - **Dashboard** - Real-time metrics & agent activity
@@ -119,6 +192,11 @@ Customer Activity → Health Score → Churn Risk → Retention Trigger → Succ
 - **Inbox** - Smart email management
 - **Calendar** - AI-scheduled meetings
 - **Analytics** - Predictive insights
+- **Voice AI** - Call intelligence studio & transcript viewer
+- **WhatsApp** - Omnichannel chat hub with AI auto-pilot
+- **Forecasting** - Monte Carlo simulation & ARR trends
+- **Custom Agents** - No-code agent builder & test playground
+- **Multi-Language** - Translation manager & RTL/LTR sync
 - **Settings** - Agent configuration
 
 ## 📊 Key Metrics
@@ -129,7 +207,10 @@ Customer Activity → Health Score → Churn Risk → Retention Trigger → Succ
 - Churn prediction accuracy
 - Email response time
 - Agent automation rate
-- Revenue forecast accuracy
+- Revenue forecast accuracy (P10/P50/P90)
+- Voice call buyer intent scores
+- WhatsApp auto-pilot resolution rate
+- Pipeline stage velocity
 
 ## 🔐 Security
 
@@ -141,15 +222,15 @@ Customer Activity → Health Score → Churn Risk → Retention Trigger → Succ
 
 
 # Start frontend
-cd frontend && npm start
+cd frontend && npm run dev
 ```
 
 ## 🔄 Agent Communication
 
 Agents communicate via:
-- **Message Queue** (RabbitMQ/Redis)
-- **Shared State** (Redis)
-- **Event Bus** (pub/sub)
+- **Redis Event Bus** (pub/sub)
+- **Shared State** (Redis caching)
+- **WebSocket Stream** (`/ws` real-time telemetry)
 - **API Calls** (RESTful)
 
 ## 📈 Scaling
@@ -167,6 +248,9 @@ Agents communicate via:
 3. **Customer Success** - Proactive churn prevention
 4. **Account Executives** - Smart deal tracking
 5. **Marketing** - Lead nurturing automation
+6. **Call Centers** - Voice AI call coaching & analytics
+7. **Omnichannel Support** - WhatsApp business automation
+8. **Finance/RevOps** - Monte Carlo revenue forecasting
 
 ## 🔮 Future Features
 
@@ -174,5 +258,5 @@ Agents communicate via:
 - [x] WhatsApp integration
 - [x] Advanced forecasting
 - [x] Multi-language support
-- [ ] Mobile app (React Native)
 - [x] Custom agent builder (no-code)
+- [ ] Mobile app (React Native)
