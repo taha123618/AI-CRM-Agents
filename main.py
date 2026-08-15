@@ -156,6 +156,39 @@ app.include_router(languages.router, prefix="/api/languages", tags=["Languages"]
 
 
 # ============================================================================
+# RUNTIME OPTIMIZED I18N ENDPOINTS
+# ============================================================================
+
+
+@app.get("/api/i18n/{locale}")
+def get_i18n_runtime_all(locale: str, db: Session = Depends(get_db)):
+    """Optimized client-side runtime translation loading."""
+    from services.language_service import LanguageService
+
+    translations = LanguageService.get_translations_bundle(
+        db, language_code=locale.lower(), with_fallback=True
+    )
+    return {"locale": locale, "translations": translations}
+
+
+@app.get("/api/i18n/{locale}/{namespace}")
+def get_i18n_runtime_namespace(
+    locale: str, namespace: str, db: Session = Depends(get_db)
+):
+    """Optimized client-side runtime namespace-scoped translation loading."""
+    from services.language_service import LanguageService
+
+    translations = LanguageService.get_translations_bundle(
+        db, language_code=locale.lower(), namespace=namespace, with_fallback=True
+    )
+    return {
+        "locale": locale,
+        "namespace": namespace,
+        "translations": translations.get(namespace, {}),
+    }
+
+
+# ============================================================================
 # AGENT TRIGGER ENDPOINTS
 # ============================================================================
 

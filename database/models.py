@@ -401,3 +401,37 @@ class Translation(Base):
         Index("idx_translations_lang_ns", "language_code", "namespace"),
         Index("idx_translations_key", "key"),
     )
+
+
+class TranslationAudit(Base):
+    __tablename__ = "translation_audits"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    language_code = Column(String(10), nullable=False)
+    namespace = Column(String(50), nullable=False)
+    key = Column(String(150), nullable=False)
+    old_value = Column(Text, nullable=True)
+    new_value = Column(Text, nullable=True)
+    changed_by = Column(String(100), default="system")
+    action = Column(
+        String(20), nullable=False
+    )  # 'create', 'update', 'delete', 'import'
+    created_at = Column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        Index("idx_audit_lang_ns", "language_code", "namespace"),
+        Index("idx_audit_created_at", "created_at"),
+    )
+
+
+class UserPreference(Base):
+    __tablename__ = "user_preferences"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(String(100), unique=True, nullable=False, index=True)
+    preferred_language_code = Column(String(10), default="en", nullable=False)
+    theme = Column(String(20), default="dark")
+    date_format = Column(String(30), default="YYYY-MM-DD")
+    timezone = Column(String(50), default="UTC")
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

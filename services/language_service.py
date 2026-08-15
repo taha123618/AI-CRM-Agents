@@ -1,10 +1,9 @@
-"""Multi-language and translation business logic service with caching and fallback resolution."""
-
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy import distinct
 import uuid
 
-from database.models import Language, Translation
+from database.models import Language, Translation, TranslationAudit, UserPreference
 
 # In-memory translation cache for high-throughput zero-latency reads
 # Structure: { language_code: { namespace: { key: value } } }
@@ -445,7 +444,9 @@ class LanguageService:
             .first()
         )
 
+        old_val = None
         if translation:
+            old_val = translation.value
             translation.value = value
             translation.is_auto_translated = is_auto
         else:
@@ -459,10 +460,61 @@ class LanguageService:
             )
             db.add(translation)
 
+        # Audit log entry
+        db.add(
+            TranslationAudit(
+                id=uuid.uuid4(),
+                language_code=language_code,
+                namespace=namespace,
+                key=key,
+                old_value=old_val,
+                new_value=value,
+                changed_by="admin",
+                action="update" if old_val is not None else "create",
+            )
+        )
+
         db.commit()
         db.refresh(translation)
         invalidate_translation_cache(language_code)
         return translation
+
+    @staticmethod
+    def delete_translation(
+        db: Session,
+        language_code: str,
+        namespace: str,
+        key: str,
+    ) -> bool:
+        """Delete a single translation key and record audit log."""
+        translation = (
+            db.query(Translation)
+            .filter(
+                Translation.language_code == language_code,
+                Translation.namespace == namespace,
+                Translation.key == key,
+            )
+            .first()
+        )
+        if not translation:
+            return False
+
+        db.add(
+            TranslationAudit(
+                id=uuid.uuid4(),
+                language_code=language_code,
+                namespace=namespace,
+                key=key,
+                old_value=translation.value,
+                new_value=None,
+                changed_by="admin",
+                action="delete",
+            )
+        )
+        db.delete(translation)
+        db.commit()
+        invalidate_translation_cache(language_code)
+        return True
 
     @staticmethod
     def bulk_upsert_translations(
@@ -505,9 +557,99 @@ class LanguageService:
                     )
                 count += 1
 
+        db.add(
+            TranslationAudit(
+                id=uuid.uuid4(),
+                language_code=language_code,
+                namespace="bulk",
+                key=f"{count}_keys",
+                old_value=None,
+                new_value=f"Imported/updated {count} keys",
+                changed_by="admin",
+                action="import",
+            )
+        )
+
         db.commit()
         invalidate_translation_cache(language_code)
         return count
+
+    @staticmethod
+    def list_namespaces(db: Session) -> List[str]:
+        """List distinct translation namespaces present in the CRM."""
+        namespaces = db.query(distinct(Translation.namespace)).all()
+        ns_list = [ns[0] for ns in namespaces if ns[0]]
+        # Always include default core namespaces
+        core_ns = [
+            "common",
+            "nav",
+            "dashboard",
+            "leads",
+            "deals",
+            "customers",
+            "emails",
+            "meetings",
+            "analytics",
+            "reports",
+            "agents",
+            "languages",
+        ]
+        return sorted(list(set(ns_list + core_ns)))
+
+    @staticmethod
+    def list_audits(
+        db: Session,
+        language_code: Optional[str] = None,
+        limit: int = 50,
+    ) -> List[TranslationAudit]:
+        """Fetch audit log records for administrative changes."""
+        query = db.query(TranslationAudit)
+        if language_code:
+            query = query.filter(TranslationAudit.language_code == language_code)
+        return query.order_by(TranslationAudit.created_at.desc()).limit(limit).all()
+
+    @staticmethod
+    def get_user_preference(
+        db: Session, user_id: str = "default_user"
+    ) -> UserPreference:
+        """Fetch or initialize user localization preferences."""
+        pref = (
+            db.query(UserPreference).filter(UserPreference.user_id == user_id).first()
+        )
+        if not pref:
+            pref = UserPreference(
+                id=uuid.uuid4(),
+                user_id=user_id,
+                preferred_language_code="en",
+                theme="dark",
+                date_format="YYYY-MM-DD",
+                timezone="UTC",
+            )
+            db.add(pref)
+            db.commit()
+            db.refresh(pref)
+        return pref
+
+    @staticmethod
+    def set_user_preference(
+        db: Session,
+        user_id: str,
+        data: Dict[str, Any],
+    ) -> UserPreference:
+        """Update user localization and locale format preferences."""
+        pref = LanguageService.get_user_preference(db, user_id=user_id)
+        if "preferred_language_code" in data and data["preferred_language_code"]:
+            pref.preferred_language_code = data["preferred_language_code"]
+        if "theme" in data:
+            pref.theme = data["theme"]
+        if "date_format" in data:
+            pref.date_format = data["date_format"]
+        if "timezone" in data:
+            pref.timezone = data["timezone"]
+
+        db.commit()
+        db.refresh(pref)
+        return pref
 
     @staticmethod
     def export_language_json(db: Session, language_code: str) -> Dict[str, Any]:

@@ -74,6 +74,46 @@ export const languagesApi = {
     return data;
   },
 
+  // Fetch available namespaces
+  getNamespaces: async (): Promise<string[]> => {
+    const { data } = await apiClient.get<string[]>('/api/languages/namespaces');
+    return data;
+  },
+
+  // Fetch translation audit logs
+  getAudits: async (code?: string, limit = 50): Promise<any[]> => {
+    const { data } = await apiClient.get<any[]>('/api/languages/audits', {
+      params: { code, limit },
+    });
+    return data;
+  },
+
+  // Get user preference
+  getUserPreference: async (userId = 'default_user'): Promise<any> => {
+    const { data } = await apiClient.get<any>('/api/languages/preferences/me', {
+      params: { user_id: userId },
+    });
+    return data;
+  },
+
+  // Update user preference
+  setUserPreference: async (payload: any, userId = 'default_user'): Promise<any> => {
+    const { data } = await apiClient.put<any>('/api/languages/preferences/me', payload, {
+      params: { user_id: userId },
+    });
+    return data;
+  },
+
+  // Delete single translation key
+  deleteSingleTranslation: async (
+    code: string,
+    namespace: string,
+    key: string
+  ): Promise<{ status: string; message: string }> => {
+    const { data } = await apiClient.delete(`/api/languages/${code}/translations/${namespace}/${key}`);
+    return data;
+  },
+
   // Export language dictionary
   exportLanguage: async (code: string): Promise<LanguageExportData> => {
     const { data } = await apiClient.get<LanguageExportData>(`/api/languages/${code}/export`);

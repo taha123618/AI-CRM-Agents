@@ -60,8 +60,31 @@ export function useTranslation() {
     [currentLanguage, translations]
   );
 
+  /**
+   * Locale-aware pluralization using Intl.PluralRules.
+   * Looks up 'key.one', 'key.other', 'key.zero' with fallback to base key.
+   */
+  const tPlural = useCallback(
+    (keyPath: string, count: number, params?: InterpolationParams): string => {
+      try {
+        const pr = new Intl.PluralRules(currentLanguage);
+        const rule = pr.select(count); // 'one', 'other', 'zero', etc.
+        const specificKey = `${keyPath}_${rule}`;
+        const translated = t(specificKey, '');
+        if (translated) {
+          return t(specificKey, { count, ...(params || {}) });
+        }
+      } catch {
+        // Ignore and fallback
+      }
+      return t(keyPath, { count, ...(params || {}) });
+    },
+    [currentLanguage, t]
+  );
+
   return {
     t,
+    tPlural,
     currentLanguage,
     currentDirection,
     isRTL: currentDirection === 'rtl',

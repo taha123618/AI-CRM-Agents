@@ -114,6 +114,73 @@ def create_language(
         raise HTTPException(status_code=400, detail=str(err))
 
 
+@router.get("/namespaces", response_model=List[str])
+def list_namespaces(db: Session = Depends(get_db)):
+    """List all available translation namespaces in the CRM."""
+    return LanguageService.list_namespaces(db)
+
+
+@router.get("/audits", response_model=List[Dict[str, Any]])
+def list_audits(
+    code: Optional[str] = Query(None, description="Filter audit log by language code"),
+    limit: int = Query(50, ge=1, le=200, description="Max records to return"),
+    db: Session = Depends(get_db),
+):
+    """Retrieve audit history log for administrative translation changes."""
+    audits = LanguageService.list_audits(db, language_code=code, limit=limit)
+    return [
+        {
+            "id": str(a.id),
+            "language_code": a.language_code,
+            "namespace": a.namespace,
+            "key": a.key,
+            "old_value": a.old_value,
+            "new_value": a.new_value,
+            "changed_by": a.changed_by,
+            "action": a.action,
+            "created_at": a.created_at.isoformat() if a.created_at else None,
+        }
+        for a in audits
+    ]
+
+
+@router.get("/preferences/me", response_model=Dict[str, Any])
+def get_user_preference(
+    user_id: str = Query("default_user", description="User identifier"),
+    db: Session = Depends(get_db),
+):
+    """Retrieve user localization and formatting preferences."""
+    pref = LanguageService.get_user_preference(db, user_id=user_id)
+    return {
+        "user_id": pref.user_id,
+        "preferred_language_code": pref.preferred_language_code,
+        "theme": pref.theme,
+        "date_format": pref.date_format,
+        "timezone": pref.timezone,
+        "updated_at": pref.updated_at.isoformat() if pref.updated_at else None,
+    }
+
+
+@router.put("/preferences/me", response_model=Dict[str, Any])
+def set_user_preference(
+    payload: Dict[str, Any],
+    user_id: str = Query("default_user", description="User identifier"),
+    db: Session = Depends(get_db),
+):
+    """Update user localization preference."""
+    pref = LanguageService.set_user_preference(db, user_id=user_id, data=payload)
+    return {
+        "status": "success",
+        "preferences": {
+            "user_id": pref.user_id,
+            "preferred_language_code": pref.preferred_language_code,
+            "theme": pref.theme,
+            "date_format": pref.date_format,
+            "timezone": pref.timezone,
+        },
+    }
+
+
 @router.get("/{code}", response_model=Dict[str, Any])
 def get_language(code: str, db: Session = Depends(get_db)):
     """Get metadata for a single language by code."""
@@ -264,6 +331,28 @@ def update_single_translation(
         }
     except ValueError as err:
         raise HTTPException(status_code=400, detail=str(err))
+
+
+@router.delete("/{code}/translations/{namespace}/{key}", response_model=Dict[str, Any])
+def delete_single_translation(
+    code: str,
+    namespace: str,
+    key: str,
+    db: Session = Depends(get_db),
+):
+    """Delete a specific translation key."""
+    deleted = LanguageService.delete_translation(
+        db, language_code=code.lower(), namespace=namespace, key=key
+    )
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Translation '{key}' in namespace '{namespace}' not found.",
+        )
+    return {
+        "status": "success",
+        "message": f"Deleted translation '{key}' from '{namespace}' in '{code}'",
+    }
 
 
 @router.get("/{code}/export", response_model=Dict[str, Any])

@@ -184,3 +184,66 @@ def test_create_urdu_language_and_auto_translations():
 
     # Cleanup
     client.delete("/api/languages/ur")
+
+
+def test_namespaces_and_audits():
+    """Test retrieving namespaces and audit logs."""
+    # 1. Namespaces
+    ns_res = client.get("/api/languages/namespaces")
+    assert ns_res.status_code == 200
+    namespaces = ns_res.json()
+    assert "common" in namespaces
+    assert "leads" in namespaces
+    assert "deals" in namespaces
+
+    # 2. Audits
+    audit_res = client.get("/api/languages/audits?limit=10")
+    assert audit_res.status_code == 200
+    audits = audit_res.json()
+    assert isinstance(audits, list)
+
+
+def test_user_preferences():
+    """Test getting and updating user localization preferences."""
+    import uuid
+
+    unique_user = f"user_{uuid.uuid4().hex[:8]}"
+
+    # 1. Get default
+    get_res = client.get(f"/api/languages/preferences/me?user_id={unique_user}")
+    assert get_res.status_code == 200
+    data = get_res.json()
+    assert data["preferred_language_code"] == "en"
+
+    # 2. Update preference to Spanish
+    put_res = client.put(
+        f"/api/languages/preferences/me?user_id={unique_user}",
+        json={
+            "preferred_language_code": "es",
+            "theme": "system",
+            "timezone": "Europe/Madrid",
+        },
+    )
+    assert put_res.status_code == 200
+    updated = put_res.json()["preferences"]
+    assert updated["preferred_language_code"] == "es"
+    assert updated["theme"] == "system"
+
+
+def test_delete_translation_and_runtime_endpoint():
+    """Test deleting translation key and verifying runtime i18n endpoint."""
+    # 1. Insert temporary key
+    client.put(
+        "/api/languages/es/translations/common/temp_delete_key",
+        json={"value": "Temp string to delete", "is_auto_translated": False},
+    )
+
+    # 2. Runtime endpoint
+    rt_res = client.get("/api/i18n/es/common")
+    assert rt_res.status_code == 200
+    assert rt_res.json()["translations"]["temp_delete_key"] == "Temp string to delete"
+
+    # 3. Delete key
+    del_res = client.delete("/api/languages/es/translations/common/temp_delete_key")
+    assert del_res.status_code == 200
+    assert del_res.json()["status"] == "success"
