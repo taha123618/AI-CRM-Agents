@@ -129,3 +129,17 @@ docker-compose up -d --build
 ```
 
 Access the UI at `http://localhost:3000`.
+
+---
+
+## 📚 Feature Guides & Documentation
+
+- 🎙️ **Voice AI Call Intelligence Studio**: [`../docs/voice-ai.md`](../docs/voice-ai.md)
+- 💬 **WhatsApp Business Multi-Agent Hub**: [`../docs/whatsapp.md`](../docs/whatsapp.md)
+- 📈 **Monte Carlo Revenue Forecasting**: [`../docs/forecasting.md`](../docs/forecasting.md)
+- 🔧 **No-Code Custom Agent Builder**: [`../docs/custom-agents.md`](../docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n) System**: [`../docs/i18n/overview.md`](../docs/i18n/overview.md)
+- 🏛️ **System Architecture Overview**: [`../docs/architecture/overview.md`](../docs/architecture/overview.md)
+- 📖 **Main Project README**: [`../README.md`](../README.md)
+- 🚀 **Quick Start Guide**: [`../QUICKSTART.md`](../QUICKSTART.md)
+

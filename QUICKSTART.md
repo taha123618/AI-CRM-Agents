@@ -461,4 +461,31 @@ Set a real `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` and update `_init_l
 
 ---
 
+## 📚 Documentation & References
+
+### Agent & Feature Guides
+- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
+- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
+- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
+- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
+- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
+- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
+- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
+- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
+- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
+- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+
+### Technical Resources
+- **Interactive OpenAPI Docs**: http://localhost:8000/docs
+- **Health Check Endpoint**: http://localhost:8000/health
+- **Main Project README**: [`README.md`](README.md)
+- **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
+- **Database Schema**: [`database/schema.sql`](database/schema.sql)
+- **Agent Code**: [`agents/*.py`](agents/)
+
+---
+
 **API Docs**: http://localhost:8000/docs | **Health**: http://localhost:8000/health
+

@@ -1452,12 +1452,13 @@ def seed_voice_and_whatsapp(db: Session):
         VoiceCallTranscript,
         WhatsAppConversation,
         WhatsAppMessage,
+        ForecastSimulation,
     )
 
     if db.query(VoiceCall).count() > 0:
         return
 
-    print("Seeding Voice AI calls and WhatsApp conversations...")
+    print("Seeding Voice AI calls, WhatsApp conversations, and Forecast Simulations...")
 
     # 1. Voice Calls & Transcripts
     call1 = VoiceCall(
@@ -1550,5 +1551,46 @@ def seed_voice_and_whatsapp(db: Session):
         status="delivered",
     )
     db.add_all([m1, m2, m3])
+
+    # 3. Forecast Simulations
+    sim1 = ForecastSimulation(
+        id=uuid.uuid4(),
+        name="Q3 Executive Base Plan",
+        num_simulations=5000,
+        time_horizon_days=90,
+        target_revenue=500000.0,
+        p10_revenue=385000.0,
+        p50_revenue=520000.0,
+        p90_revenue=680000.0,
+        mean_revenue=528000.0,
+        probability_target_met=68.5,
+        stage_probabilities={
+            "lead": 0.15,
+            "qualified": 0.35,
+            "proposal": 0.60,
+            "negotiation": 0.80,
+            "closed-won": 1.0,
+        },
+    )
+    sim2 = ForecastSimulation(
+        id=uuid.uuid4(),
+        name="Conservative Downside Model",
+        num_simulations=2000,
+        time_horizon_days=90,
+        target_revenue=500000.0,
+        p10_revenue=310000.0,
+        p50_revenue=440000.0,
+        p90_revenue=560000.0,
+        mean_revenue=438000.0,
+        probability_target_met=34.2,
+        stage_probabilities={
+            "lead": 0.10,
+            "qualified": 0.25,
+            "proposal": 0.45,
+            "negotiation": 0.65,
+            "closed-won": 1.0,
+        },
+    )
+    db.add_all([sim1, sim2])
     db.commit()
-    print("Seeded Voice Calls and WhatsApp Conversations successfully.")
+    print("Seeded Voice Calls, WhatsApp Conversations, and Forecast Simulations successfully.")

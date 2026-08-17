@@ -519,18 +519,32 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 
 ---
 
-## 📚 References
+## 📚 Documentation & References
 
+### Agent & Feature Guides
+- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
+- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
+- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
+- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
+- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
+- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
+- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
+- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
+- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
+- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+
+### Technical Resources
 - **Frontend Web Application**: http://localhost:3000
 - **API Docs** (interactive): http://localhost:8000/docs
 - **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
 - **Database Schema**: [`database/schema.sql`](database/schema.sql)
 - **Agent Code**: [`agents/*.py`](agents/)
 - **QUICKSTART Guide**: [`QUICKSTART.md`](QUICKSTART.md)
-- **I18n Documentation**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
 
 ---
 
 **Built with ❤️ for modern sales teams**
 
-**License:** MIT | **Status:** Production Ready | **Last Updated:** 2026-08-16
+**License:** MIT | **Status:** Production Ready | **Last Updated:** 2026-08-17

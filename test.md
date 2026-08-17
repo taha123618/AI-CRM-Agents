@@ -220,6 +220,11 @@ Active Deals → Monte Carlo Simulation → P10/P50/P90 Bounds → ARR Trend →
 - Audit logging
 - Data privacy compliance (GDPR)
 
+## 🏃 Quick Start
+
+```bash
+# Start backend
+python run.py
 
 # Start frontend
 cd frontend && npm run dev
@@ -252,11 +257,28 @@ Agents communicate via:
 7. **Omnichannel Support** - WhatsApp business automation
 8. **Finance/RevOps** - Monte Carlo revenue forecasting
 
-## 🔮 Future Features
+## 🔮 Roadmap Status
 
-- [x] Voice AI for calls
-- [x] WhatsApp integration
-- [x] Advanced forecasting
-- [x] Multi-language support
-- [x] Custom agent builder (no-code)
+- [x] Voice AI for calls (`docs/voice-ai.md`)
+- [x] WhatsApp integration (`docs/whatsapp.md`)
+- [x] Advanced forecasting (`docs/forecasting.md`)
+- [x] Multi-language support (`docs/i18n/overview.md`)
+- [x] Custom agent builder (`docs/custom-agents.md`)
 - [ ] Mobile app (React Native)
+
+---
+
+## 📚 Documentation Index
+
+- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
+- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
+- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
+- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
+- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
+- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
+- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
+- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
+- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
+- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
