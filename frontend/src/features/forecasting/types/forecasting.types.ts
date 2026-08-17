@@ -43,3 +43,16 @@ export interface ForecastSimulationRecord {
   deal_slippage_rate: number;
   created_at: string;
 }
+
+export interface ArrTrendPoint {
+  month: string;
+  arr: number;
+  target: number;
+  delta_pct: number;
+}
+
+export interface StageRevenueBreakdown {
+  stage: string;
+  value: number;
+  deals: number;
+}

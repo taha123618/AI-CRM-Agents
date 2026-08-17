@@ -1,11 +1,33 @@
 import { apiClient } from '@/lib/api/client';
-import { WhatsAppConversation, WhatsAppMessage } from '../types/whatsapp.types';
+import {
+  WhatsAppConversation,
+  WhatsAppMessage,
+  WhatsAppStats,
+  BroadcastPayload,
+} from '../types/whatsapp.types';
 
 export const whatsappApi = {
-  getConversations: async (limit = 50): Promise<WhatsAppConversation[]> => {
-    const { data } = await apiClient.get<WhatsAppConversation[]>('/api/whatsapp/conversations', {
-      params: { limit },
-    });
+  getStats: async (): Promise<WhatsAppStats> => {
+    const { data } = await apiClient.get<WhatsAppStats>('/api/whatsapp/stats');
+    return data;
+  },
+
+  getConversations: async (params?: {
+    limit?: number;
+    status?: string;
+  }): Promise<WhatsAppConversation[]> => {
+    const { data } = await apiClient.get<WhatsAppConversation[]>(
+      '/api/whatsapp/conversations',
+      { params }
+    );
+    return data;
+  },
+
+  searchConversations: async (q: string): Promise<WhatsAppConversation[]> => {
+    const { data } = await apiClient.get<WhatsAppConversation[]>(
+      '/api/whatsapp/conversations/search',
+      { params: { q } }
+    );
     return data;
   },
 
@@ -35,6 +57,13 @@ export const whatsappApi = {
     return data;
   },
 
+  sendBroadcast: async (
+    payload: BroadcastPayload
+  ): Promise<{ status: string; recipients: number }> => {
+    const { data } = await apiClient.post('/api/whatsapp/broadcast', payload);
+    return data;
+  },
+
   toggleAutoPilot: async (
     conversationId: string,
     ai_auto_pilot: boolean
@@ -42,6 +71,26 @@ export const whatsappApi = {
     const { data } = await apiClient.put(
       `/api/whatsapp/conversations/${conversationId}/auto-pilot`,
       { ai_auto_pilot }
+    );
+    return data;
+  },
+
+  updateTags: async (
+    conversationId: string,
+    tags: string[]
+  ): Promise<{ status: string; tags: string[] }> => {
+    const { data } = await apiClient.put(
+      `/api/whatsapp/conversations/${conversationId}/tags`,
+      { tags }
+    );
+    return data;
+  },
+
+  archiveConversation: async (
+    conversationId: string
+  ): Promise<{ status: string; new_status: string }> => {
+    const { data } = await apiClient.put(
+      `/api/whatsapp/conversations/${conversationId}/archive`
     );
     return data;
   },

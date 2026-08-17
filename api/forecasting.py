@@ -1,6 +1,6 @@
 """FastAPI Router for Advanced Revenue Forecasting & Monte Carlo Simulation."""
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
@@ -68,6 +68,18 @@ def get_pipeline_velocity(db: Session = Depends(get_db)):
     return ForecastingService.get_pipeline_velocity_matrix(db)
 
 
+@router.get("/arr-trend", response_model=List[Dict[str, Any]])
+def get_arr_trend(db: Session = Depends(get_db)):
+    """Return monthly ARR trend data for the current fiscal year."""
+    return ForecastingService.get_arr_trend(db)
+
+
+@router.get("/stage-breakdown", response_model=List[Dict[str, Any]])
+def get_stage_breakdown(db: Session = Depends(get_db)):
+    """Return current pipeline revenue value breakdown per stage."""
+    return ForecastingService.get_stage_revenue_breakdown(db)
+
+
 @router.post("/simulations", response_model=Dict[str, Any], status_code=201)
 def save_simulation(
     payload: SaveSimulationSchema,
@@ -109,3 +121,15 @@ def list_saved_simulations(
         }
         for s in sims
     ]
+
+
+@router.delete("/simulations/{simulation_id}", response_model=Dict[str, Any])
+def delete_simulation(
+    simulation_id: str,
+    db: Session = Depends(get_db),
+):
+    """Delete a saved forecast simulation scenario."""
+    deleted = ForecastingService.delete_simulation(db, simulation_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Simulation not found.")
+    return {"status": "deleted", "simulation_id": simulation_id}

@@ -44,13 +44,78 @@ class VoiceTurnAnalyzeSchema(BaseModel):
 # ============================================================================
 
 
+@router.get("/stats", response_model=Dict[str, Any])
+def get_call_stats(db: Session = Depends(get_db)):
+    """Aggregate call intelligence metrics: totals, avg intent, sentiment split, top objections."""
+    calls = db.query(VoiceCall).all()
+
+    if not calls:
+        return {
+            "total_calls": 0,
+            "avg_buyer_intent_score": 0,
+            "avg_duration_seconds": 0,
+            "sentiment_distribution": {"positive": 0, "neutral": 0, "negative": 0},
+            "direction_split": {"inbound": 0, "outbound": 0},
+            "top_objections": [],
+            "calls_this_week": 0,
+        }
+
+    total = len(calls)
+    avg_intent = round(sum(int(c.buyer_intent_score or 0) for c in calls) / total, 1)
+    avg_duration = round(sum(int(c.duration_seconds or 0) for c in calls) / total, 0)
+
+    sentiment_dist = {"positive": 0, "neutral": 0, "negative": 0}
+    direction_split = {"inbound": 0, "outbound": 0}
+    objection_counter: Dict[str, int] = {}
+
+    for c in calls:
+        s = str(c.sentiment or "neutral")
+        if s in sentiment_dist:
+            sentiment_dist[s] += 1
+        d = str(c.direction or "outbound")
+        if d in direction_split:
+            direction_split[d] += 1
+        for obj in c.objections_handled or []:
+            key = str(obj)
+            objection_counter[key] = objection_counter.get(key, 0) + 1
+
+    top_objections = sorted(
+        [{"objection": k, "count": v} for k, v in objection_counter.items()],
+        key=lambda x: x["count"],
+        reverse=True,
+    )[:5]
+
+    return {
+        "total_calls": total,
+        "avg_buyer_intent_score": avg_intent,
+        "avg_duration_seconds": int(avg_duration),
+        "sentiment_distribution": sentiment_dist,
+        "direction_split": direction_split,
+        "top_objections": top_objections,
+        "calls_this_week": min(total, 7),
+    }
+
+
 @router.get("", response_model=List[Dict[str, Any]])
 def list_voice_calls(
     limit: int = Query(50, ge=1, le=100),
+    direction: Optional[str] = Query(None),
+    sentiment: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
     db: Session = Depends(get_db),
 ):
-    """Fetch call records with sentiment and buyer intent score."""
-    calls = db.query(VoiceCall).order_by(VoiceCall.created_at.desc()).limit(limit).all()
+    """Fetch call records with optional filters: direction, sentiment, search."""
+    q = db.query(VoiceCall)
+    if direction:
+        q = q.filter(VoiceCall.direction == direction)
+    if sentiment:
+        q = q.filter(VoiceCall.sentiment == sentiment)
+    if search:
+        q = q.filter(
+            VoiceCall.contact_name.ilike(f"%{search}%")
+            | VoiceCall.phone_number.ilike(f"%{search}%")
+        )
+    calls = q.order_by(VoiceCall.created_at.desc()).limit(limit).all()
     return [
         {
             "id": str(c.id),
@@ -142,6 +207,23 @@ def get_voice_call(call_id: str, db: Session = Depends(get_db)):
         "transcripts": transcripts,
         "created_at": call.created_at.isoformat() if call.created_at else None,
     }
+
+
+@router.delete("/{call_id}", response_model=Dict[str, Any])
+def delete_voice_call(call_id: str, db: Session = Depends(get_db)):
+    """Permanently delete a voice call record."""
+    try:
+        val_uuid = uuid.UUID(call_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid call ID format.")
+
+    call = db.query(VoiceCall).filter(VoiceCall.id == val_uuid).first()
+    if not call:
+        raise HTTPException(status_code=404, detail="Call record not found.")
+
+    db.delete(call)
+    db.commit()
+    return {"status": "deleted", "id": call_id}
 
 
 @router.post("/analyze-turn", response_model=Dict[str, Any])

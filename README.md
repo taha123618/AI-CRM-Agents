@@ -1,9 +1,11 @@
 # 🤖 AI-Powered CRM with Agentic Workflows
 
-**Production-ready CRM system powered by a multi-agent AI architecture.**
+**Production-ready enterprise CRM system powered by a multi-agent AI architecture with Voice AI, WhatsApp, Monte Carlo Forecasting, Multi-Language, and No-Code Custom Agent Builder.**
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104-green.svg)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6.svg)](https://typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)](https://postgresql.org)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -12,13 +14,13 @@
 
 ## 📖 Overview
 
-An intelligent CRM system where six autonomous AI agents handle customer relationship workflows automatically. Each agent specialises in a specific domain and collaborates through an event-driven orchestration layer.
+An intelligent CRM system where **9 autonomous AI agents** handle customer relationship workflows automatically. Each agent specialises in a specific domain and collaborates through an event-driven orchestration layer. The platform includes advanced modules for Voice AI call intelligence, WhatsApp business automation, Monte Carlo revenue forecasting, multi-language support, and a no-code custom agent builder.
 
 ---
 
 ## 🏗️ Architecture
 
-### 6 Autonomous AI Agents
+### 9 Autonomous AI Agents
 
 | Agent | Responsibility | Endpoint |
 |---|---|---|
@@ -28,6 +30,9 @@ An intelligent CRM system where six autonomous AI agents handle customer relatio
 | 🎉 **Customer Success** | Track health scores, detect churn risk | `POST /api/agents/monitor-customer/{id}` |
 | 📅 **Meeting Scheduler** | Smart calendar management and prep | `POST /api/agents/schedule-meeting` |
 | 📊 **Analytics** | Real-time dashboards and forecasting | `POST /api/agents/generate-dashboard` |
+| 🎙️ **Voice Call Intelligence** | Speech analysis, buyer intent, objection coaching | `POST /api/voice-calls` |
+| 💬 **WhatsApp Hub** | AI auto-pilot messaging, broadcast campaigns | `POST /api/whatsapp/send` |
+| 🔧 **Custom Agent Builder** | No-code agent creation and testing | `POST /api/custom-agents` |
 
 ### System Design
 
@@ -45,7 +50,10 @@ AgentOrchestrator  ──── BackgroundTasks (async, in-process)
      ├── SalesPipelineAgent
      ├── CustomerSuccessAgent
      ├── MeetingSchedulerAgent
-     └── AnalyticsAgent
+     ├── AnalyticsAgent
+     ├── VoiceCallAgent
+     ├── WhatsAppAgent
+     └── CustomAgentBuilder
            │
            ▼
      PostgreSQL ◄──── Redis (caching + pub/sub events)
@@ -53,17 +61,54 @@ AgentOrchestrator  ──── BackgroundTasks (async, in-process)
 
 ---
 
+## 🚀 Specialized Platform Features
+
+### 🎙️ Voice AI Call Intelligence Studio
+- Real-time speech turn analysis with buyer intent scoring
+- Dynamic objection battle-cards and rep coaching tips
+- Post-call automated CRM synthesis, action item extraction
+- Sentiment distribution analytics and call scoring breakdown
+- Interactive transcript viewer with speaker bubbles
+
+### 💬 WhatsApp Business Multi-Agent Hub
+- Omnichannel WhatsApp chat with 24/7 AI Auto-Pilot
+- Broadcast template messaging campaigns
+- Conversation tagging, search, and handoff archiving
+- Unread badges, intent labels, and read receipts
+- New conversation and bulk send modals
+
+### 📈 Advanced Monte Carlo Revenue Forecasting
+- Stochastic Monte Carlo simulations (P10/P50/P90 confidence bounds)
+- Monthly ARR progression charts vs targets with delta badges
+- Pipeline stage velocity & hazard conversion matrix
+- Saved scenario comparison table and grouped bar charts
+- Per-stage probability editor with customizable win rates
+
+### 🌐 Multi-Language Support (I18n)
+- Dynamic translation management system
+- RTL/LTR layout synchronization (Urdu, Arabic, etc.)
+- Language creation with auto-detection of text direction
+- Translation key management and bulk editing
+
+### 🔧 No-Code Custom Agent Builder
+- Visual creator for custom AI agents
+- Configurable prompts, triggers, and toolkits
+- Testing playground with live execution
+- Agent status management (active/inactive/draft)
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Axios, Nginx |
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, Nginx |
 | **API** | Python 3.9+, FastAPI, Uvicorn / Gunicorn |
 | **Database** | PostgreSQL 14+, SQLAlchemy 2.0 ORM, Alembic |
 | **Background Tasks** | FastAPI `BackgroundTasks` (in-process async) |
 | **Caching / Events** | Redis 7 (pub/sub + response caching) |
 | **Realtime Stream** | WebSockets (`/ws`), ConnectionManager |
-| **AI / ML** | LangChain, OpenAI GPT-4 / Anthropic Claude |
+| **AI / ML** | LangChain, OpenAI GPT-4 / Anthropic Claude, SmartFallbackLLM |
 | **Container** | Docker (multi-stage), Docker Compose |
 | **Testing** | pytest, pytest-asyncio |
 | **Code Quality** | Black, Flake8, Mypy, ESLint, TypeScript |
@@ -74,14 +119,17 @@ AgentOrchestrator  ──── BackgroundTasks (async, in-process)
 
 ```
 ai-crm-agents/
-├── agents/                        # 6 AI Agents
-│   ├── base_agent.py              #   Shared BaseAgent class
+├── agents/                        # 9 AI Agents
+│   ├── base_agent.py              #   Shared BaseAgent class with TraceMixin
 │   ├── lead_qualification_agent.py
 │   ├── email_intelligence_agent.py
 │   ├── sales_pipeline_agent.py
 │   ├── customer_success_agent.py
 │   ├── meeting_scheduler_agent.py
-│   └── analytics_agent.py
+│   ├── analytics_agent.py
+│   ├── voice_call_agent.py        #   Voice AI speech analysis & coaching
+│   ├── whatsapp_agent.py          #   WhatsApp conversational AI
+│   └── custom_agent_builder.py    #   No-code dynamic agent instantiation
 │
 ├── api/                           # FastAPI routers
 │   ├── leads.py
@@ -89,10 +137,19 @@ ai-crm-agents/
 │   ├── customers.py
 │   ├── emails.py
 │   ├── meetings.py
-│   └── analytics.py
+│   ├── analytics.py
+│   ├── voice_calls.py             #   Voice AI endpoints (stats, search, transcripts)
+│   ├── whatsapp.py                #   WhatsApp endpoints (send, broadcast, tags, archive)
+│   ├── forecasting.py             #   Monte Carlo simulation & ARR trend endpoints
+│   ├── custom_agents.py           #   No-code agent CRUD & test execution
+│   └── i18n.py                    #   Multi-language translation management
+│
+├── services/                      # Business service layer
+│   ├── forecasting_service.py     #   Monte Carlo simulation logic & ARR trends
+│   └── i18n_service.py            #   Translation & language management
 │
 ├── database/                      # Database layer
-│   ├── models.py                  #   SQLAlchemy ORM models
+│   ├── models.py                  #   SQLAlchemy ORM models (16+ tables)
 │   ├── connection.py              #   Engine & session factory
 │   └── schema.sql                 #   Raw SQL schema reference
 │
@@ -104,26 +161,31 @@ ai-crm-agents/
 │   └── env.py                     #   Alembic configuration
 │
 ├── tests/                         # Unit & integration tests
-│   ├── test_main.py
-│   └── test_lead_agent.py
 │
-├── frontend/                      # Production React + TypeScript SPA
-│   ├── src/                       #   Components, views, hooks, stores
+├── frontend/                      # Production React 19 + TypeScript SPA
+│   ├── src/
+│   │   ├── features/              #   13 feature modules (voice-ai, whatsapp, forecasting, etc.)
+│   │   ├── components/            #   Shared UI, forms, charts, layout
+│   │   ├── hooks/                 #   TanStack Query hooks
+│   │   ├── stores/                #   Zustand state stores
+│   │   └── types/                 #   TypeScript interfaces
 │   ├── Dockerfile                 #   Multi-stage build (Node + Nginx)
 │   ├── nginx.conf                 #   Nginx reverse proxy config
-│   ├── package.json               #   Frontend dependencies
 │   └── vite.config.ts             #   Vite build tooling & API proxies
 │
 ├── .agents/                       # AI assistant configuration
 │   ├── AGENTS.md                  #   Single source of truth for AI rules
-│   ├── skills/                    #   6 modular skill files
+│   ├── skills/                    #   7 modular skill files
 │   └── scripts/sync_rules.py     #   Syncs rules to all AI tools
+│
+├── docs/                          # Documentation
+│   └── i18n/overview.md           #   Multi-language feature documentation
 │
 ├── main.py                        # FastAPI application entry point
 ├── run.py                         # Development server script
 ├── Dockerfile                     # Multi-stage production image
 ├── docker-compose.yml             # Production stack (fully standalone)
-├── docker-compose.dev.yml         # Development stack (fully standalone, hot-reload)
+├── docker-compose.dev.yml         # Development stack (hot-reload)
 ├── entrypoint.sh                  # Container startup (migrations + server)
 ├── requirements.txt               # Python dependencies
 ├── alembic.ini                    # Alembic configuration
@@ -142,6 +204,7 @@ ai-crm-agents/
 - Python 3.9+
 - PostgreSQL 14+
 - Redis 7+
+- Node.js 20+ (for frontend)
 
 ---
 
@@ -276,7 +339,7 @@ alembic upgrade head
 # 5. Start development server
 python run.py
 
-#6. Run frontend server
+# 6. Run frontend server
 cd frontend
 npm install
 npm run dev
@@ -329,6 +392,11 @@ python3 -m pytest -v
 
 # Run a specific test file
 python3 -m pytest tests/test_lead_agent.py
+
+# Frontend type check and build
+cd frontend
+npm run type-check
+npm run build
 ```
 
 ---
@@ -376,10 +444,11 @@ python3 .agents/scripts/sync_rules.py
 
 | Skill | Description |
 |---|---|
-| `project-architecture` | Agent collaboration and workflow design |
-| `backend-development` | FastAPI endpoints and Pydantic schemas |
-| `agent-development` | Creating and extending CRM agents |
-| `database-development` | SQLAlchemy models and Alembic migrations |
+| `project-architecture` | Agent collaboration, feature-sliced architecture, and workflow orchestration |
+| `backend-development` | FastAPI endpoints, services, dependencies, and Pydantic schemas |
+| `agent-development` | Creating, extending, and debugging CRM agents and custom agent builders |
+| `frontend-development` | React 19 + TypeScript features, components, and TanStack Query state |
+| `database-development` | SQLAlchemy models, schemas, and Alembic migrations |
 | `testing` | pytest patterns and mock strategies |
 | `git-workflow` | Branching, commits, and pull requests |
 
@@ -400,12 +469,14 @@ python3 .agents/scripts/sync_rules.py
 
 | Branch prefix | Purpose |
 |---|---|
-| `feature/` | New functionality |
+| `features/` | New functionality |
 | `bugfix/` | Bug fixes |
 | `chore/` | Maintenance tasks |
 
 Commit messages follow the imperative style:
 ```
+feat: Add voice call intelligence analytics
+feat: Add WhatsApp broadcast campaign endpoint
 feat: Add lead scoring threshold configuration
 fix: Correct email sentiment parser for unicode input
 chore: Update dependencies to latest patch versions
@@ -448,8 +519,23 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 
 ---
 
-## 📚 References
+## 📚 Documentation & References
 
+### Agent & Feature Guides
+- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
+- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
+- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
+- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
+- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
+- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
+- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
+- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
+- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
+- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+
+### Technical Resources
 - **Frontend Web Application**: http://localhost:3000
 - **API Docs** (interactive): http://localhost:8000/docs
 - **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
@@ -461,4 +547,4 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 
 **Built with ❤️ for modern sales teams**
 
-**License:** MIT | **Status:** 🚧 In Development | **Last Updated:** 2026-08-12
+**License:** MIT | **Status:** Production Ready | **Last Updated:** 2026-08-17

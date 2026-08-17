@@ -6,25 +6,45 @@ Welcome to the AI-Powered CRM project. This document serves as the **single sour
 
 ## 🏗️ Project Architecture & Tech Stack
 
-This project is a production-ready CRM system powered by a multi-agent AI architecture.
+This project is a production-ready enterprise CRM system powered by a multi-agent AI architecture with specialized communication and forecasting modules.
 
-* **Frontend Framework**: React 18 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, and Nginx
-* **Backend Framework**: Python 3.9+ with FastAPI
+* **Frontend Framework**: React 19 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, and Nginx
+* **Backend Framework**: Python 3.9+ with FastAPI and Uvicorn
 * **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM and Alembic migrations
 * **AI Orchestration**: LangChain-based custom agent framework with `TraceMixin` transparent LLM tracing, live OpenAI/Anthropic support (`AsyncOpenAI`, `AsyncAnthropic`), and `SmartFallbackLLM`
-* **Real-time Communication**: WebSockets (`/ws`) with `ConnectionManager` event stream
+* **Real-time Communication**: WebSockets (`/ws`) with `ConnectionManager` event stream & Redis pub/sub
 * **Background Tasks**: FastAPI `BackgroundTasks` (async, in-process — no separate worker process needed)
 * **Caching & Event Bus**: Redis (pub/sub for agent event communication and response caching)
-* **Testing**: pytest and pytest-asyncio (21 unit/integration tests)
+* **Testing**: pytest and pytest-asyncio (unit and integration tests)
 * **Code Formatting**: Black (code formatter), Flake8 (linter), and Mypy (static type checker)
 * **Containerization**: Docker + Docker Compose (standalone `docker-compose.yml` for prod and `docker-compose.dev.yml` for dev)
 
 ### Directory Layout
-* `/agents/`: Six specialized AI agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin`.
-* `/api/`: FastAPI routers and endpoints representing core CRM operations, agent triggers, and WebSocket telemetry.
+* `/agents/`: Specialized AI agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin` (Lead Qualification, Email Intelligence, Sales Pipeline, Customer Success, Meeting Scheduler, Analytics, Voice Call, WhatsApp, Custom Agent Builder).
+* `/api/`: Modular FastAPI routers (leads, deals, customers, emails, meetings, analytics, voice calls, WhatsApp, forecasting, custom agents, i18n, WebSockets).
 * `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), and DB connection setup (`connection.py`).
-* `/frontend/`: Production React + TypeScript SPA with Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
+* `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), etc.
+* `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`), Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, events, and background tasks.
+
+---
+
+## 🚀 Specialized Platform Features
+
+1. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`):
+   - Real-time speech turn analysis, buyer intent scoring, and dynamic objection battle-cards.
+   - Post-call automated CRM synthesis, action item extraction, and audio intelligence playback.
+2. **WhatsApp Business Multi-Agent Hub** (`/api/whatsapp`, `/agents/whatsapp_agent.py`, `frontend/src/features/whatsapp`):
+   - Omnichannel WhatsApp chat with 24/7 AI Auto-Pilot lead qualification and customer support.
+   - Broadcast template messaging campaigns, conversation tagging, search, and handoff archiving.
+3. **Advanced Monte Carlo & ML Revenue Forecasting** (`/api/forecasting`, `/services/forecasting_service.py`, `frontend/src/features/forecasting`):
+   - Stochastic Monte Carlo simulations (P10 conservative, P50 expected, P90 optimistic confidence bounds).
+   - Monthly ARR progression charts vs targets, pipeline stage velocity & hazard conversion matrix.
+   - Saved scenario comparison table and side-by-side executive review charts.
+4. **Multi-Language Support (I18n)** (`/api/i18n`, `/services/i18n_service.py`, `frontend/src/features/multi-language`):
+   - Dynamic translation management system with RTL/LTR layout synchronization (e.g. Urdu, Arabic).
+5. **No-Code Custom Agent Builder** (`/api/custom-agents`, `/agents/custom_agent_builder.py`, `frontend/src/features/custom-agents`):
+   - Visual creator for custom AI agents with customizable prompts, triggers, toolkits, and testing playground.
 
 ---
 
@@ -38,7 +58,7 @@ This project is a production-ready CRM system powered by a multi-agent AI archit
 
 ### 2. API Design & FastAPI Rules
 * **Routers**: Organize endpoints inside modular routers in `/api/`. Include all routers in `/main.py`.
-* **Request/Response Validation**: Always use Pydantic models (Pydantic V2) for validating incoming payloads and defining response schemas (`response_model`).
+* **Request/Response Validation**: Always use Pydantic models (Pydantic V2) for validating incoming payloads and defining response schemas (`response_model`). Use `Annotated[List[T], Field(min_length=N)]` for list length constraints.
 * **Dependency Injection**: Use `Depends(get_db)` to manage database sessions cleanly and ensure connection cleanup.
 * **HTTP Exceptions**: Always raise standard `HTTPException` with meaningful detail strings instead of custom raw responses for client errors.
 
@@ -47,6 +67,7 @@ This project is a production-ready CRM system powered by a multi-agent AI archit
 * **UUID Keys**: Use UUIDs as primary keys for all tables (e.g. `uuid.uuid4`).
 * **Indexes**: Add index columns for high-query fields (e.g. `email` on contacts, `stage` on deals) to optimize lookup performance.
 * **Relationships**: Specify explicit `relationship()` definitions and `back_populates` for related tables to enable clean joins.
+* **Primitive Coercion**: When reading SQLAlchemy column values in Python expressions, loops, or dictionary keys, explicitly cast with `str()`, `int()`, or `float()` to prevent type checker mismatches.
 
 ### 4. Agent Development
 * **BaseAgent Inheritance**: All new agents must inherit from `BaseAgent` in `agents/base_agent.py`.
@@ -55,14 +76,19 @@ This project is a production-ready CRM system powered by a multi-agent AI archit
 * **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
 * **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
 
-### 5. Testing Guidelines
+### 5. Frontend Development
+* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/`.
+* **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
+* **Strict Type Safety**: Run `npm run type-check` and `npm run build` after changes to verify zero errors.
+
+### 6. Testing Guidelines
 * **Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio`.
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
-* **Directory**: Place tests in the `tests/` directory (create if not present) matching the structure of the application.
+* **Directory**: Place tests in the `tests/` directory matching the structure of the application.
 
-### 6. Git Workflow
+### 7. Git Workflow
 * **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
-* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add lead scoring threshold configuration`).
+* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add voice call intelligence analytics`).
 
 ---
 
@@ -70,11 +96,11 @@ This project is a production-ready CRM system powered by a multi-agent AI archit
 
 We provide modular, project-specific AI skills inside `.agents/skills/`. Refer to them for deep guidelines:
 
-1. [Project Architecture](file:///Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md) - Understanding agent collaboration and workflow orchestration.
-2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints and schemas.
-3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents.
+1. [Project Architecture](file:///Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md) - Understanding agent collaboration, feature-sliced architecture, and workflow orchestration.
+2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints, services, dependencies, and schemas.
+3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents and custom agent builders.
 4. [Frontend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md) - Developing React 19 + TypeScript features, components, and TanStack Query state.
-5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models and schemas.
+5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models, schemas, and migrations.
 6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
 7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
 
