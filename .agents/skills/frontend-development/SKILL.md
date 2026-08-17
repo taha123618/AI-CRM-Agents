@@ -9,7 +9,7 @@ Use this skill when developing, refactoring, or extending the React + TypeScript
 
 ## 🏗️ Architectural Standards (Feature-Sliced Design)
 
-The frontend uses a modern, scalable, feature-sliced architecture with 14 domain features:
+The frontend uses a modern, scalable, feature-sliced architecture with 16 domain features:
 
 ```
 frontend/src/
@@ -28,6 +28,8 @@ frontend/src/
 │   ├── leads/                   # LeadsFeature (Qualification table, live scores, edit modals)
 │   ├── deals/                   # DealsFeature (Drag-and-drop Kanban board, deal health score, probability)
 │   ├── customers/               # CustomersFeature (Churn probability gauge, health monitoring, telemetry)
+│   ├── journey/                 # JourneyFeature (Customer lifecycle pipeline, ARR radar, rescue playbooks)
+│   ├── sequences/               # SequencesFeature (AI SDR cadences, dynamic lead enrollment, step copy)
 │   ├── emails/                  # EmailsFeature (Smart inbox, emotion badges, editable AI reply drafts)
 │   ├── meetings/                # MeetingsFeature (Agenda builder, auto-prep materials, attendees)
 │   ├── analytics/               # AnalyticsFeature & ReportsFeature (Predictive forecasting & JSON export)

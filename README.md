@@ -104,6 +104,16 @@ AgentOrchestrator  ──── BackgroundTasks (async, in-process)
 - **1-Click Smart Proposal Studio**: Automated enterprise pitch deck with dynamic tier pricing, SLA terms, e-signature simulation, and markdown export.
 - **Autonomous Workflow Triggers**: Full CRUD automation rules engine with live AI Orchestrator execution.
 
+### 🧭 AI Autonomous Customer Journey & Churn Prevention Studio
+- **Lifecycle Stage Pipeline**: Track distribution of accounts across `Onboarding`, `Adoption`, `Expansion`, `Renewal`, and `At-Risk` stages with stage-by-stage ARR analytics.
+- **Health Decay & Churn Risk Radar**: Real-time telemetry monitoring identifying vulnerable accounts before contract expiration.
+- **1-Click AI Rescue Interventions**: Dispatch autonomous playbooks (Executive Sponsor Check-in, Feature Coaching, NPS Sentiment Survey, Renewal Lock-in) powered by `CustomerSuccessAgent`.
+
+### 🚀 AI SDR Multi-Touch Outreach & Cadence Studio
+- **Omnichannel Cadence Builder**: Multi-touch outreach sequences orchestrating Email, WhatsApp, and Voice AI briefing steps with custom delay schedules.
+- **Autonomous Lead Enrollment**: 1-click cohort enrollment syncing target personas with active cadences.
+- **Dynamic AI Step Copy Personalization**: Live LLM generation injecting prospect pain points, value metrics, and low-friction CTAs.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -541,6 +551,9 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 - 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
 - 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
 - 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- ⚔️ **AI Deal War Room**: [`docs/war-room.md`](docs/war-room.md)
+- 🧭 **Customer Journey & Churn Prevention**: [`docs/customer-journey.md`](docs/customer-journey.md)
+- 🚀 **AI SDR Outreach Cadences**: [`docs/sdr-sequences.md`](docs/sdr-sequences.md)
 - 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
 
 ### Technical Resources

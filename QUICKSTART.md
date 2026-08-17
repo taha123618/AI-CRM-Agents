@@ -188,6 +188,42 @@ curl -X POST http://localhost:8000/api/forecasting/simulate \
   }'
 ```
 
+### Deal War Room — Generate AI Proposal
+
+```bash
+curl -X POST http://localhost:8000/api/war-room/deals/1/proposal \
+  -H "Content-Type: application/json" \
+  -d '{
+    "discount_pct": 10,
+    "sla_tier": "Enterprise Premier",
+    "payment_terms": "Annual Upfront"
+  }'
+```
+
+### Customer Journey — Trigger Autonomous Churn Intervention
+
+```bash
+curl -X POST http://localhost:8000/api/journey/interventions/trigger \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": "cust-uuid-here",
+    "intervention_type": "executive_check_in",
+    "custom_notes": "Urgent retention protocol."
+  }'
+```
+
+### AI SDR — Enroll Prospects & Execute Step
+
+```bash
+curl -X POST http://localhost:8000/api/sequences/seq-uuid-here/execute-step \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channel": "email",
+    "step_number": 1,
+    "custom_note": "Initial qualification touchpoint."
+  }'
+```
+
 ---
 
 ## 🏗️ Project Structure
@@ -195,14 +231,14 @@ curl -X POST http://localhost:8000/api/forecasting/simulate \
 ```
 ai-crm-agents/
 ├── agents/                    # 9 AI Agents (BaseAgent subclasses)
-├── api/                       # FastAPI routers (leads, deals, customers, voice-calls, whatsapp, forecasting, custom-agents, i18n…)
+├── api/                       # FastAPI routers (leads, deals, customers, voice-calls, whatsapp, forecasting, custom-agents, i18n, war-room, journey, sequences…)
 ├── services/                  # Business services (forecasting, i18n)
-├── database/                  # SQLAlchemy models, connection, schema.sql
+├── database/                  # SQLAlchemy models, connection, seed.py, schema.sql
 ├── workflows/orchestrator.py  # Central agent coordinator
 ├── alembic/                   # Database migration scripts
-├── tests/                     # Unit & integration tests
-├── frontend/                  # React 19 + TypeScript SPA (13 feature modules)
-├── docs/                      # Feature documentation (i18n)
+├── tests/                     # Unit & integration tests (92+ pytest tests)
+├── frontend/                  # React 19 + TypeScript SPA (16 feature modules)
+├── docs/                      # Feature documentation (war-room, customer-journey, sdr-sequences, voice-ai, forecasting…)
 ├── .agents/                   # AI assistant configuration
 │   ├── AGENTS.md              #   Central rules (single source of truth)
 │   ├── skills/                #   7 modular skill files
@@ -260,6 +296,14 @@ ai-crm-agents/
 | `GET /api/i18n/languages` | List languages |
 | `POST /api/i18n/languages` | Create language |
 | `GET /api/i18n/translations/{lang}` | Get translations |
+| `GET /api/war-room/deals` | War Room deal strategies & SWOT |
+| `POST /api/war-room/deals/{id}/proposal` | Smart proposal generator |
+| `GET/POST /api/war-room/automations` | Workflow automation triggers CRUD |
+| `GET /api/journey/stages` | Customer lifecycle ARR aggregation |
+| `POST /api/journey/interventions/trigger` | Trigger autonomous retention play |
+| `GET /api/sequences` | List AI SDR outreach sequences |
+| `POST /api/sequences/{id}/enroll` | Enroll contacts into cadence |
+| `POST /api/sequences/{id}/execute-step` | Live step execution via agent fleet |
 
 ---
 

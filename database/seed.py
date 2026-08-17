@@ -14,6 +14,10 @@ from database.models import (
     Email,
     Language,
     Translation,
+    CustomerIntervention,
+    OutreachSequence,
+    SequenceEnrollment,
+    AutomationRule,
 )
 
 
@@ -399,10 +403,152 @@ def seed_database(db: Session):
     seed_languages_and_translations(db)
     seed_custom_agents(db)
     seed_voice_and_whatsapp(db)
+    seed_journey_and_sequences(db)
 
     print(
-        "Database seeding completed successfully! Added companies, contacts, deals, customers, languages, custom agents, voice calls, and WhatsApp chats."
+        "Database seeding completed successfully! Added companies, contacts, deals, customers, languages, custom agents, voice calls, WhatsApp chats, customer journey interventions, and SDR outreach cadences."
     )
+
+
+def seed_journey_and_sequences(db: Session):
+    """Seed customer journey interventions and SDR outreach cadences if not present."""
+    if db.query(CustomerIntervention).count() == 0:
+        custs = db.query(Customer).limit(2).all()
+        if custs:
+            intv1 = CustomerIntervention(
+                id=uuid.uuid4(),
+                customer_id=custs[0].id,
+                customer_name=custs[0].company.name if custs[0].company else "Acme Corporation",
+                intervention_type="executive_check_in",
+                status="completed",
+                target_agent="customer_success_agent",
+                triggered_reason="Mid-term health score milestone check",
+                action_summary="Delivered adoption review deck and scheduled executive sync.",
+                ai_playbook="Executive QBR scheduled with sponsor. Platform expansion metrics shared.",
+            )
+            db.add(intv1)
+
+            if len(custs) > 1:
+                intv2 = CustomerIntervention(
+                    id=uuid.uuid4(),
+                    customer_id=custs[1].id,
+                    customer_name=custs[1].company.name if custs[1].company else "TechStart Inc",
+                    intervention_type="feature_adoption_nudge",
+                    status="active",
+                    target_agent="whatsapp_agent",
+                    triggered_reason="License usage below 35% benchmark",
+                    action_summary="Dispatched WhatsApp interactive guide to engineering champions.",
+                    ai_playbook="Automated WhatsApp coaching sent. Rep follow-up configured.",
+                )
+                db.add(intv2)
+            db.commit()
+
+    if db.query(OutreachSequence).count() == 0:
+        seq1 = OutreachSequence(
+            id=uuid.uuid4(),
+            name="Enterprise RevOps Inbound Hyper-Conversion",
+            status="active",
+            channel="multichannel",
+            target_persona="VP of Revenue Operations / CRO",
+            enrolled_count=48,
+            replied_count=19,
+            conversion_rate_pct=39.5,
+            steps=[
+                {
+                    "step_number": 1,
+                    "channel": "email",
+                    "delay_days": 0,
+                    "subject": "Quick question on your CRM agent automation strategy",
+                    "template": "Hi {{first_name}},\n\nNoticed {{company_name}} is scaling sales operations. How is your team currently handling inbound qualification latency?\n\nOur autonomous agent fleet reduces response time from 4 hours to 8 seconds.\n\nOpen to a 5-minute preview this week?",
+                },
+                {
+                    "step_number": 2,
+                    "channel": "whatsapp",
+                    "delay_days": 2,
+                    "subject": "WhatsApp Auto-Pilot Demo",
+                    "template": "Hi {{first_name}}, following up on my note! Here is a 30-second live test of our WhatsApp AI lead qualifier. Let me know what you think!",
+                },
+                {
+                    "step_number": 3,
+                    "channel": "email",
+                    "delay_days": 5,
+                    "subject": "Case Study: 3.8x Pipeline Velocity for Enterprise SaaS",
+                    "template": "Hi {{first_name}},\n\nWanted to share how similar teams scaled deal conversion without adding headcount. Would you like to review the architecture deck?",
+                },
+                {
+                    "step_number": 4,
+                    "channel": "voice",
+                    "delay_days": 8,
+                    "subject": "AI SDR Executive Briefing Call",
+                    "template": "Automated Voice AI briefing offering personalized objection breakdown.",
+                },
+            ],
+        )
+
+        seq2 = OutreachSequence(
+            id=uuid.uuid4(),
+            name="Stalled Evaluation Re-engagement & Ghosting Rescue",
+            status="active",
+            channel="email",
+            target_persona="Head of Sales / Deal Evaluator",
+            enrolled_count=22,
+            replied_count=7,
+            conversion_rate_pct=31.8,
+            steps=[
+                {
+                    "step_number": 1,
+                    "channel": "email",
+                    "delay_days": 0,
+                    "subject": "Updated proposal & executive ROI benchmark for {{company_name}}",
+                    "template": "Hi {{first_name}},\n\nWanted to see if priorities shifted or if you need additional security validation for the board review?",
+                },
+                {
+                    "step_number": 2,
+                    "channel": "email",
+                    "delay_days": 4,
+                    "subject": "Graceful permission to close your file",
+                    "template": "Hi {{first_name}},\n\nUsually when I don't hear back, it means timing is off. Should I pause this evaluation for next quarter?",
+                },
+            ],
+        )
+
+        db.add_all([seq1, seq2])
+        db.commit()
+
+    if db.query(AutomationRule).count() == 0:
+        rule1 = AutomationRule(
+            id=uuid.uuid4(),
+            name="High Value Lead ➔ Instant WhatsApp Auto-Pilot Greeting",
+            trigger_event="lead_score_above",
+            trigger_threshold="80",
+            action_agent="whatsapp_agent",
+            action_type="send_welcome_template",
+            status="active",
+            executions_count=14,
+        )
+        rule2 = AutomationRule(
+            id=uuid.uuid4(),
+            name="Deal Stage to Proposal ➔ Auto-Generate DocuSign Pitch Deck",
+            trigger_event="deal_stage_changed",
+            trigger_threshold="proposal",
+            action_agent="proposal_agent",
+            action_type="draft_enterprise_proposal",
+            status="active",
+            executions_count=8,
+        )
+        rule3 = AutomationRule(
+            id=uuid.uuid4(),
+            name="Churn Risk Detected (>60%) ➔ Trigger Executive CS Escalation",
+            trigger_event="churn_risk_above",
+            trigger_threshold="60",
+            action_agent="customer_success_agent",
+            action_type="schedule_retention_call",
+            status="active",
+            executions_count=5,
+        )
+        db.add_all([rule1, rule2, rule3])
+        db.commit()
+
 
 
 def seed_languages_and_translations(db: Session):

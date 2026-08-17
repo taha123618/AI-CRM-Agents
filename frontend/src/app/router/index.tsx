@@ -23,6 +23,8 @@ import { VoiceAIPage } from '@/pages/VoiceAIPage';
 import { WhatsAppPage } from '@/pages/WhatsAppPage';
 import { ForecastingPage } from '@/pages/ForecastingPage';
 import { WarRoomPage } from '@/pages/WarRoomPage';
+import { JourneyPage } from '@/pages/JourneyPage';
+import { SequencesPage } from '@/pages/SequencesPage';
 import { LanguagesPage } from '@/pages/LanguagesPage';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 
@@ -43,6 +45,8 @@ function RouteSync() {
       'whatsapp',
       'forecasting',
       'war-room',
+      'journey',
+      'sequences',
       'analytics',
       'reports',
       'agents',
@@ -95,6 +99,8 @@ export function AppRouter() {
           <Route path="/whatsapp" element={<WhatsAppPage />} />
           <Route path="/forecasting" element={<ForecastingPage />} />
           <Route path="/war-room" element={<WarRoomPage />} />
+          <Route path="/journey" element={<JourneyPage />} />
+          <Route path="/sequences" element={<SequencesPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/agents" element={<AgentsPage />} />

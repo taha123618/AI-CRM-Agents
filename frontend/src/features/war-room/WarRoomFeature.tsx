@@ -152,7 +152,7 @@ export function WarRoomFeature() {
           ) : !deals?.length ? (
             <div className="text-xs text-slate-500 py-2">No deals registered in pipeline yet.</div>
           ) : (
-            deals.map((d) => {
+            deals?.map((d) => {
               const isSelected = activeDeal?.id === d.id;
               return (
                 <button
@@ -258,7 +258,7 @@ export function WarRoomFeature() {
                   Recommended War Room Play
                 </span>
                 <p className="text-xs text-slate-200 mt-1.5 font-medium leading-relaxed">
-                  {strategy.recommended_win_actions[0]}
+                  {strategy.recommended_win_actions?.[0] || 'Propose tailored SOC2 security pack & dedicated solution architect onboarding SLA'}
                 </p>
               </div>
 
@@ -281,7 +281,7 @@ export function WarRoomFeature() {
               { id: 'swot', label: 'SWOT Matrix & Battle-Cards', icon: Shield },
               { id: 'stakeholders', label: 'Buying Committee Map', icon: Users },
               { id: 'actions', label: 'Win Action Checklist', icon: Target },
-            ].map((tab) => {
+            ]?.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
@@ -550,12 +550,12 @@ export function WarRoomFeature() {
                 </h2>
                 <span className="text-[10px] text-slate-400 font-mono">
                   {Object.values(completedActions).filter(Boolean).length} /{' '}
-                  {strategy.recommended_win_actions.length} Completed
+                  {(strategy.recommended_win_actions || []).length} Completed
                 </span>
               </div>
 
               <div className="space-y-3">
-                {strategy.recommended_win_actions.map((act, idx) => {
+                {(strategy.recommended_win_actions || []).map((act, idx) => {
                   const isDone = Boolean(completedActions[act]);
                   return (
                     <div

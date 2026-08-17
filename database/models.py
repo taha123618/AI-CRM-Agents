@@ -177,6 +177,11 @@ class Customer(Base):
 
     # Relationships
     company = relationship("Company", back_populates="customers")
+    interventions = relationship(
+        "CustomerIntervention",
+        back_populates="customer",
+        cascade="all, delete-orphan",
+    )
 
     __table_args__ = (
         CheckConstraint(
@@ -609,3 +614,91 @@ class ForecastSimulation(Base):
         JSONB, default=dict
     )  # distribution curve points, histogram
     created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class CustomerIntervention(Base):
+    __tablename__ = "customer_interventions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    customer_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("customers.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    customer_name = Column(String(200), nullable=True)
+    intervention_type = Column(String(100), nullable=False)
+    status = Column(String(50), default="active")  # active, completed, cancelled
+    target_agent = Column(String(100), default="customer_success_agent")
+    triggered_reason = Column(Text, nullable=True)
+    action_summary = Column(Text, nullable=True)
+    ai_playbook = Column(Text, nullable=True)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+    # Relationships
+    customer = relationship("Customer", back_populates="interventions")
+
+
+class OutreachSequence(Base):
+    __tablename__ = "outreach_sequences"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(200), nullable=False)
+    status = Column(String(50), default="active")  # active, paused, draft
+    channel = Column(String(50), default="multichannel")
+    target_persona = Column(String(200), nullable=False)
+    enrolled_count = Column(Integer, default=0)
+    replied_count = Column(Integer, default=0)
+    conversion_rate_pct = Column(Float, default=0.0)
+    steps = Column(JSONB, default=list)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    enrollments = relationship(
+        "SequenceEnrollment",
+        back_populates="sequence",
+        cascade="all, delete-orphan",
+    )
+
+
+class SequenceEnrollment(Base):
+    __tablename__ = "sequence_enrollments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    sequence_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("outreach_sequences.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    contact_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("contacts.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    status = Column(String(50), default="active")  # active, completed, paused
+    current_step = Column(Integer, default=1)
+    enrolled_at = Column(DateTime, server_default=func.now(), index=True)
+
+    # Relationships
+    sequence = relationship("OutreachSequence", back_populates="enrollments")
+    contact = relationship("Contact")
+
+
+class AutomationRule(Base):
+    __tablename__ = "automation_rules"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(200), nullable=False)
+    trigger_event = Column(String(100), nullable=False)
+    trigger_threshold = Column(String(100), nullable=False)
+    action_agent = Column(String(100), nullable=False)
+    action_type = Column(String(100), nullable=False)
+    status = Column(String(50), default="active")  # active, paused
+    executions_count = Column(Integer, default=0)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+

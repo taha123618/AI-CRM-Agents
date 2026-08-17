@@ -11,6 +11,8 @@ export type ActivePage =
   | 'reports'
   | 'forecasting'
   | 'war-room'
+  | 'journey'
+  | 'sequences'
   | 'voice-ai'
   | 'whatsapp'
   | 'agents'

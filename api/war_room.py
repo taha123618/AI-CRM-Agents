@@ -1,32 +1,31 @@
-"""FastAPI Router for AI Deal War Room, Strategy Matrix, and Smart Proposal Studio."""
+"""FastAPI Router for AI Deal War Room, Strategy Matrix, and Smart Proposal Studio (Database-Backed)."""
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import desc, asc
 from typing import Annotated, Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 import uuid
 
 from database.connection import get_db
-from database.models import Deal, Customer, Contact
+from database.models import Deal, Customer, Contact, AutomationRule
 from workflows.orchestrator import AgentOrchestrator
 
 router = APIRouter()
 _orchestrator = AgentOrchestrator()
 
-# In-memory store for custom multi-agent automation trigger rules
-_AUTOMATION_RULES: List[Dict[str, Any]] = [
+# Default starter automation rules if table is empty
+_DEFAULT_RULES = [
     {
-        "id": "rule-1",
         "name": "High Value Lead ➔ Instant WhatsApp Auto-Pilot Greeting",
         "trigger_event": "lead_score_above",
-        "trigger_threshold": 80,
+        "trigger_threshold": "80",
         "action_agent": "whatsapp_agent",
         "action_type": "send_welcome_template",
         "status": "active",
         "executions_count": 14,
     },
     {
-        "id": "rule-2",
         "name": "Deal Stage to Proposal ➔ Auto-Generate DocuSign Pitch Deck",
         "trigger_event": "deal_stage_changed",
         "trigger_threshold": "proposal",
@@ -36,16 +35,47 @@ _AUTOMATION_RULES: List[Dict[str, Any]] = [
         "executions_count": 8,
     },
     {
-        "id": "rule-3",
         "name": "Churn Risk Detected (>60%) ➔ Trigger Executive CS Escalation",
         "trigger_event": "churn_risk_above",
-        "trigger_threshold": 60,
+        "trigger_threshold": "60",
         "action_agent": "customer_success_agent",
         "action_type": "schedule_retention_call",
         "status": "active",
         "executions_count": 5,
     },
 ]
+
+
+def _ensure_automation_rules_seeded(db: Session):
+    """Seed initial automation rules in PostgreSQL database if empty."""
+    if db.query(AutomationRule).count() == 0:
+        for r in _DEFAULT_RULES:
+            rule = AutomationRule(
+                id=uuid.uuid4(),
+                name=r["name"],
+                trigger_event=r["trigger_event"],
+                trigger_threshold=str(r["trigger_threshold"]),
+                action_agent=r["action_agent"],
+                action_type=r["action_type"],
+                status=r["status"],
+                executions_count=r["executions_count"],
+            )
+            db.add(rule)
+        db.commit()
+
+
+def _format_rule(r: AutomationRule) -> Dict[str, Any]:
+    return {
+        "id": str(r.id),
+        "name": r.name,
+        "trigger_event": r.trigger_event,
+        "trigger_threshold": r.trigger_threshold,
+        "action_agent": r.action_agent,
+        "action_type": r.action_type,
+        "status": r.status,
+        "executions_count": r.executions_count or 0,
+        "created_at": r.created_at.isoformat() if r.created_at else None,
+    }
 
 
 # ============================================================================
@@ -75,13 +105,31 @@ class CreateAutomationRuleSchema(BaseModel):
 
 
 @router.get("/deals", response_model=List[Dict[str, Any]])
-def list_war_room_deals(db: Session = Depends(get_db)):
-    """List deals available for war room multi-agent strategic alignment."""
-    deals = db.query(Deal).all()
+def list_war_room_deals(
+    search: Optional[str] = Query(None, description="Search deal title or company"),
+    stage: Optional[str] = Query(None, description="Filter by deal stage"),
+    sort_by: str = Query("health_score", description="Sort field"),
+    order: str = Query("desc", description="Sort order: asc or desc"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """List deals available for war room multi-agent strategic alignment with search, filtering, and sorting."""
+    query = db.query(Deal)
+
+    if stage:
+        query = query.filter(Deal.stage == stage)
+
+    deals = query.all()
     results = []
 
     for d in deals:
         comp_name = d.company.name if d.company else "Enterprise Account"
+        if search:
+            q = search.lower()
+            if q not in d.name.lower() and q not in comp_name.lower():
+                continue
+
         results.append({
             "id": str(d.id),
             "title": d.name,
@@ -94,23 +142,35 @@ def list_war_room_deals(db: Session = Depends(get_db)):
             "win_probability_pct": int(min(max((d.health_score or 75) * 0.9, 20), 98)),
         })
 
-    return results
+    # Sort
+    reverse = (order.lower() == "desc")
+    if sort_by == "value":
+        results.sort(key=lambda x: x["value"], reverse=reverse)
+    elif sort_by == "title":
+        results.sort(key=lambda x: x["title"].lower(), reverse=reverse)
+    else:
+        results.sort(key=lambda x: x["health_score"], reverse=reverse)
+
+    return results[skip : skip + limit]
 
 
 @router.get("/deals/{deal_id}/strategy", response_model=Dict[str, Any])
 def get_deal_strategy_matrix(deal_id: str, db: Session = Depends(get_db)):
     """Generate multi-agent war room consensus, SWOT, competitor battle-cards, and stakeholder influence map."""
-    deal = db.query(Deal).filter(Deal.id == deal_id).first()
+    deal = None
+    try:
+        val_uuid = uuid.UUID(deal_id)
+        deal = db.query(Deal).filter(Deal.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        deal = db.query(Deal).filter(Deal.id == deal_id).first()
+
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
 
     company_name = deal.company.name if deal.company else "Enterprise Prospect"
     deal_value = float(deal.value) if deal.value else 50000.0
 
-    # Cross-agent consensus scoring
     consensus_score = int(deal.health_score or 78)
-    lead_sentiment = "High Intent" if consensus_score >= 75 else "Moderate"
-    pipeline_velocity = "Accelerating" if consensus_score >= 70 else "At Risk"
 
     return {
         "deal_id": str(deal.id),
@@ -178,65 +238,112 @@ def get_deal_strategy_matrix(deal_id: str, db: Session = Depends(get_db)):
                 "counter_objection": "Demonstrate our full WhatsApp 24/7 autonomous lead qualification fleet.",
                 "kill_shot": "Highlight customizable no-code agent builder and Monte Carlo revenue simulations.",
             },
+            {
+                "competitor": "Gong / Chorus",
+                "vulnerabilities": "Recording-only playback with no autonomous multi-touch outreach orchestration",
+                "counter_objection": "Show end-to-end CRM auto-pilot where insights immediately trigger workflows.",
+                "kill_shot": "Demonstrate voice call real-time objection battle-card triggers in live calls.",
+            },
+        ],
+        "buying_committee_influence_map": [
+            {
+                "name": "VP of Revenue Operations",
+                "role": "Economic Buyer",
+                "stance": "Champion",
+                "influence_score": 95,
+                "key_priority": "Pipeline velocity & manual CRM data entry reduction",
+            },
+            {
+                "name": "Chief Information Security Officer (CISO)",
+                "role": "Technical Gatekeeper",
+                "stance": "Neutral",
+                "influence_score": 85,
+                "key_priority": "SOC2 Type II compliance, encryption in transit & zero data retention",
+            },
+            {
+                "name": "Director of Customer Success",
+                "role": "End-User Stakeholder",
+                "stance": "Champion",
+                "influence_score": 75,
+                "key_priority": "Automated churn detection and telemetry health scoring",
+            },
         ],
         "stakeholder_influence_map": [
             {
                 "name": "VP of Revenue Operations",
                 "role": "Economic Buyer",
                 "stance": "Champion",
-                "influence": "High",
-                "strategy": "Deliver ROI business case showing 3.8x faster lead response times.",
+                "influence_score": 95,
+                "key_priority": "Pipeline velocity & manual CRM data entry reduction",
             },
             {
-                "name": "Head of Sales Engineering",
-                "role": "Technical Evaluator",
+                "name": "Chief Information Security Officer (CISO)",
+                "role": "Technical Gatekeeper",
                 "stance": "Neutral",
-                "influence": "High",
-                "strategy": "Provide OpenAPI swagger docs and architecture sandbox walkthrough.",
+                "influence_score": 85,
+                "key_priority": "SOC2 Type II compliance, encryption in transit & zero data retention",
             },
             {
-                "name": "Procurement Lead",
-                "role": "Contract Gatekeeper",
-                "stance": "Cautionary",
-                "influence": "Medium",
-                "strategy": "Attach standard mutual NDA and DPA security addendum with tier discount.",
+                "name": "Director of Customer Success",
+                "role": "End-User Stakeholder",
+                "stance": "Champion",
+                "influence_score": 75,
+                "key_priority": "Automated churn detection and telemetry health scoring",
             },
         ],
         "recommended_win_actions": [
-            "Trigger 1-Click Proposal Studio to generate customized Tier Proposal Deck",
-            "Send WhatsApp Broadcast demo recap directly to VP of RevOps",
-            "Schedule 15-min Technical Security Q&A with Solutions Architect",
+            "Propose tailored SOC2 security pack & dedicated solution architect onboarding SLA",
+            "Offer 10% multi-year annual upfront discount to neutralize legacy competitor renewal",
+            "Schedule executive sponsor alignment call with VP of RevOps",
+            "Demonstrate live WhatsApp AI auto-pilot in a 15-minute technical review",
         ],
     }
 
 
 @router.post("/proposals/generate", response_model=Dict[str, Any])
-def generate_deal_proposal(payload: GenerateProposalSchema, db: Session = Depends(get_db)):
-    """Auto-generate structured enterprise proposal deck with tier pricing and SLA terms."""
-    deal = db.query(Deal).filter(Deal.id == payload.deal_id).first()
+@router.post("/deals/{deal_id}/proposal", response_model=Dict[str, Any])
+def generate_deal_proposal(
+    payload: GenerateProposalSchema,
+    deal_id: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """Generate a 1-click customized AI proposal with tier pricing, SLA, and e-signature URL."""
+    target_deal_id = deal_id or payload.deal_id
+    deal = None
+    try:
+        val_uuid = uuid.UUID(target_deal_id)
+        deal = db.query(Deal).filter(Deal.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        deal = db.query(Deal).filter(Deal.id == target_deal_id).first()
+
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
 
-    company_name = deal.company.name if deal.company else "Enterprise Prospect"
-    base_value = float(deal.value) if deal.value else 60000.0
+    company_name = deal.company.name if deal.company else "Enterprise Client"
+    base_deal_value = float(deal.value) if deal.value else 60000.0
 
-    multiplier = 1.5 if payload.tier == "enterprise" else (1.0 if payload.tier == "growth" else 0.6)
-    subtotal = round(base_value * multiplier, 2)
-    discount_pct = (payload.custom_discount_pct or 0.0)
-    discount = round(subtotal * (discount_pct / 100.0), 2)
+    tier_multipliers = {
+        "starter": 0.5,
+        "growth": 0.85,
+        "enterprise": 1.25,
+    }
+    multiplier = tier_multipliers.get(payload.tier.lower(), 1.0)
+    subtotal = base_deal_value * multiplier
+
+    discount_pct = payload.custom_discount_pct or 0.0
+    discount = subtotal * (discount_pct / 100.0)
     final_arr = subtotal - discount
 
-    proposal_id = f"PROP-{str(uuid.uuid4())[:8].upper()}"
+    proposal_id = f"PROP-{uuid.uuid4().hex[:8].upper()}"
 
     executive_summary = (
-        f"This executive proposal outlines the deployment of the AI-Powered Multi-Agent CRM platform "
-        f"for {company_name}. By deploying specialized autonomous agents across Lead Qualification, "
-        f"Voice AI Intelligence, and 24/7 WhatsApp Business hubs, {company_name} will accelerate sales pipeline "
-        f"velocity, reduce inbound lead response latency from hours to seconds, and forecast revenue with Monte Carlo precision."
+        f"Customized Multi-Agent AI CRM Proposal prepared for {company_name}. "
+        f"This agreement provides autonomous lead qualification, real-time voice call intelligence, "
+        f"24/7 WhatsApp customer auto-pilot, and Monte Carlo ARR revenue forecasting."
     )
 
     modules_included = [
-        "24/7 Omnichannel WhatsApp Business Fleet with Audio Intelligence",
+        "Autonomous Multi-Agent Fleet (Lead, Deal, Email, Success, Voice, WhatsApp)",
         "Real-Time Voice Call Intelligence Studio & Objection Battle-Cards",
         "Stochastic Monte Carlo ARR Revenue Forecasting Engine",
         "Visual No-Code Custom Agent Builder & Sandbox",
@@ -273,71 +380,128 @@ def generate_deal_proposal(payload: GenerateProposalSchema, db: Session = Depend
 
 
 @router.get("/automations", response_model=List[Dict[str, Any]])
-def list_automation_rules():
-    """List active multi-agent event trigger automation rules."""
-    return _AUTOMATION_RULES
+def list_automation_rules(
+    search: Optional[str] = Query(None, description="Search rules by name"),
+    status: Optional[str] = Query(None, description="Filter by active or paused"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """List active multi-agent event trigger automation rules from PostgreSQL."""
+    _ensure_automation_rules_seeded(db)
+    query = db.query(AutomationRule)
+
+    if status:
+        query = query.filter(AutomationRule.status == status)
+
+    rules = query.order_by(AutomationRule.created_at.desc()).all()
+    results = []
+    for r in rules:
+        if search and search.lower() not in r.name.lower():
+            continue
+        results.append(_format_rule(r))
+
+    return results[skip : skip + limit]
 
 
 @router.post("/automations", response_model=Dict[str, Any])
-def create_automation_rule(payload: CreateAutomationRuleSchema):
-    """Create a new multi-agent event trigger rule."""
-    new_rule = {
-        "id": f"rule-{uuid.uuid4().hex[:6]}",
-        "name": payload.name,
-        "trigger_event": payload.trigger_event,
-        "trigger_threshold": payload.trigger_threshold,
-        "action_agent": payload.action_agent,
-        "action_type": payload.action_type,
-        "status": "active",
-        "executions_count": 0,
-    }
-    _AUTOMATION_RULES.append(new_rule)
-    return new_rule
+def create_automation_rule(payload: CreateAutomationRuleSchema, db: Session = Depends(get_db)):
+    """Create a new multi-agent event trigger rule in PostgreSQL."""
+    new_rule = AutomationRule(
+        id=uuid.uuid4(),
+        name=payload.name,
+        trigger_event=payload.trigger_event,
+        trigger_threshold=str(payload.trigger_threshold),
+        action_agent=payload.action_agent,
+        action_type=payload.action_type,
+        status="active",
+        executions_count=0,
+    )
+    db.add(new_rule)
+    db.commit()
+    db.refresh(new_rule)
+    return _format_rule(new_rule)
 
 
 @router.put("/automations/{rule_id}", response_model=Dict[str, Any])
-def update_automation_rule(rule_id: str, payload: CreateAutomationRuleSchema):
-    """Update an existing multi-agent event trigger rule."""
-    for rule in _AUTOMATION_RULES:
-        if rule["id"] == rule_id:
-            rule["name"] = payload.name
-            rule["trigger_event"] = payload.trigger_event
-            rule["trigger_threshold"] = payload.trigger_threshold
-            rule["action_agent"] = payload.action_agent
-            rule["action_type"] = payload.action_type
-            return rule
-    raise HTTPException(status_code=404, detail="Automation rule not found")
+def update_automation_rule(rule_id: str, payload: CreateAutomationRuleSchema, db: Session = Depends(get_db)):
+    """Update an existing multi-agent event trigger rule in PostgreSQL."""
+    rule = None
+    try:
+        val_uuid = uuid.UUID(rule_id)
+        rule = db.query(AutomationRule).filter(AutomationRule.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        rule = db.query(AutomationRule).filter(AutomationRule.id == rule_id).first()
+
+    if not rule:
+        raise HTTPException(status_code=404, detail="Automation rule not found")
+
+    rule.name = payload.name
+    rule.trigger_event = payload.trigger_event
+    rule.trigger_threshold = str(payload.trigger_threshold)
+    rule.action_agent = payload.action_agent
+    rule.action_type = payload.action_type
+
+    db.commit()
+    db.refresh(rule)
+    return _format_rule(rule)
 
 
 @router.post("/automations/{rule_id}/execute", response_model=Dict[str, Any])
-async def execute_automation_rule(rule_id: str):
-    """Trigger manual execution of a multi-agent automation rule via AgentOrchestrator and LLM."""
-    for rule in _AUTOMATION_RULES:
-        if rule["id"] == rule_id:
-            rule["executions_count"] += 1
-            result = await _orchestrator.execute_automation_rule(rule)
-            result["executions_count"] = rule["executions_count"]
-            return result
-    raise HTTPException(status_code=404, detail="Automation rule not found")
+async def execute_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+    """Trigger manual execution of a multi-agent automation rule via AgentOrchestrator and persist count in DB."""
+    rule = None
+    try:
+        val_uuid = uuid.UUID(rule_id)
+        rule = db.query(AutomationRule).filter(AutomationRule.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        rule = db.query(AutomationRule).filter(AutomationRule.id == rule_id).first()
+
+    if not rule:
+        raise HTTPException(status_code=404, detail="Automation rule not found")
+
+    rule.executions_count = (rule.executions_count or 0) + 1
+    db.commit()
+    db.refresh(rule)
+
+    result = await _orchestrator.execute_automation_rule(_format_rule(rule))
+    result["executions_count"] = rule.executions_count
+    return result
 
 
 @router.post("/automations/{rule_id}/toggle", response_model=Dict[str, Any])
-def toggle_automation_rule(rule_id: str):
-    """Toggle an automation rule active/paused."""
-    for rule in _AUTOMATION_RULES:
-        if rule["id"] == rule_id:
-            rule["status"] = "paused" if rule["status"] == "active" else "active"
-            return {"status": "success", "rule": rule}
-    raise HTTPException(status_code=404, detail="Automation rule not found")
+def toggle_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+    """Toggle an automation rule active/paused in PostgreSQL."""
+    rule = None
+    try:
+        val_uuid = uuid.UUID(rule_id)
+        rule = db.query(AutomationRule).filter(AutomationRule.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        rule = db.query(AutomationRule).filter(AutomationRule.id == rule_id).first()
+
+    if not rule:
+        raise HTTPException(status_code=404, detail="Automation rule not found")
+
+    rule.status = "paused" if rule.status == "active" else "active"
+    db.commit()
+    db.refresh(rule)
+    return {"status": "success", "rule": _format_rule(rule)}
 
 
 @router.delete("/automations/{rule_id}", response_model=Dict[str, Any])
-def delete_automation_rule(rule_id: str):
-    """Delete an automation rule."""
-    global _AUTOMATION_RULES
-    initial_len = len(_AUTOMATION_RULES)
-    _AUTOMATION_RULES = [r for r in _AUTOMATION_RULES if r["id"] != rule_id]
-    if len(_AUTOMATION_RULES) == initial_len:
-        raise HTTPException(status_code=404, detail="Automation rule not found")
-    return {"status": "success", "deleted_rule_id": rule_id}
+def delete_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+    """Delete an automation rule from PostgreSQL."""
+    rule = None
+    try:
+        val_uuid = uuid.UUID(rule_id)
+        rule = db.query(AutomationRule).filter(AutomationRule.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        rule = db.query(AutomationRule).filter(AutomationRule.id == rule_id).first()
 
+    if not rule:
+        raise HTTPException(status_code=404, detail="Automation rule not found")
+
+    del_id = str(rule.id)
+    db.delete(rule)
+    db.commit()
+    return {"status": "success", "deleted_rule_id": del_id}

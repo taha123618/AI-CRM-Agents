@@ -113,82 +113,33 @@
 ### **No-Code Custom Agent Builder**
 - Visual agent creator interface
 - Configurable prompts, triggers, toolkits
-- Testing playground with live execution
-- Agent lifecycle management (active/inactive/draft)
+### **AI Deal War Room & Strategy Studio**
+- Multi-agent consensus verdicts
+- Account SWOT quadrant matrix
+- Dynamic competitor displacement battle-cards
+- 1-click enterprise proposal studio with tier pricing
+- Full CRUD workflow automation triggers
 
+### **Customer Journey & Churn Prevention Studio**
+- Lifecycle stage progression pipeline (Onboarding, Adoption, Expansion, Renewal, At-Risk)
+- Revenue-at-risk radar and health score decay telemetry
+- 1-click autonomous retention rescue interventions
+- Dynamic database health score boost and resolution workflows
 
-## 🛠️ Tech Stack
-**Backend:**
-- Python + FastAPI
-- PostgreSQL database
-- Redis for caching
-- FastAPI BackgroundTasks for async
-
-**AI/ML:**
-- LangChain for agent orchestration
-- Claude/GPT-4 for intelligence
-- SmartFallbackLLM for zero-config mode
-- Sentiment analysis models
-
-**Frontend:**
-- React 19 + TypeScript
-- Vite build system
-- TailwindCSS
-- TanStack Query v5 + Zustand
-- Recharts for data visualization
-- Real-time updates (WebSocket)
-
-**Integrations:**
-- Gmail/Outlook API
-- Google Calendar
-- WhatsApp Business API
-- Voice/Telephony integration
-- LinkedIn enrichment
-- Slack notifications
-- Zapier webhooks
-
-## 📋 Agent Workflows
-
-### Lead Qualification Flow
-```
-New Lead → Data Enrichment → Scoring → Routing → Auto-Email → CRM Entry
-```
-
-### Email Intelligence Flow
-```
-Incoming Email → Sentiment Analysis → Categorization → Draft Response → Human Review
-```
-
-### Deal Management Flow
-```
-Deal Created → Health Monitoring → Risk Detection → Action Recommendations → Auto-Followup
-```
-
-### Customer Success Flow
-```
-Customer Activity → Health Score → Churn Risk → Retention Trigger → Success Team Alert
-```
-
-### Voice Call Intelligence Flow
-```
-Call Started → Speech Turn Analysis → Objection Detection → Battle-Card → Post-Call Summary → CRM Sync
-```
-
-### WhatsApp Conversational Flow
-```
-Inbound Message → Intent Classification → Auto-Pilot Reply → Tag & Archive → Sales Handoff
-```
-
-### Revenue Forecasting Flow
-```
-Active Deals → Monte Carlo Simulation → P10/P50/P90 Bounds → ARR Trend → Scenario Save
-```
+### **AI SDR Multi-Touch Outreach Cadences**
+- Omnichannel sequence builder (Email, WhatsApp, Voice AI)
+- Configurable day delays and touchpoint schedules
+- Live DB contact search and cohort enrollment
+- Dynamic AI step copy personalization engine targeting prospect pain points
 
 ## 🎨 UI Components
 
 - **Dashboard** - Real-time metrics & agent activity
 - **Contacts** - Enriched contact profiles
 - **Deals** - Visual pipeline with AI insights
+- **War Room** - Strategy studio, SWOT battle-cards, proposal builder
+- **Sequences** - AI SDR cadences, dynamic lead enrollment, step copy generator
+- **Customer Journey** - Lifecycle pipeline, ARR radar, retention rescue playbooks
 - **Inbox** - Smart email management
 - **Calendar** - AI-scheduled meetings
 - **Analytics** - Predictive insights
@@ -264,6 +215,9 @@ Agents communicate via:
 - [x] Advanced forecasting (`docs/forecasting.md`)
 - [x] Multi-language support (`docs/i18n/overview.md`)
 - [x] Custom agent builder (`docs/custom-agents.md`)
+- [x] AI Deal War Room & Strategy Studio (`docs/war-room.md`)
+- [x] Customer Journey & Churn Prevention Studio (`docs/customer-journey.md`)
+- [x] AI SDR Multi-Touch Outreach Cadences (`docs/sdr-sequences.md`)
 - [ ] Mobile app (React Native)
 
 ---
@@ -281,4 +235,7 @@ Agents communicate via:
 - 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
 - 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
 - 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- ⚔️ **AI Deal War Room**: [`docs/war-room.md`](docs/war-room.md)
+- 🧭 **Customer Journey & Churn Prevention**: [`docs/customer-journey.md`](docs/customer-journey.md)
+- 🚀 **AI SDR Outreach Cadences**: [`docs/sdr-sequences.md`](docs/sdr-sequences.md)
 - 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)

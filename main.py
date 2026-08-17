@@ -24,6 +24,8 @@ from api import (
     whatsapp,
     forecasting,
     war_room,
+    journey,
+    sequences,
 )
 from workflows.orchestrator import AgentOrchestrator
 
@@ -178,6 +180,12 @@ app.include_router(
 )
 app.include_router(
     war_room.router, prefix="/api/war-room", tags=["AI Deal War Room"]
+)
+app.include_router(
+    journey.router, prefix="/api/journey", tags=["Customer Journey & Churn Prevention"]
+)
+app.include_router(
+    sequences.router, prefix="/api/sequences", tags=["AI SDR Cadences"]
 )
 
 

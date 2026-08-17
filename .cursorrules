@@ -51,6 +51,12 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Multi-agent consensus verdicts, SWOT quadrant matrices, live competitor battle-cards, and buying committee maps.
    - 1-Click Smart Proposal Studio with tier pricing, SLA terms, and e-signature URL workflows.
    - Multi-Agent Workflow Automation Triggers with full CRUD and live AI Orchestrator execution.
+7. **AI Autonomous Customer Journey & Churn Prevention Studio** (`/api/journey`, `frontend/src/features/journey`):
+   - Telemetry-guided lifecycle stage pipeline (`onboarding`, `adoption`, `expansion`, `renewal`, `at_risk`) and stage ARR aggregation.
+   - Real-time churn probability radar and 1-click autonomous retention intervention playbooks via `CustomerSuccessAgent`.
+8. **AI SDR Multi-Touch Outreach & Cadence Studio** (`/api/sequences`, `frontend/src/features/sequences`):
+   - Omnichannel outreach sequences across Email, WhatsApp, and Voice AI briefings with configurable day delays.
+   - 1-click lead cohort enrollment and live AI prompt-engineered step copy generation.
 
 ---
 

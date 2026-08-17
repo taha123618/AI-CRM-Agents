@@ -73,22 +73,27 @@ The persistence layer uses PostgreSQL with SQLAlchemy 2.0 ORM:
 * **Forecasting**: `ForecastSimulation`.
 * **Custom Agents**: `CustomAgentModel`.
 * **Multi-Language**: `Language`, `TranslationKey`, `Translation`.
+* **Customer Journey**: `CustomerIntervention`.
+* **AI SDR Cadences**: `OutreachSequence`, `SequenceEnrollment`.
 
 ---
 
 ## 🎨 Frontend Feature Architecture
 
 The frontend uses **Feature-Sliced Design** in `frontend/src/features/`:
-* `dashboard/` — Executive KPI summary & live agent feed.
-* `leads/` — Qualification table & enrichment triggers.
-* `deals/` — Drag-and-drop Kanban pipeline & health scores.
-* `customers/` — Churn monitoring & health index gauges.
-* `emails/` — Smart inbox with sentiment badges & AI drafts.
-* `meetings/` — AI calendar & meeting prep agendas.
-* `analytics/` — Comprehensive reports & pipeline metrics.
-* `agents/` — Fleet control center & terminal logs.
-* `voice-ai/` — Call intelligence studio, simulator & transcripts.
-* `whatsapp/` — Omnichannel chat hub, auto-pilot & broadcasts.
-* `forecasting/` — Monte Carlo simulations, ARR trends & scenarios.
-* `custom-agents/` — Visual no-code agent builder & playground.
-* `multi-language/` — Translation manager & RTL/LTR synchronization.
+1. `dashboard/` — Executive KPI summary & live agent feed.
+2. `leads/` — Qualification table & enrichment triggers.
+3. `deals/` — Drag-and-drop Kanban pipeline & health scores.
+4. `customers/` — Churn monitoring & health index gauges.
+5. `emails/` — Smart inbox with sentiment badges & AI drafts.
+6. `meetings/` — AI calendar & meeting prep agendas.
+7. `analytics/` — Comprehensive reports & pipeline metrics.
+8. `agents/` — Fleet control center & terminal logs.
+9. `voice-ai/` — Call intelligence studio, simulator & transcripts.
+10. `whatsapp/` — Omnichannel chat hub, auto-pilot & broadcasts.
+11. `forecasting/` — Monte Carlo simulations, ARR trends & scenarios.
+12. `custom-agents/` — Visual no-code agent builder & playground.
+13. `multi-language/` — Translation manager & RTL/LTR synchronization.
+14. `war-room/` — AI Deal War Room, strategy studio, proposal builder, and workflow triggers.
+15. `journey/` — Customer journey progression, ARR tracking, and retention playbooks.
+16. `sequences/` — AI SDR multi-touch outreach cadences & live execution HUD.
