@@ -702,3 +702,17 @@ class AutomationRule(Base):
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
 
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    entity_type = Column(String(100), nullable=False, index=True)
+    entity_id = Column(String(100), nullable=False, index=True)
+    action = Column(String(100), nullable=False, index=True)
+    actor = Column(String(100), default="system", index=True)
+    details = Column(JSONB, default=dict)
+    ip_address = Column(String(50), nullable=True)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+

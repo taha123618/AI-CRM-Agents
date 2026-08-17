@@ -100,16 +100,26 @@ async def get_deal(deal_id: str, db: Session = Depends(get_db)):
 @router.post("/", response_model=DealResponse)
 async def create_deal(deal: DealCreate, db: Session = Depends(get_db)):
     """Create new deal"""
+    from services.audit_service import record_audit_log
     db_deal = Deal(**deal.model_dump())
     db.add(db_deal)
     db.commit()
     db.refresh(db_deal)
+    record_audit_log(
+        db=db,
+        entity_type="deal",
+        entity_id=str(db_deal.id),
+        action="create",
+        actor="user",
+        details={"name": db_deal.name, "value": db_deal.value, "stage": db_deal.stage},
+    )
     return DealResponse.from_orm_deal(db_deal)
 
 
 @router.put("/{deal_id}", response_model=DealResponse)
 async def update_deal(deal_id: str, payload: DealUpdate, db: Session = Depends(get_db)):
     """Update deal details"""
+    from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
@@ -132,26 +142,55 @@ async def update_deal(deal_id: str, payload: DealUpdate, db: Session = Depends(g
 
     db.commit()
     db.refresh(deal)
+    record_audit_log(
+        db=db,
+        entity_type="deal",
+        entity_id=str(deal.id),
+        action="update",
+        actor="user",
+        details={"stage": deal.stage, "health_score": deal.health_score},
+    )
     return DealResponse.from_orm_deal(deal)
 
 
 @router.patch("/{deal_id}/stage")
 async def update_deal_stage(deal_id: str, stage: str, db: Session = Depends(get_db)):
     """Update deal stage"""
+    from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
+    old_stage = deal.stage
     deal.stage = stage
     db.commit()
+    record_audit_log(
+        db=db,
+        entity_type="deal",
+        entity_id=str(deal.id),
+        action="stage_transition",
+        actor="user",
+        details={"from_stage": old_stage, "to_stage": stage},
+    )
     return {"status": "updated", "stage": stage}
 
 
 @router.delete("/{deal_id}")
 async def delete_deal(deal_id: str, db: Session = Depends(get_db)):
     """Delete deal"""
+    from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
+    del_id = str(deal.id)
+    name = deal.name
     db.delete(deal)
     db.commit()
+    record_audit_log(
+        db=db,
+        entity_type="deal",
+        entity_id=del_id,
+        action="delete",
+        actor="user",
+        details={"name": name},
+    )
     return {"status": "deleted", "deal_id": deal_id}

@@ -126,6 +126,21 @@ run: ## Start local dev server without Docker (requires .venv activated)
 	python run.py
 
 # ─────────────────────────────────────────────────────────────────────────────
+# DEVOPS & CI/CD
+# ─────────────────────────────────────────────────────────────────────────────
+ci-qa: quality test ## Run full continuous integration quality pipeline
+	cd frontend && npm run type-check && npm run build
+	@echo "All CI/CD quality checks passed successfully."
+
+db-seed: ## Seed database with realistic initial dataset
+	$(PYTHON) database/seed.py
+
+db-backup: ## Backup PostgreSQL database to compressed archive
+	mkdir -p backups
+	docker-compose exec db pg_dump -U crm_user -d ai_crm | gzip > backups/crm_backup_$(shell date +%Y%m%d_%H%M%S).sql.gz
+	@echo "Database backup created in backups/"
+
+# ─────────────────────────────────────────────────────────────────────────────
 # AI TOOLING
 # ─────────────────────────────────────────────────────────────────────────────
 sync-rules: ## Sync AGENTS.md rules to all AI assistant config files

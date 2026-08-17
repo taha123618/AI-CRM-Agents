@@ -113,6 +113,7 @@ We provide modular, project-specific AI skills inside `.agents/skills/`. Refer t
 5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models, schemas, and migrations.
 6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
 7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
+8. [DevOps & Infrastructure](file:///Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md) - Standards for Docker, CI/CD, database migrations, backups, and observability.
 
 ---
 

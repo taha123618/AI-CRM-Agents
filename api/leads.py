@@ -95,6 +95,7 @@ async def get_lead(lead_id: str, db: Session = Depends(get_db)):
 @router.post("/", response_model=LeadResponse)
 async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
     """Create or update lead by email"""
+    from services.audit_service import record_audit_log
     existing = db.query(Contact).filter(Contact.email == lead.email).first()
     if existing:
         if lead.first_name:
@@ -107,6 +108,14 @@ async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
             existing.lead_source = lead.lead_source
         db.commit()
         db.refresh(existing)
+        record_audit_log(
+            db=db,
+            entity_type="lead",
+            entity_id=str(existing.id),
+            action="update",
+            actor="user",
+            details={"email": existing.email, "type": "upsert_existing"},
+        )
         return LeadResponse.from_orm_contact(existing)
 
     lead_data = {
@@ -118,6 +127,14 @@ async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
     db.add(db_lead)
     db.commit()
     db.refresh(db_lead)
+    record_audit_log(
+        db=db,
+        entity_type="lead",
+        entity_id=str(db_lead.id),
+        action="create",
+        actor="user",
+        details={"email": db_lead.email, "lead_score": db_lead.lead_score},
+    )
     return LeadResponse.from_orm_contact(db_lead)
 
 
@@ -128,25 +145,47 @@ async def update_lead(
     db: Session = Depends(get_db),
 ):
     """Update lead by ID"""
+    from services.audit_service import record_audit_log
     lead = db.query(Contact).filter(Contact.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
 
+    updated_fields = {}
     for key, val in payload.model_dump(exclude_unset=True).items():
         if val is not None and hasattr(lead, key):
             setattr(lead, key, val)
+            updated_fields[key] = val
 
     db.commit()
     db.refresh(lead)
+    record_audit_log(
+        db=db,
+        entity_type="lead",
+        entity_id=str(lead.id),
+        action="update",
+        actor="user",
+        details={"updated_fields": list(updated_fields.keys())},
+    )
     return LeadResponse.from_orm_contact(lead)
 
 
 @router.delete("/{lead_id}")
 async def delete_lead(lead_id: str, db: Session = Depends(get_db)):
     """Delete lead"""
+    from services.audit_service import record_audit_log
     lead = db.query(Contact).filter(Contact.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
+    del_id = str(lead.id)
+    email = lead.email
     db.delete(lead)
     db.commit()
+    record_audit_log(
+        db=db,
+        entity_type="lead",
+        entity_id=del_id,
+        action="delete",
+        actor="user",
+        details={"email": email},
+    )
     return {"status": "deleted"}

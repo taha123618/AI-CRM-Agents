@@ -219,6 +219,16 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
     db.commit()
     db.refresh(new_intv)
 
+    from services.audit_service import record_audit_log
+    record_audit_log(
+        db=db,
+        entity_type="customer_intervention",
+        entity_id=str(new_intv.id),
+        action="trigger",
+        actor="CustomerSuccessAgent",
+        details={"customer_id": str(new_intv.customer_id), "type": new_intv.intervention_type},
+    )
+
     intervention_dict = {
         "id": str(new_intv.id),
         "customer_id": str(new_intv.customer_id),
@@ -294,6 +304,16 @@ def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get
     intv.status = "completed"
     db.commit()
     db.refresh(intv)
+
+    from services.audit_service import record_audit_log
+    record_audit_log(
+        db=db,
+        entity_type="customer_intervention",
+        entity_id=str(intv.id),
+        action="resolve",
+        actor="user",
+        details={"customer_id": str(intv.customer_id), "type": intv.intervention_type},
+    )
 
     return {
         "status": "success",

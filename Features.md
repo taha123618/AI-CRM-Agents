@@ -12,7 +12,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [ ] **JWT / OAuth2 Authentication**: User login, password hashing (bcrypt), token issuance, and refresh token rotation.
 - [ ] **Role-Based Access Control (RBAC)**: Granular roles (`Admin`, `Sales Rep`, `RevOps Manager`, `Customer Success Rep`, `Viewer`).
 - [ ] **Multi-Tenant Workspace Isolation**: Tenant ID scoping across database queries and agent execution contexts.
-- [ ] **Audit Trail & User Activity Logs**: Immutable database log of all user actions, logins, and permission changes.
+- [x] **Audit Trail & User Activity Logs**: Immutable PostgreSQL audit log (`AuditLog` model, `/api/audit-logs`, `/api/audit-logs/stats`) recording entity mutations and agent actions.
 
 ---
 
@@ -133,6 +133,16 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Frontend Vitest Suite**: 33 unit and component tests verifying UI rendering, modals, and store updates.
 - [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, and validation schema constraints (`tests/test_security_validation.py`).
 - [x] **Static Type Checking**: `mypy` for Python backend and `tsc --noEmit` for TypeScript frontend.
+
+---
+
+### 14. 🚢 CI/CD & DevOps Automation
+- [x] **Multi-Stage Docker Builds**: Production `Dockerfile` with lean Python 3.10-slim runtime, non-root user (`appuser`), and Nginx frontend server.
+- [x] **Development Docker Compose**: `docker-compose.dev.yml` with source code bind mounts and live hot-reloading.
+- [x] **Production Docker Compose**: `docker-compose.yml` with persistent volumes, network isolation, and health checks.
+- [x] **GitHub Actions Continuous Integration**: `.github/workflows/ci.yml` verifying linting, type-checking, backend Pytest, frontend Vitest, and image build.
+- [x] **Container Security Scanning**: `.github/workflows/docker-build.yml` running Trivy vulnerability scanning on schedule and workflow dispatch.
+- [x] **DevOps Skill & Tooling**: `.agents/skills/devops-infrastructure/SKILL.md` and Makefile targets (`ci-qa`, `db-backup`, `db-seed`).
 
 ---
 

@@ -26,6 +26,7 @@ from api import (
     war_room,
     journey,
     sequences,
+    audit_logs,
 )
 from workflows.orchestrator import AgentOrchestrator
 
@@ -186,6 +187,9 @@ app.include_router(
 )
 app.include_router(
     sequences.router, prefix="/api/sequences", tags=["AI SDR Cadences"]
+)
+app.include_router(
+    audit_logs.router, prefix="/api/audit-logs", tags=["Audit Logs"]
 )
 
 
