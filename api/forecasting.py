@@ -123,6 +123,33 @@ def list_saved_simulations(
     ]
 
 
+@router.get("/simulations/{simulation_id}", response_model=Dict[str, Any])
+def get_saved_simulation(
+    simulation_id: str,
+    db: Session = Depends(get_db),
+):
+    """Retrieve details for a single saved simulation scenario."""
+    sim = (
+        db.query(ForecastSimulation)
+        .filter(ForecastSimulation.id == simulation_id)
+        .first()
+    )
+    if not sim:
+        raise HTTPException(status_code=404, detail="Simulation not found.")
+    return {
+        "id": str(sim.id),
+        "name": sim.name,
+        "target_quarter": sim.target_quarter,
+        "pipeline_total_value": sim.pipeline_total_value,
+        "p10_conservative": sim.p10_conservative,
+        "p50_expected": sim.p50_expected,
+        "p90_optimistic": sim.p90_optimistic,
+        "deal_slippage_rate": sim.deal_slippage_rate,
+        "stage_probabilities": sim.stage_probabilities,
+        "created_at": sim.created_at.isoformat() if sim.created_at else None,
+    }
+
+
 @router.delete("/simulations/{simulation_id}", response_model=Dict[str, Any])
 def delete_simulation(
     simulation_id: str,

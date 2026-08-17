@@ -150,6 +150,6 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/git-workflow/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md)
 * **project-architecture**: Understand the layout, component design, multi-agent collaboration, and workflows of the CRM system.
   - File Path: [`.agents/skills/project-architecture/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md)
-* **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, and mocks.
+* **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, mocks, Vitest, and SQA quality standards.
   - File Path: [`.agents/skills/testing/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md)
 

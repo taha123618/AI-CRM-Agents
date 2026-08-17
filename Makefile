@@ -89,11 +89,18 @@ PYTHON := $(shell if [ -f .venv/bin/python3 ]; then echo .venv/bin/python3; else
 # ─────────────────────────────────────────────────────────────────────────────
 # TESTING & CODE QUALITY
 # ─────────────────────────────────────────────────────────────────────────────
-test: ## Run all tests
-	$(PYTHON) -m pytest -v
+test: ## Run all automated tests (backend pytest + frontend vitest)
+	PYTHONPATH=. $(PYTHON) -m pytest -v
+	cd frontend && npm run test
 
-test-cov: ## Run tests with coverage report
-	$(PYTHON) -m pytest --cov=. --cov-report=term-missing --cov-report=html -v
+test-backend: ## Run backend pytest tests only
+	PYTHONPATH=. $(PYTHON) -m pytest -v
+
+test-frontend: ## Run frontend Vitest tests only
+	cd frontend && npm run test
+
+test-cov: ## Run backend tests with coverage report
+	PYTHONPATH=. $(PYTHON) -m pytest --cov=. --cov-report=term-missing --cov-report=html -v
 
 lint: ## Run flake8 linter
 	$(PYTHON) -m flake8 .

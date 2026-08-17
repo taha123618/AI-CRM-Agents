@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Any, List, Optional, Union
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 from database.connection import get_db
 from database.models import Contact
 
@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 class LeadCreate(BaseModel):
-    email: str
+    email: EmailStr
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     company_name: Optional[str] = None
@@ -110,7 +110,9 @@ async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
         return LeadResponse.from_orm_contact(existing)
 
     lead_data = {
-        k: v for k, v in lead.dict().items() if k != "company_name" and v is not None
+        k: v
+        for k, v in lead.model_dump().items()
+        if k != "company_name" and v is not None
     }
     db_lead = Contact(**lead_data)
     db.add(db_lead)
