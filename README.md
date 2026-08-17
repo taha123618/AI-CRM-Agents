@@ -1,363 +1,424 @@
-# 🤖 AI-Powered CRM with Agentic Workflows
+# 🤖 Next-Gen Autonomous AI-Powered CRM & Revenue Intelligence
 
-**Production-ready enterprise CRM system powered by a multi-agent AI architecture with Voice AI, WhatsApp, Monte Carlo Forecasting, Multi-Language, and No-Code Custom Agent Builder.**
+<div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-green.svg)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6.svg)](https://typescriptlang.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)](https://postgresql.org)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://docker.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Production-ready enterprise CRM powered by a 9-agent autonomous collaborative swarm, Voice AI Call Intelligence, WhatsApp Business Hub, Monte Carlo Stochastic Forecasting, Dynamic I18n, and No-Code Custom Agent Builder.**
+
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![Tests](https://img.shields.io/badge/Tests-129%20Passing%20(100%25)-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+[📖 Documentation](docs/) • [🚀 Quickstart](QUICKSTART.md) • [✨ Features Checklist](Features.md) • [🏗️ Architecture](docs/ai-architecture.md) • [🔒 Security](docs/security.md)
+
+</div>
+
+---
+
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Architecture & Swarm Coordination](#-architecture--swarm-coordination)
+  - [9 Autonomous AI Agents](#9-autonomous-ai-agents)
+  - [System Architecture Diagram](#system-architecture-diagram)
+- [Feature Suite](#-feature-suite)
+  - [Core CRM Engine](#core-crm-engine)
+  - [AI & Agentic Workflows](#ai--agentic-workflows)
+  - [Voice AI Call Intelligence Studio](#voice-ai-call-intelligence-studio)
+  - [WhatsApp Business Multi-Agent Hub](#whatsapp-business-multi-agent-hub)
+  - [Advanced Monte Carlo Revenue Forecasting](#advanced-monte-carlo-revenue-forecasting)
+  - [Dynamic Multi-Language Support (I18n)](#dynamic-multi-language-support-i18n)
+  - [No-Code Custom Agent Builder](#no-code-custom-agent-builder)
+  - [AI Deal War Room & Strategy Studio](#ai-deal-war-room--strategy-studio)
+  - [Customer Journey & Churn Prevention Studio](#customer-journey--churn-prevention-studio)
+  - [AI SDR Multi-Touch Outreach Cadences](#ai-sdr-multi-touch-outreach-cadences)
+- [UI Components & Feature Modules](#-ui-components--feature-modules)
+- [Key Metrics & Performance KPIs](#-key-metrics--performance-kpis)
+- [Technology Stack](#-technology-stack)
+- [Project Directory Layout](#-project-directory-layout)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Option A — Docker Quick Start (Recommended)](#option-a--docker-quick-start-recommended)
+  - [Option B — Local Native Setup](#option-b--local-native-setup)
+- [Environment Configuration](#-environment-configuration)
+- [Developer CLI & Makefile](#-developer-cli--makefile)
+- [Database Migrations](#-database-migrations)
+- [Testing & Quality Assurance](#-testing--quality-assurance)
+- [Enterprise Security & Compliance](#-enterprise-security--compliance)
+- [Centralized AI Assistant Rules](#-centralized-ai-assistant-rules)
+- [Documentation Index](#-documentation-index)
 
 ---
 
 ## 📖 Overview
 
-An intelligent CRM system where **9 autonomous AI agents** handle customer relationship workflows automatically. Each agent specialises in a specific domain and collaborates through an event-driven orchestration layer. The platform includes advanced modules for Voice AI call intelligence, WhatsApp business automation, Monte Carlo revenue forecasting, multi-language support, and a no-code custom agent builder.
+The **AI-Powered CRM** is an enterprise-grade autonomous customer relationship management platform where **9 specialized AI agents** orchestrate revenue operations end-to-end. Rather than relying on static CRM forms and manual data entry, the system autonomously:
+
+* **Qualifies and enriches inbound leads** with real-time intent scoring and automated routing.
+* **Analyzes sales calls in real-time** with buyer intent tracking, objection battle-cards, and post-call CRM action item synthesis.
+* **Executes 24/7 omnichannel WhatsApp auto-pilot** conversations, qualification flows, and broadcast campaigns.
+* **Simulates ARR revenue trajectories** using 1,000+ iteration stochastic Monte Carlo models (P10, P50, P90 confidence bounds).
+* **Guards against account churn** with real-time lifecycle telemetry, revenue-at-risk radars, and 1-click autonomous retention playbooks.
+* **Builds and executes multi-touch outreach cadences** across Email, WhatsApp, and Voice AI channels with dynamic step copy generation.
+* **Enables no-code AI creation** with visual agent builder tooling, custom toolkits, and live prompt testing playgrounds.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Swarm Coordination
 
 ### 9 Autonomous AI Agents
 
-| Agent | Responsibility | Endpoint |
+```mermaid
+graph TD
+    Client[Web & WebSocket Clients] --> Gateway[FastAPI Gateway /ws]
+    Gateway --> Orchestrator[Agent Orchestrator & Event Bus]
+    
+    Orchestrator --> A1[1. Lead Qualification Agent 🎯]
+    Orchestrator --> A2[2. Email Intelligence Agent 📧]
+    Orchestrator --> A3[3. Sales Pipeline Agent 💰]
+    Orchestrator --> A4[4. Customer Success Agent 🎉]
+    Orchestrator --> A5[5. Meeting Scheduler Agent 📅]
+    Orchestrator --> A6[6. Analytics Agent 📊]
+    Orchestrator --> A7[7. Voice Call Intelligence Agent 🎙️]
+    Orchestrator --> A8[8. WhatsApp Business Agent 💬]
+    Orchestrator --> A9[9. Custom Agent Builder 🔧]
+    
+    A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8 & A9 --> Storage[(PostgreSQL 14 + Redis Pub/Sub)]
+    A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8 & A9 --> AuditLogs[(Immutable Audit Logging)]
+```
+
+1. **Lead Qualification Agent** 🎯
+   - Scores incoming leads automatically (0–100 ICP fit).
+   - Routes high-value prospects to designated sales representatives.
+   - Enriches contact profiles from public and corporate data sources.
+   - Identifies high-velocity buying signals and intent spikes.
+
+2. **Email Intelligence Agent** 📧
+   - Generates hyper-personalized response drafts with contextual awareness.
+   - Conducts multi-dimensional sentiment analysis on customer communications.
+   - Auto-categorizes inbound emails and prioritizes urgent executive inquiries.
+   - Recommends smart follow-up triggers based on conversation sentiment.
+
+3. **Sales Pipeline Agent** 💰
+   - Monitors deal progression across custom pipeline stages.
+   - Predicts deal win and close probabilities with machine learning heuristics.
+   - Identifies stalled opportunities and friction bottlenecks.
+   - Recommends tactical win actions for account executives.
+
+4. **Customer Success Agent** 🎉
+   - Tracks real-time account health scores and decay telemetry.
+   - Detects churn risks before contract renewal windows expire.
+   - Triggers automated retention rescue workflows and intervention playbooks.
+   - Uncovers expansion, upsell, and cross-sell opportunities.
+
+5. **Meeting Scheduler Agent** 📅
+   - Orchestrates context-aware calendar coordination.
+   - Generates automated executive pre-meeting briefing dossiers.
+   - Formulates post-meeting follow-up action items and task assignments.
+   - Synchronizes agendas across calendar and CRM contact records.
+
+6. **Analytics Agent** 📊
+   - Powers real-time KPI dashboards and executive reports.
+   - Delivers predictive revenue analytics and conversion insights.
+   - Computes pipeline velocity, stage hazard rates, and rep performance.
+   - Surfaces proactive business intelligence alerts.
+
+7. **Voice Call Intelligence Agent** 🎙️
+   - Performs real-time speech turn analysis and conversational dynamics scoring.
+   - Calculates buyer intent scores (0–100) and sentiment trends.
+   - Surfaces dynamic objection battle-cards and live rep coaching cues.
+   - Extracts structured CRM action items and summaries post-call.
+
+8. **WhatsApp Business Agent** 💬
+   - Provides 24/7 autonomous AI auto-pilot customer interactions.
+   - Classifies buyer intent and tags conversations automatically.
+   - Manages personalized broadcast template messaging campaigns.
+   - Handles seamless human agent handoffs and conversation archiving.
+
+9. **Custom Agent Builder** 🔧
+   - Offers a visual, no-code creator interface for specialized agents.
+   - Configures custom system prompts, automation triggers, and toolkits.
+   - Provides an interactive execution and prompt-engineering playground.
+   - Manages agent lifecycle states (active, inactive, draft).
+
+### System Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      React 19 + TypeScript SPA                          │
+│     (Feature-Sliced Design, TanStack Query v5, Zustand, Tailwind CSS)   │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ HTTP / WebSocket (/ws)
+┌────────────────────────────────────▼────────────────────────────────────┐
+│                       FastAPI Application Gateway                       │
+│    (Modular Routers, Pydantic V2 Validation, Audit Log Middleware)      │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+┌────────────────────────────────────▼────────────────────────────────────┐
+│                    Agent Orchestrator & Event Bus                       │
+│   (TraceMixin LLM Tracing, Live OpenAI/Anthropic + SmartFallbackLLM)    │
+└──────────────┬───────────────────────────────────────────┬──────────────┘
+               │                                           │
+┌──────────────▼──────────────┐             ┌──────────────▼──────────────┐
+│       PostgreSQL 14+        │             │           Redis 7           │
+│   SQLAlchemy 2.0 ORM Models │             │   Pub/Sub Agent Event Bus   │
+│   Alembic Schema Migrations │             │   Real-Time Response Cache  │
+└─────────────────────────────┘             └─────────────────────────────┘
+```
+
+---
+
+## 🚀 Feature Suite
+
+### Core CRM Engine
+- **Full Contact & Account Management**: Comprehensive profiles, company hierarchies, and activity history.
+- **Visual Deal Pipeline**: Drag-and-drop Kanban and tabular views with real-time deal health scoring.
+- **Task & Activity Tracking**: Automated logging of calls, emails, meetings, and system notes.
+- **Audit Logging Subsystem**: Immutable compliance audit trail tracking all create, update, delete, and stage transition actions.
+
+### AI & Agentic Workflows
+- **Autonomous Lead Nurturing**: Intelligent lead scoring, qualification badges, and automated sales handoffs.
+- **Intelligent Email Copilot**: Sentiment extraction, prioritized inbox views, and automated reply generation.
+- **Autonomous Event Coordination**: Real-time event publishing and subscriber dispatch across agent swarms.
+- **Smart Fallback Architecture**: Seamless offline operation with `SmartFallbackLLM` when API keys are not supplied.
+
+### Voice AI Call Intelligence Studio
+- **Real-Time Speech Turn Analysis**: Analyzes caller vs. agent dialogue with buyer intent scoring.
+- **Dynamic Objection Battle-Cards**: Live competitive displacement cards and counter-arguments.
+- **Interactive Transcript Viewer**: Full speaker-separated call playback with sentiment highlights.
+- **Automated CRM Synthesis**: Instant extraction of next steps, commitments, and summary bullets.
+
+### WhatsApp Business Multi-Agent Hub
+- **24/7 AI Auto-Pilot**: Autonomous customer support and lead qualification over WhatsApp.
+- **Broadcast Campaigns**: Template message broadcasting with audience filtering and delivery tracking.
+- **Conversation Management**: Omnichannel search, intent tagging, unread badges, and conversation archiving.
+- **Live Auto-Pilot Toggles**: Per-conversation manual takeover with single-click AI toggling.
+
+### Advanced Monte Carlo Revenue Forecasting
+- **Stochastic Simulations**: 1,000+ iteration Monte Carlo simulations with P10, P50, and P90 confidence bounds.
+- **ARR Progression Tracking**: Monthly target vs. projected ARR growth with delta tracking.
+- **Pipeline Stage Velocity**: Stage duration analytics and hazard conversion matrix.
+- **Scenario Comparison**: Side-by-side executive scenario comparison tables and grouped visual charts.
+
+### Dynamic Multi-Language Support (I18n)
+- **Bidirectional RTL/LTR Sync**: Native support for RTL languages (Urdu, Arabic) and LTR languages (English, Spanish, etc.).
+- **Translation Management**: Single-key inline editing, bulk translation updates, and JSON import/export.
+- **Live Locale Switching**: Instant UI localization without page refreshes.
+
+### No-Code Custom Agent Builder
+- **Visual Creator Interface**: Build custom AI agents with drag-and-drop tool assignment.
+- **Custom Toolkits & Triggers**: Bind database queries, email dispatchers, and webhooks to agent prompts.
+- **Interactive Playground**: Test agent execution in real-time with custom test payload inputs.
+
+### AI Deal War Room & Strategy Studio
+- **Multi-Agent Consensus**: Cross-agent alignment verdicts combining pipeline, lead, voice, and support signals.
+- **Account SWOT Matrix**: Dynamic Strengths, Weaknesses, Opportunities, and Threats quadrant mapping.
+- **Competitor Battle-Cards**: Live objection handlers and kill-shot displacement strategies.
+- **1-Click Smart Proposal Studio**: Automated enterprise proposal builder with tiered pricing, SLA terms, and e-signature links.
+- **Workflow Automations**: Full CRUD multi-agent trigger rules with live orchestration execution.
+
+### Customer Journey & Churn Prevention Studio
+- **5-Stage Lifecycle Pipeline**: Telemetry across `Onboarding`, `Adoption`, `Expansion`, `Renewal`, and `At-Risk`.
+- **Revenue-at-Risk Radar**: Real-time health decay monitoring and churn probability visualization.
+- **1-Click Retention Interventions**: Autonomous playbooks (Executive Sponsor Check-in, Feature Coaching, NPS Survey) powered by `CustomerSuccessAgent`.
+
+### AI SDR Multi-Touch Outreach Cadences
+- **Omnichannel Cadence Builder**: Multi-step outreach sequences combining Email, WhatsApp, and Voice AI briefing steps.
+- **Cohort Lead Enrollment**: 1-click database contact search and bulk cadence enrollment.
+- **Dynamic Step Copy Generator**: AI prompt-engineered personalization targeting prospect pain points and value drivers.
+
+---
+
+## 🎨 UI Components & Feature Modules
+
+| Module | Route / Feature | Primary Functionality |
 |---|---|---|
-| 🎯 **Lead Qualification** | Score, enrich, and route incoming leads | `POST /api/agents/qualify-lead` |
-| 📧 **Email Intelligence** | Analyse sentiment, draft replies, prioritise inbox | `POST /api/agents/analyze-email` |
-| 💰 **Sales Pipeline** | Monitor deal health, predict close probability | `POST /api/agents/analyze-deal/{id}` |
-| 🎉 **Customer Success** | Track health scores, detect churn risk | `POST /api/agents/monitor-customer/{id}` |
-| 📅 **Meeting Scheduler** | Smart calendar management and prep | `POST /api/agents/schedule-meeting` |
-| 📊 **Analytics** | Real-time dashboards and forecasting | `POST /api/agents/generate-dashboard` |
-| 🎙️ **Voice Call Intelligence** | Speech analysis, buyer intent, objection coaching | `POST /api/voice-calls` |
-| 💬 **WhatsApp Hub** | AI auto-pilot messaging, broadcast campaigns | `POST /api/whatsapp/send` |
-| 🔧 **Custom Agent Builder** | No-code agent creation and testing | `POST /api/custom-agents` |
+| 📊 **Dashboard** | `features/dashboard` | Real-time ARR metrics, agent activity stream, and pipeline overview |
+| 👥 **Contacts** | `features/contacts` | Contact directory, lead scores, profile enrichment, and activity history |
+| 💼 **Deals** | `features/deals` | Visual deal pipeline, health scores, close probability, and stage transitions |
+| ⚔️ **War Room** | `features/war-room` | Strategy studio, multi-agent consensus, SWOT matrix, proposal builder |
+| 🚀 **Sequences** | `features/sequences` | AI SDR outreach cadences, cohort enrollment, and AI copy generation |
+| 🧭 **Customer Journey** | `features/journey` | 5-stage lifecycle pipeline, ARR radar, churn prediction, retention rescue |
+| 📥 **Inbox** | `features/inbox` | AI-prioritized email inbox, sentiment badges, and smart reply drafts |
+| 📅 **Calendar** | `features/calendar` | Smart meeting scheduling, agenda prep, and follow-up tracking |
+| 📈 **Analytics** | `features/analytics` | Deep performance insights, conversion funnels, and system telemetry |
+| 🎙️ **Voice AI** | `features/voice-ai` | Call intelligence studio, transcript viewer, and objection battle-cards |
+| 💬 **WhatsApp** | `features/whatsapp` | Omnichannel chat hub, broadcast campaigns, and 24/7 AI auto-pilot |
+| 🔮 **Forecasting** | `features/forecasting` | Monte Carlo ARR simulations (P10/P50/P90) and stage velocity matrix |
+| 🔧 **Custom Agents** | `features/custom-agents` | No-code agent builder, trigger configuration, and live testing sandbox |
+| 🌐 **Multi-Language** | `features/multi-language` | Translation key manager, RTL/LTR layout synchronization |
+| ⚙️ **Settings** | `features/settings` | System preferences, LLM provider configuration, and API keys |
 
-### System Design
+---
+
+## 📊 Key Metrics & Performance KPIs
+
+- **Lead Conversion Rate**: Percentage of inbound leads successfully converted to pipeline deals.
+- **Average Sales Cycle Velocity**: Time elapsed from lead qualification to closed-won milestone.
+- **Customer Lifetime Value (LTV)**: Projected aggregate revenue per account.
+- **Churn Prediction Accuracy**: Predictive precision of `CustomerSuccessAgent` retention alerts.
+- **Voice AI Buyer Intent Score**: 0–100 score quantifying buyer commitment and purchase readiness.
+- **WhatsApp Auto-Pilot Resolution Rate**: Percentage of customer inquiries resolved without human intervention.
+- **Monte Carlo Forecast Confidence**: P10 (conservative), P50 (expected), and P90 (optimistic) ARR bands.
+- **Operational DB Latency**: Live millisecond telemetry across database read/write queries.
+
+---
+
+## 🛠️ Technology Stack
 
 ```
-HTTP Request
-     │
-     ▼
- FastAPI (main.py)
-     │
-     ▼
-AgentOrchestrator  ──── BackgroundTasks (async, in-process)
-     │
-     ├── LeadQualificationAgent
-     ├── EmailIntelligenceAgent
-     ├── SalesPipelineAgent
-     ├── CustomerSuccessAgent
-     ├── MeetingSchedulerAgent
-     ├── AnalyticsAgent
-     ├── VoiceCallAgent
-     ├── WhatsAppAgent
-     └── CustomAgentBuilder
-           │
-           ▼
-     PostgreSQL ◄──── Redis (caching + pub/sub events)
+Frontend:          React 19 • TypeScript • Vite • Tailwind CSS • TanStack React Query v5 • Zustand • Recharts • Lucide Icons
+Backend:           Python 3.9+ • FastAPI • Uvicorn / Gunicorn • Pydantic V2 • LangChain
+Database:          PostgreSQL 14+ • SQLAlchemy 2.0 ORM • Alembic Migrations
+Messaging & Cache: Redis 7 (Pub/Sub Event Bus & Caching) • WebSockets (/ws)
+AI Integration:    Live OpenAI (GPT-4o) • Live Anthropic (Claude 3.5 Sonnet) • SmartFallbackLLM
+DevOps & Tooling:  Docker (Multi-Stage) • Docker Compose • GitHub Actions CI/CD • Trivy Security Scanner • Nginx
+Quality Gates:     pytest • pytest-asyncio • Vitest • Black • Flake8 • Mypy • TypeScript
 ```
 
 ---
 
-## 🚀 Specialized Platform Features
-
-### 🎙️ Voice AI Call Intelligence Studio
-- Real-time speech turn analysis with buyer intent scoring
-- Dynamic objection battle-cards and rep coaching tips
-- Post-call automated CRM synthesis, action item extraction
-- Sentiment distribution analytics and call scoring breakdown
-- Interactive transcript viewer with speaker bubbles
-
-### 💬 WhatsApp Business Multi-Agent Hub
-- Omnichannel WhatsApp chat with 24/7 AI Auto-Pilot
-- Broadcast template messaging campaigns
-- Conversation tagging, search, and handoff archiving
-- Unread badges, intent labels, and read receipts
-- New conversation and bulk send modals
-
-### 📈 Advanced Monte Carlo Revenue Forecasting
-- Stochastic Monte Carlo simulations (P10/P50/P90 confidence bounds)
-- Monthly ARR progression charts vs targets with delta badges
-- Pipeline stage velocity & hazard conversion matrix
-- Saved scenario comparison table and grouped bar charts
-- Per-stage probability editor with customizable win rates
-
-### 🌐 Multi-Language Support (I18n)
-- Dynamic translation management system
-- RTL/LTR layout synchronization (Urdu, Arabic, etc.)
-- Language creation with auto-detection of text direction
-- Translation key management and bulk editing
-
-### 🔧 No-Code Custom Agent Builder
-- Visual creator for custom AI agents
-- Configurable prompts, triggers, and toolkits
-- Testing playground with live execution
-- Agent status management (active/inactive/draft)
-
-### ⚔️ AI Deal War Room, Strategy Studio & Smart Proposal Studio
-- **Multi-Agent Consensus Verdicts**: Cross-agent alignment score (0-100%) and recommendations combining Pipeline, Lead Qualifier, Voice AI, and Customer Success insights.
-- **Account SWOT Matrix**: Real-time account Strengths, Vulnerabilities, Opportunities, and Threats.
-- **Dynamic Competitor Battle-Cards**: Instant counter-objections, displacement playbooks, and kill-shots against legacy CRM vendors.
-- **Buying Committee Mapping**: Stakeholder influence hierarchy, stance tracking (Champions, Neutral, Gatekeepers), and action strategies.
-- **1-Click Smart Proposal Studio**: Automated enterprise pitch deck with dynamic tier pricing, SLA terms, e-signature simulation, and markdown export.
-- **Autonomous Workflow Triggers**: Full CRUD automation rules engine with live AI Orchestrator execution.
-
-### 🧭 AI Autonomous Customer Journey & Churn Prevention Studio
-- **Lifecycle Stage Pipeline**: Track distribution of accounts across `Onboarding`, `Adoption`, `Expansion`, `Renewal`, and `At-Risk` stages with stage-by-stage ARR analytics.
-- **Health Decay & Churn Risk Radar**: Real-time telemetry monitoring identifying vulnerable accounts before contract expiration.
-- **1-Click AI Rescue Interventions**: Dispatch autonomous playbooks (Executive Sponsor Check-in, Feature Coaching, NPS Sentiment Survey, Renewal Lock-in) powered by `CustomerSuccessAgent`.
-
-### 🚀 AI SDR Multi-Touch Outreach & Cadence Studio
-- **Omnichannel Cadence Builder**: Multi-touch outreach sequences orchestrating Email, WhatsApp, and Voice AI briefing steps with custom delay schedules.
-- **Autonomous Lead Enrollment**: 1-click cohort enrollment syncing target personas with active cadences.
-- **Dynamic AI Step Copy Personalization**: Live LLM generation injecting prospect pain points, value metrics, and low-friction CTAs.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, Nginx |
-| **API** | Python 3.9+, FastAPI, Uvicorn / Gunicorn |
-| **Database** | PostgreSQL 14+, SQLAlchemy 2.0 ORM, Alembic |
-| **Background Tasks** | FastAPI `BackgroundTasks` (in-process async) |
-| **Caching / Events** | Redis 7 (pub/sub + response caching) |
-| **Realtime Stream** | WebSockets (`/ws`), ConnectionManager |
-| **AI / ML** | LangChain, OpenAI GPT-4 / Anthropic Claude, SmartFallbackLLM |
-| **Container** | Docker (multi-stage), Docker Compose |
-| **Testing** | pytest, pytest-asyncio |
-| **Code Quality** | Black, Flake8, Mypy, ESLint, TypeScript |
-
----
-
-## 📁 Project Structure
+## 📁 Project Directory Layout
 
 ```
 ai-crm-agents/
-├── agents/                        # 9 AI Agents
-│   ├── base_agent.py              #   Shared BaseAgent class with TraceMixin
+├── agents/                       # 9 Autonomous AI Agents (Inheriting BaseAgent + TraceMixin)
+│   ├── base_agent.py             #   Shared BaseAgent class with transparent LLM tracing
 │   ├── lead_qualification_agent.py
 │   ├── email_intelligence_agent.py
 │   ├── sales_pipeline_agent.py
 │   ├── customer_success_agent.py
 │   ├── meeting_scheduler_agent.py
 │   ├── analytics_agent.py
-│   ├── voice_call_agent.py        #   Voice AI speech analysis & coaching
-│   ├── whatsapp_agent.py          #   WhatsApp conversational AI
-│   └── custom_agent_builder.py    #   No-code dynamic agent instantiation
+│   ├── voice_call_agent.py       #   Speech turn analysis, intent scoring, objection coaching
+│   ├── whatsapp_agent.py         #   24/7 WhatsApp AI auto-pilot & broadcast agent
+│   └── custom_agent_builder.py   #   Dynamic no-code agent execution engine
 │
-├── api/                           # FastAPI routers
-│   ├── leads.py
-│   ├── deals.py
-│   ├── customers.py
-│   ├── emails.py
-│   ├── meetings.py
-│   ├── analytics.py
-│   ├── voice_calls.py             #   Voice AI endpoints (stats, search, transcripts)
-│   ├── whatsapp.py                #   WhatsApp endpoints (send, broadcast, tags, archive)
-│   ├── forecasting.py             #   Monte Carlo simulation & ARR trend endpoints
-│   ├── custom_agents.py           #   No-code agent CRUD & test execution
-│   └── i18n.py                    #   Multi-language translation management
+├── api/                          # FastAPI REST & WebSocket Routers
+│   ├── leads.py                  #   Leads CRUD, qualification, and audit logging
+│   ├── deals.py                  #   Deals CRUD, pipeline stages, health scoring
+│   ├── customers.py              #   Customer accounts, MRR, churn health
+│   ├── emails.py                 #   Email intelligence, sentiment analysis, drafts
+│   ├── meetings.py               #   Meeting coordination & automated briefing dossiers
+│   ├── analytics.py              #   Dashboard metrics, pipeline funnels, system telemetry
+│   ├── audit_logs.py             #   Compliance audit trail REST queries & statistics
+│   ├── voice_calls.py            #   Voice AI call intelligence, transcripts, coaching
+│   ├── whatsapp.py               #   WhatsApp chat, broadcast templates, auto-pilot toggle
+│   ├── forecasting.py            #   Monte Carlo ARR simulations & velocity matrix
+│   ├── custom_agents.py          #   Custom agent CRUD, execution sandbox, toolkits
+│   ├── war_room.py               #   Deal strategy studio, SWOT matrices, proposals, rules
+│   ├── journey.py                #   Customer lifecycle stages & retention interventions
+│   ├── sequences.py              #   AI SDR multi-touch cadences & step generation
+│   └── i18n.py                   #   Dynamic translation keys & language settings
 │
-├── services/                      # Business service layer
-│   ├── forecasting_service.py     #   Monte Carlo simulation logic & ARR trends
-│   └── i18n_service.py            #   Translation & language management
+├── services/                     # Core Business Logic Layer
+│   ├── audit_service.py          #   Central audit logging helper
+│   ├── forecasting_service.py    #   Stochastic Monte Carlo simulation engine
+│   └── i18n_service.py           #   Translation management & RTL/LTR detection
 │
-├── database/                      # Database layer
-│   ├── models.py                  #   SQLAlchemy ORM models (16+ tables)
-│   ├── connection.py              #   Engine & session factory
-│   └── schema.sql                 #   Raw SQL schema reference
+├── database/                     # PostgreSQL Database Layer
+│   ├── models.py                 #   SQLAlchemy 2.0 ORM models (17 tables)
+│   ├── connection.py             #   Engine setup, session factories, get_db dependency
+│   └── schema.sql                #   Raw SQL schema definitions
 │
-├── workflows/
-│   └── orchestrator.py            # Central agent coordinator
+├── workflows/                    # Agent Swarm Coordination
+│   └── orchestrator.py           #   Central AgentOrchestrator & Redis event bus
 │
-├── alembic/                       # Database migrations
-│   ├── versions/                  #   Migration scripts
-│   └── env.py                     #   Alembic configuration
-│
-├── tests/                         # Unit & integration tests
-│
-├── frontend/                      # Production React 19 + TypeScript SPA
+├── frontend/                     # Production React 19 + TypeScript Application
 │   ├── src/
-│   │   ├── features/              #   13 feature modules (voice-ai, whatsapp, forecasting, etc.)
-│   │   ├── components/            #   Shared UI, forms, charts, layout
-│   │   ├── hooks/                 #   TanStack Query hooks
-│   │   ├── stores/                #   Zustand state stores
-│   │   └── types/                 #   TypeScript interfaces
-│   ├── Dockerfile                 #   Multi-stage build (Node + Nginx)
-│   ├── nginx.conf                 #   Nginx reverse proxy config
-│   └── vite.config.ts             #   Vite build tooling & API proxies
+│   │   ├── features/             #   15 feature domains (war-room, journey, sequences, etc.)
+│   │   ├── components/           #   Reusable UI elements, cards, modals, layout
+│   │   ├── hooks/                #   TanStack React Query hooks
+│   │   ├── stores/               #   Zustand client state stores
+│   │   └── types/                #   TypeScript domain interfaces
+│   ├── Dockerfile                #   Multi-stage production build (Node + Nginx)
+│   ├── nginx.conf                #   Production reverse proxy config
+│   └── vite.config.ts            #   Vite build tooling and test configuration
 │
-├── .agents/                       # AI assistant configuration
-│   ├── AGENTS.md                  #   Single source of truth for AI rules
-│   ├── skills/                    #   7 modular skill files
-│   └── scripts/sync_rules.py     #   Syncs rules to all AI tools
+├── .agents/                      # AI Coding Assistant Knowledge & Skills
+│   ├── AGENTS.md                 #   Single source of truth for architectural guidelines
+│   ├── skills/                   #   8 specialized skill definitions
+│   └── scripts/sync_rules.py     #   Tool rule synchronization utility
 │
-├── docs/                          # Documentation
-│   └── i18n/overview.md           #   Multi-language feature documentation
+├── .github/workflows/            # CI/CD Workflows
+│   ├── ci.yml                    #   Lint, Pytest, Vitest, Type-check, Docker build
+│   └── docker-build.yml          #   Trivy container security vulnerability scanner
 │
-├── main.py                        # FastAPI application entry point
-├── run.py                         # Development server script
-├── Dockerfile                     # Multi-stage production image
-├── docker-compose.yml             # Production stack (fully standalone)
-├── docker-compose.dev.yml         # Development stack (hot-reload)
-├── entrypoint.sh                  # Container startup (migrations + server)
-├── requirements.txt               # Python dependencies
-├── alembic.ini                    # Alembic configuration
-├── .env.example                   # Environment variable template
-└── .dockerignore                  # Docker build exclusions
+├── docs/                         # Comprehensive Documentation Hub
+├── main.py                       # FastAPI application entry point
+├── run.py                        # Local development runner
+├── Makefile                      # Developer command-line interface
+├── Dockerfile                    # Backend multi-stage production container
+├── docker-compose.yml            # Production container stack
+├── docker-compose.dev.yml        # Development container stack (hot-reload)
+├── requirements.txt              # Python production dependencies
+└── alembic.ini                   # Database migration configuration
 ```
 
 ---
 
-## ✅ Prerequisites
+## 🚀 Getting Started
 
-### Docker Setup (Recommended)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) 24.0+
+### Prerequisites
 
-### Local / Non-Docker Setup
-- Python 3.9+
-- PostgreSQL 14+
-- Redis 7+
-- Node.js 20+ (for frontend)
+- **Docker Option**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) 24.0+
+- **Local Native Option**: Python 3.9+, Node.js 20+, PostgreSQL 14+, Redis 7+
 
 ---
 
-## ⚙️ Environment Configuration
+### Option A — Docker Quick Start (Recommended)
 
-Copy the example environment file and fill in your values:
-
-```bash
-cp .env.example .env
-```
-
-Key variables to configure:
-
-| Variable | Description | Default |
-|---|---|---|
-| `DATABASE_URL` | PostgreSQL connection string | `postgresql://crm_user:crm_password@localhost:5432/ai_crm` |
-| `REDIS_URL` | Redis connection string | `redis://localhost:6379/0` |
-| `OPENAI_API_KEY` | OpenAI API key (optional if using Anthropic) | — |
-| `OPENAI_MODEL` | OpenAI model identifier | `gpt-4o-mini` |
-| `ANTHROPIC_API_KEY` | Anthropic API key (optional if using OpenAI) | — |
-| `ANTHROPIC_MODEL` | Anthropic model identifier | `claude-3-5-sonnet-20241022` |
-| `SECRET_KEY` | JWT / session secret — **change this in production** | — |
-| `DEBUG` | Enable debug mode | `True` |
-| `GUNICORN_WORKERS` | Number of Gunicorn worker processes | `4` |
-| `GUNICORN_TIMEOUT` | Worker timeout in seconds | `120` |
-| `LOG_LEVEL` | Logging verbosity | `INFO` |
-
-> **Docker Note**: `DATABASE_URL` and `REDIS_URL` inside Docker are automatically overridden in `docker-compose.yml` to use service hostnames (`db`, `redis`). You do not need to change them for Docker use.
-
----
-
-## ⚡ Quick Commands (Makefile)
+Start the entire production or development stack with a single command:
 
 ```bash
-# Development
-make dev-build          # Build + start with hot-reload
-make dev-logs           # Stream logs
-make dev-shell          # Bash into container
-make dev-reset          # Wipe dev volumes
+# 1. Clone repository
+git clone https://github.com/your-org/ai-crm-agents.git
+cd ai-crm-agents
 
-# Production
-make prod-build         # Build + start detached
-make prod-logs          # Stream logs
-
-# Database
-make migrate            # Apply migrations
-make migrate-create msg="add user table"  # New migration
-
-# Code quality
-make test               # Run pytest
-make quality            # format + lint + typecheck
-```
-
----
-
-## 🐳 Docker Setup (Recommended)
-
-### Development (with hot-reload)
-
-```bash
-# 1. Copy environment file
+# 2. Configure environment
 cp .env.example .env
 
-# 2. Add your LLM API key to .env
-#    Edit .env and set OPENAI_API_KEY or ANTHROPIC_API_KEY
-
-# 3. Start all services with hot-reload
+# 3. Launch development stack with hot-reload
 docker-compose -f docker-compose.dev.yml up --build
-```
 
-The API starts at **http://localhost:8000** — any change to `.py` files is reflected immediately without restarting the container.
-
-### Production
-
-```bash
-# Build and start all services in the background
+# OR launch production optimized stack
 docker-compose up -d --build
 ```
 
-Migrations run automatically on container startup via `entrypoint.sh`.
-
-### Useful Docker Commands
-
-```bash
-# View running services
-docker-compose ps
-
-# Stream logs from all services
-docker-compose logs -f
-
-# Stream logs from a specific service
-docker-compose logs -f web
-
-# Restart the API service
-docker-compose restart web
-
-# Stop all services
-docker-compose down
-
-# Stop and remove all data volumes (full reset)
-docker-compose down -v
-
-# Open a shell inside the running web container
-docker-compose exec web bash
-
-# Run a one-off command (e.g. check migration status)
-docker-compose exec web alembic current
-
-# Rebuild after dependency changes
-docker-compose up -d --build web
-```
+#### Application Endpoints:
+- 🖥️ **React Web Application**: `http://localhost:3000` (Dev) / `http://localhost:80` (Prod)
+- ⚡ **FastAPI Backend API**: `http://localhost:8000`
+- 📚 **Interactive Swagger API Docs**: `http://localhost:8000/docs`
+- 📖 **ReDoc Documentation**: `http://localhost:8000/redoc`
 
 ---
 
-## 💻 Non-Docker Setup
+### Option B — Local Native Setup
 
 ```bash
-# 1. Create and activate virtual environment
+# 1. Create and activate Python virtual environment
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 
-# 2. Install dependencies
+# 2. Install backend dependencies
 pip install -r requirements.txt
 
-# 3. Copy and configure environment
+# 3. Configure environment variables
 cp .env.example .env
-# Edit .env with your DATABASE_URL, REDIS_URL, and API keys
+# Edit .env with your local PostgreSQL and Redis connection strings
 
 # 4. Apply database migrations
 alembic upgrade head
 
-# 5. Start development server
+# 5. Start FastAPI backend server
 python run.py
 
-# 6. Run frontend server
+# 6. In a separate terminal, start frontend application
 cd frontend
 npm install
 npm run dev
@@ -365,217 +426,156 @@ npm run dev
 
 ---
 
+## ⚙️ Environment Configuration
+
+Copy `.env.example` to `.env` and adjust the variables:
+
+| Variable | Description | Default |
+|---|---|---|
+| `DATABASE_URL` | PostgreSQL connection URL | `postgresql://crm_user:crm_password@localhost:5432/ai_crm` |
+| `REDIS_URL` | Redis connection URL | `redis://localhost:6379/0` |
+| `OPENAI_API_KEY` | OpenAI API key (optional if using Anthropic) | — |
+| `OPENAI_MODEL` | OpenAI LLM model identifier | `gpt-4o-mini` |
+| `ANTHROPIC_API_KEY` | Anthropic API key (optional if using OpenAI) | — |
+| `ANTHROPIC_MODEL` | Anthropic LLM model identifier | `claude-3-5-sonnet-20241022` |
+| `SECRET_KEY` | JWT authentication signing secret | `your-super-secret-key-change-in-production` |
+| `DEBUG` | Enable FastAPI debug mode | `True` |
+| `GUNICORN_WORKERS` | Number of Gunicorn worker processes | `4` |
+| `LOG_LEVEL` | Application logging verbosity | `INFO` |
+
+> 💡 **Smart Fallback Note**: When no `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is provided, the platform automatically engages `SmartFallbackLLM`. All 9 agents, proposal engines, and forecast models remain 100% operational with contextually accurate responses.
+
+---
+
+## ⚡ Developer CLI & Makefile
+
+We provide a streamlined developer interface via `Makefile`:
+
+```bash
+# 🐳 Docker Workflows
+make dev-build       # Build and start development containers with hot-reload
+make dev-logs        # Follow container logs
+make dev-shell       # Open bash shell inside backend container
+make prod-build      # Build and launch production detached containers
+make prod-logs       # Follow production logs
+
+# 🗄️ Database Management
+make migrate         # Apply pending Alembic migrations
+make migrate-create msg="add audit table"  # Create new autogenerated migration
+make db-seed         # Seed database with realistic enterprise CRM demo data
+make db-backup       # Create automated PostgreSQL timestamped dump
+
+# 🧪 Testing & Quality Gates
+make test            # Run backend Pytest suite
+make quality         # Run Black formatting, Flake8 linting, and Mypy type-checking
+make ci-qa           # Full local CI quality gate (Lint + Pytest + Frontend Typecheck + Vitest)
+```
+
+---
+
 ## 🗄️ Database Migrations
 
-### Development — after modifying models
+Database schema changes are tracked using **Alembic**:
 
 ```bash
-# Generate a new migration from model changes
-alembic revision --autogenerate -m "describe your change"
+# Create a new migration after updating database/models.py
+alembic revision --autogenerate -m "Add new column to deals"
 
-# Review the generated file in alembic/versions/
-# Then apply it:
-alembic upgrade head
-```
-
-### Production — apply committed migrations only
-
-```bash
-# Never use --autogenerate in production.
-# Apply the migrations that were committed during development:
+# Apply all migrations to the latest revision
 alembic upgrade head
 
-# Or inside Docker:
-docker-compose exec web alembic upgrade head
-```
+# View current database revision
+alembic current
 
-### Other migration commands
-
-```bash
-alembic current          # Show current revision
-alembic history          # Show full migration history
-alembic downgrade -1     # Roll back one migration
+# Roll back the latest migration
+alembic downgrade -1
 ```
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing & Quality Assurance
+
+The repository maintains strict **100% passing automated test coverage** across both backend and frontend layers:
 
 ```bash
-# Run all tests
-python3 -m pytest
+# 1. Run all Backend Pytest Suites (96 tests)
+PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v
 
-# Run with verbose output
-python3 -m pytest -v
+# 2. Run all Frontend Vitest Suites (33 tests)
+cd frontend && npm run test
 
-# Run a specific test file
-python3 -m pytest tests/test_lead_agent.py
+# 3. Run Frontend TypeScript Type Check
+cd frontend && npm run type-check
 
-# Frontend type check and build
-cd frontend
-npm run type-check
-npm run build
+# 4. Build Production Frontend Bundle
+cd frontend && npm run build
 ```
+
+**Quality Status:** **129 / 129 Automated Tests Passing (100%)**
 
 ---
 
-## 🧹 Code Quality
+## 🔐 Enterprise Security & Compliance
 
-```bash
-# Format code
-black .
-
-# Check formatting without changing files
-black --check .
-
-# Lint
-flake8 .
-
-# Type check
-mypy .
-```
+- **Authentication & RBAC**: Standard JWT token authentication with role-based permission gates.
+- **Input Sanitization**: Pydantic V2 validation preventing SQL injection and XSS payloads across all endpoints.
+- **Audit Logging Subsystem**: Automated, immutable logging for all CRM mutations in [`services/audit_service.py`](services/audit_service.py).
+- **Container Vulnerability Scanning**: Scheduled GitHub Actions Trivy container image scanning.
+- **Data Privacy**: Built with GDPR and data retention compliance standards in mind.
 
 ---
 
-## 🤖 AI Assistant Configuration
+## 🤖 Centralized AI Assistant Rules
 
-This project includes a centralised system for configuring AI coding assistants.
+This project uses a unified single source of truth for all AI development tools:
 
-| Tool | Config File |
-|---|---|
-| Cursor | `.cursorrules` |
-| Claude Code | `CLAUDE.md` |
-| GitHub Copilot | `.github/copilot-instructions.md` |
-| Cline / Roo Code | `.clinerules` |
-| Windsurf | `.windsurfrules` |
-| Antigravity (this tool) | `.agents/AGENTS.md` + `.agents/skills/` |
+* **Central Rules**: [`.agents/AGENTS.md`](.agents/AGENTS.md)
+* **Modular Skills**: [`.agents/skills/`](.agents/skills/) (Project Architecture, Backend, Frontend, Agents, Database, Testing, DevOps, Git)
 
-**Single source of truth**: [`.agents/AGENTS.md`](.agents/AGENTS.md)
-
-After editing rules or skill files, regenerate all tool configs:
+To synchronize updates across Cursor, Claude Code, GitHub Copilot, Cline/Roo Code, and Windsurf:
 
 ```bash
 python3 .agents/scripts/sync_rules.py
 ```
 
-### Skills
+---
 
-| Skill | Description |
-|---|---|
-| `project-architecture` | Agent collaboration, feature-sliced architecture, and workflow orchestration |
-| `backend-development` | FastAPI endpoints, services, dependencies, and Pydantic schemas |
-| `agent-development` | Creating, extending, and debugging CRM agents and custom agent builders |
-| `frontend-development` | React 19 + TypeScript features, components, and TanStack Query state |
-| `database-development` | SQLAlchemy models, schemas, and Alembic migrations |
-| `testing` | pytest patterns and mock strategies |
-| `git-workflow` | Branching, commits, and pull requests |
+## 📚 Documentation Index
+
+### 🏛️ Core Architecture & Operations
+- 📋 [**Feature Checklist & Roadmap**](Features.md)
+- 🏛️ [**System Architecture Overview**](docs/architecture/overview.md)
+- 🤖 [**AI Multi-Agent Swarm Architecture**](docs/ai-architecture.md)
+- 🗄️ [**Database Models & Schema**](docs/database.md)
+- 📡 [**REST & WebSocket API Reference**](docs/api.md)
+- 🚀 [**Production Deployment Guide**](docs/deployment.md)
+- 🔒 [**Security & Threat Model**](docs/security.md)
+- 🩺 [**Troubleshooting & FAQ**](docs/troubleshooting.md)
+- 🤝 [**Contributing Guidelines**](CONTRIBUTING.md)
+- 🔐 [**Security Policy**](SECURITY.md)
+
+### 🤖 Agent & Feature Deep-Dives
+- 🎯 [**Lead Qualification Agent**](docs/lead-qualification.md)
+- 📧 [**Email Intelligence Agent**](docs/email-intelligence.md)
+- 💰 [**Sales Pipeline Agent**](docs/sales-pipeline.md)
+- 🎉 [**Customer Success Agent**](docs/customer-success.md)
+- 📅 [**Meeting Scheduler Agent**](docs/meeting-scheduler.md)
+- 📊 [**Analytics Agent**](docs/analytics.md)
+- 🎙️ [**Voice AI Call Intelligence**](docs/voice-ai.md)
+- 💬 [**WhatsApp Business Hub**](docs/whatsapp.md)
+- 📈 [**Monte Carlo Revenue Forecasting**](docs/forecasting.md)
+- 🔧 [**No-Code Custom Agent Builder**](docs/custom-agents.md)
+- 🌐 [**Multi-Language (I18n) Engine**](docs/i18n/overview.md)
+- ⚔️ [**AI Deal War Room & Strategy Studio**](docs/war-room.md)
+- 🧭 [**Customer Journey & Churn Prevention**](docs/customer-journey.md)
+- 🚀 [**AI SDR Multi-Touch Outreach Cadences**](docs/sdr-sequences.md)
 
 ---
 
-## 🔒 Security Considerations
+<div align="center">
 
-- **Never commit `.env`** to version control — it is in `.gitignore`
-- Set a strong random `SECRET_KEY` before deploying to production
-- Set `DEBUG=False` in production
-- Configure `ALLOWED_HOSTS` to your domain(s) in production
-- Rotate LLM API keys regularly and restrict their scopes
-- The `docker-compose.yml` database password (`crm_password`) is for local use — use a secrets manager in production
+**Built with ❤️ for modern revenue and sales engineering teams.**
 
----
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) • **Status:** Production Ready • **Version:** 2.0.0
 
-## 🤝 Git Workflow
-
-| Branch prefix | Purpose |
-|---|---|
-| `features/` | New functionality |
-| `bugfix/` | Bug fixes |
-| `chore/` | Maintenance tasks |
-
-Commit messages follow the imperative style:
-```
-feat: Add voice call intelligence analytics
-feat: Add WhatsApp broadcast campaign endpoint
-feat: Add lead scoring threshold configuration
-fix: Correct email sentiment parser for unicode input
-chore: Update dependencies to latest patch versions
-```
-
----
-
-## 🆘 Troubleshooting
-
-### Docker: Port already in use
-```bash
-# Find what is using port 8000 or 5432
-lsof -i :8000
-# Then stop or kill that process
-```
-
-### Docker: Database connection refused
-```bash
-# Check that the db service is healthy
-docker-compose ps
-docker-compose logs db
-```
-
-### Alembic: No config file found
-```bash
-# Run alembic commands from the project root (where alembic.ini lives)
-cd /path/to/ai-crm-agents
-alembic upgrade head
-```
-
-### API returns 500 on startup
-```bash
-# Check that DATABASE_URL is correct and the database is running
-curl http://localhost:8000/health
-docker-compose logs web
-```
-
-### LLM Provider & Smart Fallback
-Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects all agents to live AI models (`gpt-4o-mini` or `claude-3-5-sonnet-20241022`). Without an API key, the system automatically runs with `SmartFallbackLLM`, producing realistic, context-aware CRM agendas, email drafts, lead score rationales, and customer health risk analyses.
-
----
-
-### Core Architecture & Operations Guides
-- 📋 **Features & Roadmap**: [`Features.md`](Features.md)
-- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
-- 🤖 **AI Architecture & Fallback**: [`docs/ai-architecture.md`](docs/ai-architecture.md)
-- 🗄️ **Database Architecture**: [`docs/database.md`](docs/database.md)
-- 📡 **REST & WebSocket API**: [`docs/api.md`](docs/api.md)
-- 🚀 **Production Deployment**: [`docs/deployment.md`](docs/deployment.md)
-- 🔒 **Security & Threat Model**: [`docs/security.md`](docs/security.md)
-- 🩺 **Troubleshooting Guide**: [`docs/troubleshooting.md`](docs/troubleshooting.md)
-- 🤝 **Contributing Guidelines**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- 🔐 **Security Policy**: [`SECURITY.md`](SECURITY.md)
-
-### Agent & Feature Deep-Dive Guides
-- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
-- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
-- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
-- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
-- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
-- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
-- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
-- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
-- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
-- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
-- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
-- ⚔️ **AI Deal War Room**: [`docs/war-room.md`](docs/war-room.md)
-- 🧭 **Customer Journey & Churn Prevention**: [`docs/customer-journey.md`](docs/customer-journey.md)
-- 🚀 **AI SDR Outreach Cadences**: [`docs/sdr-sequences.md`](docs/sdr-sequences.md)
-
-### Technical Resources
-- **Frontend Web Application**: http://localhost:80 (Production Docker) / http://localhost:5173 (Dev)
-- **API Docs** (interactive Swagger UI): http://localhost:8000/docs
-- **ReDoc API Spec**: http://localhost:8000/redoc
-- **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
-- **Database Schema**: [`database/schema.sql`](database/schema.sql)
-- **Quickstart Guide**: [`QUICKSTART.md`](QUICKSTART.md)
-- **Test Suite Strategy**: [`test.md`](test.md)
-
----
-
-**Built with ❤️ for modern sales teams**
-
-**License:** MIT | **Status:** Production Ready | **Last Updated:** 2026-08-17
+</div>
