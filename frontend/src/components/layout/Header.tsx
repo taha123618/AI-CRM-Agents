@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Radio, Bot, Plus } from 'lucide-react';
+import { Search, Radio, Bot, Plus, User, LogOut } from 'lucide-react';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useAgentStore } from '@/stores/use-agent-store';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import { realtimeClient } from '@/lib/websocket/client';
 import { LanguageSelector, LanguageManagerModal, TranslationEditorModal, useTranslation } from '@/features/multi-language';
 
@@ -12,6 +14,7 @@ export function Header() {
   const { t } = useTranslation();
   const { searchQuery, setSearchQuery, sidebarOpen, setLeadModalOpen, setDealModalOpen, setActivePage } = useUIStore();
   const { connectionStatus, setConnectionStatus, addEvent } = useAgentStore();
+  const { user, logout, isLoggingOut } = useAuth();
   const [backendHealth, setBackendHealth] = useState<'healthy' | 'checking' | 'error'>('checking');
   const [isLangManagerOpen, setIsLangManagerOpen] = useState(false);
   const [editingLangCode, setEditingLangCode] = useState<string | null>(null);
@@ -37,12 +40,26 @@ export function Header() {
     };
   }, [setConnectionStatus, addEvent]);
 
+  const getRoleBadgeVariant = (role?: string): 'danger' | 'purple' | 'warning' | 'info' | 'default' => {
+    switch (role) {
+      case 'admin':
+        return 'danger';
+      case 'sales':
+        return 'purple';
+      case 'support':
+        return 'warning';
+      case 'auditor':
+        return 'info';
+      default:
+        return 'default';
+    }
+  };
+
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${
-          sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
-        }`}
+        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
+          }`}
       >
         {/* Search Input */}
         <div className="relative flex items-center w-64 md:w-80">
@@ -64,17 +81,15 @@ export function Header() {
           {/* Realtime Stream Indicator */}
           <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs">
             <Radio
-              className={`w-3.5 h-3.5 ${
-                connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
-              }`}
+              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
+                }`}
             />
             <span className="text-slate-300 font-medium">
               {connectionStatus === 'OPEN' ? 'WS Realtime Stream' : 'Event Stream (Polling)'}
             </span>
             <span
-              className={`w-2 h-2 rounded-full ${
-                backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
-              }`}
+              className={`w-2 h-2 rounded-full ${backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
+                }`}
             />
           </div>
 
@@ -104,6 +119,34 @@ export function Header() {
               <span>{t('deals.title', 'New Deal')}</span>
             </Button>
           </div>
+
+          {/* Authenticated User & Logout */}
+          {user && (
+            <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-slate-800">
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 font-semibold text-xs">
+                  <User className="w-4 h-4" />
+                </div>
+                <div className="text-left leading-tight hidden xl:block">
+                  <div className="text-xs font-semibold text-white truncate max-w-[120px]">{user.full_name}</div>
+                  <Badge variant={getRoleBadgeVariant(user.role)} className="text-[9px] py-0 px-1 font-mono">
+                    {user.role.toUpperCase()}
+                  </Badge>
+                </div>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => logout()}
+                disabled={isLoggingOut}
+                title="Log Out & Invalidate Session Cookies"
+                className="text-slate-400 hover:text-rose-400 hover:bg-rose-950/30 p-2 h-8 w-8"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </header>
 
@@ -124,4 +167,3 @@ export function Header() {
     </>
   );
 }
-

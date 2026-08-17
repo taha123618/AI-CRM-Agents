@@ -18,7 +18,7 @@ export function AuditTrailTab() {
 
   const { data: logs = [], isLoading } = useQuery<AuditLogEntry[]>({
     queryKey: ['compliance-audit-logs'],
-    queryFn: settingsApi.getAuditLogs,
+    queryFn: () => settingsApi.getAuditLogs(),
     refetchInterval: 5000,
   });
 

@@ -104,6 +104,35 @@ services:
         max-size: "20m"
         max-file: "5"
 
+  # ── Background Task Worker ───────────────────────────────────────────────────
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: crm_worker_prod
+    command: ["python", "worker.py"]
+    env_file:
+      - .env
+    environment:
+      APP_ENV:      production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-crm_user}:${POSTGRES_PASSWORD:-crm_password}@db:5432/${POSTGRES_DB:-ai_crm}
+      REDIS_URL:    redis://redis:6379/0
+      DEBUG:        "False"
+    networks:
+      - crm_net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   # ── React + Nginx Frontend ───────────────────────────────────────────────────
   frontend:
     build:

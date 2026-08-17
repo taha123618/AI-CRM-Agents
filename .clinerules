@@ -15,17 +15,17 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM and Alembic migrations
 * **AI Orchestration**: LangChain-based custom agent framework with `TraceMixin` transparent LLM tracing, live OpenAI/Anthropic support (`AsyncOpenAI`, `AsyncAnthropic`), and `SmartFallbackLLM`
 * **Real-time Communication**: WebSockets (`/ws`) with `ConnectionManager` event stream & Redis pub/sub
-* **Background Tasks**: FastAPI `BackgroundTasks` (async, in-process — no separate worker process needed)
+* **Background Tasks & Email Delivery**: Asynchronous task queue (`services/task_queue_service.py`) with Redis persistence, exponential backoff retries, dedicated worker process (`worker.py`), and Gmail SMTP infrastructure (`services/email_service.py`)
 * **Caching & Event Bus**: Redis (pub/sub for agent event communication and response caching)
 * **Testing**: pytest and pytest-asyncio (unit and integration tests)
 * **Code Formatting**: Black (code formatter), Flake8 (linter), and Mypy (static type checker)
-* **Containerization**: Docker + Docker Compose (standalone `docker-compose.yml` for prod and `docker-compose.dev.yml` for dev)
+* **Containerization**: Docker + Docker Compose (standalone `docker-compose.yml` for prod with `web`, `worker`, `db`, `redis`, `frontend` and `docker-compose.dev.yml` for dev)
 
 ### Directory Layout
 * `/agents/`: Specialized AI agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin` (Lead Qualification, Email Intelligence, Sales Pipeline, Customer Success, Meeting Scheduler, Analytics, Voice Call, WhatsApp, Custom Agent Builder).
-* `/api/`: Modular FastAPI routers (leads, deals, customers, emails, meetings, analytics, voice calls, WhatsApp, forecasting, custom agents, i18n, WebSockets).
-* `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), and DB connection setup (`connection.py`).
-* `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), etc.
+* `/api/`: Modular FastAPI routers (leads, deals, customers, emails, meetings, analytics, voice calls, WhatsApp, forecasting, custom agents, i18n, war_room, journey, sequences, auth, audit_logs, tasks, WebSockets).
+* `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), connection setup (`connection.py`), and seeding (`seed.py`).
+* `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), authentication & RBAC (`auth_service.py`), audit trail (`audit_service.py`), task queue (`task_queue_service.py`), and transactional email (`email_service.py`).
 * `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`), Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, events, and background tasks.
 
@@ -33,28 +33,37 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 
 ## 🚀 Specialized Platform Features
 
-1. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`):
+1. **Enterprise Authentication, Security & RBAC Suite** (`/api/auth`, `services/auth_service.py`, `frontend/src/features/auth`, `frontend/src/features/settings`):
+   - Secure JWT token rotation, HTTP-only cookie sessions, brute-force account lockouts, and social SSO (Google & Microsoft).
+   - Fine-grained Role-Based Access Control matrix (`admin: ['*']`, `sales`, `support`, `auditor`) with client-side `PermissionGuard` and server-side `require_permission`.
+   - Super Admin public registration protection with seeded account (`admin@gmail.com` / `admin123`) and full User Management CRUD in `/settings` (search, role filters, permission editor, pagination).
+   - Asynchronous Gmail SMTP password recovery flow with zero user enumeration risk and single-use DB-hashed tokens.
+2. **Enterprise Email Delivery & Task Queue Infrastructure** (`services/email_service.py`, `services/task_queue_service.py`, `worker.py`):
+   - Gmail SMTP on port 587 with STARTTLS, RFC-5321 envelope parsing, Google App Password authentication, and branded dark-mode HTML templates.
+   - Background task queue with exponential backoff retries (1s, 2s, 4s...) and Redis state caching (`crm:task:<id>`).
+   - Standalone background worker daemon (`worker.py`) containerized in Docker.
+3. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`):
    - Real-time speech turn analysis, buyer intent scoring, and dynamic objection battle-cards.
    - Post-call automated CRM synthesis, action item extraction, and audio intelligence playback.
-2. **WhatsApp Business Multi-Agent Hub** (`/api/whatsapp`, `/agents/whatsapp_agent.py`, `frontend/src/features/whatsapp`):
+4. **WhatsApp Business Multi-Agent Hub** (`/api/whatsapp`, `/agents/whatsapp_agent.py`, `frontend/src/features/whatsapp`):
    - Omnichannel WhatsApp chat with 24/7 AI Auto-Pilot lead qualification and customer support.
    - Broadcast template messaging campaigns, conversation tagging, search, and handoff archiving.
-3. **Advanced Monte Carlo & ML Revenue Forecasting** (`/api/forecasting`, `/services/forecasting_service.py`, `frontend/src/features/forecasting`):
+5. **Advanced Monte Carlo & ML Revenue Forecasting** (`/api/forecasting`, `/services/forecasting_service.py`, `frontend/src/features/forecasting`):
    - Stochastic Monte Carlo simulations (P10 conservative, P50 expected, P90 optimistic confidence bounds).
    - Monthly ARR progression charts vs targets, pipeline stage velocity & hazard conversion matrix.
    - Saved scenario comparison table and side-by-side executive review charts.
-4. **Multi-Language Support (I18n)** (`/api/i18n`, `/services/i18n_service.py`, `frontend/src/features/multi-language`):
+6. **Multi-Language Support (I18n)** (`/api/i18n`, `/services/i18n_service.py`, `frontend/src/features/multi-language`):
    - Dynamic translation management system with RTL/LTR layout synchronization (e.g. Urdu, Arabic).
-5. **No-Code Custom Agent Builder** (`/api/custom-agents`, `/agents/custom_agent_builder.py`, `frontend/src/features/custom-agents`):
+7. **No-Code Custom Agent Builder** (`/api/custom-agents`, `/agents/custom_agent_builder.py`, `frontend/src/features/custom-agents`):
    - Visual creator for custom AI agents with customizable prompts, triggers, toolkits, and testing playground.
-6. **AI Deal War Room, Strategy Studio & Automations** (`/api/war-room`, `workflows/orchestrator.py`, `frontend/src/features/war-room`):
+8. **AI Deal War Room, Strategy Studio & Automations** (`/api/war-room`, `workflows/orchestrator.py`, `frontend/src/features/war-room`):
    - Multi-agent consensus verdicts, SWOT quadrant matrices, live competitor battle-cards, and buying committee maps.
    - 1-Click Smart Proposal Studio with tier pricing, SLA terms, and e-signature URL workflows.
    - Multi-Agent Workflow Automation Triggers with full CRUD and live AI Orchestrator execution.
-7. **AI Autonomous Customer Journey & Churn Prevention Studio** (`/api/journey`, `frontend/src/features/journey`):
+9. **AI Autonomous Customer Journey & Churn Prevention Studio** (`/api/journey`, `frontend/src/features/journey`):
    - Telemetry-guided lifecycle stage pipeline (`onboarding`, `adoption`, `expansion`, `renewal`, `at_risk`) and stage ARR aggregation.
    - Real-time churn probability radar and 1-click autonomous retention intervention playbooks via `CustomerSuccessAgent`.
-8. **AI SDR Multi-Touch Outreach & Cadence Studio** (`/api/sequences`, `frontend/src/features/sequences`):
+10. **AI SDR Multi-Touch Outreach & Cadence Studio** (`/api/sequences`, `frontend/src/features/sequences`):
    - Omnichannel outreach sequences across Email, WhatsApp, and Voice AI briefings with configurable day delays.
    - 1-click lead cohort enrollment and live AI prompt-engineered step copy generation.
 

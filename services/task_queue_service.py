@@ -6,7 +6,7 @@ import json
 import uuid
 from datetime import datetime
 from typing import Dict, Any, Optional, Callable, Awaitable, List
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from loguru import logger
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -22,8 +22,11 @@ class TaskJob(BaseModel):
     created_at: str
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
+    attempts: int = 0
+    max_attempts: int = 3
     result: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class AsyncTaskQueue:
@@ -34,22 +37,30 @@ class AsyncTaskQueue:
         self._async_tasks: Dict[str, asyncio.Task] = {}
         self._redis_client = None
 
+    def _get_redis(self):
+        if not self._redis_client:
+            try:
+                import redis
+                self._redis_client = redis.from_url(REDIS_URL, socket_timeout=1)
+            except Exception:
+                self._redis_client = None
+        return self._redis_client
+
     def _sync_to_redis(self, job: TaskJob) -> None:
         """Cache task state to Redis if available."""
         try:
-            if not self._redis_client:
-                import redis
-                self._redis_client = redis.from_url(REDIS_URL, socket_timeout=1)
-            self._redis_client.setex(
-                f"crm:task:{job.task_id}",
-                86400,  # 24 hours TTL
-                job.model_dump_json(),
-            )
+            r = self._get_redis()
+            if r:
+                r.setex(
+                    f"crm:task:{job.task_id}",
+                    86400,  # 24 hours TTL
+                    job.model_dump_json(),
+                )
         except Exception:
             # Fall back transparently to in-process memory store
             pass
 
-    def create_task(self, task_type: str) -> TaskJob:
+    def create_task(self, task_type: str, max_attempts: int = 3, metadata: Optional[Dict[str, Any]] = None) -> TaskJob:
         """Register a new task in pending state."""
         task_id = str(uuid.uuid4())
         job = TaskJob(
@@ -59,6 +70,9 @@ class AsyncTaskQueue:
             progress=0,
             # pyrefly: ignore [deprecated]
             created_at=datetime.utcnow().isoformat(),
+            attempts=0,
+            max_attempts=max_attempts,
+            metadata=metadata or {},
         )
         self.tasks[task_id] = job
         self._sync_to_redis(job)
@@ -70,15 +84,14 @@ class AsyncTaskQueue:
             return self.tasks[task_id]
 
         try:
-            if not self._redis_client:
-                import redis
-                self._redis_client = redis.from_url(REDIS_URL, socket_timeout=1)
-            raw = self._redis_client.get(f"crm:task:{task_id}")
-            if raw:
-                job_dict = json.loads(raw.decode("utf-8") if isinstance(raw, bytes) else raw)
-                job = TaskJob(**job_dict)
-                self.tasks[task_id] = job
-                return job
+            r = self._get_redis()
+            if r:
+                raw = r.get(f"crm:task:{task_id}")
+                if raw:
+                    job_dict = json.loads(raw.decode("utf-8") if isinstance(raw, bytes) else raw)
+                    job = TaskJob(**job_dict)
+                    self.tasks[task_id] = job
+                    return job
         except Exception:
             pass
 
@@ -119,37 +132,91 @@ class AsyncTaskQueue:
         self,
         task_type: str,
         coro_func: Callable[[TaskJob], Awaitable[Dict[str, Any]]],
+        max_attempts: int = 3,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> TaskJob:
-        """Enqueue and start background execution of an async job."""
-        job = self.create_task(task_type)
+        """Enqueue and start background execution of an async job with retry support."""
+        job = self.create_task(task_type, max_attempts=max_attempts, metadata=metadata)
 
         async def _runner():
             job.status = "running"
             job.started_at = datetime.utcnow().isoformat()
             job.progress = 10
             self._sync_to_redis(job)
-            try:
-                result = await coro_func(job)
-                job.status = "completed"
-                job.progress = 100
-                job.result = result
-                job.completed_at = datetime.utcnow().isoformat()
-            except asyncio.CancelledError:
-                job.status = "cancelled"
-                job.error = "Execution cancelled"
-                job.completed_at = datetime.utcnow().isoformat()
-            except Exception as e:
-                logger.error(f"Task {job.task_id} failed: {e}")
-                job.status = "failed"
-                job.error = str(e)
-                job.completed_at = datetime.utcnow().isoformat()
-            finally:
-                self._async_tasks.pop(job.task_id, None)
-                self._sync_to_redis(job)
+
+            for attempt in range(1, job.max_attempts + 1):
+                job.attempts = attempt
+                try:
+                    logger.info(f"Executing task {job.task_id} ({job.task_type}) - attempt {attempt}/{job.max_attempts}")
+                    result = await coro_func(job)
+                    job.status = "completed"
+                    job.progress = 100
+                    job.result = result
+                    job.completed_at = datetime.utcnow().isoformat()
+                    self._sync_to_redis(job)
+                    logger.info(f"Task {job.task_id} completed successfully.")
+                    return
+                except asyncio.CancelledError:
+                    job.status = "cancelled"
+                    job.error = "Execution cancelled"
+                    job.completed_at = datetime.utcnow().isoformat()
+                    self._sync_to_redis(job)
+                    return
+                except Exception as e:
+                    job.error = str(e)
+                    logger.warning(f"Task {job.task_id} attempt {attempt} failed: {e}")
+                    if attempt < job.max_attempts:
+                        # Exponential backoff: 1s, 2s, 4s...
+                        backoff = 2 ** (attempt - 1)
+                        logger.info(f"Retrying task {job.task_id} in {backoff}s...")
+                        await asyncio.sleep(backoff)
+                    else:
+                        job.status = "failed"
+                        job.completed_at = datetime.utcnow().isoformat()
+                        logger.error(f"Task {job.task_id} failed after {job.max_attempts} attempts: {e}")
+                finally:
+                    self._sync_to_redis(job)
+
+            self._async_tasks.pop(job.task_id, None)
 
         t = asyncio.create_task(_runner())
         self._async_tasks[job.task_id] = t
         return job
+
+    async def enqueue_password_reset_email(
+        self,
+        to_email: str,
+        recipient_name: str,
+        reset_token: str,
+        expires_in_minutes: int = 60,
+    ) -> TaskJob:
+        """Enqueue password reset email delivery task into background queue."""
+        from services.email_service import email_service
+
+        domain = to_email.split("@")[-1] if "@" in to_email else "unknown"
+
+        async def _send_task(job: TaskJob) -> Dict[str, Any]:
+            job.progress = 30
+            res = await email_service.send_password_reset_email(
+                to_email=to_email,
+                recipient_name=recipient_name,
+                reset_token=reset_token,
+                expires_in_minutes=expires_in_minutes,
+            )
+            job.progress = 90
+            return {
+                "delivered": res.get("delivered", True),
+                "status": res.get("status", "delivered"),
+                "recipient_domain": domain,
+                "email_type": "password_reset",
+            }
+
+        return await self.enqueue(
+            task_type="send_password_reset_email",
+            coro_func=_send_task,
+            max_attempts=3,
+            metadata={"email_type": "password_reset", "recipient_domain": domain},
+        )
 
 
 task_queue = AsyncTaskQueue()

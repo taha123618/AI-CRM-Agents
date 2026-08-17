@@ -9,6 +9,14 @@ import { DealModal } from '@/components/forms/DealModal';
 import { EmailAnalyzerModal } from '@/components/forms/EmailAnalyzerModal';
 import { MeetingSchedulerModal } from '@/components/forms/MeetingSchedulerModal';
 
+import { LoginPage } from '@/pages/LoginPage';
+import { RegisterPage } from '@/pages/RegisterPage';
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
+import { VerifyEmailPage } from '@/pages/VerifyEmailPage';
+import { AuthCallbackPage } from '@/pages/AuthCallbackPage';
+import { UnauthorizedPage } from '@/pages/UnauthorizedPage';
+
 import { DashboardPage } from '@/pages/DashboardPage';
 import { LeadsPage } from '@/pages/LeadsPage';
 import { DealsPage } from '@/pages/DealsPage';
@@ -27,6 +35,9 @@ import { JourneyPage } from '@/pages/JourneyPage';
 import { SequencesPage } from '@/pages/SequencesPage';
 import { LanguagesPage } from '@/pages/LanguagesPage';
 import { SettingsPage } from '@/pages/SettingsPage';
+
+import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
+import { RoleGuard } from '@/features/auth/components/RoleGuard';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 
 function RouteSync() {
@@ -88,30 +99,56 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <RouteSync />
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/leads" element={<LeadsPage />} />
-          <Route path="/deals" element={<DealsPage />} />
-          <Route path="/customers" element={<CustomersPage />} />
-          <Route path="/emails" element={<EmailsPage />} />
-          <Route path="/meetings" element={<MeetingsPage />} />
-          <Route path="/voice-ai" element={<VoiceAIPage />} />
-          <Route path="/whatsapp" element={<WhatsAppPage />} />
-          <Route path="/forecasting" element={<ForecastingPage />} />
-          <Route path="/war-room" element={<WarRoomPage />} />
-          <Route path="/journey" element={<JourneyPage />} />
-          <Route path="/sequences" element={<SequencesPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/agents" element={<AgentsPage />} />
-          <Route path="/custom-agents" element={<CustomAgentsPage />} />
-          <Route path="/languages" element={<LanguagesPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </AppLayout>
+      <Routes>
+        {/* Public Authentication Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+        {/* Protected CRM Application Routes */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/leads" element={<LeadsPage />} />
+                  <Route path="/deals" element={<DealsPage />} />
+                  <Route path="/customers" element={<CustomersPage />} />
+                  <Route path="/emails" element={<EmailsPage />} />
+                  <Route path="/meetings" element={<MeetingsPage />} />
+                  <Route path="/voice-ai" element={<VoiceAIPage />} />
+                  <Route path="/whatsapp" element={<WhatsAppPage />} />
+                  <Route path="/forecasting" element={<ForecastingPage />} />
+                  <Route path="/war-room" element={<WarRoomPage />} />
+                  <Route path="/journey" element={<JourneyPage />} />
+                  <Route path="/sequences" element={<SequencesPage />} />
+                  <Route path="/analytics" element={<AnalyticsPage />} />
+                  <Route path="/reports" element={<ReportsPage />} />
+                  <Route path="/agents" element={<AgentsPage />} />
+                  <Route path="/custom-agents" element={<CustomAgentsPage />} />
+                  <Route path="/languages" element={<LanguagesPage />} />
+                  <Route
+                    path="/settings"
+                    element={
+                      <RoleGuard allowedRoles={['admin', 'auditor']}>
+                        <SettingsPage />
+                      </RoleGuard>
+                    }
+                  />
+                  <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                </Routes>
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

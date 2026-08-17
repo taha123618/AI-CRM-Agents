@@ -1,19 +1,63 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SettingsFeature } from '../SettingsFeature';
+import { UserManagementTab } from '../components/UserManagementTab';
 import { ImportExportStudioTab } from '../components/ImportExportStudioTab';
 import { TablePagination } from '../components/TablePagination';
+import { useAuthStore } from '@/features/auth/hooks/useAuthStore';
+
+const mockUsers = [
+  {
+    id: 'admin-1',
+    email: 'admin@company.com',
+    full_name: 'Super Admin User',
+    role: 'admin' as const,
+    is_active: true,
+    permissions: ['leads:read', 'deals:read'],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'sales-1',
+    email: 'sales@company.com',
+    full_name: 'Sales Rep',
+    role: 'sales' as const,
+    is_active: true,
+    permissions: ['leads:read'],
+    created_at: new Date().toISOString(),
+  },
+];
 
 function renderWithClient(ui: React.ReactElement) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
-  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+  queryClient.setQueryData(['system-users'], mockUsers);
+  queryClient.setQueryData(['sso-providers'], { providers: [] });
+  queryClient.setQueryData(['background-tasks'], []);
+  queryClient.setQueryData(['compliance-audit-logs'], []);
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>{ui}</MemoryRouter>
+    </QueryClientProvider>
+  );
 }
 
 describe('Settings & Governance Studio Feature', () => {
   it('renders all navigation tabs and header title', () => {
+    useAuthStore.setState({
+      user: {
+        id: 'admin-1',
+        email: 'admin@company.com',
+        full_name: 'Admin User',
+        role: 'admin',
+        is_active: true,
+      },
+      isAuthenticated: true,
+    });
+
     const { getByText } = renderWithClient(<SettingsFeature />);
 
     expect(getByText(/Platform Governance, Integrations & Security/i)).toBeInTheDocument();
@@ -22,6 +66,44 @@ describe('Settings & Governance Studio Feature', () => {
     expect(getByText(/Bulk Import \/ Export/i)).toBeInTheDocument();
     expect(getByText(/Task Queue & Workers/i)).toBeInTheDocument();
     expect(getByText(/Compliance Audit Trail/i)).toBeInTheDocument();
+  });
+
+  it('renders UserManagementTab with Super Admin controls', () => {
+    useAuthStore.setState({
+      user: {
+        id: 'admin-1',
+        email: 'admin@company.com',
+        full_name: 'Super Admin User',
+        role: 'admin',
+        is_active: true,
+      },
+      isAuthenticated: true,
+    });
+
+    const { getByText, getByPlaceholderText, getByRole } = renderWithClient(<UserManagementTab />);
+
+    expect(getByText(/Role-Based Access Control \(RBAC\)/i)).toBeInTheDocument();
+    expect(getByRole('button', { name: /Provision New User/i })).toBeInTheDocument();
+    expect(getByPlaceholderText(/Search by full name or email address.../i)).toBeInTheDocument();
+  });
+
+  it('renders UserManagementTab in Read-Only mode for Auditor/Sales/Support', () => {
+    useAuthStore.setState({
+      user: {
+        id: 'auditor-1',
+        email: 'auditor@company.com',
+        full_name: 'Auditor User',
+        role: 'auditor',
+        is_active: true,
+      },
+      isAuthenticated: true,
+    });
+
+    const { getByText, queryByRole } = renderWithClient(<UserManagementTab />);
+
+    expect(getByText(/Read-Only Mode/i)).toBeInTheDocument();
+    expect(getByText(/Auditing Access/i)).toBeInTheDocument();
+    expect(queryByRole('button', { name: /Provision New User/i })).not.toBeInTheDocument();
   });
 
   it('switches to Bulk Import / Export tab when clicked', () => {

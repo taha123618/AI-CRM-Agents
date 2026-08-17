@@ -39,12 +39,14 @@ frontend/src/
 │   ├── forecasting/             # ForecastingFeature (Monte Carlo simulation, ARR trend, pipeline velocity)
 │   ├── custom-agents/           # CustomAgentsFeature (No-code visual agent builder & testing playground)
 │   ├── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Translation manager)
-│   └── war-room/                # WarRoomFeature (Strategy Studio, SWOT battle-cards, Proposal generator, Automations)
+│   ├── war-room/                # WarRoomFeature (Strategy Studio, SWOT battle-cards, Proposal generator, Automations)
+│   ├── auth/                    # AuthLayout, PermissionGuard, useAuth, useAuthStore, SocialSSOButtons
+│   └── settings/                # SettingsFeature & UserManagementTab (RBAC CRUD, role presets, pagination)
 ├── hooks/                       # Reusable TanStack Query & mutation hooks
 ├── lib/                         # API client (Axios), WebSocket stream client, Query configuration, Utilities
-├── stores/                      # Zustand global UI (useUIStore) and Agent event stores (useAgentStore)
+├── stores/                      # Zustand global UI (useUIStore), Agent event (useAgentStore), and Auth (useAuthStore)
 ├── types/                       # TypeScript interfaces matching backend models & endpoints (crm.types.ts)
-└── pages/                       # Lightweight page composition files that render feature modules
+└── pages/                       # Lightweight page composition files (LoginPage, RegisterPage, ForgotPasswordPage, etc.)
 ```
 
 ---

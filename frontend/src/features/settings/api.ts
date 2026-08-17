@@ -14,8 +14,45 @@ export const settingsApi = {
     return data;
   },
 
+  createUser: async (payload: {
+    email: string;
+    password: string;
+    full_name: string;
+    role?: string;
+    is_active?: boolean;
+    permissions?: string[];
+  }): Promise<SystemUser> => {
+    const { data } = await apiClient.post('/api/auth/users', payload);
+    return data;
+  },
+
+  updateUser: async (
+    userId: string,
+    payload: {
+      full_name?: string;
+      email?: string;
+      role?: string;
+      is_active?: boolean;
+      permissions?: string[];
+      password?: string;
+    }
+  ): Promise<SystemUser> => {
+    const { data } = await apiClient.put(`/api/auth/users/${userId}`, payload);
+    return data;
+  },
+
   updateUserRole: async (userId: string, role: string): Promise<SystemUser> => {
     const { data } = await apiClient.put(`/api/auth/users/${userId}/role`, { role });
+    return data;
+  },
+
+  toggleUserStatus: async (userId: string, is_active: boolean): Promise<SystemUser> => {
+    const { data } = await apiClient.put(`/api/auth/users/${userId}/status`, { is_active });
+    return data;
+  },
+
+  deleteUser: async (userId: string): Promise<{ status: string; message: string }> => {
+    const { data } = await apiClient.delete(`/api/auth/users/${userId}`);
     return data;
   },
 
@@ -69,6 +106,17 @@ export const settingsApi = {
     return data;
   },
 
+  // Bulk Import & Export
+  importLeadsCsv: async (csvData: string): Promise<{ success: boolean; created_count: number; updated_count?: number; errors?: string[] }> => {
+    const { data } = await apiClient.post('/api/leads/bulk-import', { csv_data: csvData });
+    return data;
+  },
+
+  importDealsCsv: async (csvData: string): Promise<{ success: boolean; created_count: number; updated_count?: number; errors?: string[] }> => {
+    const { data } = await apiClient.post('/api/deals/bulk-import', { csv_data: csvData });
+    return data;
+  },
+
   // Background Tasks Queue
   getTasks: async (): Promise<BackgroundTask[]> => {
     const { data } = await apiClient.get('/api/tasks/');
@@ -100,19 +148,8 @@ export const settingsApi = {
     return data;
   },
 
-  clearCompletedTasks: async (): Promise<{ status: string; cleared_tasks_count: number }> => {
-    const { data } = await apiClient.post('/api/tasks/clear-completed');
-    return data;
-  },
-
-  // Bulk CSV Import
-  importLeadsCsv: async (csvData: string): Promise<{ success: boolean; created_count: number; updated_count: number; errors: string[] }> => {
-    const { data } = await apiClient.post('/api/import-export/import/leads', { csv_data: csvData });
-    return data;
-  },
-
-  importDealsCsv: async (csvData: string): Promise<{ success: boolean; created_count: number; errors: string[] }> => {
-    const { data } = await apiClient.post('/api/import-export/import/deals', { csv_data: csvData });
+  clearCompletedTasks: async (): Promise<{ status: string; cleared_tasks_count?: number; count?: number }> => {
+    const { data } = await apiClient.delete('/api/tasks/completed');
     return data;
   },
 

@@ -4,6 +4,8 @@ export interface SystemUser {
   full_name: string;
   role: 'admin' | 'sales' | 'support' | 'auditor';
   is_active: boolean;
+  is_verified?: boolean;
+  permissions?: string[];
   last_login_at?: string;
   created_at: string;
 }

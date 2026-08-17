@@ -100,13 +100,16 @@ def test_rbac_endpoint_access_control():
             "email": admin_email,
             "password": "AdminPassword123!",
             "full_name": "Admin User",
-            "role": "admin",
+            "role": "sales",
         },
     )
-    # Manually ensure role is admin in DB
+    assert admin_reg.status_code == 201
+
+    # Manually promote to admin in DB (simulating superadmin provisioning)
     db = SessionLocal()
     admin_user = db.query(User).filter(User.email == admin_email).first()
     admin_user.role = "admin"
+    admin_user.permissions = ["*"]
     db.commit()
     db.close()
 

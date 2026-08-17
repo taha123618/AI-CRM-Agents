@@ -726,9 +726,59 @@ class User(Base):
     full_name = Column(String(150), nullable=False)
     role = Column(String(50), default="sales", nullable=False, index=True)  # 'admin', 'sales', 'support', 'auditor'
     is_active = Column(Boolean, default=True, nullable=False)
+    is_verified = Column(Boolean, default=True, nullable=False)
+    login_attempts = Column(Integer, default=0, nullable=False)
+    locked_until = Column(DateTime, nullable=True)
+    oauth_provider = Column(String(50), nullable=True)  # 'google', 'microsoft', or None
+    oauth_id = Column(String(255), nullable=True)
+    permissions = Column(JSONB, default=list)  # list of permission strings e.g. ["leads:read", "deals:write"]
     last_login_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, server_default=func.now(), index=True)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class RefreshToken(Base):
+    __tablename__ = "refresh_tokens"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(255), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    revoked = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(255), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    used = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class EmailVerificationToken(Base):
+    __tablename__ = "email_verification_tokens"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(255), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    used = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class LoginAttempt(Base):
+    __tablename__ = "login_attempts"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    email = Column(String(255), nullable=False, index=True)
+    ip_address = Column(String(50), nullable=True)
+    user_agent = Column(String(500), nullable=True)
+    successful = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
 
 
 class WebhookEndpoint(Base):

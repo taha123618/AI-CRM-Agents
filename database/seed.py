@@ -18,11 +18,87 @@ from database.models import (
     OutreachSequence,
     SequenceEnrollment,
     AutomationRule,
+    User,
 )
+from services.auth_service import hash_password, ROLE_DEFAULT_PERMISSIONS
+
+
+def seed_initial_users(db: Session):
+    """Seed initial Super Admin (admin@gmail.com / admin123) and standard role accounts."""
+    # 1. Super Admin User
+    admin_user = db.query(User).filter(User.email == "admin@gmail.com").first()
+    if not admin_user:
+        admin_user = User(
+            id=uuid.uuid4(),
+            email="admin@gmail.com",
+            hashed_password=hash_password("admin123"),
+            full_name="Super Admin",
+            role="admin",
+            is_active=True,
+            is_verified=True,
+            permissions=ROLE_DEFAULT_PERMISSIONS["admin"],
+        )
+        db.add(admin_user)
+        print("Seeded default Super Admin account: admin@gmail.com (password: admin123)")
+    else:
+        admin_user.role = "admin"
+        admin_user.is_active = True
+        admin_user.is_verified = True
+        admin_user.permissions = ROLE_DEFAULT_PERMISSIONS["admin"]
+
+    # 2. Sales Representative
+    sales_user = db.query(User).filter(User.email == "sales@gmail.com").first()
+    if not sales_user:
+        sales_user = User(
+            id=uuid.uuid4(),
+            email="sales@gmail.com",
+            hashed_password=hash_password("sales123"),
+            full_name="Alex Rivera",
+            role="sales",
+            is_active=True,
+            is_verified=True,
+            permissions=ROLE_DEFAULT_PERMISSIONS["sales"],
+        )
+        db.add(sales_user)
+
+    # 3. Support Specialist
+    support_user = db.query(User).filter(User.email == "support@gmail.com").first()
+    if not support_user:
+        support_user = User(
+            id=uuid.uuid4(),
+            email="support@gmail.com",
+            hashed_password=hash_password("support123"),
+            full_name="Taylor Brooks",
+            role="support",
+            is_active=True,
+            is_verified=True,
+            permissions=ROLE_DEFAULT_PERMISSIONS["support"],
+        )
+        db.add(support_user)
+
+    # 4. Compliance Auditor
+    auditor_user = db.query(User).filter(User.email == "auditor@gmail.com").first()
+    if not auditor_user:
+        auditor_user = User(
+            id=uuid.uuid4(),
+            email="auditor@gmail.com",
+            hashed_password=hash_password("auditor123"),
+            full_name="Morgan Chen",
+            role="auditor",
+            is_active=True,
+            is_verified=True,
+            permissions=ROLE_DEFAULT_PERMISSIONS["auditor"],
+        )
+        db.add(auditor_user)
+
+    db.commit()
 
 
 def seed_database(db: Session):
     """Seed the database with sample data if empty"""
+    # Always ensure Super Admin and role users are seeded
+    seed_initial_users(db)
+
     # Always ensure languages and translations are seeded
     seed_languages_and_translations(db)
 
@@ -1740,3 +1816,12 @@ def seed_voice_and_whatsapp(db: Session):
     db.add_all([sim1, sim2])
     db.commit()
     print("Seeded Voice Calls, WhatsApp Conversations, and Forecast Simulations successfully.")
+
+
+if __name__ == "__main__":
+    from database.connection import SessionLocal
+    db = SessionLocal()
+    try:
+        seed_database(db)
+    finally:
+        db.close()

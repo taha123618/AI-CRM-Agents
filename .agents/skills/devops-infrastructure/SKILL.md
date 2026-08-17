@@ -11,12 +11,13 @@ This skill defines the operational, containerization, CI/CD, and infrastructure 
 
 ## 🏗️ Architecture & Deployment Stack
 
-- **Containerization**: Multi-stage Docker builds (`Dockerfile` for FastAPI, `frontend/Dockerfile` for Vite + Nginx)
-- **Local / Dev Compose**: `docker-compose.dev.yml` (hot-reloading, volume binds)
-- **Production Compose**: `docker-compose.yml` (hardened, non-root users, healthchecks)
+- **Containerization**: Multi-stage Docker builds (`Dockerfile` for FastAPI & Background Worker, `frontend/Dockerfile` for Vite + Nginx)
+- **Local / Dev Compose**: `docker-compose.dev.yml` (hot-reloading, volume binds, `web`, `worker`, `db`, `redis`, `frontend`)
+- **Production Compose**: `docker-compose.yml` (hardened, non-root users, healthchecks, standalone `worker` daemon)
 - **CI/CD Automation**: GitHub Actions (`.github/workflows/ci.yml`, `.github/workflows/docker-build.yml`)
 - **Database**: PostgreSQL 14+ with Alembic migrations (`alembic upgrade head`)
-- **Message Broker & Cache**: Redis 7 Alpine (Pub/Sub for agent telemetry + `/ws` broadcasting)
+- **Message Broker & Cache**: Redis 7 Alpine (Pub/Sub for agent telemetry + `/ws` broadcasting + background task state)
+- **Background Worker Daemon**: Async worker process (`worker.py`) executing queued background jobs
 - **Process Manager**: Gunicorn with Uvicorn worker threads (`uvicorn.workers.UvicornWorker`)
 
 ---
@@ -28,8 +29,9 @@ This skill defines the operational, containerization, CI/CD, and infrastructure 
 # Build and launch production stack in background
 docker-compose up -d --build
 
-# View real-time container logs
+# View real-time container logs (app, worker, frontend)
 docker-compose logs -f web
+docker-compose logs -f worker
 docker-compose logs -f frontend
 
 # Verify container health status
@@ -38,8 +40,21 @@ docker-compose ps
 # Execute database migrations inside running container
 docker-compose exec web alembic upgrade head
 
-# Seed initial CRM dataset inside container
+# Seed initial CRM dataset and default admin/role users inside container
 docker-compose exec web python3 database/seed.py
+```
+
+### 2. SMTP & Transactional Email Environment
+```env
+# Gmail SMTP / STARTTLS Configuration
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=true
+EMAIL_USER=saad@devteampro.com
+EMAIL_PASSWORD=<GOOGLE_APP_PASSWORD>
+EMAIL_FROM="AI Social Media Automation <saad@devteampro.com>"
+FRONTEND_URL=http://localhost:3000
+```
 
 # Tear down stack (preserve volumes)
 docker-compose down

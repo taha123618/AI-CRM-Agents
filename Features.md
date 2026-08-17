@@ -10,9 +10,13 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Client-Side Preferences & Local Storage State**: UI theme toggle, collapsed sidebar state, and language preferences.
 - [x] **User Language Preference Persistence**: Backend endpoint (`/api/i18n/preferences`) saving user language and direction (`ltr`/`rtl`).
 - [x] **JWT / OAuth2 Authentication**: User registration, login, PBKDF2 password hashing, JWT token issuance, refresh tokens (`/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`).
-- [x] **Role-Based Access Control (RBAC)**: Role permissions (`admin`, `sales`, `support`, `auditor`) with `require_role` route guards and user role management (`/api/auth/users`, `/api/auth/users/{id}/role`).
+- [x] **Fine-Grained Role-Based Access Control (RBAC)**: Explicit permissions matrix (`ROLE_DEFAULT_PERMISSIONS` for `admin`, `sales`, `support`, `auditor`) with client `PermissionGuard` and backend `require_permission` guards.
+- [x] **Super Admin Public Registration Guard**: Protected registration limiting public role selection to `sales`, `support`, and `auditor`, with default Super Admin seeded at `admin@gmail.com`.
+- [x] **Full-Featured User Management Studio**: `/settings` User Management tab with user search, status filter (`active`, `inactive`, `locked`), role filter, pagination, custom permission editor, password resets, and account lockout toggles.
+- [x] **Enterprise Gmail SMTP Email Delivery**: Asynchronous delivery service (`services/email_service.py`) on port 587 with STARTTLS, RFC-5321 envelope sender compliance, Google App Password authentication, and responsive dark-mode HTML templates.
+- [x] **Zero-Enumeration Asynchronous Password Recovery**: Non-blocking `POST /api/auth/forgot-password` endpoint enqueuing email tasks to background queue with single-use DB tokens and exponential backoff retries.
 - [x] **Sliding Window API Rate Limiting**: Production middleware (`middleware/rate_limiter.py`) with RFC headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) and 429 backoff protection.
-- [x] **Persistent Async Background Task Queue**: Subsystem (`services/task_queue_service.py`, `/api/tasks`) for async simulation execution, status polling, and background worker progress tracking.
+- [x] **Persistent Async Background Task Queue**: Subsystem (`services/task_queue_service.py`, `/api/tasks`, `worker.py`) with Redis persistence, exponential backoff retries, and task progress monitoring.
 - [x] **Audit Trail & User Activity Logs**: Immutable PostgreSQL audit log (`AuditLog` model, `/api/audit-logs`, `/api/audit-logs/stats`) recording entity mutations, auth logins, and agent actions.
 - [ ] **Multi-Tenant Workspace Isolation**: Tenant ID scoping across database queries and agent execution contexts.
 
