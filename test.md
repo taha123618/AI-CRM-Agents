@@ -222,8 +222,14 @@ Agents communicate via:
 
 ---
 
-## 📚 Documentation Index
-
+- 📋 **Features & Roadmap**: [`Features.md`](Features.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+- 🤖 **AI Architecture & Fallback**: [`docs/ai-architecture.md`](docs/ai-architecture.md)
+- 🗄️ **Database Architecture**: [`docs/database.md`](docs/database.md)
+- 📡 **REST & WebSocket API**: [`docs/api.md`](docs/api.md)
+- 🚀 **Production Deployment**: [`docs/deployment.md`](docs/deployment.md)
+- 🔒 **Security & Threat Model**: [`docs/security.md`](docs/security.md)
+- 🩺 **Troubleshooting Guide**: [`docs/troubleshooting.md`](docs/troubleshooting.md)
 - 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
 - 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
 - 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
@@ -238,4 +244,3 @@ Agents communicate via:
 - ⚔️ **AI Deal War Room**: [`docs/war-room.md`](docs/war-room.md)
 - 🧭 **Customer Journey & Churn Prevention**: [`docs/customer-journey.md`](docs/customer-journey.md)
 - 🚀 **AI SDR Outreach Cadences**: [`docs/sdr-sequences.md`](docs/sdr-sequences.md)
-- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)

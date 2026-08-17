@@ -537,9 +537,19 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 
 ---
 
-## 📚 Documentation & References
+### Core Architecture & Operations Guides
+- 📋 **Features & Roadmap**: [`Features.md`](Features.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+- 🤖 **AI Architecture & Fallback**: [`docs/ai-architecture.md`](docs/ai-architecture.md)
+- 🗄️ **Database Architecture**: [`docs/database.md`](docs/database.md)
+- 📡 **REST & WebSocket API**: [`docs/api.md`](docs/api.md)
+- 🚀 **Production Deployment**: [`docs/deployment.md`](docs/deployment.md)
+- 🔒 **Security & Threat Model**: [`docs/security.md`](docs/security.md)
+- 🩺 **Troubleshooting Guide**: [`docs/troubleshooting.md`](docs/troubleshooting.md)
+- 🤝 **Contributing Guidelines**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- 🔐 **Security Policy**: [`SECURITY.md`](SECURITY.md)
 
-### Agent & Feature Guides
+### Agent & Feature Deep-Dive Guides
 - 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
 - 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
 - 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
@@ -554,15 +564,15 @@ Setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` automatically connects
 - ⚔️ **AI Deal War Room**: [`docs/war-room.md`](docs/war-room.md)
 - 🧭 **Customer Journey & Churn Prevention**: [`docs/customer-journey.md`](docs/customer-journey.md)
 - 🚀 **AI SDR Outreach Cadences**: [`docs/sdr-sequences.md`](docs/sdr-sequences.md)
-- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
 
 ### Technical Resources
-- **Frontend Web Application**: http://localhost:3000
-- **API Docs** (interactive): http://localhost:8000/docs
+- **Frontend Web Application**: http://localhost:80 (Production Docker) / http://localhost:5173 (Dev)
+- **API Docs** (interactive Swagger UI): http://localhost:8000/docs
+- **ReDoc API Spec**: http://localhost:8000/redoc
 - **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
 - **Database Schema**: [`database/schema.sql`](database/schema.sql)
-- **Agent Code**: [`agents/*.py`](agents/)
-- **QUICKSTART Guide**: [`QUICKSTART.md`](QUICKSTART.md)
+- **Quickstart Guide**: [`QUICKSTART.md`](QUICKSTART.md)
+- **Test Suite Strategy**: [`test.md`](test.md)
 
 ---
 
