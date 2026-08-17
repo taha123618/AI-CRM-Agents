@@ -47,6 +47,10 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Dynamic translation management system with RTL/LTR layout synchronization (e.g. Urdu, Arabic).
 5. **No-Code Custom Agent Builder** (`/api/custom-agents`, `/agents/custom_agent_builder.py`, `frontend/src/features/custom-agents`):
    - Visual creator for custom AI agents with customizable prompts, triggers, toolkits, and testing playground.
+6. **AI Deal War Room, Strategy Studio & Automations** (`/api/war-room`, `workflows/orchestrator.py`, `frontend/src/features/war-room`):
+   - Multi-agent consensus verdicts, SWOT quadrant matrices, live competitor battle-cards, and buying committee maps.
+   - 1-Click Smart Proposal Studio with tier pricing, SLA terms, and e-signature URL workflows.
+   - Multi-Agent Workflow Automation Triggers with full CRUD and live AI Orchestrator execution.
 
 ---
 

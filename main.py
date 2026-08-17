@@ -23,6 +23,7 @@ from api import (
     voice_calls,
     whatsapp,
     forecasting,
+    war_room,
 )
 from workflows.orchestrator import AgentOrchestrator
 
@@ -174,6 +175,9 @@ app.include_router(
 app.include_router(whatsapp.router, prefix="/api/whatsapp", tags=["WhatsApp Business"])
 app.include_router(
     forecasting.router, prefix="/api/forecasting", tags=["Advanced Forecasting"]
+)
+app.include_router(
+    war_room.router, prefix="/api/war-room", tags=["AI Deal War Room"]
 )
 
 

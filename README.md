@@ -96,6 +96,14 @@ AgentOrchestrator  ──── BackgroundTasks (async, in-process)
 - Testing playground with live execution
 - Agent status management (active/inactive/draft)
 
+### ⚔️ AI Deal War Room, Strategy Studio & Smart Proposal Studio
+- **Multi-Agent Consensus Verdicts**: Cross-agent alignment score (0-100%) and recommendations combining Pipeline, Lead Qualifier, Voice AI, and Customer Success insights.
+- **Account SWOT Matrix**: Real-time account Strengths, Vulnerabilities, Opportunities, and Threats.
+- **Dynamic Competitor Battle-Cards**: Instant counter-objections, displacement playbooks, and kill-shots against legacy CRM vendors.
+- **Buying Committee Mapping**: Stakeholder influence hierarchy, stance tracking (Champions, Neutral, Gatekeepers), and action strategies.
+- **1-Click Smart Proposal Studio**: Automated enterprise pitch deck with dynamic tier pricing, SLA terms, e-signature simulation, and markdown export.
+- **Autonomous Workflow Triggers**: Full CRUD automation rules engine with live AI Orchestrator execution.
+
 ---
 
 ## 🛠️ Tech Stack

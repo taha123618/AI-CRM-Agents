@@ -10,7 +10,7 @@ Use this skill when you need to understand the high-level architecture of the AI
 ## 🏗️ Folder Structure
 
 * `/agents/`: Definitions of autonomous agents extending `BaseAgent` (`base_agent.py`) with `TraceMixin` (Lead Qualification, Email Intelligence, Sales Pipeline, Customer Success, Meeting Scheduler, Analytics, Voice Call, WhatsApp, Custom Agent Builder).
-* `/api/`: Modular FastAPI routers containing REST endpoints (`leads.py`, `deals.py`, `customers.py`, `emails.py`, `meetings.py`, `analytics.py`, `voice_calls.py`, `whatsapp.py`, `forecasting.py`, `custom_agents.py`, `i18n.py`).
+* `/api/`: Modular FastAPI routers containing REST endpoints (`leads.py`, `deals.py`, `customers.py`, `emails.py`, `meetings.py`, `analytics.py`, `voice_calls.py`, `whatsapp.py`, `forecasting.py`, `custom_agents.py`, `i18n.py`, `war_room.py`).
 * `/database/`: Database configuration (`connection.py`), PostgreSQL schema (`schema.sql`), and SQLAlchemy ORM models (`models.py`).
 * `/services/`: Specialized service layer (`forecasting_service.py`, `i18n_service.py`).
 * `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`, `src/components/*`, `src/pages/*`, `src/app/*`), Vite, Tailwind CSS, TanStack Query v5, Zustand, Recharts, and Nginx.
@@ -26,6 +26,7 @@ Agents communicate asynchronously and persist telemetry to PostgreSQL:
 5. **Monte Carlo Revenue Forecasting**: Probabilistic stochastic simulations with P10/P50/P90 confidence bounds, ARR trend progression, and pipeline stage velocity matrix (`/api/forecasting`).
 6. **No-Code Custom Agent Builder**: Visual creator for tailored domain agents with custom prompt triggers and toolkits (`/api/custom-agents`).
 7. **Dynamic Multi-Language System**: Full RTL/LTR multilingual localization supporting English, Spanish, French, German, Urdu, Arabic, and more (`/api/i18n`).
+8. **AI Deal War Room & Strategy Studio**: Multi-agent consensus verdicts, account SWOT matrices, competitor battle-cards, 1-click proposal decks, and autonomous triggers (`/api/war-room`).
 
 ```mermaid
 graph TD
@@ -55,3 +56,5 @@ graph TD
 6. **Voice Call Intelligence Workflow**: Voice AI Agent processes speech turns -> Detects objections & serves rep coaching tips -> Generates post-call executive summary, buyer intent score, and CRM action items.
 7. **WhatsApp Conversational Workflow**: Inbound webhook triggers WhatsApp Agent -> Classifies customer intent -> Generates contextual AI Auto-Pilot reply or routes to sales rep.
 8. **Revenue Forecasting Workflow**: Monte Carlo simulation runs stochastic iterations over active deals -> Generates P10/P50/P90 confidence boundaries and probability distribution histogram.
+9. **AI Deal War Room Workflow**: Joint cross-agent account analysis -> Evaluates SWOT quadrants and competitor displacement kill-shots -> Auto-generates customized proposal contract with tier pricing and SLA terms -> Executes configured multi-agent automation triggers.
+

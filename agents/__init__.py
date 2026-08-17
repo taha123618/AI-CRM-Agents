@@ -7,6 +7,8 @@ from .sales_pipeline_agent import SalesPipelineAgent
 from .customer_success_agent import CustomerSuccessAgent
 from .meeting_scheduler_agent import MeetingSchedulerAgent
 from .analytics_agent import AnalyticsAgent
+from .voice_call_agent import VoiceCallAgent
+from .whatsapp_agent import WhatsAppAgent
 
 __all__ = [
     "BaseAgent",
@@ -16,4 +18,6 @@ __all__ = [
     "CustomerSuccessAgent",
     "MeetingSchedulerAgent",
     "AnalyticsAgent",
+    "VoiceCallAgent",
+    "WhatsAppAgent",
 ]

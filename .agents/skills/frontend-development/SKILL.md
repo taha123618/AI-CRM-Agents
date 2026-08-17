@@ -9,7 +9,7 @@ Use this skill when developing, refactoring, or extending the React + TypeScript
 
 ## 🏗️ Architectural Standards (Feature-Sliced Design)
 
-The frontend uses a modern, scalable, feature-sliced architecture with 13 domain features:
+The frontend uses a modern, scalable, feature-sliced architecture with 14 domain features:
 
 ```
 frontend/src/
@@ -36,7 +36,8 @@ frontend/src/
 │   ├── whatsapp/                # WhatsAppFeature (Omnichannel chat hub, AI auto-pilot, broadcast campaigns)
 │   ├── forecasting/             # ForecastingFeature (Monte Carlo simulation, ARR trend, pipeline velocity)
 │   ├── custom-agents/           # CustomAgentsFeature (No-code visual agent builder & testing playground)
-│   └── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Translation manager)
+│   ├── multi-language/          # MultiLanguageFeature (I18n, RTL/LTR layout sync, Translation manager)
+│   └── war-room/                # WarRoomFeature (Strategy Studio, SWOT battle-cards, Proposal generator, Automations)
 ├── hooks/                       # Reusable TanStack Query & mutation hooks
 ├── lib/                         # API client (Axios), WebSocket stream client, Query configuration, Utilities
 ├── stores/                      # Zustand global UI (useUIStore) and Agent event stores (useAgentStore)

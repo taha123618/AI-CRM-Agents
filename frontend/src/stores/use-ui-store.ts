@@ -10,6 +10,7 @@ export type ActivePage =
   | 'analytics'
   | 'reports'
   | 'forecasting'
+  | 'war-room'
   | 'voice-ai'
   | 'whatsapp'
   | 'agents'

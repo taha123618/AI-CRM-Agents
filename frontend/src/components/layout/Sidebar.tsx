@@ -14,6 +14,7 @@ import {
   PhoneCall,
   MessageSquare,
   TrendingUp,
+  Swords,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -33,6 +34,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', labelKey: 'nav.dashboard', defaultLabel: 'Dashboard', icon: LayoutDashboard },
   { id: 'leads', labelKey: 'nav.leads', defaultLabel: 'Leads', icon: Users, badge: '' },
   { id: 'deals', labelKey: 'nav.deals', defaultLabel: 'Deals Pipeline', icon: Briefcase },
+  { id: 'war-room', labelKey: 'nav.war_room', defaultLabel: 'Deal War Room', icon: Swords, badge: 'AI' },
   { id: 'customers', labelKey: 'nav.customers', defaultLabel: 'Customer Success', icon: Building2 },
   { id: 'emails', labelKey: 'nav.emails', defaultLabel: 'Smart Inbox', icon: Mail, badge: '' },
   { id: 'meetings', labelKey: 'nav.meetings', defaultLabel: 'AI Calendar', icon: Calendar },

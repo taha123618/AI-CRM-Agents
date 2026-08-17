@@ -10,7 +10,7 @@ Use this skill when you are modifying or creating FastAPI API routers, endpoints
 ## 🚀 Guidelines
 
 1. **Endpoint Routing**:
-   - Create route modules under `api/` (e.g. `api/leads.py`, `api/voice_calls.py`, `api/whatsapp.py`, `api/forecasting.py`, `api/custom_agents.py`, `api/i18n.py`).
+   - Create route modules under `api/` (e.g. `api/leads.py`, `api/voice_calls.py`, `api/whatsapp.py`, `api/forecasting.py`, `api/custom_agents.py`, `api/i18n.py`, `api/war_room.py`).
    - Use `router = APIRouter()` to define endpoints.
    - Include the new router in `main.py` using `app.include_router(new_router, prefix="/api/...", tags=["..."])`.
 
