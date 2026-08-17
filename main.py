@@ -27,7 +27,12 @@ from api import (
     journey,
     sequences,
     audit_logs,
+    auth,
+    tasks,
+    webhooks,
+    import_export,
 )
+from middleware.rate_limiter import RateLimitingMiddleware
 from workflows.orchestrator import AgentOrchestrator
 
 
@@ -94,6 +99,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(RateLimitingMiddleware)
 
 # Initialize agent orchestrator
 orchestrator = AgentOrchestrator()
@@ -162,6 +168,7 @@ async def websocket_endpoint(websocket: WebSocket):
 # INCLUDE ROUTERS
 # ============================================================================
 
+app.include_router(auth.router, prefix="/api/auth", tags=["Authentication & RBAC"])
 app.include_router(leads.router, prefix="/api/leads", tags=["Leads"])
 app.include_router(deals.router, prefix="/api/deals", tags=["Deals"])
 app.include_router(customers.router, prefix="/api/customers", tags=["Customers"])
@@ -190,6 +197,15 @@ app.include_router(
 )
 app.include_router(
     audit_logs.router, prefix="/api/audit-logs", tags=["Audit Logs"]
+)
+app.include_router(
+    tasks.router, prefix="/api/tasks", tags=["Background Tasks Queue"]
+)
+app.include_router(
+    webhooks.router, prefix="/api/webhooks", tags=["Universal Webhooks"]
+)
+app.include_router(
+    import_export.router, prefix="/api/import-export", tags=["Bulk Import & Export"]
 )
 
 

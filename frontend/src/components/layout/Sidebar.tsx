@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Milestone,
   Send,
+  Sliders,
 } from 'lucide-react';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 import { useTranslation } from '@/features/multi-language';
@@ -50,6 +51,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'agents', labelKey: 'nav.agents', defaultLabel: 'Agent Console', icon: Bot, badge: '' },
   { id: 'custom-agents', labelKey: 'nav.custom_agents', defaultLabel: 'Agent Studio', icon: Sparkles, badge: 'New' },
   { id: 'languages', labelKey: 'nav.languages', defaultLabel: 'Languages & I18n', icon: Globe, badge: '' },
+  { id: 'settings', labelKey: 'nav.settings', defaultLabel: 'Settings & Security', icon: Sliders, badge: 'Auth' },
 ];
 
 export function Sidebar() {

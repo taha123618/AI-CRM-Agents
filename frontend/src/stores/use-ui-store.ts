@@ -17,7 +17,8 @@ export type ActivePage =
   | 'whatsapp'
   | 'agents'
   | 'custom-agents'
-  | 'languages';
+  | 'languages'
+  | 'settings';
 
 interface UIState {
   activePage: ActivePage;

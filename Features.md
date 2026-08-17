@@ -9,10 +9,12 @@ This document serves as the **definitive feature checklist and product roadmap**
 ### 1. 🛡️ Authentication, Authorization & User Preferences
 - [x] **Client-Side Preferences & Local Storage State**: UI theme toggle, collapsed sidebar state, and language preferences.
 - [x] **User Language Preference Persistence**: Backend endpoint (`/api/i18n/preferences`) saving user language and direction (`ltr`/`rtl`).
-- [ ] **JWT / OAuth2 Authentication**: User login, password hashing (bcrypt), token issuance, and refresh token rotation.
-- [ ] **Role-Based Access Control (RBAC)**: Granular roles (`Admin`, `Sales Rep`, `RevOps Manager`, `Customer Success Rep`, `Viewer`).
+- [x] **JWT / OAuth2 Authentication**: User registration, login, PBKDF2 password hashing, JWT token issuance, refresh tokens (`/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`).
+- [x] **Role-Based Access Control (RBAC)**: Role permissions (`admin`, `sales`, `support`, `auditor`) with `require_role` route guards and user role management (`/api/auth/users`, `/api/auth/users/{id}/role`).
+- [x] **Sliding Window API Rate Limiting**: Production middleware (`middleware/rate_limiter.py`) with RFC headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) and 429 backoff protection.
+- [x] **Persistent Async Background Task Queue**: Subsystem (`services/task_queue_service.py`, `/api/tasks`) for async simulation execution, status polling, and background worker progress tracking.
+- [x] **Audit Trail & User Activity Logs**: Immutable PostgreSQL audit log (`AuditLog` model, `/api/audit-logs`, `/api/audit-logs/stats`) recording entity mutations, auth logins, and agent actions.
 - [ ] **Multi-Tenant Workspace Isolation**: Tenant ID scoping across database queries and agent execution contexts.
-- [x] **Audit Trail & User Activity Logs**: Immutable PostgreSQL audit log (`AuditLog` model, `/api/audit-logs`, `/api/audit-logs/stats`) recording entity mutations and agent actions.
 
 ---
 
@@ -120,18 +122,19 @@ This document serves as the **definitive feature checklist and product roadmap**
 ---
 
 ### 12. 💻 Frontend Architecture & UI/UX
-- [x] **React 19 + TypeScript SPA**: Strict type-safety with zero `any` leaks and modular feature architecture.
+- [x] **React 19 + TypeScript SPA**: Strict type-safety with zero `any` leaks and modular feature architecture (`src/features/*`).
 - [x] **Tailwind CSS Glassmorphism Design**: Custom dark-mode aesthetic with gradients, subtle micro-animations, and backdrop blur.
 - [x] **TanStack Query v5**: Optimized server state caching, background refetching, and cache invalidation.
 - [x] **Zustand UI Store**: Global client state for navigation, active modals, and notification banners.
+- [x] **Platform Governance & Integrations Studio (`src/features/settings`)**: Unified control center with 5 tabs: User RBAC Management, Universal Webhooks Studio, Bulk CSV Import & Export Studio, Async Background Task Queue Monitor, and Compliance Audit Trail.
 - [x] **Responsive Mobile & Desktop Layout**: Collapsible sidebar, mobile drawer, and adaptive grids.
 
 ---
 
 ### 13. 🧪 Testing & Quality Assurance
-- [x] **Backend Pytest Suite**: 94 unit, integration, edge-case, and security tests with mock LLM fixtures (`tests/`).
-- [x] **Frontend Vitest Suite**: 33 unit and component tests verifying UI rendering, modals, and store updates.
-- [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, and validation schema constraints (`tests/test_security_validation.py`).
+- [x] **Backend Pytest Suite**: 108 unit, integration, edge-case, security, webhook, and auth tests with mock LLM fixtures (`tests/`).
+- [x] **Frontend Vitest Suite**: 37 unit, integration, and component tests verifying UI rendering, modals, and store updates (`src/features/**/__tests__`).
+- [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, and validation schema constraints (`tests/test_security_validation.py`, `tests/test_must_have_security.py`, `tests/test_must_have_deep_security.py`).
 - [x] **Static Type Checking**: `mypy` for Python backend and `tsc --noEmit` for TypeScript frontend.
 
 ---
@@ -172,27 +175,27 @@ gantt
 ```
 
 ### 🔴 Must Have — Production Readiness & Security
-1. **JWT / OAuth2 Authentication & Session Management**:
-   - Secure token-based authentication using `PyJWT` or `fastapi-users` with HTTP-only cookies.
-   - Social SSO integration (Google Workspace, Microsoft Entra ID).
-2. **Role-Based Access Control (RBAC) Middleware**:
-   - Endpoint-level permission guards checking user roles (`Admin`, `Sales`, `Support`, `Auditor`).
-3. **Persistent Background Task Queue (Celery / ARQ)**:
-   - Dedicated Redis-backed task queue for long-running Monte Carlo simulations, bulk outbound sequences, and audio processing.
-4. **API Rate Limiting & Abuse Prevention**:
-   - Token bucket or sliding window rate limiting via `slowapi` or Redis middleware on public and agent execution endpoints.
-5. **Audit Trail & Compliance Logging**:
-   - Automated write-logging capturing user ID, IP address, timestamp, and payload diffs for GDPR/SOC2 compliance.
+1. - [x] **JWT / OAuth2 Authentication & Session Management**:
+   - Secure token-based authentication with HTTP-only cookies (`set_cookie` on `/api/auth/register`, `/api/auth/login`, `/api/auth/logout`), PBKDF2 deterministic password hashing, and cookie/header token extraction.
+   - Social SSO integration for **Google Workspace** (`/api/auth/sso/google`) and **Microsoft Entra ID** (`/api/auth/sso/microsoft`) with provider registry (`/api/auth/sso/providers`).
+2. - [x] **Role-Based Access Control (RBAC) Middleware & Route Guards**:
+   - Endpoint-level permission guards checking user roles (`Admin`, `Sales`, `Support`, `Auditor`) with `require_role` dependencies.
+3. - [x] **Persistent Background Task Queue & Job Execution Subsystem**:
+   - Redis-backed persistent task queue (`services/task_queue_service.py`, `/api/tasks`) handling Monte Carlo simulations, AI SDR sequence cohorts, and audio synthesis.
+4. - [x] **API Rate Limiting & Abuse Prevention Middleware**:
+   - Sliding-window rate limiting middleware (`middleware/rate_limiter.py`) with RFC standard headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) and 429 backoff handling.
+5. - [x] **Audit Trail & Compliance Logging with Payload Diffs (GDPR/SOC2)**:
+   - Automated write-logging capturing user ID, IP address, timestamp, and field-level structured payload diffs (`AuditLog` model, `services/audit_service.py`, `/api/audit-logs`).
 
 ### 🟠 High Priority — Core Value & Integrations
 1. **Live Twilio / LiveKit Voice Gateway Integration**:
    - Direct SIP trunking and WebRTC audio streaming to replace simulated voice call playback with real phone calls.
 2. **Official Meta WhatsApp Cloud API Connector**:
    - Production webhook verification, media message uploads, and template message pre-approval syncing.
-3. **Universal Webhook Ingestion & Dispatch Engine**:
-   - Outbound webhooks on CRM events (`deal.won`, `lead.qualified`, `intervention.triggered`) and inbound webhook parsers for Zapier / Make.
-4. **Bulk CSV / XLSX Import & Export Studio**:
-   - Client-side and server-side parsers for migrating legacy CRM data (Salesforce, HubSpot) into PostgreSQL with column mapping.
+3. - [x] **Universal Webhook Ingestion & Dispatch Engine**:
+   - Outbound webhooks on CRM events (`lead.created`, `deal.won`, `intervention.triggered`) with HMAC-SHA256 signatures, delivery logging (`WebhookEndpoint`, `WebhookDelivery`, `/api/webhooks`), and inbound webhook parsers for Zapier / Make.
+4. - [x] **Bulk CSV / XLSX Import & Export Studio**:
+   - Dynamic column-mapped CSV importers for leads and deals (`/api/import-export/import/leads`, `/api/import-export/import/deals`) and streaming CSV export downloads (`/api/import-export/export/leads`, `/api/import-export/export/deals`, `/api/import-export/export/audit-logs`).
 5. **Email Provider Sync (Gmail & Outlook 365 OAuth)**:
    - 2-way IMAP/SMTP and Microsoft Graph / Google Workspace synchronization for automatic email thread ingestion.
 

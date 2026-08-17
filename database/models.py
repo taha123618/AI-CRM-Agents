@@ -710,9 +710,53 @@ class AuditLog(Base):
     entity_id = Column(String(100), nullable=False, index=True)
     action = Column(String(100), nullable=False, index=True)
     actor = Column(String(100), default="system", index=True)
+    user_id = Column(String(100), nullable=True, index=True)
     details = Column(JSONB, default=dict)
+    payload_diff = Column(JSONB, default=dict)  # {"before": {...}, "after": {...}, "changes": [...]}
     ip_address = Column(String(50), nullable=True)
     created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    full_name = Column(String(150), nullable=False)
+    role = Column(String(50), default="sales", nullable=False, index=True)  # 'admin', 'sales', 'support', 'auditor'
+    is_active = Column(Boolean, default=True, nullable=False)
+    last_login_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class WebhookEndpoint(Base):
+    __tablename__ = "webhook_endpoints"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    url = Column(String(500), nullable=False)
+    description = Column(String(255), nullable=True)
+    secret = Column(String(255), nullable=False)
+    events = Column(JSONB, default=list)  # list of event strings, e.g. ["lead.created", "deal.won"]
+    is_active = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class WebhookDelivery(Base):
+    __tablename__ = "webhook_deliveries"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    webhook_id = Column(UUID(as_uuid=True), ForeignKey("webhook_endpoints.id", ondelete="CASCADE"), nullable=False, index=True)
+    event_type = Column(String(100), nullable=False, index=True)
+    payload = Column(JSONB, default=dict)
+    response_status = Column(Integer, nullable=True)
+    response_body = Column(Text, nullable=True)
+    success = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
 
 
 

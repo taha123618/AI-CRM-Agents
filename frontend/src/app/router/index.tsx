@@ -26,6 +26,7 @@ import { WarRoomPage } from '@/pages/WarRoomPage';
 import { JourneyPage } from '@/pages/JourneyPage';
 import { SequencesPage } from '@/pages/SequencesPage';
 import { LanguagesPage } from '@/pages/LanguagesPage';
+import { SettingsPage } from '@/pages/SettingsPage';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 
 function RouteSync() {
@@ -52,6 +53,7 @@ function RouteSync() {
       'agents',
       'custom-agents',
       'languages',
+      'settings',
     ];
     const path: ActivePage = validPages.includes(rawPath as ActivePage)
       ? (rawPath as ActivePage)
@@ -106,6 +108,7 @@ export function AppRouter() {
           <Route path="/agents" element={<AgentsPage />} />
           <Route path="/custom-agents" element={<CustomAgentsPage />} />
           <Route path="/languages" element={<LanguagesPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AppLayout>
