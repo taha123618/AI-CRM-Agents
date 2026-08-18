@@ -61,7 +61,16 @@ docker-compose up -d --build
 - 🌐 **Interactive OpenAPI Docs**: http://localhost:8000/docs
 - 🔌 **WebSocket Real-time Stream**: ws://localhost:8000/ws
 
-### 5. Verify Health
+### 5. Default Seeded User Credentials
+
+| Role | Email | Password | Permissions |
+|---|---|---|---|
+| 👑 **Super Admin** | `admin@gmail.com` | `admin123` | Full Wildcard (`*`) |
+| 💼 **Sales Representative** | `sales@gmail.com` | `sales123` | Leads, Deals, Outreach, Meetings, Voice AI |
+| 🎧 **Customer Support** | `support@gmail.com` | `support123` | Customers, Journey, WhatsApp, Tickets |
+| 🔍 **Auditor / Compliance** | `auditor@gmail.com` | `auditor123` | Read-only Audits, SOC2 logs, Forecasts |
+
+### 6. Verify Health
 
 ```bash
 curl http://localhost:8000/health

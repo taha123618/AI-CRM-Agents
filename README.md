@@ -232,12 +232,20 @@ graph TD
 - **Cohort Lead Enrollment**: 1-click database contact search and bulk cadence enrollment.
 - **Dynamic Step Copy Generator**: AI prompt-engineered personalization targeting prospect pain points and value drivers.
 
+### Enterprise Authentication, RBAC & Email Infrastructure
+- **Enterprise Security Suite**: JWT rotation, HTTP-only cookie sessions, brute-force lockouts, social SSO (Google & Microsoft).
+- **Fine-Grained Role-Based Access Control**: Pre-defined role permissions (`admin`, `sales`, `support`, `auditor`) and custom user permission override matrix.
+- **Super Admin Protection & Governance**: Public registration restrictions (only sales/support/auditor allowed) with seeded default super admin (`admin@gmail.com`) and full user management CRUD in `/settings`.
+- **Gmail SMTP & Background Delivery Queue**: Asynchronous, non-blocking transactional email delivery on port 587 with STARTTLS, RFC-5321 envelope sender parsing, responsive dark-mode HTML templates, and exponential backoff retry daemon (`worker.py`).
+- **Zero-Enumeration Password Recovery**: Single-use DB-hashed recovery tokens with clean expiration tracking and non-revealing endpoints.
+
 ---
 
 ## 🎨 UI Components & Feature Modules
 
 | Module | Route / Feature | Primary Functionality |
 |---|---|---|
+| 🔐 **Authentication** | `features/auth` | Login, registration, password recovery, SSO callbacks, and PermissionGuard |
 | 📊 **Dashboard** | `features/dashboard` | Real-time ARR metrics, agent activity stream, and pipeline overview |
 | 👥 **Contacts** | `features/contacts` | Contact directory, lead scores, profile enrichment, and activity history |
 | 💼 **Deals** | `features/deals` | Visual deal pipeline, health scores, close probability, and stage transitions |
@@ -252,7 +260,7 @@ graph TD
 | 🔮 **Forecasting** | `features/forecasting` | Monte Carlo ARR simulations (P10/P50/P90) and stage velocity matrix |
 | 🔧 **Custom Agents** | `features/custom-agents` | No-code agent builder, trigger configuration, and live testing sandbox |
 | 🌐 **Multi-Language** | `features/multi-language` | Translation key manager, RTL/LTR layout synchronization |
-| ⚙️ **Settings** | `features/settings` | System preferences, LLM provider configuration, and API keys |
+| ⚙️ **Settings & Users** | `features/settings` | Super Admin user management CRUD, role presets, LLM provider settings |
 
 ---
 
@@ -275,7 +283,8 @@ graph TD
 Frontend:          React 19 • TypeScript • Vite • Tailwind CSS • TanStack React Query v5 • Zustand • Recharts • Lucide Icons
 Backend:           Python 3.9+ • FastAPI • Uvicorn / Gunicorn • Pydantic V2 • LangChain
 Database:          PostgreSQL 14+ • SQLAlchemy 2.0 ORM • Alembic Migrations
-Messaging & Cache: Redis 7 (Pub/Sub Event Bus & Caching) • WebSockets (/ws)
+Messaging & Queue: Redis 7 (Pub/Sub Event Bus & Task State) • WebSockets (/ws) • Async Worker Daemon (worker.py)
+Email Delivery:    Gmail SMTP (STARTTLS 587) • Multi-part MIME HTML Templates • Exponential Backoff Retries
 AI Integration:    Live OpenAI (GPT-4o) • Live Anthropic (Claude 3.5 Sonnet) • SmartFallbackLLM
 DevOps & Tooling:  Docker (Multi-Stage) • Docker Compose • GitHub Actions CI/CD • Trivy Security Scanner • Nginx
 Quality Gates:     pytest • pytest-asyncio • Vitest • Black • Flake8 • Mypy • TypeScript
