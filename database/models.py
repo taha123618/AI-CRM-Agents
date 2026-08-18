@@ -22,6 +22,21 @@ import uuid
 Base = declarative_base()
 
 
+class Organization(Base):
+    """Multi-tenant Workspace Organization."""
+    __tablename__ = "organizations"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(255), nullable=False)
+    slug = Column(String(100), unique=True, index=True, nullable=False)
+    domain = Column(String(255), nullable=True)
+    plan_tier = Column(String(50), default="enterprise")  # 'starter', 'growth', 'enterprise'
+    is_active = Column(Boolean, default=True)
+    settings = Column(JSONB, default=dict)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
 class Company(Base):
     __tablename__ = "companies"
 
@@ -721,6 +736,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(150), nullable=False)
@@ -735,6 +751,9 @@ class User(Base):
     last_login_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, server_default=func.now(), index=True)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    organization = relationship("Organization")
 
 
 class RefreshToken(Base):
@@ -805,6 +824,114 @@ class WebhookDelivery(Base):
     response_body = Column(Text, nullable=True)
     success = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class CustomFieldDefinition(Base):
+    """Dynamic User-Defined Metadata Field for CRM entities."""
+    __tablename__ = "custom_field_definitions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
+    entity_type = Column(String(50), nullable=False, index=True)  # 'contact', 'deal', 'customer', 'company'
+    name = Column(String(100), nullable=False)
+    field_key = Column(String(100), nullable=False, index=True)
+    field_type = Column(String(50), default="text", nullable=False)  # 'text', 'number', 'select', 'boolean', 'date', 'currency'
+    options = Column(JSONB, default=list)  # for select dropdown options e.g. ["Tier 1", "Tier 2"]
+    is_required = Column(Boolean, default=False)
+    default_value = Column(JSONB, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class LLMEvaluationRun(Base):
+    """Benchmark and Evaluation Run for Custom Prompts and Models."""
+    __tablename__ = "llm_evaluation_runs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    agent_name = Column(String(100), nullable=False)
+    prompt_variant_a = Column(Text, nullable=False)
+    prompt_variant_b = Column(Text, nullable=False)
+    dataset_size = Column(Integer, default=10)
+    score_a = Column(Float, default=0.0)
+    score_b = Column(Float, default=0.0)
+    latency_ms_a = Column(Integer, default=0)
+    latency_ms_b = Column(Integer, default=0)
+    tokens_used_a = Column(Integer, default=0)
+    tokens_used_b = Column(Integer, default=0)
+    metrics_breakdown = Column(JSONB, default=dict)
+    winner = Column(String(10), default="A")
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
+class WorkflowDefinition(Base):
+    """Visual Multi-Agent Workflow Automation Pipeline."""
+    __tablename__ = "workflow_definitions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(150), nullable=False)
+    description = Column(Text, nullable=True)
+    trigger_type = Column(String(50), default="event")  # 'event', 'manual', 'schedule', 'webhook'
+    trigger_config = Column(JSONB, default=dict)
+    nodes = Column(JSONB, default=list)  # Visual workflow nodes
+    edges = Column(JSONB, default=list)  # Node connections
+    is_active = Column(Boolean, default=True)
+    execution_count = Column(Integer, default=0)
+    last_executed_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class EmailSyncAccount(Base):
+    """Connected Mailbox Account for 2-Way IMAP/OAuth Sync (Google Workspace, Microsoft Graph, IMAP)."""
+    __tablename__ = "email_sync_accounts"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    provider = Column(String(50), nullable=False)  # 'gmail', 'outlook_365', 'imap'
+    email_address = Column(String(255), nullable=False, index=True)
+    display_name = Column(String(150), nullable=True)
+    sync_status = Column(String(50), default="active")  # 'active', 'paused', 'error'
+    last_synced_at = Column(DateTime, nullable=True)
+    error_message = Column(Text, nullable=True)
+    settings = Column(JSONB, default=dict)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class EmailThread(Base):
+    """Aggregated Email Conversation Thread with Chronological Message History."""
+    __tablename__ = "email_threads"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    account_id = Column(UUID(as_uuid=True), ForeignKey("email_sync_accounts.id", ondelete="CASCADE"), nullable=True, index=True)
+    thread_key = Column(String(255), nullable=False, index=True)
+    subject = Column(String(255), nullable=False)
+    participant_emails = Column(JSONB, default=list)
+    message_count = Column(Integer, default=1)
+    snippet = Column(Text, nullable=True)
+    is_unread = Column(Boolean, default=False)
+    sentiment = Column(String(50), default="neutral")
+    last_message_at = Column(DateTime, server_default=func.now(), index=True)
+    messages = Column(JSONB, default=list)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class WhatsAppTemplate(Base):
+    """Meta WhatsApp Business Pre-Approved Message Template."""
+    __tablename__ = "whatsapp_templates"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), nullable=False, index=True)
+    category = Column(String(50), default="MARKETING")  # 'MARKETING', 'UTILITY', 'AUTHENTICATION'
+    language = Column(String(10), default="en_US")
+    status = Column(String(50), default="APPROVED")  # 'APPROVED', 'PENDING', 'REJECTED'
+    body_text = Column(Text, nullable=False)
+    variables = Column(JSONB, default=list)  # e.g. ["{{1}}", "{{2}}"]
+    header_type = Column(String(50), default="NONE")  # 'NONE', 'TEXT', 'IMAGE', 'DOCUMENT'
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
 
 

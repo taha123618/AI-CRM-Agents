@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/Badge';
 import { voiceAiApi } from './api/voiceAiApi';
 import { VoiceCall, VoiceTurnAnalysis } from './types/voiceAi.types';
 import { CallTranscriptModal } from './components/CallTranscriptModal';
+import { LiveVoiceGatewayModal } from './components/LiveVoiceGatewayModal';
 import {
   PhoneCall,
   PhoneOff,
@@ -127,6 +128,7 @@ export function VoiceAIFeature() {
   // Selection & Modals
   const [selectedCall, setSelectedCall] = useState<VoiceCall | null>(null);
   const [transcriptModalCall, setTranscriptModalCall] = useState<VoiceCall | null>(null);
+  const [isGatewayModalOpen, setIsGatewayModalOpen] = useState(false);
 
   // Audio Recording & Web Audio Analyser
   const [isMicListening, setIsMicListening] = useState(false);
@@ -663,6 +665,16 @@ export function VoiceAIFeature() {
           >
             <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
             <span>Refresh</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsGatewayModalOpen(true)}
+            className="border-purple-500/30 text-purple-300 hover:bg-purple-950/40"
+          >
+            <Radio className="w-3.5 h-3.5 mr-1.5 text-purple-400" />
+            <span>Twilio / WebRTC Gateway</span>
           </Button>
 
           {!isLiveCallActive ? (
@@ -1601,6 +1613,14 @@ export function VoiceAIFeature() {
           onClose={() => setTranscriptModalCall(null)}
         />
       )}
+
+      {/* ── Twilio / WebRTC Live Voice Gateway Modal ── */}
+      <LiveVoiceGatewayModal
+        isOpen={isGatewayModalOpen}
+        onClose={() => setIsGatewayModalOpen(false)}
+        contactName={contactName}
+        phoneNumber={phoneNumber}
+      />
     </div>
   );
 }

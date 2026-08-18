@@ -257,7 +257,28 @@ def send_broadcast(
     }
 
 
+@router.get("/webhook/inbound")
+@router.get("/webhook")
+def verify_whatsapp_meta_webhook(
+    hub_mode: Optional[str] = Query(None, alias="hub.mode"),
+    hub_verify_token: Optional[str] = Query(None, alias="hub.verify_token"),
+    hub_challenge: Optional[str] = Query(None, alias="hub.challenge"),
+):
+    """Meta WhatsApp Cloud API Webhook Verification Challenge Handshake."""
+    import os
+    expected_token = os.getenv("WHATSAPP_VERIFY_TOKEN", "crm_whatsapp_verify_token")
+    if hub_mode == "subscribe" and hub_verify_token == expected_token:
+        try:
+            return int(hub_challenge) if hub_challenge and hub_challenge.isdigit() else hub_challenge
+        except Exception:
+            return hub_challenge
+    elif hub_verify_token != expected_token and hub_verify_token is not None:
+        raise HTTPException(status_code=403, detail="Verification token mismatch.")
+    return {"status": "active", "message": "WhatsApp webhook endpoint active."}
+
+
 @router.post("/webhook/inbound", response_model=Dict[str, Any])
+@router.post("/webhook", response_model=Dict[str, Any])
 async def handle_inbound_whatsapp_webhook(
     payload: WhatsAppInboundWebhookSchema,
     db: Session = Depends(get_db),
@@ -412,3 +433,57 @@ def archive_whatsapp_conversation(
         "conversation_id": str(conv.id),
         "new_status": conv.status,
     }
+
+
+class WhatsAppMediaUploadRequest(BaseModel):
+    media_type: str = Field("image", description="'image', 'audio', 'document'")
+    filename: str = Field("attachment.pdf", min_length=2)
+    file_size_bytes: int = Field(2048, ge=1)
+
+
+@router.post("/media/upload", response_model=Dict[str, Any])
+def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest):
+    """Upload media file to Meta WhatsApp Cloud API and get a reusable media_id."""
+    from services.whatsapp_cloud_service import WhatsAppCloudService
+    return WhatsAppCloudService.upload_media(
+        media_type=payload.media_type,
+        filename=payload.filename,
+        file_size_bytes=payload.file_size_bytes,
+    )
+
+
+@router.get("/templates", response_model=List[Dict[str, Any]])
+def list_whatsapp_templates(db: Session = Depends(get_db)):
+    """List Meta pre-approved message templates."""
+    from database.models import WhatsAppTemplate
+    from services.whatsapp_cloud_service import WhatsAppCloudService
+    templates = db.query(WhatsAppTemplate).all()
+    if not templates:
+        templates = WhatsAppCloudService.sync_templates(db)
+
+    return [
+        {
+            "id": str(t.id),
+            "name": t.name,
+            "category": t.category,
+            "language": t.language,
+            "status": t.status,
+            "body_text": t.body_text,
+            "variables": t.variables or [],
+            "header_type": t.header_type,
+        }
+        for t in templates
+    ]
+
+
+@router.post("/templates/sync", response_model=Dict[str, Any])
+def sync_whatsapp_templates(db: Session = Depends(get_db)):
+    """Trigger template synchronization from Meta Business Manager."""
+    from services.whatsapp_cloud_service import WhatsAppCloudService
+    templates = WhatsAppCloudService.sync_templates(db)
+    return {
+        "status": "success",
+        "synced_count": len(templates),
+        "synced_at": datetime.now(timezone.utc).isoformat(),
+    }
+

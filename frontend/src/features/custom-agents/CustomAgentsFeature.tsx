@@ -11,6 +11,7 @@ import { CustomAgent } from './types/customAgent.types';
 import { CustomAgentBuilderModal } from './components/CustomAgentBuilderModal';
 import { AgentSandboxDrawer } from './components/AgentSandboxDrawer';
 import { AgentExecutionsModal } from './components/AgentExecutionsModal';
+import { PromptEvaluationModal } from './components/PromptEvaluationModal';
 import {
   Bot,
   Plus,
@@ -33,6 +34,7 @@ export function CustomAgentsFeature() {
 
   // Modals & Drawers state
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [isEvalOpen, setIsEvalOpen] = useState(false);
   const [editingAgent, setEditingAgent] = useState<CustomAgent | null>(null);
   const [sandboxAgent, setSandboxAgent] = useState<CustomAgent | null>(null);
   const [historyAgent, setHistoryAgent] = useState<CustomAgent | null>(null);
@@ -101,6 +103,16 @@ export function CustomAgentsFeature() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsEvalOpen(true)}
+            className="border-purple-500/30 text-purple-300 hover:bg-purple-950/40"
+          >
+            <Sparkles className="w-3.5 h-3.5 mr-1.5 text-purple-400" />
+            <span>Prompt Benchmark</span>
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -349,6 +361,13 @@ export function CustomAgentsFeature() {
           agent={historyAgent}
         />
       )}
+
+      {/* Prompt Benchmark & Evaluation Studio Modal */}
+      <PromptEvaluationModal
+        isOpen={isEvalOpen}
+        onClose={() => setIsEvalOpen(false)}
+        agentName="Custom Agent Studio"
+      />
     </div>
   );
 }

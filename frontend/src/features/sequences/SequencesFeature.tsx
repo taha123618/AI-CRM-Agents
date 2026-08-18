@@ -6,6 +6,7 @@ import { sequenceApi, ExecuteStepResponse } from './api/sequenceApi';
 import { SDRSequence, SequenceStep } from './types/sequence.types';
 import { CreateSequenceModal } from './components/CreateSequenceModal';
 import { EnrollLeadsModal } from './components/EnrollLeadsModal';
+import { VisualWorkflowCanvas } from './components/VisualWorkflowCanvas';
 import {
   Send,
   Plus,
@@ -22,11 +23,14 @@ import {
   Play,
   Pause,
   Zap,
+  Workflow,
+  Layers,
 } from 'lucide-react';
 
 export function SequencesFeature() {
   const queryClient = useQueryClient();
 
+  const [activeTab, setActiveTab] = useState<'cadence' | 'workflow_canvas'>('cadence');
   const [selectedSequence, setSelectedSequence] = useState<SDRSequence | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
@@ -155,8 +159,41 @@ export function SequencesFeature() {
         </div>
       </div>
 
-      {/* Main Grid: Cadences List + Step Inspector & AI Copy Generator */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Mode Switcher Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-800/80 pb-2">
+        <button
+          onClick={() => setActiveTab('cadence')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeTab === 'cadence'
+              ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+              : 'bg-slate-900/60 text-slate-400 hover:text-white'
+          }`}
+        >
+          <Layers className="w-4 h-4" />
+          <span>Cadence &amp; AI Copy Studio</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('workflow_canvas')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeTab === 'workflow_canvas'
+              ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
+              : 'bg-slate-900/60 text-slate-400 hover:text-white'
+          }`}
+        >
+          <Workflow className="w-4 h-4" />
+          <span>Visual Workflow Canvas</span>
+          <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
+            Pipeline
+          </span>
+        </button>
+      </div>
+
+      {activeTab === 'workflow_canvas' ? (
+        <VisualWorkflowCanvas />
+      ) : (
+        /* Main Grid: Cadences List + Step Inspector & AI Copy Generator */
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Sequences List */}
         <div className="lg:col-span-5 space-y-3">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
@@ -393,6 +430,7 @@ export function SequencesFeature() {
           )}
         </div>
       </div>
+      )}
 
       {/* Create Modal */}
       {isCreateModalOpen && <CreateSequenceModal onClose={() => setIsCreateModalOpen(false)} />}

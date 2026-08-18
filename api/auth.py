@@ -36,6 +36,15 @@ from services.task_queue_service import task_queue
 router = APIRouter()
 
 
+import os
+
+COOKIE_SECURE = (
+    os.getenv("COOKIE_SECURE", "false").lower() in ("true", "1", "yes")
+    or os.getenv("APP_ENV", "").lower() == "production"
+    or os.getenv("ENVIRONMENT", "").lower() == "production"
+)
+
+
 def set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
     """Set secure HTTP-only cookies for access and refresh tokens."""
     response.set_cookie(
@@ -44,7 +53,7 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str) 
         httponly=True,
         max_age=3600 * 24,  # 1 day
         samesite="lax",
-        secure=False,
+        secure=COOKIE_SECURE,
     )
     response.set_cookie(
         key="refresh_token",
@@ -52,14 +61,14 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str) 
         httponly=True,
         max_age=3600 * 24 * 7,  # 7 days
         samesite="lax",
-        secure=False,
+        secure=COOKIE_SECURE,
     )
 
 
 def clear_auth_cookies(response: Response) -> None:
     """Delete authentication cookies upon logout."""
-    response.delete_cookie(key="access_token", samesite="lax")
-    response.delete_cookie(key="refresh_token", samesite="lax")
+    response.delete_cookie(key="access_token", samesite="lax", secure=COOKIE_SECURE)
+    response.delete_cookie(key="refresh_token", samesite="lax", secure=COOKIE_SECURE)
 
 
 class UserRegisterRequest(BaseModel):

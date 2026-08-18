@@ -9,7 +9,11 @@ from sqlalchemy.orm import Session
 
 from database.connection import get_db
 from database.models import WebhookEndpoint, WebhookDelivery
-from services.webhook_service import dispatch_webhook_event, verify_inbound_signature
+from services.webhook_service import (
+    dispatch_webhook_event,
+    verify_inbound_signature,
+    is_safe_webhook_url,
+)
 
 router = APIRouter()
 
@@ -69,7 +73,14 @@ async def list_webhooks(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=WebhookResponse, status_code=status.HTTP_201_CREATED)
 async def create_webhook(payload: WebhookCreate, db: Session = Depends(get_db)):
-    """Register a new outbound webhook endpoint with HMAC secret and subscribed events."""
+    """Register a new outbound webhook endpoint with HMAC secret, SSRF verification, and subscribed events."""
+    is_safe, reason = is_safe_webhook_url(payload.url)
+    if not is_safe:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Webhook target URL rejected: {reason}",
+        )
+
     endpoint_secret = payload.secret or secrets.token_hex(24)
     endpoint = WebhookEndpoint(
         url=payload.url,

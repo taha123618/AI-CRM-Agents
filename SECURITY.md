@@ -28,6 +28,17 @@ If you discover a security vulnerability or potential threat in this repository:
 
 ## 🔒 Security Architecture & Best Practices for Deployments
 
+- **HTTP Security Headers & HSTS**: All endpoints enforce strict browser security headers via `SecurityHeadersMiddleware`:
+  - `X-Content-Type-Options: nosniff` (prevents MIME sniffing)
+  - `X-Frame-Options: DENY` (prevents Clickjacking)
+  - `X-XSS-Protection: 1; mode=block` (enables browser XSS filtering)
+  - `Referrer-Policy: strict-origin-when-cross-origin` (prevents referrer credential leakage)
+  - `Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()`
+  - `Content-Security-Policy` with hardened origin allowlists
+  - `Strict-Transport-Security` (HSTS enabled in production)
+- **CSV Formula Injection & DDE Neutralization**: All spreadsheet exports (leads, deals, compliance audit trails) sanitize cells starting with dangerous formula characters (`=`, `+`, `-`, `@`, `\t`, `\r`) by prefixing them with a single quote (`'`), neutralizing potential remote code execution when opened in Excel, LibreOffice, or Google Sheets.
+- **Server-Side Request Forgery (SSRF) Defense**: Outbound webhook subscriptions validate target URLs against loopback (`127.0.0.1`, `localhost`), link-local metadata endpoints (`169.254.169.254`), and private cloud IP ranges in production mode.
+- **Dynamic Secure Cookies**: Authentication cookies automatically enforce `Secure=True`, `HttpOnly=True`, and `SameSite=Lax` in production environments (`APP_ENV=production` or `COOKIE_SECURE=true`).
 - **SMTP & Google App Passwords**: Never store or transmit normal Google account passwords. Google App Passwords (`16` characters) must be kept strictly inside environment secrets (`EMAIL_PASSWORD`) and never logged.
 - **Single-Use Password Reset Tokens**: Reset tokens are generated with cryptographically secure random nonces, stored strictly as SHA-256 hashes (`PasswordResetToken`), and invalidated immediately upon first use or expiration (60 minutes).
 - **Brute-Force Account Lockout**: Consecutive failed login attempts trigger an automated account lockout (5 attempts threshold, 15 minutes lockout duration) to prevent password guessing.

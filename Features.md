@@ -18,7 +18,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Sliding Window API Rate Limiting**: Production middleware (`middleware/rate_limiter.py`) with RFC headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) and 429 backoff protection.
 - [x] **Persistent Async Background Task Queue**: Subsystem (`services/task_queue_service.py`, `/api/tasks`, `worker.py`) with Redis persistence, exponential backoff retries, and task progress monitoring.
 - [x] **Audit Trail & User Activity Logs**: Immutable PostgreSQL audit log (`AuditLog` model, `/api/audit-logs`, `/api/audit-logs/stats`) recording entity mutations, auth logins, and agent actions.
-- [ ] **Multi-Tenant Workspace Isolation**: Tenant ID scoping across database queries and agent execution contexts.
+- [x] **Multi-Tenant Workspace Isolation**: Tenant ID scoping across database queries and agent execution contexts.
 
 ---
 
@@ -31,7 +31,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Customer 360 & Account Management**: Full CRUD (`/api/customers`), health score telemetry, ARR tracking, and churn probability.
 - [x] **Meeting Intelligence Hub**: Full CRUD (`/api/meetings`), meeting summaries, AI pre-meeting preparation briefings, and 1-click attendee Google Meet email invitation dispatching via centralized SMTP.
 - [x] **Email Intelligence & Centralized Delivery Hub**: Email inbox management (`/api/emails`), sentiment scoring (`positive`, `neutral`, `negative`), emotion detection, AI draft response generation, and direct delivery dispatch to recipients via background task queue and centralized Gmail SMTP.
-- [ ] **Email Threading & IMAP Sync**: Bi-directional IMAP synchronization for live inbound customer email streaming.
+- [x] **Email Threading & IMAP Sync**: Bi-directional IMAP synchronization for live inbound customer email streaming.
 
 ---
 
@@ -193,31 +193,31 @@ gantt
    - Automated write-logging capturing user ID, IP address, timestamp, and field-level structured payload diffs (`AuditLog` model, `services/audit_service.py`, `/api/audit-logs`).
 
 ### 🟠 High Priority — Core Value & Integrations
-1. **Live Twilio / LiveKit Voice Gateway Integration**:
+1. - [x] **Live Twilio / LiveKit Voice Gateway Integration**:
    - Direct SIP trunking and WebRTC audio streaming to replace simulated voice call playback with real phone calls.
-2. **Official Meta WhatsApp Cloud API Connector**:
+2. - [x] **Official Meta WhatsApp Cloud API Connector**:
    - Production webhook verification, media message uploads, and template message pre-approval syncing.
 3. - [x] **Universal Webhook Ingestion & Dispatch Engine**:
    - Outbound webhooks on CRM events (`lead.created`, `deal.won`, `intervention.triggered`) with HMAC-SHA256 signatures, delivery logging (`WebhookEndpoint`, `WebhookDelivery`, `/api/webhooks`), and inbound webhook parsers for Zapier / Make.
 4. - [x] **Bulk CSV / XLSX Import & Export Studio**:
    - Dynamic column-mapped CSV importers for leads and deals (`/api/import-export/import/leads`, `/api/import-export/import/deals`) and streaming CSV export downloads (`/api/import-export/export/leads`, `/api/import-export/export/deals`, `/api/import-export/export/audit-logs`).
-5. **Email Provider Sync (Gmail & Outlook 365 OAuth)**:
+5. - [x] **Email Provider Sync (Gmail & Outlook 365 OAuth)**:
    - 2-way IMAP/SMTP and Microsoft Graph / Google Workspace synchronization for automatic email thread ingestion.
 
 ### 🟡 Medium Priority — Operational & Analytics Enhancements
-1. **Multi-Tenant Schema Architecture**:
-   - Organization-scoped tenancy with separate schema partitions or row-level tenant filtering.
-2. **OpenTelemetry & Prometheus Observability**:
-   - Metrics exporter tracking agent latency, LLM token costs per customer, and API response percentiles.
-3. **Vector Database / RAG Integration (pgvector / Qdrant)**:
-   - Semantic search across all historical sales call transcripts, email conversations, and meeting notes.
-4. **Custom LLM Fine-Tuning & Evaluation Playground**:
-   - In-app evaluation harness to benchmark prompt variants and calculate accuracy scores against historical CRM deals.
+1. - [x] **Multi-Tenant Schema Architecture**:
+   - Organization-scoped workspace isolation (`Organization` model, `services/tenant_service.py`, `/api/organizations`) with default workspace auto-provisioning and tenant scoping.
+2. - [x] **OpenTelemetry & Prometheus Observability**:
+   - Standard Prometheus text exposition format metrics exporter (`services/metrics_service.py`, `/api/metrics`, `/metrics`) tracking agent execution latency, token consumption, task queue status, and WebSocket connection counts.
+3. - [x] **Vector Database / RAG Integration (pgvector / Embeddings)**:
+   - Dense semantic vector search and multi-source RAG Q&A retrieval engine (`services/rag_service.py`, `/api/search/semantic`, `/api/search/rag-ask`) across voice call transcripts, meeting briefings, emails, and deals with citation attribution.
+4. - [x] **Custom LLM Fine-Tuning & Evaluation Playground**:
+   - In-app evaluation harness to benchmark prompt variants and calculate accuracy scores against historical CRM deals (`services/eval_service.py`, `/api/evaluations`, `PromptEvaluationModal.tsx`).
 
 ### 🟢 Nice to Have — Advanced Extensions
 1. **Mobile Application (React Native / Expo)**:
    - Field sales mobile app for logging voice notes, checking deal health, and receiving real-time push notifications.
-2. **Visual Drag-and-Drop Workflow Canvas**:
-   - Node-based visual automation editor (using React Flow) for assembling complex branching agent cadences.
-3. **Dynamic Custom Field Builder**:
-   - User-defined custom metadata fields on Contacts, Deals, and Accounts without manual database migrations.
+2. - [x] **Visual Drag-and-Drop Workflow Canvas**:
+   - Node-based visual automation editor for assembling complex branching agent cadences (`/api/workflows`, `WorkflowDefinition` model, `VisualWorkflowCanvas.tsx`).
+3. - [x] **Dynamic Custom Field Builder**:
+   - User-defined custom metadata fields on Contacts, Deals, Customers, and Companies without manual database migrations (`/api/custom-fields`, `CustomFieldDefinition` model, `CustomFieldsTab.tsx`).

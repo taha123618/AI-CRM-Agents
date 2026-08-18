@@ -107,7 +107,13 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
 * **Directory**: Place tests in the `tests/` directory matching the structure of the application.
 
-### 7. Git Workflow
+### 7. Cybersecurity & Transport Hardening
+* **HTTP Security Headers**: Enforce `SecurityHeadersMiddleware` on all responses (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Content-Security-Policy`, `Strict-Transport-Security`).
+* **CSV Formula Injection Prevention**: Sanitize outgoing CSV data (`sanitize_csv_cell`) by prefixing dangerous calculation triggers (`=`, `+`, `-`, `@`, `\t`, `\r`) with `'`.
+* **SSRF Defense**: Validate all outbound webhook URLs using `is_safe_webhook_url(...)` to block loopback, link-local metadata (`169.254.169.254`), and private cloud IP ranges in production.
+* **Secure Cookies**: Ensure authentication cookies enforce `Secure=True`, `HttpOnly=True`, and `SameSite=Lax` in production (`APP_ENV=production` or `COOKIE_SECURE=true`).
+
+### 8. Git Workflow
 * **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
 * **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add voice call intelligence analytics`).
 
@@ -125,6 +131,7 @@ We provide modular, project-specific AI skills inside `.agents/skills/`. Refer t
 6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
 7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
 8. [DevOps & Infrastructure](file:///Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md) - Standards for Docker, CI/CD, database migrations, backups, and observability.
+9. [Cybersecurity](file:///Users/taha/projects/ai-crm-agents/.agents/skills/cybersecurity/SKILL.md) - Guidelines for secure headers, SSRF/XSS defense, formula sanitization, and session safety.
 
 ---
 

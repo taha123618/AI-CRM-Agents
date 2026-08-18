@@ -143,6 +143,22 @@ def test_toggle_whatsapp_auto_pilot():
     assert res.json()["ai_auto_pilot"] is False
 
 
+def test_whatsapp_meta_cloud_webhook_verification():
+    """Test Meta WhatsApp Cloud API hub challenge verification."""
+    # 1. Success challenge verification
+    res = client.get(
+        "/api/whatsapp/webhook?hub.mode=subscribe&hub.verify_token=crm_whatsapp_verify_token&hub.challenge=11582014"
+    )
+    assert res.status_code == 200
+    assert res.json() == 11582014
+
+    # 2. Token mismatch rejected with 403
+    res_bad = client.get(
+        "/api/whatsapp/webhook?hub.mode=subscribe&hub.verify_token=wrong_token&hub.challenge=11582014"
+    )
+    assert res_bad.status_code == 403
+
+
 # ============================================================================
 # 3. ADVANCED FORECASTING TESTS
 # ============================================================================

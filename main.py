@@ -1,7 +1,7 @@
 """FastAPI Main Application - AI-Powered CRM"""
 
 # pyrefly: ignore [missing-import]
-from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect, Response
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import Dict, Any, List
@@ -31,8 +31,16 @@ from api import (
     tasks,
     webhooks,
     import_export,
+    metrics,
+    search,
+    organizations,
+    custom_fields,
+    evaluations,
+    workflows,
+    email_sync,
 )
 from middleware.rate_limiter import RateLimitingMiddleware
+from middleware.security_headers import SecurityHeadersMiddleware
 from workflows.orchestrator import AgentOrchestrator
 
 
@@ -60,8 +68,131 @@ class ConnectionManager:
 
 ws_manager = ConnectionManager()
 
+from sqlalchemy import text
+
 # Create database tables (fallback/convenience)
 Base.metadata.create_all(bind=engine)
+try:
+    with engine.connect() as _conn:
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS organizations ("
+                "id UUID PRIMARY KEY, "
+                "name VARCHAR(255) NOT NULL, "
+                "slug VARCHAR(100) UNIQUE NOT NULL, "
+                "domain VARCHAR(255), "
+                "plan_tier VARCHAR(50) DEFAULT 'enterprise', "
+                "is_active BOOLEAN DEFAULT TRUE, "
+                "settings JSONB DEFAULT '{}', "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS custom_field_definitions ("
+                "id UUID PRIMARY KEY, "
+                "organization_id UUID REFERENCES organizations(id) ON DELETE SET NULL, "
+                "entity_type VARCHAR(50) NOT NULL, "
+                "name VARCHAR(100) NOT NULL, "
+                "field_key VARCHAR(100) NOT NULL, "
+                "field_type VARCHAR(50) DEFAULT 'text' NOT NULL, "
+                "options JSONB DEFAULT '[]', "
+                "is_required BOOLEAN DEFAULT FALSE, "
+                "default_value JSONB, "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS llm_evaluation_runs ("
+                "id UUID PRIMARY KEY, "
+                "agent_name VARCHAR(100) NOT NULL, "
+                "prompt_variant_a TEXT NOT NULL, "
+                "prompt_variant_b TEXT NOT NULL, "
+                "dataset_size INTEGER DEFAULT 10, "
+                "score_a FLOAT DEFAULT 0.0, "
+                "score_b FLOAT DEFAULT 0.0, "
+                "latency_ms_a INTEGER DEFAULT 0, "
+                "latency_ms_b INTEGER DEFAULT 0, "
+                "tokens_used_a INTEGER DEFAULT 0, "
+                "tokens_used_b INTEGER DEFAULT 0, "
+                "metrics_breakdown JSONB DEFAULT '{}', "
+                "winner VARCHAR(10) DEFAULT 'A', "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS workflow_definitions ("
+                "id UUID PRIMARY KEY, "
+                "name VARCHAR(150) NOT NULL, "
+                "description TEXT, "
+                "trigger_type VARCHAR(50) DEFAULT 'event', "
+                "trigger_config JSONB DEFAULT '{}', "
+                "nodes JSONB DEFAULT '[]', "
+                "edges JSONB DEFAULT '[]', "
+                "is_active BOOLEAN DEFAULT TRUE, "
+                "execution_count INTEGER DEFAULT 0, "
+                "last_executed_at TIMESTAMP, "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS email_sync_accounts ("
+                "id UUID PRIMARY KEY, "
+                "organization_id UUID REFERENCES organizations(id) ON DELETE SET NULL, "
+                "user_id UUID REFERENCES users(id) ON DELETE SET NULL, "
+                "provider VARCHAR(50) NOT NULL, "
+                "email_address VARCHAR(255) NOT NULL, "
+                "display_name VARCHAR(150), "
+                "sync_status VARCHAR(50) DEFAULT 'active', "
+                "last_synced_at TIMESTAMP, "
+                "error_message TEXT, "
+                "settings JSONB DEFAULT '{}', "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS email_threads ("
+                "id UUID PRIMARY KEY, "
+                "account_id UUID REFERENCES email_sync_accounts(id) ON DELETE CASCADE, "
+                "thread_key VARCHAR(255) NOT NULL, "
+                "subject VARCHAR(255) NOT NULL, "
+                "participant_emails JSONB DEFAULT '[]', "
+                "message_count INTEGER DEFAULT 1, "
+                "snippet TEXT, "
+                "is_unread BOOLEAN DEFAULT FALSE, "
+                "sentiment VARCHAR(50) DEFAULT 'neutral', "
+                "last_message_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "messages JSONB DEFAULT '[]', "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.execute(
+            text(
+                "CREATE TABLE IF NOT EXISTS whatsapp_templates ("
+                "id UUID PRIMARY KEY, "
+                "name VARCHAR(100) NOT NULL, "
+                "category VARCHAR(50) DEFAULT 'MARKETING', "
+                "language VARCHAR(10) DEFAULT 'en_US', "
+                "status VARCHAR(50) DEFAULT 'APPROVED', "
+                "body_text TEXT NOT NULL, "
+                "variables JSONB DEFAULT '[]', "
+                "header_type VARCHAR(50) DEFAULT 'NONE', "
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+            )
+        )
+        _conn.commit()
+except Exception:
+    pass
 
 # Auto-seed database with mock data if empty
 try:
@@ -99,6 +230,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitingMiddleware)
 
 # Initialize agent orchestrator
@@ -206,6 +338,37 @@ app.include_router(
 app.include_router(
     import_export.router, prefix="/api/import-export", tags=["Bulk Import & Export"]
 )
+app.include_router(
+    metrics.router, prefix="/api/metrics", tags=["Prometheus Observability"]
+)
+app.include_router(
+    search.router, prefix="/api/search", tags=["Semantic Search & RAG"]
+)
+app.include_router(
+    organizations.router, prefix="/api/organizations", tags=["Multi-Tenant Organizations"]
+)
+app.include_router(
+    custom_fields.router, prefix="/api/custom-fields", tags=["Dynamic Custom Fields"]
+)
+app.include_router(
+    evaluations.router, prefix="/api/evaluations", tags=["LLM Prompt Evaluations"]
+)
+app.include_router(
+    workflows.router, prefix="/api/workflows", tags=["Visual Multi-Agent Workflows"]
+)
+app.include_router(
+    email_sync.router, prefix="/api/email-sync", tags=["Email IMAP & OAuth Sync"]
+)
+
+
+@app.get("/metrics", response_class=Response, include_in_schema=False)
+async def get_prometheus_metrics_root():
+    """Direct root Prometheus scraper endpoint."""
+    from services.metrics_service import MetricsService
+    return Response(
+        content=MetricsService.get_prometheus_metrics_text(),
+        media_type="text/plain; version=0.0.4; charset=utf-8",
+    )
 
 
 # ============================================================================

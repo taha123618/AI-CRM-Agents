@@ -8,6 +8,7 @@ import { LeadModal } from '@/components/forms/LeadModal';
 import { DealModal } from '@/components/forms/DealModal';
 import { EmailAnalyzerModal } from '@/components/forms/EmailAnalyzerModal';
 import { MeetingSchedulerModal } from '@/components/forms/MeetingSchedulerModal';
+import { GlobalSearchModal } from '@/components/common/GlobalSearchModal';
 
 import { LoginPage } from '@/pages/LoginPage';
 import { RegisterPage } from '@/pages/RegisterPage';
@@ -87,6 +88,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <Footer />
 
       {/* Global Modals */}
+      <GlobalSearchModal />
       <LeadModal />
       <DealModal />
       <EmailAnalyzerModal />

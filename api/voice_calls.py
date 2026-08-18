@@ -235,3 +235,40 @@ async def analyze_realtime_turn(payload: VoiceTurnAnalyzeSchema):
         call_context=payload.call_context,
     )
     return res
+
+
+class GatewayTokenRequest(BaseModel):
+    identity: str = Field("sales-rep", min_length=2)
+    room_name: str = Field("crm-live-room", min_length=2)
+    phone_number: Optional[str] = None
+
+
+class TwiMLRequest(BaseModel):
+    to_number: str = Field(..., min_length=5)
+    caller_id: Optional[str] = "+18005550199"
+    record: Optional[bool] = True
+
+
+@router.post("/gateway/token", response_model=Dict[str, Any])
+def generate_voice_gateway_token(payload: GatewayTokenRequest):
+    """Generate WebRTC client session token for live browser-to-phone calling."""
+    from services.voice_gateway_service import VoiceGatewayService
+    return VoiceGatewayService.generate_webrtc_token(
+        identity=payload.identity,
+        room_name=payload.room_name,
+        phone_number=payload.phone_number,
+    )
+
+
+@router.post("/gateway/twiml")
+def generate_twilio_twiml(payload: TwiMLRequest):
+    """Generate XML TwiML instructions for Twilio SIP voice trunking."""
+    from services.voice_gateway_service import VoiceGatewayService
+    from fastapi.responses import Response
+    twiml_xml = VoiceGatewayService.generate_twiml(
+        to_number=payload.to_number,
+        caller_id=payload.caller_id or "+18005550199",
+        enable_recording=bool(payload.record),
+    )
+    return Response(content=twiml_xml, media_type="application/xml")
+

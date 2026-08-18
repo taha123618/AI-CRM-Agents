@@ -46,7 +46,13 @@ Use this skill when you are modifying or creating FastAPI API routers, endpoints
    - **CRITICAL**: Never use deprecated `datetime.utcnow()`. Always use timezone-aware `datetime.now(timezone.utc)`.
    - When comparing timestamps from the database that may be naive, normalize them using `_to_utc()` or `dt.replace(tzinfo=timezone.utc)` before comparing against `datetime.now(timezone.utc)`.
 
-7. **Error Handling**:
+7. **Senior Cybersecurity & Defense-in-Depth Standards**:
+   - **HTTP Security Headers**: Enforce `SecurityHeadersMiddleware` on all responses (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Content-Security-Policy`, `Strict-Transport-Security`).
+   - **CSV Formula Injection Prevention**: Always sanitize outgoing spreadsheet cells (`sanitize_csv_cell`) by prefixing dangerous calculation triggers (`=`, `+`, `-`, `@`, `\t`, `\r`) with `'`.
+   - **SSRF Defense**: Validate all user-supplied outbound URLs via `is_safe_webhook_url(...)` to block loopback (`127.0.0.1`), link-local metadata (`169.254.169.254`), and private cloud IP subnets in production.
+   - **Secure Cookies**: Ensure authentication cookies dynamically enforce `secure=True` in production environments (`APP_ENV=production` or `COOKIE_SECURE=true`).
+
+8. **Error Handling**:
    - Avoid catching and silencing database or logic errors directly.
    - Raise `HTTPException` for user errors or state conflicts (e.g., `raise HTTPException(status_code=404, detail="Item not found")`).
 

@@ -7,6 +7,7 @@ import { whatsappApi } from './api/whatsappApi';
 import { WhatsAppConversation } from './types/whatsapp.types';
 import { NewConversationModal } from './components/NewConversationModal';
 import { BroadcastModal } from './components/BroadcastModal';
+import { WhatsAppTemplatesModal } from './components/WhatsAppTemplatesModal';
 import {
   MessageSquare,
   Send,
@@ -323,6 +324,7 @@ export function WhatsAppFeature() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showNewModal, setShowNewModal] = useState(false);
   const [showBroadcastModal, setShowBroadcastModal] = useState(false);
+  const [showTemplatesModal, setShowTemplatesModal] = useState(false);
   const [editingTagsForConv, setEditingTagsForConv] = useState<string | null>(null);
   const [isBotThinking, setIsBotThinking] = useState(false);
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
@@ -611,6 +613,16 @@ export function WhatsAppFeature() {
           >
             <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
             <span>Refresh</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTemplatesModal(true)}
+            className="border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 hover:text-white"
+          >
+            <Sparkles className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
+            <span>Meta Templates &amp; Media</span>
           </Button>
 
           <Button
@@ -1302,6 +1314,15 @@ export function WhatsAppFeature() {
       {/* Modals */}
       {showNewModal && <NewConversationModal onClose={() => setShowNewModal(false)} />}
       {showBroadcastModal && <BroadcastModal onClose={() => setShowBroadcastModal(false)} />}
+      {showTemplatesModal && (
+        <WhatsAppTemplatesModal
+          isOpen={showTemplatesModal}
+          onClose={() => setShowTemplatesModal(false)}
+          onSelectTemplate={(tpl) => {
+            setInputText(tpl.body_text);
+          }}
+        />
+      )}
     </div>
   );
 }

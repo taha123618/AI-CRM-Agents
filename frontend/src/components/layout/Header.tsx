@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Radio, Bot, Plus, User, LogOut } from 'lucide-react';
+import { Search, Radio, Bot, Plus, User, LogOut, Sparkles, Building2 } from 'lucide-react';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useAgentStore } from '@/stores/use-agent-store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
@@ -12,7 +12,7 @@ import { LanguageSelector, LanguageManagerModal, TranslationEditorModal, useTran
 export function Header() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { searchQuery, setSearchQuery, sidebarOpen, setLeadModalOpen, setDealModalOpen, setActivePage } = useUIStore();
+  const { searchQuery, sidebarOpen, setLeadModalOpen, setDealModalOpen, setActivePage, setGlobalSearchOpen } = useUIStore();
   const { connectionStatus, setConnectionStatus, addEvent } = useAgentStore();
   const { user, logout, isLoggingOut } = useAuth();
   const [backendHealth, setBackendHealth] = useState<'healthy' | 'checking' | 'error'>('checking');
@@ -58,40 +58,79 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
-          }`}
+        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${
+          sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
+        }`}
       >
-        {/* Search Input */}
-        <div className="relative flex items-center w-64 md:w-80">
-          <Search className="absolute ltr:left-3 rtl:right-3 w-4 h-4 text-slate-400 pointer-events-none" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t('common.search', 'Search records...')}
-            className="w-full bg-slate-900/80 text-slate-200 placeholder:text-slate-500 text-xs rounded-xl ltr:pl-9 ltr:pr-4 rtl:pr-9 rtl:pl-4 py-2 border border-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
-          />
+        {/* Search & AI Spotlight Bar */}
+        <div className="flex items-center gap-3 w-64 sm:w-80 lg:w-96">
+          <div
+            onClick={() => setGlobalSearchOpen(true)}
+            className="relative flex items-center w-full cursor-pointer group"
+          >
+            <Search className="absolute ltr:left-3 rtl:right-3 w-4 h-4 text-slate-400 group-hover:text-brand-400 transition-colors pointer-events-none" />
+            <input
+              type="text"
+              readOnly
+              value={searchQuery}
+              onFocus={() => setGlobalSearchOpen(true)}
+              placeholder="Search or ask CRM AI... (⌘K)"
+              className="w-full bg-slate-900/80 text-slate-200 placeholder:text-slate-500 text-xs rounded-xl ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-2 border border-slate-800 group-hover:border-slate-700 cursor-pointer transition-all"
+            />
+            <kbd className="absolute ltr:right-2.5 rtl:left-2.5 px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-slate-950 border border-slate-800 rounded-md pointer-events-none">
+              ⌘K
+            </kbd>
+          </div>
         </div>
 
         {/* Status, Language Selector & Quick Actions */}
         <div className="flex items-center gap-3">
+          {/* Active Workspace Selector */}
+          <button
+            onClick={() => {
+              setActivePage('settings');
+              navigate('/settings');
+            }}
+            title="Active Organization Workspace"
+            className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 transition-all"
+          >
+            <Building2 className="w-3.5 h-3.5 text-brand-400" />
+            <span className="font-semibold text-white">Default Workspace</span>
+            <Badge variant="purple" className="text-[9px] py-0 px-1 font-mono">
+              ENTERPRISE
+            </Badge>
+          </button>
+
           {/* Language Switcher */}
           <LanguageSelector onOpenSettings={() => setIsLangManagerOpen(true)} />
 
           {/* Realtime Stream Indicator */}
           <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs">
             <Radio
-              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
-                }`}
+              className={`w-3.5 h-3.5 ${
+                connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
+              }`}
             />
             <span className="text-slate-300 font-medium">
               {connectionStatus === 'OPEN' ? 'WS Realtime Stream' : 'Event Stream (Polling)'}
             </span>
             <span
-              className={`w-2 h-2 rounded-full ${backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
-                }`}
+              className={`w-2 h-2 rounded-full ${
+                backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
+              }`}
             />
           </div>
+
+          {/* AI Semantic RAG Spotlight Link */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setGlobalSearchOpen(true)}
+            className="hidden md:inline-flex border-indigo-500/30 text-indigo-300 hover:bg-indigo-950/40"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <span>AI Search</span>
+          </Button>
 
           {/* Agent Console Quick Link */}
           <Button

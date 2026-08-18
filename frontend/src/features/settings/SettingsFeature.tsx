@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { Shield, Globe, Download, Cpu, History, Sliders, UserCheck } from 'lucide-react';
+import { Shield, Globe, Download, Cpu, History, Sliders, UserCheck, Building2, Activity, SlidersHorizontal } from 'lucide-react';
 import { UserManagementTab } from './components/UserManagementTab';
+import { OrganizationsTab } from './components/OrganizationsTab';
+import { ObservabilityMetricsTab } from './components/ObservabilityMetricsTab';
+import { CustomFieldsTab } from './components/CustomFieldsTab';
 import { WebhooksStudioTab } from './components/WebhooksStudioTab';
 import { ImportExportStudioTab } from './components/ImportExportStudioTab';
 import { TaskQueueMonitorTab } from './components/TaskQueueMonitorTab';
@@ -8,7 +11,7 @@ import { AuditTrailTab } from './components/AuditTrailTab';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { Badge } from '@/components/ui/Badge';
 
-type SettingsTab = 'rbac' | 'webhooks' | 'import-export' | 'tasks' | 'audits';
+type SettingsTab = 'rbac' | 'organizations' | 'observability' | 'custom-fields' | 'webhooks' | 'import-export' | 'tasks' | 'audits';
 
 export function SettingsFeature() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('rbac');
@@ -17,7 +20,10 @@ export function SettingsFeature() {
 
   const tabs = [
     { id: 'rbac' as const, label: 'Access Control & RBAC', icon: Shield, badge: 'Auth' },
-    { id: 'webhooks' as const, label: 'Webhooks & APIs', icon: Globe, badge: 'Live' },
+    { id: 'organizations' as const, label: 'Workspaces & Tenancy', icon: Building2, badge: 'New' },
+    { id: 'observability' as const, label: 'Metrics & Observability', icon: Activity, badge: 'Live' },
+    { id: 'custom-fields' as const, label: 'Custom Fields & Schema', icon: SlidersHorizontal, badge: 'ETL' },
+    { id: 'webhooks' as const, label: 'Webhooks & APIs', icon: Globe, badge: '' },
     { id: 'import-export' as const, label: 'Bulk Import / Export', icon: Download },
     { id: 'tasks' as const, label: 'Task Queue & Workers', icon: Cpu, badge: 'Async' },
     { id: 'audits' as const, label: 'Compliance Audit Trail', icon: History },
@@ -83,6 +89,9 @@ export function SettingsFeature() {
       {/* Active Tab Panel */}
       <div className="animate-in fade-in duration-200">
         {activeTab === 'rbac' && <UserManagementTab />}
+        {activeTab === 'organizations' && <OrganizationsTab />}
+        {activeTab === 'observability' && <ObservabilityMetricsTab />}
+        {activeTab === 'custom-fields' && <CustomFieldsTab />}
         {activeTab === 'webhooks' && <WebhooksStudioTab />}
         {activeTab === 'import-export' && <ImportExportStudioTab />}
         {activeTab === 'tasks' && <TaskQueueMonitorTab />}

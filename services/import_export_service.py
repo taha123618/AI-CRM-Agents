@@ -1,4 +1,4 @@
-"""Bulk CSV Import and Export Business Service."""
+"""Bulk CSV Import and Export Business Service with Formula Injection Protection."""
 
 import csv
 import io
@@ -6,6 +6,26 @@ from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
 from database.models import Contact, Deal, AuditLog
 from services.audit_service import record_audit_log
+
+# Defensive CSV limits to prevent resource exhaustion / CSV bombs
+MAX_CSV_PAYLOAD_BYTES = 5 * 1024 * 1024  # 5 MB
+MAX_CSV_ROWS = 5000
+DANGEROUS_FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
+
+
+def sanitize_csv_cell(val: Any) -> Any:
+    """Sanitize CSV cell content to prevent CSV/Formula Injection attacks.
+    
+    If a string begins with dangerous spreadsheet execution prefixes (=, +, -, @, \\t, \\r),
+    it is prepended with a single quote (') to force spreadsheet processors (Excel, LibreOffice,
+    Google Sheets) to treat it as safe text rather than an executable formula or DDE command.
+    """
+    if val is None:
+        return ""
+    val_str = str(val)
+    if val_str and val_str.startswith(DANGEROUS_FORMULA_PREFIXES):
+        return f"'{val_str}"
+    return val_str
 
 
 def _get_col_val(row: Dict[str, Any], *candidates: str) -> Optional[str]:
@@ -26,7 +46,16 @@ def import_leads_csv(
     db: Session,
     column_mapping: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
-    """Bulk import leads/contacts from CSV with dynamic column mapping."""
+    """Bulk import leads/contacts from CSV with dynamic column mapping and payload validation."""
+    if len(csv_text.encode("utf-8")) > MAX_CSV_PAYLOAD_BYTES:
+        return {
+            "success": False,
+            "created_count": 0,
+            "updated_count": 0,
+            "total_processed": 0,
+            "errors": [f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."],
+        }
+
     reader = csv.DictReader(io.StringIO(csv_text.strip()))
     mapping = column_mapping or {}
 
@@ -35,6 +64,9 @@ def import_leads_csv(
     errors = []
 
     for row_idx, row in enumerate(reader, start=1):
+        if row_idx > MAX_CSV_ROWS:
+            errors.append(f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped.")
+            break
         email_key = mapping.get("email", "email")
         email = _get_col_val(row, email_key, "email", "Email", "email_address", "Work Email")
         if not email or "@" not in email:
@@ -108,7 +140,14 @@ def import_deals_csv(
     db: Session,
     column_mapping: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
-    """Bulk import deals from CSV."""
+    """Bulk import deals from CSV with payload limit and formula sanitization."""
+    if len(csv_text.encode("utf-8")) > MAX_CSV_PAYLOAD_BYTES:
+        return {
+            "success": False,
+            "created_count": 0,
+            "errors": [f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."],
+        }
+
     reader = csv.DictReader(io.StringIO(csv_text.strip()))
     mapping = column_mapping or {}
 
@@ -116,6 +155,10 @@ def import_deals_csv(
     errors = []
 
     for row_idx, row in enumerate(reader, start=1):
+        if row_idx > MAX_CSV_ROWS:
+            errors.append(f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped.")
+            break
+
         name = row.get(mapping.get("name", "name")) or row.get("Deal Name") or row.get("deal_name")
         if not name:
             errors.append(f"Row {row_idx}: Missing deal name.")
@@ -123,7 +166,7 @@ def import_deals_csv(
 
         val_str = row.get(mapping.get("value", "value")) or row.get("Amount") or row.get("value") or "0"
         try:
-            val = float(val_str.replace("$", "").replace(",", "").strip())
+            val = float(str(val_str).replace("$", "").replace(",", "").strip())
         except Exception:
             val = 0.0
 
@@ -135,9 +178,9 @@ def import_deals_csv(
             health = 60
 
         new_deal = Deal(
-            name=name,
+            name=str(name),
             value=val,
-            stage=stage.lower(),
+            stage=str(stage).lower(),
             health_score=health,
         )
         db.add(new_deal)
@@ -152,60 +195,60 @@ def import_deals_csv(
 
 
 def export_leads_csv(db: Session) -> str:
-    """Generate CSV string of all contacts/leads."""
+    """Generate CSV string of all contacts/leads with formula injection protection."""
     contacts = db.query(Contact).order_by(Contact.created_at.desc()).all()
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["ID", "Email", "First Name", "Last Name", "Job Title", "Lead Score", "Lead Status", "Lead Source", "Created At"])
     for c in contacts:
         writer.writerow([
-            str(c.id),
-            c.email,
-            c.first_name or "",
-            c.last_name or "",
-            c.job_title or "",
-            c.lead_score or 0,
-            c.lead_status or "new",
-            c.lead_source or "",
-            c.created_at.isoformat() if c.created_at else "",
+            sanitize_csv_cell(str(c.id)),
+            sanitize_csv_cell(c.email),
+            sanitize_csv_cell(c.first_name or ""),
+            sanitize_csv_cell(c.last_name or ""),
+            sanitize_csv_cell(c.job_title or ""),
+            sanitize_csv_cell(c.lead_score or 0),
+            sanitize_csv_cell(c.lead_status or "new"),
+            sanitize_csv_cell(c.lead_source or ""),
+            sanitize_csv_cell(c.created_at.isoformat() if c.created_at else ""),
         ])
     return output.getvalue()
 
 
 def export_deals_csv(db: Session) -> str:
-    """Generate CSV string of all pipeline deals."""
+    """Generate CSV string of all pipeline deals with formula injection protection."""
     deals = db.query(Deal).order_by(Deal.created_at.desc()).all()
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["ID", "Deal Name", "Value", "Stage", "Health Score", "Close Probability", "Is Stalled", "Created At"])
     for d in deals:
         writer.writerow([
-            str(d.id),
-            d.name,
-            d.value or 0.0,
-            d.stage,
-            d.health_score or 50,
-            d.probability or 0,
-            "Yes" if d.is_stalled else "No",
-            d.created_at.isoformat() if d.created_at else "",
+            sanitize_csv_cell(str(d.id)),
+            sanitize_csv_cell(d.name),
+            sanitize_csv_cell(d.value or 0.0),
+            sanitize_csv_cell(d.stage),
+            sanitize_csv_cell(d.health_score or 50),
+            sanitize_csv_cell(d.probability or 0),
+            sanitize_csv_cell("Yes" if d.is_stalled else "No"),
+            sanitize_csv_cell(d.created_at.isoformat() if d.created_at else ""),
         ])
     return output.getvalue()
 
 
 def export_audit_logs_csv(db: Session) -> str:
-    """Generate CSV string of all compliance audit logs."""
+    """Generate CSV string of all compliance audit logs with formula injection protection."""
     logs = db.query(AuditLog).order_by(AuditLog.created_at.desc()).limit(1000).all()
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["ID", "Entity Type", "Entity ID", "Action", "Actor", "IP Address", "Timestamp"])
     for l in logs:
         writer.writerow([
-            str(l.id),
-            l.entity_type,
-            l.entity_id,
-            l.action,
-            l.actor,
-            l.ip_address or "",
-            l.created_at.isoformat() if l.created_at else "",
+            sanitize_csv_cell(str(l.id)),
+            sanitize_csv_cell(l.entity_type),
+            sanitize_csv_cell(l.entity_id),
+            sanitize_csv_cell(l.action),
+            sanitize_csv_cell(l.actor),
+            sanitize_csv_cell(l.ip_address or ""),
+            sanitize_csv_cell(l.created_at.isoformat() if l.created_at else ""),
         ])
     return output.getvalue()

@@ -11,6 +11,7 @@ import { useTranslation } from '@/features/multi-language';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { EmailMessage } from '@/types/crm.types';
+import { EmailSyncAccountsModal } from './components/EmailSyncAccountsModal';
 
 const EMOTION_CONFIG: Record<string, { color: string; emoji: string }> = {
   anger: { color: 'text-rose-400 bg-rose-500/10 border-rose-500/30', emoji: '😠' },
@@ -62,6 +63,7 @@ export function EmailsFeature() {
 
   // Direct Compose modal state
   const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
   const [composeTo, setComposeTo] = useState('');
   const [composeSubject, setComposeSubject] = useState('');
   const [composeBody, setComposeBody] = useState('');
@@ -178,6 +180,14 @@ export function EmailsFeature() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setIsSyncModalOpen(true)}
+            className="border-purple-500/30 text-purple-300 hover:bg-purple-950/40"
+          >
+            <Mail className="w-4 h-4 text-purple-400" />
+            <span>IMAP / OAuth Sync</span>
+          </Button>
           <Button variant="outline" onClick={handleBulkAnalyzeEmails} isLoading={isBulkAnalyzing}>
             <Sparkles className="w-4 h-4 text-blue-400" />
             <span>{t('emails.bulk_analyze', 'AI Bulk Triage')}</span>
@@ -460,6 +470,12 @@ export function EmailsFeature() {
           </form>
         </Modal>
       )}
+
+      {/* Email IMAP & OAuth Sync Studio Modal */}
+      <EmailSyncAccountsModal
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+      />
     </div>
   );
 }
