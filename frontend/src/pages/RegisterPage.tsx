@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, UserPlus, AlertCircle, Building, ShieldCheck } from 'lucide-react';
 import { AuthLayout } from '@/features/auth/components/AuthLayout';
@@ -15,7 +15,13 @@ export function RegisterPage() {
   const [role, setRole] = useState<UserRole>('sales');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { register, isRegistering, ssoLogin, isSsoLoggingIn } = useAuth();
+  const { register, isRegistering, ssoLogin, isSsoLoggingIn, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

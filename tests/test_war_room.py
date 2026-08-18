@@ -103,6 +103,27 @@ def test_generate_deal_proposal():
     assert res_fake.status_code == 404
 
 
+def test_send_deal_proposal_email():
+    deals_res = client.get("/api/war-room/deals")
+    deals = deals_res.json()
+    assert len(deals) > 0
+    deal_id = deals[0]["id"]
+
+    payload = {
+        "recipient_email": "cfo@enterprise-corp.org",
+        "proposal_id": "PROP-TEST-001",
+        "tier": "Enterprise",
+        "final_arr": 85000.0,
+        "custom_note": "Approved terms attached.",
+    }
+    res = client.post(f"/api/war-room/deals/{deal_id}/send-proposal", json=payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "sent"
+    assert data["recipient"] == "cfo@enterprise-corp.org"
+    assert "task_id" in data
+
+
 def test_automation_rules_crud_and_toggle():
     # 1. List automations
     res = client.get("/api/war-room/automations")

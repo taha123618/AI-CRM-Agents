@@ -58,9 +58,13 @@ Use this skill when designing, writing, executing, or debugging automated test s
      ```
 
 5. **WebSocket & Realtime Testing**:
-   - Use `with client.websocket_connect("/ws") as ws:` to verify connection, ping, and broadcast behavior.
+   - Use `TestClient(app).websocket_connect("/ws")` to verify stream events and agent status payloads.
 
-6. **Mocking External LLMs**:
+6. **Full Test Suite Commands**:
+   - Backend: `PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v` (130 tests)
+   - Frontend: `cd frontend && npm run test && npm run type-check && npm run build` (49 tests across 15 suites)
+
+7. **Mocking External LLMs**:
    - Always mock LLMs in unit tests to prevent network delays and costs:
      ```python
      from unittest.mock import AsyncMock, patch

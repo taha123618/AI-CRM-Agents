@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Lock, LogIn, AlertCircle, Building } from 'lucide-react';
 import { AuthLayout } from '@/features/auth/components/AuthLayout';
@@ -15,7 +15,13 @@ export function LoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { login, isLoggingIn, ssoLogin, isSsoLoggingIn } = useAuth();
+  const { login, isLoggingIn, ssoLogin, isSsoLoggingIn, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectUrl, { replace: true });
+    }
+  }, [isAuthenticated, navigate, redirectUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -21,7 +21,7 @@ from loguru import logger
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() in ("true", "1", "yes")
-EMAIL_USER = os.getenv("EMAIL_USER", "saad@devteampro.com")
+EMAIL_USER = os.getenv("EMAIL_USER", "[EMAIL_ADDRESS]")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
 EMAIL_FROM = os.getenv("EMAIL_FROM", f"AI CRM Intelligence <{EMAIL_USER}>")
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
@@ -377,6 +377,166 @@ Regards,
             html_body=html_body,
             text_body=text_body,
         )
+
+
+    def render_crm_email(
+        self,
+        recipient_name: str,
+        subject: str,
+        body_content: str,
+        cta_url: Optional[str] = None,
+        cta_text: Optional[str] = None,
+    ) -> tuple[str, str]:
+        """Generate branded HTML and plain-text templates for general CRM and reply emails."""
+        safe_name = recipient_name or "there"
+        # Convert plain text newlines into HTML paragraphs/breaks
+        formatted_html_body = body_content.replace("\n\n", "</p><p class=\"text\">").replace("\n", "<br>")
+
+        cta_button_html = ""
+        if cta_url and cta_text:
+            cta_button_html = f"""
+            <div class="button-container">
+              <a href="{cta_url}" class="btn" target="_blank">{cta_text}</a>
+            </div>
+            """
+
+        html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{subject}</title>
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #090d16;
+      color: #f1f5f9;
+      margin: 0;
+      padding: 0;
+    }}
+    .container {{
+      max-width: 600px;
+      margin: 28px auto;
+      background-color: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }}
+    .header {{
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      padding: 24px 28px;
+      text-align: left;
+    }}
+    .header h1 {{
+      margin: 0;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }}
+    .content {{
+      padding: 32px 28px;
+    }}
+    .greeting {{
+      font-size: 15px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 16px;
+    }}
+    .text {{
+      font-size: 14px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 18px;
+    }}
+    .button-container {{
+      text-align: left;
+      margin: 24px 0;
+    }}
+    .btn {{
+      display: inline-block;
+      background-color: #2563eb;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }}
+    .footer {{
+      border-top: 1px solid #1e293b;
+      padding: 20px 28px;
+      text-align: center;
+      font-size: 11px;
+      color: #64748b;
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>{APP_NAME}</h1>
+    </div>
+    <div class="content">
+      <div class="greeting">Hi {safe_name},</div>
+      <p class="text">
+        {formatted_html_body}
+      </p>
+      {cta_button_html}
+    </div>
+    <div class="footer">
+      &copy; 2026 {APP_NAME}. Enterprise Multi-Agent Sales & Customer Intelligence.
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+        text_content = f"""Hi {safe_name},
+
+{body_content}
+
+Best regards,
+{APP_NAME}
+"""
+        return html_content, text_content
+
+    async def send_crm_email(
+        self,
+        to_email: str,
+        subject: str,
+        body: str,
+        recipient_name: Optional[str] = None,
+        html_body: Optional[str] = None,
+        text_body: Optional[str] = None,
+        correlation_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Dispatch general CRM email, reply, or notification with templating."""
+        if not to_email or "@" not in to_email:
+            raise ValueError(f"Invalid recipient email address: '{to_email}'")
+
+        if not html_body:
+            rendered_html, rendered_text = self.render_crm_email(
+                recipient_name=recipient_name or "",
+                subject=subject,
+                body_content=body,
+            )
+            html_body = rendered_html
+            text_body = text_body or rendered_text
+        else:
+            text_body = text_body or body
+
+        result = await self.send_email_async(
+            to_email=to_email,
+            subject=subject,
+            html_body=html_body,
+            text_body=text_body,
+        )
+
+        result["correlation_id"] = correlation_id
+        return result
 
 
 # Singleton default instance

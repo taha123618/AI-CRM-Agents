@@ -4,7 +4,7 @@ import os
 import asyncio
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional, Callable, Awaitable, List
 from pydantic import BaseModel, ConfigDict, Field
 from loguru import logger
@@ -68,8 +68,7 @@ class AsyncTaskQueue:
             task_type=task_type,
             status="pending",
             progress=0,
-            # pyrefly: ignore [deprecated]
-            created_at=datetime.utcnow().isoformat(),
+            created_at=datetime.now(timezone.utc).isoformat(),
             attempts=0,
             max_attempts=max_attempts,
             metadata=metadata or {},
@@ -111,7 +110,7 @@ class AsyncTaskQueue:
             if task_id in self._async_tasks:
                 self._async_tasks[task_id].cancel()
             job.status = "cancelled"
-            job.completed_at = datetime.utcnow().isoformat()
+            job.completed_at = datetime.now(timezone.utc).isoformat()
             job.error = "Cancelled by user"
             self._sync_to_redis(job)
 
@@ -140,7 +139,7 @@ class AsyncTaskQueue:
 
         async def _runner():
             job.status = "running"
-            job.started_at = datetime.utcnow().isoformat()
+            job.started_at = datetime.now(timezone.utc).isoformat()
             job.progress = 10
             self._sync_to_redis(job)
 
@@ -152,14 +151,14 @@ class AsyncTaskQueue:
                     job.status = "completed"
                     job.progress = 100
                     job.result = result
-                    job.completed_at = datetime.utcnow().isoformat()
+                    job.completed_at = datetime.now(timezone.utc).isoformat()
                     self._sync_to_redis(job)
                     logger.info(f"Task {job.task_id} completed successfully.")
                     return
                 except asyncio.CancelledError:
                     job.status = "cancelled"
                     job.error = "Execution cancelled"
-                    job.completed_at = datetime.utcnow().isoformat()
+                    job.completed_at = datetime.now(timezone.utc).isoformat()
                     self._sync_to_redis(job)
                     return
                 except Exception as e:
@@ -172,7 +171,7 @@ class AsyncTaskQueue:
                         await asyncio.sleep(backoff)
                     else:
                         job.status = "failed"
-                        job.completed_at = datetime.utcnow().isoformat()
+                        job.completed_at = datetime.now(timezone.utc).isoformat()
                         logger.error(f"Task {job.task_id} failed after {job.max_attempts} attempts: {e}")
                 finally:
                     self._sync_to_redis(job)
@@ -216,6 +215,50 @@ class AsyncTaskQueue:
             coro_func=_send_task,
             max_attempts=3,
             metadata={"email_type": "password_reset", "recipient_domain": domain},
+        )
+
+    async def enqueue_email(
+        self,
+        to_email: str,
+        subject: str,
+        body: str,
+        recipient_name: Optional[str] = None,
+        html_body: Optional[str] = None,
+        text_body: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> TaskJob:
+        """Enqueue general CRM / outbound email delivery task into background queue."""
+        from services.email_service import email_service
+
+        domain = to_email.split("@")[-1] if "@" in to_email else "unknown"
+        meta = metadata or {}
+        meta.update({"recipient_domain": domain, "subject": subject})
+
+        async def _send_task(job: TaskJob) -> Dict[str, Any]:
+            job.progress = 30
+            res = await email_service.send_crm_email(
+                to_email=to_email,
+                subject=subject,
+                body=body,
+                recipient_name=recipient_name,
+                html_body=html_body,
+                text_body=text_body,
+                correlation_id=job.task_id,
+            )
+            job.progress = 90
+            return {
+                "delivered": res.get("delivered", True),
+                "status": res.get("status", "delivered"),
+                "recipient_domain": domain,
+                "subject": subject,
+                "email_type": meta.get("email_type", "crm_outbound"),
+            }
+
+        return await self.enqueue(
+            task_type="send_crm_email",
+            coro_func=_send_task,
+            max_attempts=3,
+            metadata=meta,
         )
 
 

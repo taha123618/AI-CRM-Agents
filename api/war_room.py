@@ -379,6 +379,102 @@ def generate_deal_proposal(
     }
 
 
+class SendProposalSchema(BaseModel):
+    recipient_email: Optional[str] = Field(None, description="Target recipient email address")
+    proposal_id: Optional[str] = Field(None, description="Proposal reference ID")
+    tier: Optional[str] = Field("Enterprise", description="Proposal pricing tier")
+    final_arr: Optional[float] = Field(None, description="Final ARR value")
+    esign_url: Optional[str] = Field(None, description="E-signature contract URL")
+    custom_note: Optional[str] = Field(None, description="Personal note for buying committee")
+
+
+@router.post("/deals/{deal_id}/send-proposal", response_model=Dict[str, Any])
+async def send_deal_proposal_email(
+    deal_id: str,
+    payload: Optional[SendProposalSchema] = None,
+    db: Session = Depends(get_db),
+):
+    """Dispatch proposal terms, pricing breakdown, and e-signature URL to buying committee via centralized email queue."""
+    deal = None
+    try:
+        val_uuid = uuid.UUID(deal_id)
+        deal = db.query(Deal).filter(Deal.id == val_uuid).first()
+    except (ValueError, AttributeError):
+        deal = db.query(Deal).filter(Deal.id == deal_id).first()
+
+    if not deal:
+        raise HTTPException(status_code=404, detail="Deal not found")
+
+    target_email = None
+    if payload and payload.recipient_email:
+        target_email = payload.recipient_email
+    elif deal.contact and deal.contact.email:
+        target_email = deal.contact.email
+    elif deal.company and deal.company.contacts:
+        target_email = deal.company.contacts[0].email
+
+    if not target_email or "@" not in str(target_email):
+        raise HTTPException(status_code=422, detail="No valid recipient email found for this proposal.")
+
+    company_name = deal.company.name if deal.company else "Enterprise Client"
+    proposal_id = (payload and payload.proposal_id) or f"PROP-{uuid.uuid4().hex[:8].upper()}"
+    tier = (payload and payload.tier) or "Enterprise"
+    arr_val = (payload and payload.final_arr) or float(deal.value or 75000.0)
+    esign_link = (payload and payload.esign_url) or f"https://esign.ai-crm.internal/sign/{proposal_id.lower()}"
+    note = (payload and payload.custom_note) or "We have customized the terms according to our recent architecture review."
+
+    subject = f"Executive AI CRM Proposal & Agreement: {company_name} ({tier} Tier)"
+    body = f"""Thank you for evaluating our Multi-Agent AI CRM Platform.
+
+Proposal Summary:
+• Account: {company_name}
+• Deal: {deal.name}
+• Tier: {tier}
+• ARR: ${arr_val:,.2f} / year (Prepaid Net 30)
+• Proposal ID: {proposal_id}
+
+Note from Account Executive:
+{note}
+
+Please review the agreement and execute electronic signature via the secure link below:
+E-Signature URL: {esign_link}
+
+Our solutions architecture team is available for any implementation questions."""
+
+    from services.task_queue_service import task_queue
+    job = await task_queue.enqueue_email(
+        to_email=target_email,
+        subject=subject,
+        body=body,
+        recipient_name=deal.contact.first_name if (deal.contact and deal.contact.first_name) else company_name,
+        metadata={
+            "deal_id": str(deal.id),
+            "proposal_id": proposal_id,
+            "tier": tier,
+            "type": "deal_proposal",
+        },
+    )
+
+    from services.audit_service import record_audit_log
+    record_audit_log(
+        db=db,
+        entity_type="deal_proposal",
+        entity_id=proposal_id,
+        action="proposal_emailed",
+        actor="system_user",
+        details={"deal_id": str(deal.id), "recipient": target_email, "task_id": job.task_id},
+    )
+
+    return {
+        "status": "sent",
+        "proposal_id": proposal_id,
+        "deal_id": str(deal.id),
+        "recipient": target_email,
+        "task_id": job.task_id,
+        "message": f"Proposal {proposal_id} queued for email delivery to {target_email}",
+    }
+
+
 @router.get("/automations", response_model=List[Dict[str, Any]])
 def list_automation_rules(
     search: Optional[str] = Query(None, description="Search rules by name"),

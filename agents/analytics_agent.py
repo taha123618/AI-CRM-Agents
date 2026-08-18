@@ -2,7 +2,7 @@
 
 from typing import Dict, Any, List
 from .base_agent import BaseAgent
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 
@@ -64,7 +64,7 @@ class AnalyticsAgent(BaseAgent):
         alerts = await self.identify_alerts(metrics, kpis)
 
         dashboard = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "category": category,
             "kpis": kpis,
             "metrics": metrics,
@@ -269,7 +269,7 @@ class AnalyticsAgent(BaseAgent):
                         "insight": line.strip(),
                         "category": self._categorize_insight(line),
                         "priority": self._determine_priority(line),
-                        "timestamp": datetime.utcnow().isoformat(),
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
                 )
 
@@ -448,7 +448,7 @@ class AnalyticsAgent(BaseAgent):
                     "insight": "High conversion rate but low lead volume - invest in lead generation",
                     "category": "sales",
                     "priority": "high",
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
             )
 
@@ -459,7 +459,7 @@ class AnalyticsAgent(BaseAgent):
                     "insight": "Churn increasing - review customer success processes",
                     "category": "customer_success",
                     "priority": "high",
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
             )
 

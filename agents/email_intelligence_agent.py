@@ -34,8 +34,34 @@ class EmailIntelligenceAgent(BaseAgent):
         ]
 
     async def execute(self, task: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute email intelligence workflow"""
+        """Execute email intelligence workflow or outbound email dispatch."""
+        action = task.get("action", "analyze")
         email_data = task.get("email_data", {})
+
+        # Handle outbound email dispatch action
+        if action in ("send_response", "send_email", "dispatch"):
+            to_email = (
+                task.get("to")
+                or task.get("recipient")
+                or email_data.get("to")
+                or email_data.get("from")
+                or email_data.get("sender")
+            )
+            subject = task.get("subject") or email_data.get("subject") or "Response from AI CRM Intelligence"
+            body = task.get("body") or task.get("reply_text") or email_data.get("draft_response") or ""
+            recipient_name = task.get("recipient_name") or email_data.get("recipient_name") or email_data.get("from_name")
+
+            if not to_email or "@" not in to_email:
+                raise ValueError(f"Invalid recipient email provided for dispatch: '{to_email}'")
+
+            delivery_res = await self.dispatch_email(
+                to_email=to_email,
+                subject=subject,
+                body=body,
+                recipient_name=recipient_name,
+                enqueue_in_background=task.get("async", True),
+            )
+            return delivery_res
 
         await self.log_activity("email_received", {"from": email_data.get("from")})
 
@@ -78,6 +104,59 @@ class EmailIntelligenceAgent(BaseAgent):
         await self.log_activity("email_processed", result)
 
         return result
+
+    async def dispatch_email(
+        self,
+        to_email: str,
+        subject: str,
+        body: str,
+        recipient_name: str = "",
+        html_body: str = "",
+        text_body: str = "",
+        enqueue_in_background: bool = True,
+    ) -> Dict[str, Any]:
+        """Delegate outbound email delivery directly to centralized email_service / task queue."""
+        from services.email_service import email_service
+        from services.task_queue_service import task_queue
+
+        await self.log_activity("dispatching_outbound_email", {
+            "to": to_email,
+            "subject": subject,
+            "async": enqueue_in_background,
+        })
+
+        if enqueue_in_background:
+            job = await task_queue.enqueue_email(
+                to_email=to_email,
+                subject=subject,
+                body=body,
+                recipient_name=recipient_name,
+                html_body=html_body or None,
+                text_body=text_body or None,
+                metadata={"agent": "EmailIntelligenceAgent", "type": "agent_outbound"},
+            )
+            return {
+                "status": "queued",
+                "task_id": job.task_id,
+                "recipient": to_email,
+                "subject": subject,
+                "message": f"Email queued for asynchronous delivery to {to_email}",
+            }
+        else:
+            delivery = await email_service.send_crm_email(
+                to_email=to_email,
+                subject=subject,
+                body=body,
+                recipient_name=recipient_name,
+                html_body=html_body or None,
+                text_body=text_body or None,
+            )
+            return {
+                "status": "delivered" if delivery.get("delivered") else "failed",
+                "recipient": to_email,
+                "subject": subject,
+                "details": delivery,
+            }
 
     async def analyze_sentiment(self, email_data: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze sentiment of email content"""

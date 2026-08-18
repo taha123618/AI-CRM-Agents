@@ -36,8 +36,9 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Fine-grained Role-Based Access Control matrix (`admin: ['*']`, `sales`, `support`, `auditor`) with client-side `PermissionGuard` and server-side `require_permission`.
    - Super Admin public registration protection with seeded account (`admin@gmail.com` / `admin123`) and full User Management CRUD in `/settings` (search, role filters, permission editor, pagination).
    - Asynchronous Gmail SMTP password recovery flow with zero user enumeration risk and single-use DB-hashed tokens.
-2. **Enterprise Email Delivery & Task Queue Infrastructure** (`services/email_service.py`, `services/task_queue_service.py`, `worker.py`):
-   - Gmail SMTP on port 587 with STARTTLS, RFC-5321 envelope parsing, Google App Password authentication, and branded dark-mode HTML templates.
+2. **Enterprise Email Delivery & Task Queue Infrastructure** (`services/email_service.py`, `services/task_queue_service.py`, `agents/email_intelligence_agent.py`, `api/emails.py`, `frontend/src/features/emails`, `worker.py`):
+   - Centralized single source of truth for email delivery (`services/email_service.py`) supporting Gmail SMTP on port 587 with STARTTLS, RFC-5321 envelope parsing, Google App Password authentication, and responsive dark-mode HTML templates.
+   - Zero duplicate SMTP implementations: `EmailIntelligenceAgent` and `/api/emails` delegate all outbound transmissions to `email_service` via resilient background queueing (`task_queue.enqueue_email`).
    - Background task queue with exponential backoff retries (1s, 2s, 4s...) and Redis state caching (`crm:task:<id>`).
    - Standalone background worker daemon (`worker.py`) containerized in Docker.
 3. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`):
@@ -71,7 +72,8 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 
 ### 1. General Python Standards
 * **Formatting**: Follow PEP 8 style. Use `black` for formatting and `flake8` for linting.
-* **Typing**: Use static type hints for all function arguments and return values.
+* **Typing**: Use static type hints (`Optional[T] = None`, `Dict[str, Any]`, `List[T]`) for all function arguments and return values.
+* **Datetime & Timezones**: Always use timezone-aware `datetime.now(timezone.utc)` instead of deprecated `datetime.utcnow()`. Normalize DB naive timestamps using `_to_utc()` or `dt.replace(tzinfo=timezone.utc)` before comparisons.
 * **Async Code**: Use `async`/`await` for I/O bound operations (FastAPI endpoints, network requests, DB queries when applicable).
 * **Logging**: Use `loguru` or the project's standard logger for structured logging. Avoid naked `print()` statements in production code.
 

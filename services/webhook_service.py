@@ -4,7 +4,7 @@ import hmac
 import hashlib
 import json
 import httpx
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
 
@@ -43,7 +43,7 @@ async def dispatch_webhook_event(
 
     full_payload = {
         "event": event_type,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "data": payload,
     }
     payload_json = json.dumps(full_payload, default=str)

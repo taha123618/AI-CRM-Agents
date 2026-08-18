@@ -1,5 +1,22 @@
 import { useState } from 'react';
-import { Calendar as CalendarIcon, Clock, Sparkles, UserCheck, MapPin, FileText, Trash2, Pencil, CheckSquare, ChevronRight, Bot, Users } from 'lucide-react';
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  Sparkles,
+  UserCheck,
+  MapPin,
+  FileText,
+  Trash2,
+  Pencil,
+  CheckSquare,
+  ChevronRight,
+  Bot,
+  Users,
+  Send,
+  Mail,
+  CheckCircle2,
+  AlertCircle,
+} from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -7,7 +24,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
-import { useMeetings, useUpdateMeeting, useDeleteMeeting } from '@/hooks/use-meetings';
+import { useMeetings, useUpdateMeeting, useDeleteMeeting, useSendMeetingInvite } from '@/hooks/use-meetings';
 import { useTriggerMeetingScheduler } from '@/hooks/use-agents';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useTranslation, useLocaleFormat } from '@/features/multi-language';
@@ -27,11 +44,17 @@ export function MeetingsFeature() {
   const updateMeetingMutation = useUpdateMeeting();
   const deleteMeetingMutation = useDeleteMeeting();
   const triggerMeetingMutation = useTriggerMeetingScheduler();
+  const sendMeetingInviteMutation = useSendMeetingInvite();
   const { setMeetingModalOpen, searchQuery } = useUIStore();
 
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [editingMeeting, setEditingMeeting] = useState<Meeting | null>(null);
   const [isBulkScheduling, setIsBulkScheduling] = useState(false);
+
+  // Email Invite State
+  const [inviteEmailInput, setInviteEmailInput] = useState('');
+  const [inviteSuccessMsg, setInviteSuccessMsg] = useState<string | null>(null);
+  const [inviteErrorMsg, setInviteErrorMsg] = useState<string | null>(null);
 
   // Edit form state
   const [editTitle, setEditTitle] = useState('');
@@ -39,6 +62,24 @@ export function MeetingsFeature() {
   const [editDuration, setEditDuration] = useState(30);
   const [editLocation, setEditLocation] = useState('');
   const [editNotes, setEditNotes] = useState('');
+
+  const handleOpenMeeting = (meeting: Meeting) => {
+    setSelectedMeeting(meeting);
+    setInviteSuccessMsg(null);
+    setInviteErrorMsg(null);
+
+    // Populate attendee email default
+    let defaultAttendee = 'executive@customer-domain.com';
+    if (meeting.attendees) {
+      if (Array.isArray(meeting.attendees) && meeting.attendees.length > 0) {
+        const first = meeting.attendees[0];
+        defaultAttendee = typeof first === 'string' ? first : first?.email || defaultAttendee;
+      } else if (typeof meeting.attendees === 'string') {
+        defaultAttendee = meeting.attendees;
+      }
+    }
+    setInviteEmailInput(defaultAttendee);
+  };
 
   const handleOpenEdit = (e: React.MouseEvent, meeting: Meeting) => {
     e.stopPropagation();
@@ -90,6 +131,38 @@ export function MeetingsFeature() {
       await refetch();
     } catch {
       // Error handled by mutation
+    }
+  };
+
+  const handleSendEmailInvite = async () => {
+    if (!selectedMeeting) return;
+    setInviteErrorMsg(null);
+    setInviteSuccessMsg(null);
+
+    const emailList = inviteEmailInput
+      .split(',')
+      .map((e) => e.trim())
+      .filter((e) => e && e.includes('@'));
+
+    if (emailList.length === 0) {
+      setInviteErrorMsg('Please provide at least one valid attendee email address.');
+      return;
+    }
+
+    try {
+      const res = await sendMeetingInviteMutation.mutateAsync({
+        id: selectedMeeting.id,
+        payload: {
+          attendee_emails: emailList,
+        },
+      });
+      setInviteSuccessMsg(res.message || `Meeting briefing sent to ${emailList.join(', ')}`);
+      await refetch();
+      setTimeout(() => {
+        setInviteSuccessMsg(null);
+      }, 3000);
+    } catch (err: any) {
+      setInviteErrorMsg(err.response?.data?.detail || err.message || 'Failed to dispatch meeting briefing email.');
     }
   };
 
@@ -148,10 +221,10 @@ export function MeetingsFeature() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <CalendarIcon className="w-6 h-6 text-purple-400" />
-            {t('meetings.title', 'Autonomous Meeting Scheduling & Briefings')}
+            {t('meetings.title', 'Autonomous Meeting Scheduling & Email Delivery')}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            {t('meetings.subtitle', 'Automated agenda builder, participant briefing generation, and CRM synchronization')}
+            {t('meetings.subtitle', 'Automated agenda builder, participant email briefing dispatch, and CRM sync')}
           </p>
         </div>
 
@@ -160,7 +233,7 @@ export function MeetingsFeature() {
             <Sparkles className="w-4 h-4 text-purple-400" />
             <span>{t('meetings.prep_materials', 'Run AI Fleet Prep Audit')}</span>
           </Button>
-          <Button onClick={() => setMeetingModalOpen(true)}>
+          <Button onClick={() => setMeetingModalOpen(true)} className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white">
             <Sparkles className="w-4 h-4" />
             <span>{t('meetings.schedule_btn', 'Schedule AI Briefing')}</span>
           </Button>
@@ -180,7 +253,7 @@ export function MeetingsFeature() {
             <Card
               key={meeting.id}
               className="p-5 space-y-3 hover:border-slate-700/80 transition-all cursor-pointer group"
-              onClick={() => setSelectedMeeting(meeting)}
+              onClick={() => handleOpenMeeting(meeting)}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -219,7 +292,11 @@ export function MeetingsFeature() {
                 </div>
                 <div className="flex items-center gap-1 text-emerald-400 font-medium">
                   <UserCheck className="w-3.5 h-3.5" />
-                  <span>AI Prep Generated</span>
+                  <span>AI Prep Ready</span>
+                </div>
+                <div className="flex items-center gap-1 text-purple-400 font-medium ml-auto">
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>SMTP Briefing</span>
                 </div>
               </div>
             </Card>
@@ -237,6 +314,20 @@ export function MeetingsFeature() {
           className="max-w-2xl"
         >
           <div className="space-y-4 min-w-0">
+            {inviteErrorMsg && (
+              <div className="p-3 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <div>{inviteErrorMsg}</div>
+              </div>
+            )}
+
+            {inviteSuccessMsg && (
+              <div className="p-3 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>{inviteSuccessMsg}</div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
               <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 min-w-0">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold block">Scheduled Time</span>
@@ -253,6 +344,35 @@ export function MeetingsFeature() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Email Dispatch Action Card */}
+            <div className="p-3.5 rounded-xl bg-purple-500/5 border border-purple-500/20 space-y-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-purple-400" />
+                  Dispatch Email Briefing to Attendees
+                </h4>
+              </div>
+              <div className="flex items-center gap-2">
+                <Input
+                  placeholder="attendee@company.com, cto@enterprise.com"
+                  value={inviteEmailInput}
+                  onChange={(e) => setInviteEmailInput(e.target.value)}
+                  className="font-mono text-xs flex-1"
+                />
+                <Button
+                  onClick={handleSendEmailInvite}
+                  isLoading={sendMeetingInviteMutation.isPending}
+                  className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white shrink-0 flex items-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send Email Invite</span>
+                </Button>
+              </div>
+              <p className="text-[11px] text-slate-400">
+                Dispatches full meeting briefing, Google Meet details, and agenda directly through centralized SMTP queue.
+              </p>
             </div>
 
             {/* Agenda section */}

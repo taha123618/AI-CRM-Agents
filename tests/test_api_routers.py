@@ -69,17 +69,37 @@ def test_api_emails_endpoints():
 
 
 def test_api_emails_send_response():
-    """Test /api/emails/{email_id}/send endpoint"""
+    """Test /api/emails/{email_id}/send endpoint with recipient resolution and delivery queueing"""
     response = client.get("/api/emails")
     emails = response.json()
     if emails:
         email_id = emails[0]["id"]
         res = client.post(
             f"/api/emails/{email_id}/send",
-            json={"reply_text": "Thank you for reaching out!"},
+            json={"reply_text": "Thank you for reaching out! Here is your requested information.", "to_email": "prospect@customer.com"},
         )
         assert res.status_code == 200
-        assert res.json()["status"] == "sent"
+        data = res.json()
+        assert data["status"] == "sent"
+        assert data["recipient"] == "prospect@customer.com"
+        assert "task_id" in data
+
+
+def test_api_emails_compose():
+    """Test POST /api/emails/compose for outbound direct emails"""
+    res = client.post(
+        "/api/emails/compose",
+        json={
+            "to_email": "new.lead@enterprise.com",
+            "subject": "Exclusive Enterprise Demonstration",
+            "body": "Hi there, We would love to showcase our multi-agent AI features.",
+        },
+    )
+    assert res.status_code == 201
+    data = res.json()
+    assert data["status"] == "sent"
+    assert data["recipient"] == "new.lead@enterprise.com"
+    assert "task_id" in data
 
 
 def test_api_update_meeting():
@@ -97,6 +117,21 @@ def test_api_update_meeting():
         assert res.json()["duration_minutes"] == 45
 
 
+def test_api_send_meeting_invite():
+    """Test POST /api/meetings/{meeting_id}/send-invite endpoint"""
+    response = client.get("/api/meetings")
+    meetings = response.json()
+    if meetings:
+        meeting_id = meetings[0]["id"]
+        res = client.post(
+            f"/api/meetings/{meeting_id}/send-invite",
+            json={"attendee_emails": ["executive@enterprise.org"], "custom_note": "Please review architecture deck"},
+        )
+        assert res.status_code == 200
+        assert res.json()["status"] == "sent"
+        assert res.json()["dispatched_count"] >= 1
+
+
 def test_api_delete_meeting():
     """Test DELETE /api/meetings/{meeting_id} endpoint"""
     response = client.get("/api/meetings")
@@ -106,6 +141,7 @@ def test_api_delete_meeting():
         res = client.delete(f"/api/meetings/{meeting_id}")
         assert res.status_code == 200
         assert res.json()["status"] == "deleted"
+
 
 
 def test_api_analytics_dashboard():

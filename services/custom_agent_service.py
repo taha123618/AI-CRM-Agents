@@ -2,7 +2,7 @@
 
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from database.models import CustomAgent, CustomAgentExecution
@@ -216,7 +216,7 @@ class CustomAgentService:
 
         # Increment execution stats
         agent.execution_count = (agent.execution_count or 0) + 1
-        agent.last_run_at = datetime.utcnow()
+        agent.last_run_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(execution)
 

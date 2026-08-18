@@ -7,9 +7,10 @@ to the agent's publish_event() method, delivering full visibility to the event b
 """
 
 import asyncio
+from collections.abc import AsyncIterable
 from typing import Dict, Any, Callable, Awaitable, Optional
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 async def trace_agent_to_bus(
@@ -32,7 +33,7 @@ async def trace_agent_to_bus(
         "llm_think_start",
         {
             "agent": agent_name,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         },
     )
 
@@ -46,7 +47,7 @@ async def trace_agent_to_bus(
                         if callable(result.stream_text)
                         else result.stream_text
                     )
-                    if hasattr(stream_obj, "__aiter__"):
+                    if isinstance(stream_obj, AsyncIterable):
                         async for _ in stream_obj:
                             pass
                     elif asyncio.iscoroutine(stream_obj):
@@ -132,7 +133,7 @@ class TraceMixin:
                 {
                     "agent": getattr(self, "name", self.__class__.__name__),
                     "prompt_summary": prompt_summary or "Reasoning requested",
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 },
             )
 
@@ -146,7 +147,7 @@ class TraceMixin:
                     "agent": getattr(self, "name", self.__class__.__name__),
                     "tool": tool_name,
                     "args": tool_args,
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 },
             )
 
@@ -166,7 +167,7 @@ class TraceMixin:
                     "tokens": tokens_used,
                     "duration_seconds": duration_seconds,
                     "metadata": metadata or {},
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 },
             )
 

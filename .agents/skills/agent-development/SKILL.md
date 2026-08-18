@@ -16,7 +16,7 @@ Use this skill when creating new AI agents, modifying existing agent intelligenc
 
 2. **Specialized Agent Fleet**:
    - `LeadQualificationAgent` (`agents/lead_qualification_agent.py`): Lead scoring, qualification, enrichment.
-   - `EmailIntelligenceAgent` (`agents/email_intelligence_agent.py`): Sentiment analysis, reply drafting.
+   - `EmailIntelligenceAgent` (`agents/email_intelligence_agent.py`): Sentiment analysis, emotion detection, AI reply drafting, and centralized outbound email delivery delegation via `services/email_service.py` and `services/task_queue_service.py` (zero duplicate SMTP logic).
    - `SalesPipelineAgent` (`agents/sales_pipeline_agent.py`): Deal health scoring, close probability.
    - `CustomerSuccessAgent` (`agents/customer_success_agent.py`): Churn risk prediction, health monitoring.
    - `MeetingSchedulerAgent` (`agents/meeting_scheduler_agent.py`): Agenda building, meeting prep notes.
@@ -37,9 +37,19 @@ Use this skill when creating new AI agents, modifying existing agent intelligenc
    - Always log agent milestones: `await self.log_activity("event_name", details_dict)`.
    - Publish events to coordinate with other agents: `await self.publish_event("event_type", payload)`.
 
-6. **Bulk Operations & Standardized Return Objects**:
-   - Agent workflows should support bulk execution targets (e.g. `customer_id == "all"`, `deal_id == "all"`) for batch fleet audits.
-   - Return objects should include nested updated entities (e.g. `updated_customer`, `updated_lead`) so frontend client hooks can perform instant state unwrapping.
+6. **Centralized Email Transmission Delegation**:
+   - Never implement standalone SMTP logic inside agent classes.
+   - Dispatch emails via `task_queue.enqueue_email(...)` or dedicated helper methods:
+     - `LeadQualificationAgent.dispatch_lead_email(recipient_email, subject, body, lead_id: Optional[str] = None)`
+     - `SalesPipelineAgent.dispatch_deal_email(recipient_email, subject, body, deal_id: Optional[str] = None)`
+     - `CustomerSuccessAgent.dispatch_retention_email(recipient_email, subject, body, customer_id: Optional[str] = None)`
+     - `MeetingSchedulerAgent.dispatch_meeting_invite_email(to_email, meeting_title, scheduled_time, duration_minutes, location, ...)`
+
+7. **Static Type Safety & Timezone Standards**:
+   - Use `Optional[T] = None` for parameters with default `None`.
+   - String-coerce dictionary lookup results when passing to typed dictionary `.get()` calls (e.g. `stage_thresholds.get(str(stage) if stage else "", 30)`).
+   - Use `datetime.now(timezone.utc)` for all agent event timestamps.
+   - For async streaming, guard iteration with `isinstance(stream_obj, AsyncIterable)` from `collections.abc`.
 
 ## 📋 Example Agent Implementation
 

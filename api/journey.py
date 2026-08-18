@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Annotated, Dict, Any, List, Optional
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
@@ -151,7 +151,7 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
             "target_agent": intv.target_agent,
             "triggered_reason": intv.triggered_reason or "Proactive churn mitigation",
             "action_summary": intv.action_summary or "Retention play dispatched.",
-            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.utcnow().isoformat(),
+            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.now(timezone.utc).isoformat(),
         })
 
     return {
@@ -238,13 +238,39 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
         "target_agent": new_intv.target_agent,
         "triggered_reason": new_intv.triggered_reason,
         "action_summary": new_intv.action_summary,
-        "created_at": new_intv.created_at.isoformat() if new_intv.created_at else datetime.utcnow().isoformat(),
+        "created_at": new_intv.created_at.isoformat() if new_intv.created_at else datetime.now(timezone.utc).isoformat(),
     }
+
+    # Dispatched retention intervention email to customer's contact via centralized email service
+    task_id = None
+    target_email = None
+    if customer and customer.company and customer.company.contacts:
+        primary_c = customer.company.contacts[0]
+        target_email = primary_c.email
+
+    if target_email:
+        from services.task_queue_service import task_queue
+        try:
+            job = await task_queue.enqueue_email(
+                to_email=target_email,
+                subject=f"Customer Success & Partnership Update: {customer_name}",
+                body=str(ai_response),
+                metadata={
+                    "customer_id": str(new_intv.customer_id),
+                    "intervention_id": str(new_intv.id),
+                    "intervention_type": payload.intervention_type,
+                },
+            )
+            task_id = job.task_id
+        except Exception:
+            pass
 
     return {
         "status": "success",
         "intervention": intervention_dict,
         "ai_full_playbook": ai_response,
+        "recipient": target_email,
+        "task_id": task_id,
         "message": f"Autonomous intervention '{payload.intervention_type}' launched for {customer_name}.",
     }
 
@@ -282,7 +308,7 @@ def list_journey_interventions(
             "target_agent": i.target_agent,
             "triggered_reason": i.triggered_reason,
             "action_summary": i.action_summary,
-            "created_at": i.created_at.isoformat() if i.created_at else datetime.utcnow().isoformat(),
+            "created_at": i.created_at.isoformat() if i.created_at else datetime.now(timezone.utc).isoformat(),
         })
 
     return results[skip : skip + limit]
@@ -325,6 +351,6 @@ def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get
             "status": intv.status,
             "target_agent": intv.target_agent,
             "action_summary": intv.action_summary,
-            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.utcnow().isoformat(),
+            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.now(timezone.utc).isoformat(),
         },
     }

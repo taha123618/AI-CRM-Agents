@@ -13,8 +13,34 @@ export function useSendEmailResponse() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, replyText }: { id: string; replyText: string }) =>
-      api.sendEmailResponse(id, replyText),
+    mutationFn: ({
+      id,
+      replyText,
+      toEmail,
+      subject,
+    }: {
+      id: string;
+      replyText: string;
+      toEmail?: string;
+      subject?: string;
+    }) => api.sendEmailResponse(id, replyText, toEmail, subject),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['emails'] });
+    },
+  });
+}
+
+export function useComposeEmail() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: {
+      to_email: string;
+      subject: string;
+      body: string;
+      recipient_name?: string;
+      contact_id?: string;
+    }) => api.composeEmail(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['emails'] });
     },

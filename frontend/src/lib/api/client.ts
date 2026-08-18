@@ -14,6 +14,8 @@ import {
   AnalyticsInsight,
 } from '@/types/crm.types';
 
+import { safeStorage } from '@/lib/storage';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const apiClient = axios.create({
@@ -22,10 +24,11 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 15000,
+  withCredentials: true,
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('crm_access_token');
+  const token = safeStorage.getItem('crm_access_token');
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -125,9 +128,25 @@ export const api = {
   },
   sendEmailResponse: async (
     id: string,
-    replyText: string
-  ): Promise<{ status: string; email_id: string; reply_text: string }> => {
-    const { data } = await apiClient.post(`/api/emails/${id}/send`, { reply_text: replyText });
+    replyText: string,
+    toEmail?: string,
+    subject?: string
+  ): Promise<{ status: string; email_id: string; reply_text: string; recipient?: string; task_id?: string; message?: string }> => {
+    const { data } = await apiClient.post(`/api/emails/${id}/send`, {
+      reply_text: replyText,
+      to_email: toEmail,
+      subject,
+    });
+    return data;
+  },
+  composeEmail: async (payload: {
+    to_email: string;
+    subject: string;
+    body: string;
+    recipient_name?: string;
+    contact_id?: string;
+  }): Promise<{ status: string; email_id: string; recipient: string; task_id: string; message: string }> => {
+    const { data } = await apiClient.post('/api/emails/compose', payload);
     return data;
   },
 
@@ -138,6 +157,13 @@ export const api = {
   },
   updateMeeting: async (id: string, meeting: Partial<Meeting>): Promise<Meeting> => {
     const { data } = await apiClient.put(`/api/meetings/${id}`, meeting);
+    return data;
+  },
+  sendMeetingInvite: async (
+    id: string,
+    payload?: { attendee_emails?: string[]; custom_note?: string }
+  ): Promise<{ status: string; meeting_id: string; dispatched_count: number; message: string }> => {
+    const { data } = await apiClient.post(`/api/meetings/${id}/send-invite`, payload || {});
     return data;
   },
   deleteMeeting: async (id: string): Promise<{ status: string; meeting_id: string }> => {

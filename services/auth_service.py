@@ -4,7 +4,7 @@ import os
 import hashlib
 import hmac
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Dict, Any, Tuple
 from uuid import UUID
 from fastapi import Depends, HTTPException, status, Request
@@ -57,13 +57,20 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         return False
 
 
+def _to_utc(dt: datetime) -> datetime:
+    """Normalize datetime to timezone-aware UTC datetime."""
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
 def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
     """Create a signed JWT access token with role claims and unique jti."""
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({
         "exp": expire,
-        "iat": datetime.utcnow(),
+        "iat": datetime.now(timezone.utc),
         "type": "access",
         "jti": secrets.token_hex(16),
     })
@@ -73,10 +80,10 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta]
 def create_refresh_token(data: Dict[str, Any]) -> str:
     """Create a signed JWT refresh token with unique jti."""
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    expire = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({
         "exp": expire,
-        "iat": datetime.utcnow(),
+        "iat": datetime.now(timezone.utc),
         "type": "refresh",
         "jti": secrets.token_hex(16),
     })
@@ -117,11 +124,11 @@ def record_login_attempt(
         if successful:
             user.login_attempts = 0
             user.locked_until = None
-            user.last_login_at = datetime.utcnow()
+            user.last_login_at = datetime.now(timezone.utc)
         else:
             user.login_attempts += 1
             if user.login_attempts >= 5:
-                user.locked_until = datetime.utcnow() + timedelta(minutes=15)
+                user.locked_until = datetime.now(timezone.utc) + timedelta(minutes=15)
         db.commit()
 
     db.commit()
@@ -130,7 +137,7 @@ def record_login_attempt(
 
 def is_account_locked(user: User) -> bool:
     """Check if account is temporarily locked due to excessive failed attempts."""
-    if user.locked_until and user.locked_until > datetime.utcnow():
+    if user.locked_until and _to_utc(user.locked_until) > datetime.now(timezone.utc):
         return True
     return False
 
@@ -138,7 +145,7 @@ def is_account_locked(user: User) -> bool:
 def store_refresh_token(db: Session, user_id: UUID, token_str: str) -> RefreshToken:
     """Persist a refresh token hash for revocation and rotation management."""
     token_hash = hashlib.sha256(token_str.encode("utf-8")).hexdigest()
-    expires_at = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    expires_at = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     rf = RefreshToken(
         user_id=user_id,
         token_hash=token_hash,
@@ -186,7 +193,7 @@ def rotate_refresh_token(db: Session, old_refresh_token: str) -> Tuple[User, str
     # Check DB revocation
     old_hash = hashlib.sha256(old_refresh_token.encode("utf-8")).hexdigest()
     stored_rf = db.query(RefreshToken).filter(RefreshToken.token_hash == old_hash).first()
-    if stored_rf and (stored_rf.revoked or stored_rf.expires_at < datetime.utcnow()):
+    if stored_rf and (stored_rf.revoked or _to_utc(stored_rf.expires_at) < datetime.now(timezone.utc)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token has expired or been revoked")
 
     if stored_rf:
@@ -206,7 +213,7 @@ def create_password_reset_token(db: Session, user: User) -> str:
     """Generate and persist a single-use password reset token."""
     raw_token = secrets.token_urlsafe(32)
     token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
-    expires_at = datetime.utcnow() + timedelta(hours=1)
+    expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
 
     reset_entry = PasswordResetToken(
         user_id=user.id,
@@ -232,7 +239,7 @@ def verify_and_use_password_reset_token(db: Session, raw_token: str, new_passwor
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid password reset token")
     if reset_entry.used:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password reset token already used")
-    if reset_entry.expires_at < datetime.utcnow():
+    if _to_utc(reset_entry.expires_at) < datetime.now(timezone.utc):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password reset token expired")
 
     user = db.query(User).filter(User.id == reset_entry.user_id).first()
@@ -251,7 +258,7 @@ def create_email_verification_token(db: Session, user: User) -> str:
     """Generate and persist an email verification token."""
     raw_token = secrets.token_urlsafe(32)
     token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
-    expires_at = datetime.utcnow() + timedelta(hours=48)
+    expires_at = datetime.now(timezone.utc) + timedelta(hours=48)
 
     entry = EmailVerificationToken(
         user_id=user.id,
@@ -277,7 +284,7 @@ def verify_email_token(db: Session, raw_token: str) -> User:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email verification token")
     if entry.used:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email verification token already used")
-    if entry.expires_at < datetime.utcnow():
+    if _to_utc(entry.expires_at) < datetime.now(timezone.utc):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email verification token expired")
 
     user = db.query(User).filter(User.id == entry.user_id).first()

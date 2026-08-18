@@ -2,7 +2,7 @@
 
 # pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 import uuid
 
 from database.models import (
@@ -249,7 +249,7 @@ def seed_database(db: Session):
         health_score=85,
         churn_risk="low",
         churn_probability=12,
-        last_login_at=datetime.utcnow() - timedelta(hours=4),
+        last_login_at=datetime.now(timezone.utc) - timedelta(hours=4),
         logins_per_week=45,
         features_used=8,
         total_features=10,
@@ -260,7 +260,7 @@ def seed_database(db: Session):
         avg_resolution_hours=12,
         csat_score=4.8,
         nps_score=9,
-        last_payment_at=datetime.utcnow() - timedelta(days=15),
+        last_payment_at=datetime.now(timezone.utc) - timedelta(days=15),
         payment_delays=0,
         additional_metadata={
             "recommended_actions": [
@@ -282,7 +282,7 @@ def seed_database(db: Session):
         health_score=42,
         churn_risk="high",
         churn_probability=68,
-        last_login_at=datetime.utcnow() - timedelta(days=6),
+        last_login_at=datetime.now(timezone.utc) - timedelta(days=6),
         logins_per_week=4,
         features_used=2,
         total_features=10,
@@ -293,7 +293,7 @@ def seed_database(db: Session):
         avg_resolution_hours=48,
         csat_score=2.1,
         nps_score=4,
-        last_payment_at=datetime.utcnow() - timedelta(days=40),
+        last_payment_at=datetime.now(timezone.utc) - timedelta(days=40),
         payment_delays=1,
         additional_metadata={
             "recommended_actions": [
@@ -385,7 +385,7 @@ def seed_database(db: Session):
         deal_id=acme_deal.id,
         title="Executive SLA & SOC2 Review",
         meeting_type="Executive Demo",
-        scheduled_at=datetime.utcnow() - timedelta(days=1),
+        scheduled_at=datetime.now(timezone.utc) - timedelta(days=1),
         duration_minutes=45,
         location="https://meet.google.com/abc-defg-hij",
         attendees=["john.doe@acme.com", "seller@company.com"],
@@ -411,7 +411,7 @@ def seed_database(db: Session):
         deal_id=techstart_deal.id,
         title="Expansion Technical Integration Sync",
         meeting_type="Technical Deep-Dive",
-        scheduled_at=datetime.utcnow() + timedelta(days=2, hours=3),
+        scheduled_at=datetime.now(timezone.utc) + timedelta(days=2, hours=3),
         duration_minutes=30,
         location="https://meet.google.com/xyz-qprs-tuv",
         attendees=["sarah.smith@techstart.io", "engineer@company.com"],
@@ -444,7 +444,7 @@ def seed_database(db: Session):
         priority="high",
         draft_response="Hi John, thank you for reaching out. We have sent our SLA guarantees and SOC2 Type II compliance reports. Let me know if you have any questions.",
         response_sent=True,
-        received_at=datetime.utcnow() - timedelta(hours=6),
+        received_at=datetime.now(timezone.utc) - timedelta(hours=6),
         follow_up_suggestions=[
             "Confirm receipt of SOC2 Type II report",
             "Ask if their legal team wants a direct discussion",
@@ -466,7 +466,7 @@ def seed_database(db: Session):
         priority="medium",
         draft_response="Hi Sarah, I understand budget constraints. We can look at a 15% discount for a yearly upfront commitment.",
         response_sent=False,
-        received_at=datetime.utcnow() - timedelta(hours=2),
+        received_at=datetime.now(timezone.utc) - timedelta(hours=2),
         follow_up_suggestions=[
             "Offer annual commitment pricing",
             "Check if they can reduce the seat count initially",

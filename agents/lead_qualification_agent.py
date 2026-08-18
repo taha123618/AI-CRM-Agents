@@ -1,6 +1,6 @@
 """Lead Qualification Agent - Scores and routes incoming leads"""
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from .base_agent import BaseAgent
 from .mixins.trace_mixin import trace_agent_to_bus
 import re
@@ -38,6 +38,21 @@ class LeadQualificationAgent(BaseAgent):
 
     async def execute(self, task: Dict[str, Any]) -> Dict[str, Any]:
         """Execute lead qualification workflow"""
+        action = task.get("action", "qualify")
+
+        if action in ("send_lead_email", "send_welcome_email", "send_email"):
+            recipient = task.get("to") or task.get("recipient") or task.get("email") or task.get("lead_data", {}).get("email")
+            subject = task.get("subject", "Welcome to AI CRM — Next Steps")
+            body = task.get("body") or task.get("message") or "Thank you for connecting with us. An account executive has been assigned to assist you."
+            if not recipient or "@" not in str(recipient):
+                raise ValueError(f"Invalid recipient email: '{recipient}'")
+            return await self.dispatch_lead_email(
+                recipient_email=str(recipient),
+                subject=subject,
+                body=body,
+                lead_id=task.get("lead_id"),
+            )
+
         lead_data = task.get("lead_data", {})
 
         await self.log_activity("lead_received", {"email": lead_data.get("email")})
@@ -80,6 +95,46 @@ class LeadQualificationAgent(BaseAgent):
             "score": score,
             "signals": signals,
             "routing": routing,
+        }
+
+        await self.log_activity("lead_qualified", result)
+
+        return result
+
+    async def dispatch_lead_email(
+        self,
+        recipient_email: str,
+        subject: str,
+        body: str,
+        lead_id: Optional[str] = None,
+        recipient_name: str = "",
+    ) -> Dict[str, Any]:
+        """Dispatch lead welcome or outreach email via centralized email task queue."""
+        from services.task_queue_service import task_queue
+
+        await self.log_activity("dispatching_lead_email", {
+            "to": recipient_email,
+            "subject": subject,
+            "lead_id": lead_id,
+        })
+
+        job = await task_queue.enqueue_email(
+            to_email=recipient_email,
+            subject=subject,
+            body=body,
+            recipient_name=recipient_name,
+            metadata={
+                "agent": "LeadQualificationAgent",
+                "lead_id": str(lead_id or ""),
+                "email_type": "lead_welcome",
+            },
+        )
+        return {
+            "status": "queued",
+            "task_id": job.task_id,
+            "recipient": recipient_email,
+            "subject": subject,
+            "message": f"Lead communication email queued for delivery to {recipient_email}",
         }
 
         await self.log_activity("lead_qualified", result)
@@ -228,6 +283,6 @@ class LeadQualificationAgent(BaseAgent):
 
     def _get_timestamp(self) -> str:
         """Get current timestamp"""
-        from datetime import datetime
+        from datetime import datetime, timezone
 
-        return datetime.utcnow().isoformat()
+        return datetime.now(timezone.utc).isoformat()

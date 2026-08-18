@@ -30,7 +30,7 @@ frontend/src/
 │   ├── customers/               # CustomersFeature (Churn probability gauge, health monitoring, telemetry)
 │   ├── journey/                 # JourneyFeature (Customer lifecycle pipeline, ARR radar, rescue playbooks)
 │   ├── sequences/               # SequencesFeature (AI SDR cadences, dynamic lead enrollment, step copy)
-│   ├── emails/                  # EmailsFeature (Smart inbox, emotion badges, editable AI reply drafts)
+│   ├── emails/                  # EmailsFeature (Smart inbox, emotion badges, recipient resolution, editable AI drafts, and direct SMTP queue delivery)
 │   ├── meetings/                # MeetingsFeature (Agenda builder, auto-prep materials, attendees)
 │   ├── analytics/               # AnalyticsFeature & ReportsFeature (Predictive forecasting & JSON export)
 │   ├── agents/                  # AgentsFeature (Fleet control center, live WebSocket terminal stream)

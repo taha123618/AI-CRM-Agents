@@ -29,17 +29,18 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Comprehensive Lead Management**: Full CRUD (`/api/leads`), qualification tier badges (`Tier 1`, `Tier 2`, `Tier 3`), BANT scoring, status filtering, and search.
 - [x] **Sales Pipeline & Deal Management**: Full CRUD (`/api/deals`), stage transitions (`discovery`, `proposal`, `negotiation`, `won`, `lost`), deal health scores, and win probabilities.
 - [x] **Customer 360 & Account Management**: Full CRUD (`/api/customers`), health score telemetry, ARR tracking, and churn probability.
-- [x] **Meeting Intelligence Hub**: Full CRUD (`/api/meetings`), meeting summaries, and AI pre-meeting preparation briefings.
-- [x] **Email Intelligence Hub**: Email inbox management (`/api/emails`), sentiment scoring (`positive`, `neutral`, `negative`), and AI draft response generation.
+- [x] **Meeting Intelligence Hub**: Full CRUD (`/api/meetings`), meeting summaries, AI pre-meeting preparation briefings, and 1-click attendee Google Meet email invitation dispatching via centralized SMTP.
+- [x] **Email Intelligence & Centralized Delivery Hub**: Email inbox management (`/api/emails`), sentiment scoring (`positive`, `neutral`, `negative`), emotion detection, AI draft response generation, and direct delivery dispatch to recipients via background task queue and centralized Gmail SMTP.
+- [ ] **Email Threading & IMAP Sync**: Bi-directional IMAP synchronization for live inbound customer email streaming.
 
 ---
 
 ### 3. 🤖 Multi-Agent AI Architecture
-- [x] **Lead Qualification Agent** (`LeadQualificationAgent`): Automated BANT criteria evaluation, intent scoring (0–100), and qualification tier assignment.
-- [x] **Email Intelligence Agent** (`EmailIntelligenceAgent`): Natural language sentiment extraction, objection detection, and context-aware draft generation.
-- [x] **Sales Pipeline Agent** (`SalesPipelineAgent`): Deal health scoring, pipeline velocity analysis, and bottleneck diagnostics.
-- [x] **Customer Success Agent** (`CustomerSuccessAgent`): Real-time churn probability calculations, health scoring, and autonomous retention playbooks.
-- [x] **Meeting Scheduler Agent** (`MeetingSchedulerAgent`): Stakeholder research synthesis, agenda planning, and executive prep briefing generation.
+- [x] **Lead Qualification Agent** (`LeadQualificationAgent`): Automated BANT criteria evaluation, intent scoring (0–100), qualification tier assignment, and high-value lead email dispatching.
+- [x] **Email Intelligence Agent** (`EmailIntelligenceAgent`): Natural language sentiment extraction, emotion detection, context-aware draft generation, and centralized outbound delivery delegation to `services/email_service.py` (zero duplicate SMTP code).
+- [x] **Sales Pipeline Agent** (`SalesPipelineAgent`): Deal health scoring, pipeline velocity analysis, bottleneck diagnostics, and deal follow-up email dispatching.
+- [x] **Customer Success Agent** (`CustomerSuccessAgent`): Real-time churn probability calculations, health scoring, and autonomous retention playbooks with executive check-in email outreach.
+- [x] **Meeting Scheduler Agent** (`MeetingSchedulerAgent`): Stakeholder research synthesis, agenda planning, executive prep briefings, and automated attendee email invitations.
 - [x] **Analytics & Forecasting Agent** (`AnalyticsAgent`): Conversion anomalies detection, trend analysis, and ARR trajectory reporting.
 - [x] **Voice AI Intelligence Agent** (`VoiceCallAgent`): Live speech turn analysis, buyer intent scoring, and dynamic objection battle-cards.
 - [x] **WhatsApp Business Agent** (`WhatsAppAgent`): 24/7 AI Auto-Pilot lead qualification, FAQ resolution, and omnichannel customer assistance.
@@ -56,7 +57,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Live SWOT Analysis Matrix**: Dynamic Strengths, Weaknesses, Opportunities, and Threats quadrant matrix.
 - [x] **Competitor Battle-Cards**: Dynamic competitor cards with pricing counter-tactics, key differentiators, and 1-click clipboard copy.
 - [x] **Stakeholder & Buying Committee Influence Map**: Visual influence matrix mapping champions, economic buyers, and technical gatekeepers.
-- [x] **1-Click Smart Proposal Studio**: Dynamic proposal generator with tier multipliers (Starter, Growth, Enterprise), custom discount rates, SLA terms, and live e-signature URL generation.
+- [x] **1-Click Smart Proposal Studio**: Dynamic proposal generator with tier multipliers (Starter, Growth, Enterprise), custom discount rates, SLA terms, e-signature URL generation, and direct buying committee email dispatch.
 - [x] **Multi-Agent Workflow Automation Triggers**: Database-backed CRUD (`/api/war-room/automations`), threshold triggers, pause/resume toggling, and live orchestrator dispatch.
 
 ---

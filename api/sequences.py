@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Annotated, Dict, Any, List, Optional
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
@@ -145,7 +145,7 @@ def _format_sequence(s: OutreachSequence) -> Dict[str, Any]:
         "replied_count": s.replied_count or 0,
         "conversion_rate_pct": round(float(s.conversion_rate_pct or 0.0), 1),
         "steps": s.steps or [],
-        "created_at": s.created_at.isoformat() if s.created_at else datetime.utcnow().isoformat(),
+        "created_at": s.created_at.isoformat() if s.created_at else datetime.now(timezone.utc).isoformat(),
     }
 
 
@@ -414,11 +414,23 @@ async def execute_sequence_step(
         except Exception:
             pass
 
+    recipient_email = None
+    if payload.contact_id:
+        try:
+            val_uuid = uuid.UUID(payload.contact_id)
+            c = db.query(Contact).filter(Contact.id == val_uuid).first()
+            if c:
+                contact_name = f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
+                recipient_email = c.email
+        except Exception:
+            pass
+
     prompt = (
         f"Execute outreach step #{payload.step_number} via {payload.channel} for {contact_name} in cadence '{seq.name}'. "
         f"Context: {payload.custom_note or 'Standard automated outreach delivery.'}"
     )
 
+    task_id = None
     try:
         if payload.channel == "whatsapp":
             out = await _orchestrator.whatsapp_agent.think(prompt)
@@ -429,6 +441,23 @@ async def execute_sequence_step(
         else:
             out = await _orchestrator.email_agent.think(prompt)
             agent_name = "EmailIntelligenceAgent"
+            # Dispatch email through centralized email task queue
+            target_to = recipient_email or "prospect@company.com"
+            from services.task_queue_service import task_queue
+            try:
+                job = await task_queue.enqueue_email(
+                    to_email=target_to,
+                    subject=f"Outreach Cadence #{payload.step_number}: {seq.name}",
+                    body=str(out),
+                    metadata={
+                        "sequence_id": str(seq.id),
+                        "channel": "email",
+                        "step_number": payload.step_number,
+                    },
+                )
+                task_id = job.task_id
+            except Exception:
+                pass
     except Exception:
         out = f"Outreach step delivered successfully via {payload.channel}."
         agent_name = "EmailIntelligenceAgent"
@@ -440,7 +469,9 @@ async def execute_sequence_step(
         "step_number": payload.step_number,
         "executed_by": agent_name,
         "result": out,
-        "timestamp": datetime.utcnow().isoformat(),
+        "recipient": recipient_email,
+        "task_id": task_id,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 

@@ -89,13 +89,18 @@ export interface CustomerHealth {
 
 export interface EmailMessage {
   id: string;
+  from_email?: string | null;
+  to_email?: string | null;
   subject: string;
+  body?: string | null;
+  direction?: string | null;
   sentiment: Sentiment;
   category: string;
   priority: Priority;
   draft_response?: string | null;
   response_sent?: boolean;
   received_at?: string | null;
+  sent_at?: string | null;
   // AI EmailIntelligenceAgent enriched fields
   sentiment_score?: number | null;
   emotion?: string | null;

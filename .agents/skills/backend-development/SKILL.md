@@ -37,11 +37,16 @@ Use this skill when you are modifying or creating FastAPI API routers, endpoints
    - Never leak raw tokens, session credentials, or internal passwords in HTTP response bodies or application logs.
 
 5. **Transactional Email & Background Task Queue**:
-   - Dispatch long-running or external network tasks (e.g. email delivery, audio analysis) asynchronously via `task_queue.enqueue(...)` or `task_queue.enqueue_password_reset_email(...)`.
-   - Use `EmailService` (`services/email_service.py`) for SMTP delivery with STARTTLS on port 587.
+   - Dispatch long-running or external network tasks (e.g. email delivery, audio analysis) asynchronously via `task_queue.enqueue(...)`, `task_queue.enqueue_email(...)`, or `task_queue.enqueue_password_reset_email(...)`.
+   - Use `EmailService` (`services/email_service.py`) as the single source of truth for SMTP delivery with STARTTLS on port 587 and HTML/text templating.
    - Always parse envelope senders with `email.utils.parseaddr` to ensure RFC-5321 compliance with strict SMTP servers (e.g., Gmail SMTP).
+   - In all email dispatching endpoints (in `/api/emails`, `/api/meetings`, `/api/war-room`, `/api/journey`, and `/api/sequences`), delegate transmissions to `task_queue.enqueue_email(...)` with verified recipient email resolution.
 
-6. **Error Handling**:
+6. **Datetime & Timezone Standards**:
+   - **CRITICAL**: Never use deprecated `datetime.utcnow()`. Always use timezone-aware `datetime.now(timezone.utc)`.
+   - When comparing timestamps from the database that may be naive, normalize them using `_to_utc()` or `dt.replace(tzinfo=timezone.utc)` before comparing against `datetime.now(timezone.utc)`.
+
+7. **Error Handling**:
    - Avoid catching and silencing database or logic errors directly.
    - Raise `HTTPException` for user errors or state conflicts (e.g., `raise HTTPException(status_code=404, detail="Item not found")`).
 

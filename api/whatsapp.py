@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Annotated, Dict, Any, List, Optional
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
@@ -198,7 +198,7 @@ def send_whatsapp_message(
         status="delivered",
     )
     db.add(msg)
-    conv.last_message_at = datetime.utcnow()
+    conv.last_message_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(msg)
 
@@ -245,7 +245,7 @@ def send_broadcast(
             status="delivered",
         )
         db.add(msg)
-        conv.last_message_at = datetime.utcnow()
+        conv.last_message_at = datetime.now(timezone.utc)
         sent_count += 1
         conversation_ids.append(str(conv.id))
 
@@ -289,7 +289,7 @@ async def handle_inbound_whatsapp_webhook(
         status="read",
     )
     db.add(inbound_msg)
-    conv.last_message_at = datetime.utcnow()
+    conv.last_message_at = datetime.now(timezone.utc)
     db.commit()
 
     agent_reply = None
@@ -310,7 +310,7 @@ async def handle_inbound_whatsapp_webhook(
             status="delivered",
         )
         db.add(bot_msg)
-        conv.last_message_at = datetime.utcnow()
+        conv.last_message_at = datetime.now(timezone.utc)
         db.commit()
         agent_reply = agent_res.get("reply_text")
 

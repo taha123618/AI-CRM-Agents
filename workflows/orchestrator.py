@@ -3,7 +3,7 @@
 # pyrefly: ignore [missing-import]
 import importlib
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 from sqlalchemy.orm import Session
 
@@ -739,7 +739,7 @@ class AgentOrchestrator:
             "action_type": action_type,
             "ai_generated_payload": ai_output,
             "llm_engine": engine_name,
-            "executed_at": datetime.utcnow().isoformat(),
+            "executed_at": datetime.now(timezone.utc).isoformat(),
             "message": f"Successfully triggered {agent_key} ({action_type}) via AI Orchestrator.",
         }
 

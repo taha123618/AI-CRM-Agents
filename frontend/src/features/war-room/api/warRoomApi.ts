@@ -23,6 +23,27 @@ export const warRoomApi = {
     return res.data;
   },
 
+  sendProposalEmail: async (
+    dealId: string,
+    payload?: {
+      recipient_email?: string;
+      proposal_id?: string;
+      tier?: string;
+      final_arr?: number;
+      esign_url?: string;
+      custom_note?: string;
+    }
+  ): Promise<{ status: string; proposal_id: string; recipient: string; task_id: string; message: string }> => {
+    const res = await apiClient.post<{
+      status: string;
+      proposal_id: string;
+      recipient: string;
+      task_id: string;
+      message: string;
+    }>(`/api/war-room/deals/${dealId}/send-proposal`, payload || {});
+    return res.data;
+  },
+
   getAutomations: async (): Promise<AutomationRule[]> => {
     const res = await apiClient.get<AutomationRule[]>('/api/war-room/automations');
     return res.data;

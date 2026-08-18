@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { UserProfile, UserRole } from '../types';
+import { safeStorage } from '@/lib/storage';
 
 export const ROLE_DEFAULT_PERMISSIONS: Record<UserRole, string[]> = {
   admin: ['*'],
@@ -64,17 +65,43 @@ interface AuthState {
   logoutState: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
+const getStoredUser = (): UserProfile | null => {
+  try {
+    const raw = safeStorage.getItem('crm_user');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
 
-  setUser: (user) =>
+const getStoredToken = (): string | null => {
+  return safeStorage.getItem('crm_access_token');
+};
+
+const initialUser = getStoredUser();
+const initialToken = getStoredToken();
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  user: initialUser,
+  isAuthenticated: Boolean(initialUser || initialToken),
+  isLoading: Boolean(initialToken && !initialUser),
+
+  setUser: (user) => {
+    try {
+      if (user) {
+        safeStorage.setItem('crm_user', JSON.stringify(user));
+      } else {
+        safeStorage.removeItem('crm_user');
+      }
+    } catch {
+      // safe fallback
+    }
     set({
       user,
-      isAuthenticated: !!user,
+      isAuthenticated: Boolean(user),
       isLoading: false,
-    }),
+    });
+  },
 
   setLoading: (isLoading) => set({ isLoading }),
 
@@ -118,6 +145,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   logoutState: () => {
+    try {
+      safeStorage.removeItem('crm_user');
+      safeStorage.removeItem('crm_access_token');
+    } catch (error) {
+      console.error('Error removing user or token from storage.', (error as Error).message);
+    }
     set({
       user: null,
       isAuthenticated: false,

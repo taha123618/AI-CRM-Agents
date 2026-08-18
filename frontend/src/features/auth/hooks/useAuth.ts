@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../api';
 import { useAuthStore } from './useAuthStore';
+import { safeStorage } from '@/lib/storage';
 import {
   LoginPayload,
   RegisterPayload,
@@ -26,6 +27,12 @@ export function useAuth() {
     getEffectivePermissions,
   } = useAuthStore();
 
+  const hasTokenOrSession = Boolean(
+    safeStorage.getItem('crm_access_token') ||
+    safeStorage.getItem('crm_user') ||
+    isAuthenticated
+  );
+
   const currentUserQuery = useQuery({
     queryKey: ['auth-me'],
     queryFn: async () => {
@@ -34,18 +41,36 @@ export function useAuth() {
         setUser(userProfile);
         return userProfile;
       } catch (err) {
-        logoutState();
-        throw err;
+        // Attempt refresh token if available
+        try {
+          const refreshRes = await authApi.refreshToken();
+          if (refreshRes.access_token) {
+            safeStorage.setItem('crm_access_token', refreshRes.access_token);
+          }
+          if (refreshRes.user) {
+            setUser(refreshRes.user);
+            return refreshRes.user;
+          }
+          const userProfile = await authApi.getMe();
+          setUser(userProfile);
+          return userProfile;
+        } catch {
+          logoutState();
+          throw err;
+        }
       }
     },
     retry: false,
     staleTime: 5 * 60 * 1000,
-    enabled: isAuthenticated,
+    enabled: hasTokenOrSession,
   });
 
   const loginMutation = useMutation({
     mutationFn: (payload: LoginPayload) => authApi.login(payload),
     onSuccess: (data) => {
+      if (data.access_token) {
+        safeStorage.setItem('crm_access_token', data.access_token);
+      }
       setUser(data.user);
       queryClient.setQueryData(['auth-me'], data.user);
     },
@@ -54,6 +79,9 @@ export function useAuth() {
   const registerMutation = useMutation({
     mutationFn: (payload: RegisterPayload) => authApi.register(payload),
     onSuccess: (data) => {
+      if (data.access_token) {
+        safeStorage.setItem('crm_access_token', data.access_token);
+      }
       setUser(data.user);
       queryClient.setQueryData(['auth-me'], data.user);
     },
@@ -77,6 +105,9 @@ export function useAuth() {
     mutationFn: ({ provider, token, emailHint, nameHint }: { provider: string; token: string; emailHint?: string; nameHint?: string }) =>
       authApi.loginSsoCallback(provider, token, emailHint, nameHint),
     onSuccess: (data) => {
+      if (data.access_token) {
+        safeStorage.setItem('crm_access_token', data.access_token);
+      }
       setUser(data.user);
       queryClient.setQueryData(['auth-me'], data.user);
     },
@@ -97,7 +128,7 @@ export function useAuth() {
   return {
     user,
     isAuthenticated,
-    isLoading: storeLoading || currentUserQuery.isLoading,
+    isLoading: storeLoading || (hasTokenOrSession && currentUserQuery.isLoading && !user),
     hasRole,
     hasPermission,
     hasAnyPermission,
@@ -105,10 +136,8 @@ export function useAuth() {
     getEffectivePermissions,
     login: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
-    loginError: loginMutation.error,
     register: registerMutation.mutateAsync,
     isRegistering: registerMutation.isPending,
-    registerError: registerMutation.error,
     logout: logoutMutation.mutateAsync,
     isLoggingOut: logoutMutation.isPending,
     ssoLogin: ssoLoginMutation.mutateAsync,
@@ -119,5 +148,6 @@ export function useAuth() {
     isResetting: resetPasswordMutation.isPending,
     verifyEmail: verifyEmailMutation.mutateAsync,
     isVerifyingEmail: verifyEmailMutation.isPending,
+    refetchUser: currentUserQuery.refetch,
   };
 }
