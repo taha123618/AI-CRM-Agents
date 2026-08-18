@@ -6,6 +6,8 @@ from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 from database.connection import get_db
+from database.models import User
+from services.auth_service import require_auth
 from services.custom_agent_service import CustomAgentService
 
 router = APIRouter()
@@ -108,6 +110,7 @@ def list_custom_agents(
 def create_custom_agent(
     payload: CustomAgentCreateSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Create a new custom agent."""
     try:
@@ -165,7 +168,8 @@ def list_global_executions(
 
 
 @router.get("/{agent_id}", response_model=Dict[str, Any])
-def get_custom_agent(agent_id: str, db: Session = Depends(get_db)):
+def get_custom_agent(agent_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get single custom agent configuration."""
     agent = CustomAgentService.get_custom_agent(db, agent_id)
     if not agent:
@@ -197,6 +201,7 @@ def update_custom_agent(
     agent_id: str,
     payload: CustomAgentUpdateSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update custom agent configuration."""
     agent = CustomAgentService.update_custom_agent(
@@ -222,7 +227,8 @@ def update_custom_agent(
 
 
 @router.delete("/{agent_id}", response_model=Dict[str, Any])
-def delete_custom_agent(agent_id: str, db: Session = Depends(get_db)):
+def delete_custom_agent(agent_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Delete a custom agent and all its execution history."""
     deleted = CustomAgentService.delete_custom_agent(db, agent_id)
     if not deleted:
@@ -240,6 +246,7 @@ async def execute_custom_agent(
     agent_id: str,
     payload: CustomAgentExecuteSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Run an interactive sandbox test or execution for a custom agent."""
     try:

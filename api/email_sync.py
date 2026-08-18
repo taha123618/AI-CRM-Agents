@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from database.connection import get_db
-from database.models import EmailSyncAccount, EmailThread
+from database.models import EmailSyncAccount, EmailThread, User
+from services.auth_service import require_auth
 from services.email_sync_service import EmailSyncService
 
 router = APIRouter()
@@ -48,7 +49,8 @@ class EmailThreadResponse(BaseModel):
 
 
 @router.get("/accounts", response_model=List[SyncAccountResponse])
-def list_connected_accounts(db: Session = Depends(get_db)):
+def list_connected_accounts(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """List all connected 2-way sync email mailboxes."""
     accounts = db.query(EmailSyncAccount).order_by(desc(EmailSyncAccount.created_at)).all()
     if not accounts:
@@ -76,7 +78,8 @@ def list_connected_accounts(db: Session = Depends(get_db)):
 
 
 @router.post("/accounts", response_model=SyncAccountResponse, status_code=status.HTTP_201_CREATED)
-def connect_email_account(payload: ConnectAccountRequest, db: Session = Depends(get_db)):
+def connect_email_account(payload: ConnectAccountRequest, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Connect a new Google Workspace, Microsoft Graph, or IMAP mailbox."""
     account = EmailSyncService.connect_account(
         provider=payload.provider,
@@ -96,7 +99,8 @@ def connect_email_account(payload: ConnectAccountRequest, db: Session = Depends(
 
 
 @router.post("/accounts/{account_id}/sync")
-def trigger_account_sync(account_id: str, db: Session = Depends(get_db)):
+def trigger_account_sync(account_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Trigger an immediate 2-way IMAP/OAuth synchronization poll."""
     try:
         val_id = uuid.UUID(account_id) if isinstance(account_id, str) else account_id
@@ -112,7 +116,8 @@ def trigger_account_sync(account_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/threads", response_model=List[EmailThreadResponse])
-def list_email_threads(db: Session = Depends(get_db)):
+def list_email_threads(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """List conversation threads with sentiment and unread status."""
     threads = db.query(EmailThread).order_by(desc(EmailThread.last_message_at)).all()
     if not threads:
@@ -137,7 +142,8 @@ def list_email_threads(db: Session = Depends(get_db)):
 
 
 @router.get("/threads/{thread_id}/messages")
-def get_thread_messages(thread_id: str, db: Session = Depends(get_db)):
+def get_thread_messages(thread_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Retrieve full chronological conversation timeline for a given thread."""
     try:
         val_id = uuid.UUID(thread_id) if isinstance(thread_id, str) else thread_id

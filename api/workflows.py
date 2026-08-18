@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from database.connection import get_db
-from database.models import WorkflowDefinition
+from database.models import WorkflowDefinition, User
+from services.auth_service import require_auth
 
 router = APIRouter()
 
@@ -93,7 +94,8 @@ class WorkflowResponse(BaseModel):
 
 
 @router.get("", response_model=List[WorkflowResponse])
-def list_workflows(db: Session = Depends(get_db)):
+def list_workflows(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """List all visual multi-agent workflows (seeds default pipelines if empty)."""
     workflows = db.query(WorkflowDefinition).order_by(desc(WorkflowDefinition.created_at)).all()
 
@@ -132,7 +134,8 @@ def list_workflows(db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=WorkflowResponse, status_code=status.HTTP_201_CREATED)
-def create_workflow(payload: WorkflowCreateRequest, db: Session = Depends(get_db)):
+def create_workflow(payload: WorkflowCreateRequest, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Create a new visual multi-agent workflow pipeline."""
     new_wf = WorkflowDefinition(
         name=payload.name.strip(),
@@ -163,7 +166,8 @@ def create_workflow(payload: WorkflowCreateRequest, db: Session = Depends(get_db
 
 
 @router.get("/{workflow_id}", response_model=WorkflowResponse)
-def get_workflow(workflow_id: str, db: Session = Depends(get_db)):
+def get_workflow(workflow_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get workflow canvas definition by ID."""
     try:
         val_id = uuid.UUID(workflow_id) if isinstance(workflow_id, str) else workflow_id
@@ -190,7 +194,8 @@ def get_workflow(workflow_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/{workflow_id}", response_model=WorkflowResponse)
-def update_workflow(workflow_id: str, payload: WorkflowUpdateRequest, db: Session = Depends(get_db)):
+def update_workflow(workflow_id: str, payload: WorkflowUpdateRequest, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Update workflow graph nodes, edges, or activation state."""
     try:
         val_id = uuid.UUID(workflow_id) if isinstance(workflow_id, str) else workflow_id
@@ -235,7 +240,8 @@ def update_workflow(workflow_id: str, payload: WorkflowUpdateRequest, db: Sessio
 
 
 @router.delete("/{workflow_id}")
-def delete_workflow(workflow_id: str, db: Session = Depends(get_db)):
+def delete_workflow(workflow_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Delete workflow definition."""
     try:
         val_id = uuid.UUID(workflow_id) if isinstance(workflow_id, str) else workflow_id
@@ -252,7 +258,8 @@ def delete_workflow(workflow_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/{workflow_id}/execute")
-def execute_workflow(workflow_id: str, db: Session = Depends(get_db)):
+def execute_workflow(workflow_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Execute live simulation run of a visual workflow graph."""
     try:
         val_id = uuid.UUID(workflow_id) if isinstance(workflow_id, str) else workflow_id

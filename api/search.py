@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
+from database.models import User
+from services.auth_service import require_auth
 from services.rag_service import RagService
 
 router = APIRouter()
@@ -27,6 +29,7 @@ class RagAskRequest(BaseModel):
 async def semantic_search(
     payload: SemanticSearchRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Search sales transcripts, meeting briefings, customer emails, and strategy decks with vector embeddings."""
     results = RagService.semantic_search(
@@ -43,6 +46,7 @@ async def semantic_search(
 async def rag_ask_question(
     payload: RagAskRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Answer natural language questions grounded in CRM knowledge with exact source citations."""
     response = await RagService.ask_crm_rag(

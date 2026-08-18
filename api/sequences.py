@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
-from database.models import Contact, Deal, OutreachSequence, SequenceEnrollment
+from database.models import Contact, Deal, OutreachSequence, SequenceEnrollment, User
+from services.auth_service import require_auth
 from workflows.orchestrator import AgentOrchestrator
 
 router = APIRouter()
@@ -211,7 +212,8 @@ def get_available_prospects(
 
 
 @router.post("", response_model=Dict[str, Any])
-def create_sequence(payload: CreateSequenceSchema, db: Session = Depends(get_db)):
+def create_sequence(payload: CreateSequenceSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Create a new AI SDR multi-touch outreach sequence in PostgreSQL."""
     new_seq = OutreachSequence(
         id=uuid.uuid4(),
@@ -231,7 +233,8 @@ def create_sequence(payload: CreateSequenceSchema, db: Session = Depends(get_db)
 
 
 @router.get("/{sequence_id}", response_model=Dict[str, Any])
-def get_sequence(sequence_id: str, db: Session = Depends(get_db)):
+def get_sequence(sequence_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get a specific sequence by ID from PostgreSQL."""
     _ensure_sequences_seeded(db)
     seq = None
@@ -247,7 +250,8 @@ def get_sequence(sequence_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/{sequence_id}", response_model=Dict[str, Any])
-def update_sequence(sequence_id: str, payload: UpdateSequenceSchema, db: Session = Depends(get_db)):
+def update_sequence(sequence_id: str, payload: UpdateSequenceSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Update cadence details or step configuration in PostgreSQL."""
     seq = None
     try:
@@ -274,7 +278,8 @@ def update_sequence(sequence_id: str, payload: UpdateSequenceSchema, db: Session
 
 
 @router.post("/{sequence_id}/toggle", response_model=Dict[str, Any])
-def toggle_sequence_status(sequence_id: str, db: Session = Depends(get_db)):
+def toggle_sequence_status(sequence_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Toggle cadence active / paused status in PostgreSQL."""
     seq = None
     try:
@@ -293,7 +298,8 @@ def toggle_sequence_status(sequence_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/{sequence_id}/enroll", response_model=Dict[str, Any])
-def enroll_contacts_in_sequence(sequence_id: str, payload: EnrollContactsSchema, db: Session = Depends(get_db)):
+def enroll_contacts_in_sequence(sequence_id: str, payload: EnrollContactsSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Enroll contacts or leads into an autonomous AI cadence in PostgreSQL."""
     seq = None
     try:
@@ -337,6 +343,7 @@ async def generate_personalized_step_copy(
     sequence_id: str,
     payload: GenerateStepCopySchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Generate high-conversion AI personalized copy for a specific cadence step."""
     contact_name = "Alex Mercer"
@@ -392,6 +399,7 @@ async def execute_sequence_step(
     sequence_id: str,
     payload: ExecuteStepSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Execute a cadence step live using the agent fleet."""
     seq = None
@@ -476,7 +484,8 @@ async def execute_sequence_step(
 
 
 @router.delete("/{sequence_id}", response_model=Dict[str, Any])
-def delete_sequence(sequence_id: str, db: Session = Depends(get_db)):
+def delete_sequence(sequence_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Delete an outreach sequence from PostgreSQL."""
     seq = None
     try:

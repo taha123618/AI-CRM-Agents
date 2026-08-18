@@ -7,8 +7,9 @@ from database.connection import SessionLocal
 from database.models import AuditLog
 from services.audit_service import record_audit_log
 import uuid
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 def test_audit_logs_crud_and_service():

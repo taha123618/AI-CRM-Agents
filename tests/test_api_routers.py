@@ -1,8 +1,11 @@
 # pyrefly: ignore [missing-import]
 from fastapi.testclient import TestClient
 from main import app
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+# All API tests must authenticate due to security hardening
+auth_client = get_authenticated_client()
+client = auth_client
 
 
 def test_api_leads_endpoints():
@@ -141,7 +144,6 @@ def test_api_delete_meeting():
         res = client.delete(f"/api/meetings/{meeting_id}")
         assert res.status_code == 200
         assert res.json()["status"] == "deleted"
-
 
 
 def test_api_analytics_dashboard():

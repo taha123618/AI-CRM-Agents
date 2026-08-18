@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field, ConfigDict
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
+from database.models import User
+from services.auth_service import require_auth
 from services.tenant_service import TenantService
 
 router = APIRouter()
@@ -31,7 +33,8 @@ class OrganizationResponse(BaseModel):
 
 
 @router.get("", response_model=List[OrganizationResponse])
-def list_organizations(db: Session = Depends(get_db)):
+def list_organizations(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """List all registered organization workspaces."""
     orgs = TenantService.list_organizations(db)
     if not orgs:
@@ -53,7 +56,8 @@ def list_organizations(db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=OrganizationResponse, status_code=status.HTTP_201_CREATED)
-def create_organization(payload: OrganizationCreateRequest, db: Session = Depends(get_db)):
+def create_organization(payload: OrganizationCreateRequest, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Create a new isolated organization tenant workspace."""
     try:
         org = TenantService.create_organization(
@@ -77,7 +81,8 @@ def create_organization(payload: OrganizationCreateRequest, db: Session = Depend
 
 
 @router.get("/{org_id}", response_model=OrganizationResponse)
-def get_organization_by_id(org_id: str, db: Session = Depends(get_db)):
+def get_organization_by_id(org_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get organization details by ID or slug."""
     org = TenantService.get_organization(db, org_id)
     if not org:

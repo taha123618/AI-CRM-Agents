@@ -7,8 +7,9 @@ import uuid
 from main import app
 from database.connection import SessionLocal
 from database.models import Contact, Deal, Customer, Email, Meeting
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 # ============================================================================

@@ -7,8 +7,9 @@ from pydantic import BaseModel, Field
 import uuid
 
 from database.connection import get_db
-from database.models import VoiceCall
+from database.models import VoiceCall, User
 from agents.voice_call_agent import VoiceCallAgent
+from services.auth_service import require_auth
 
 router = APIRouter()
 voice_agent = VoiceCallAgent()
@@ -45,7 +46,7 @@ class VoiceTurnAnalyzeSchema(BaseModel):
 
 
 @router.get("/stats", response_model=Dict[str, Any])
-def get_call_stats(db: Session = Depends(get_db)):
+def get_call_stats(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Aggregate call intelligence metrics: totals, avg intent, sentiment split, top objections."""
     calls = db.query(VoiceCall).all()
 
@@ -103,6 +104,7 @@ def list_voice_calls(
     sentiment: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Fetch call records with optional filters: direction, sentiment, search."""
     q = db.query(VoiceCall)
@@ -140,6 +142,7 @@ def list_voice_calls(
 def create_voice_call(
     payload: VoiceCallCreateSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Record a voice call and generate automated action items."""
     call = VoiceCall(
@@ -169,7 +172,7 @@ def create_voice_call(
 
 
 @router.get("/{call_id}", response_model=Dict[str, Any])
-def get_voice_call(call_id: str, db: Session = Depends(get_db)):
+def get_voice_call(call_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Fetch call details and associated dialogue transcripts."""
     try:
         val_uuid = uuid.UUID(call_id)
@@ -210,7 +213,7 @@ def get_voice_call(call_id: str, db: Session = Depends(get_db)):
 
 
 @router.delete("/{call_id}", response_model=Dict[str, Any])
-def delete_voice_call(call_id: str, db: Session = Depends(get_db)):
+def delete_voice_call(call_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Permanently delete a voice call record."""
     try:
         val_uuid = uuid.UUID(call_id)
@@ -227,7 +230,7 @@ def delete_voice_call(call_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/analyze-turn", response_model=Dict[str, Any])
-async def analyze_realtime_turn(payload: VoiceTurnAnalyzeSchema):
+async def analyze_realtime_turn(payload: VoiceTurnAnalyzeSchema, current_user: User = Depends(require_auth)):
     """Analyze real-time speech turn, detect objections, and generate rep coaching battle-cards."""
     res = await voice_agent.analyze_turn(
         speaker=payload.speaker,

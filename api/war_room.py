@@ -8,7 +8,8 @@ from pydantic import BaseModel, Field
 import uuid
 
 from database.connection import get_db
-from database.models import Deal, Customer, Contact, AutomationRule
+from database.models import Deal, Customer, Contact, AutomationRule, User
+from services.auth_service import require_auth
 from workflows.orchestrator import AgentOrchestrator
 
 router = APIRouter()
@@ -155,7 +156,8 @@ def list_war_room_deals(
 
 
 @router.get("/deals/{deal_id}/strategy", response_model=Dict[str, Any])
-def get_deal_strategy_matrix(deal_id: str, db: Session = Depends(get_db)):
+def get_deal_strategy_matrix(deal_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Generate multi-agent war room consensus, SWOT, competitor battle-cards, and stakeholder influence map."""
     deal = None
     try:
@@ -306,6 +308,7 @@ def generate_deal_proposal(
     payload: GenerateProposalSchema,
     deal_id: Optional[str] = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Generate a 1-click customized AI proposal with tier pricing, SLA, and e-signature URL."""
     target_deal_id = deal_id or payload.deal_id
@@ -393,6 +396,7 @@ async def send_deal_proposal_email(
     deal_id: str,
     payload: Optional[SendProposalSchema] = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Dispatch proposal terms, pricing breakdown, and e-signature URL to buying committee via centralized email queue."""
     deal = None
@@ -501,7 +505,8 @@ def list_automation_rules(
 
 
 @router.post("/automations", response_model=Dict[str, Any])
-def create_automation_rule(payload: CreateAutomationRuleSchema, db: Session = Depends(get_db)):
+def create_automation_rule(payload: CreateAutomationRuleSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Create a new multi-agent event trigger rule in PostgreSQL."""
     new_rule = AutomationRule(
         id=uuid.uuid4(),
@@ -520,7 +525,8 @@ def create_automation_rule(payload: CreateAutomationRuleSchema, db: Session = De
 
 
 @router.put("/automations/{rule_id}", response_model=Dict[str, Any])
-def update_automation_rule(rule_id: str, payload: CreateAutomationRuleSchema, db: Session = Depends(get_db)):
+def update_automation_rule(rule_id: str, payload: CreateAutomationRuleSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Update an existing multi-agent event trigger rule in PostgreSQL."""
     rule = None
     try:
@@ -544,7 +550,8 @@ def update_automation_rule(rule_id: str, payload: CreateAutomationRuleSchema, db
 
 
 @router.post("/automations/{rule_id}/execute", response_model=Dict[str, Any])
-async def execute_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+async def execute_automation_rule(rule_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Trigger manual execution of a multi-agent automation rule via AgentOrchestrator and persist count in DB."""
     rule = None
     try:
@@ -566,7 +573,8 @@ async def execute_automation_rule(rule_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/automations/{rule_id}/toggle", response_model=Dict[str, Any])
-def toggle_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+def toggle_automation_rule(rule_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Toggle an automation rule active/paused in PostgreSQL."""
     rule = None
     try:
@@ -585,7 +593,8 @@ def toggle_automation_rule(rule_id: str, db: Session = Depends(get_db)):
 
 
 @router.delete("/automations/{rule_id}", response_model=Dict[str, Any])
-def delete_automation_rule(rule_id: str, db: Session = Depends(get_db)):
+def delete_automation_rule(rule_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Delete an automation rule from PostgreSQL."""
     rule = None
     try:

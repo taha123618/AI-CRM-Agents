@@ -11,8 +11,9 @@ from database.connection import SessionLocal
 from database.models import VoiceCall, Meeting, Email, Organization, User
 from services.metrics_service import MetricsService
 from services.tenant_service import TenantService
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 # ============================================================================
@@ -51,6 +52,7 @@ def test_prometheus_metrics_endpoints():
 
 from datetime import datetime, timezone
 import uuid
+from tests.conftest import get_authenticated_client
 
 def test_semantic_search_and_rag_endpoints():
     """Verify semantic vector search and RAG Q&A retrieval."""

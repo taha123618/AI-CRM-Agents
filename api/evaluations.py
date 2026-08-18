@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from database.connection import get_db
-from database.models import LLMEvaluationRun
+from database.models import LLMEvaluationRun, User
+from services.auth_service import require_auth
 from services.eval_service import EvalService
 
 router = APIRouter()
@@ -26,6 +27,7 @@ class BenchmarkRequest(BaseModel):
 def run_prompt_benchmark(
     payload: BenchmarkRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Execute side-by-side prompt benchmarking and compute evaluation scores."""
     result = EvalService.run_benchmark(

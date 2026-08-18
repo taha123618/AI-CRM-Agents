@@ -9,9 +9,10 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
-from database.models import Meeting
+from database.models import Meeting, User
 from services.task_queue_service import task_queue
 from services.audit_service import record_audit_log
+from services.auth_service import require_auth
 from loguru import logger
 
 router = APIRouter()
@@ -60,14 +61,14 @@ class MeetingInviteRequest(BaseModel):
 
 
 @router.get("/", response_model=List[MeetingResponse])
-async def list_meetings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+async def list_meetings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """List meetings with attendee and prep information."""
     meetings = db.query(Meeting).order_by(Meeting.scheduled_at.desc()).offset(skip).limit(limit).all()
     return meetings
 
 
 @router.get("/{meeting_id}", response_model=MeetingResponse)
-async def get_meeting(meeting_id: str, db: Session = Depends(get_db)):
+async def get_meeting(meeting_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Get single meeting details by ID."""
     meeting = None
     try:
@@ -85,6 +86,7 @@ async def update_meeting(
     meeting_id: str,
     payload: MeetingUpdate,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update meeting details by ID."""
     meeting = None
@@ -131,6 +133,7 @@ async def send_meeting_invite_email(
     meeting_id: str,
     payload: Optional[MeetingInviteRequest] = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Dispatch meeting briefing & Google Meet invitation email to attendees via the centralized email queue."""
     meeting = None
@@ -230,7 +233,7 @@ Please let us know if you need any adjustments."""
 
 
 @router.delete("/{meeting_id}")
-async def delete_meeting(meeting_id: str, db: Session = Depends(get_db)):
+async def delete_meeting(meeting_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Delete meeting by ID."""
     meeting = None
     try:

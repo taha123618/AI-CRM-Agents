@@ -6,8 +6,9 @@ from main import app
 from database.models import Deal, AutomationRule
 from database.connection import get_db
 import uuid
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 def test_list_war_room_deals():

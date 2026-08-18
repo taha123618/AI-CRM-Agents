@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from database.connection import get_db
-from database.models import CustomFieldDefinition
+from database.models import CustomFieldDefinition, User
+from services.auth_service import require_auth
 
 router = APIRouter()
 
@@ -85,6 +86,7 @@ def list_custom_fields(
 def create_custom_field(
     payload: CustomFieldCreateRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Create a new dynamic custom metadata field."""
     key = slugify_key(payload.field_key or payload.name)
@@ -127,6 +129,7 @@ def update_custom_field(
     field_id: str,
     payload: CustomFieldUpdateRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update dynamic field options, required status, or display label."""
     try:
@@ -169,6 +172,7 @@ def update_custom_field(
 def delete_custom_field(
     field_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Remove custom field definition."""
     try:

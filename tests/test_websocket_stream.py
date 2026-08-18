@@ -5,9 +5,10 @@ from fastapi.testclient import TestClient
 import json
 
 from main import app, ws_manager
+from tests.conftest import get_authenticated_client
 from workflows.orchestrator import AgentOrchestrator
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 def test_websocket_connection_and_ping():

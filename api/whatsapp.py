@@ -8,8 +8,9 @@ from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
-from database.models import WhatsAppConversation, WhatsAppMessage
+from database.models import WhatsAppConversation, WhatsAppMessage, User
 from agents.whatsapp_agent import WhatsAppAgent
+from services.auth_service import require_auth
 
 router = APIRouter()
 whatsapp_agent = WhatsAppAgent()
@@ -72,7 +73,7 @@ def _conv_to_dict(c: WhatsAppConversation) -> Dict[str, Any]:
 
 
 @router.get("/stats", response_model=Dict[str, Any])
-def get_whatsapp_stats(db: Session = Depends(get_db)):
+def get_whatsapp_stats(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Aggregate WhatsApp conversation and messaging statistics."""
     convs = db.query(WhatsAppConversation).all()
     msgs = db.query(WhatsAppMessage).all()
@@ -102,6 +103,7 @@ def get_whatsapp_stats(db: Session = Depends(get_db)):
 def search_whatsapp_conversations(
     q: str = Query(..., min_length=1),
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Search conversations by contact name or phone number."""
     convs = (
@@ -122,6 +124,7 @@ def list_whatsapp_conversations(
     limit: int = Query(50, ge=1, le=100),
     status: Optional[str] = Query(None),
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Retrieve WhatsApp conversation threads with optional status filter."""
     q = db.query(WhatsAppConversation)
@@ -137,6 +140,7 @@ def list_whatsapp_conversations(
 def get_conversation_messages(
     conversation_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Retrieve chat message history for a WhatsApp thread."""
     try:
@@ -171,6 +175,7 @@ def get_conversation_messages(
 def send_whatsapp_message(
     payload: WhatsAppSendMessageSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Dispatch an outbound WhatsApp message."""
     conv = (
@@ -214,6 +219,7 @@ def send_whatsapp_message(
 def send_broadcast(
     payload: WhatsAppBroadcastSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Send a broadcast template message to multiple phone numbers."""
     sent_count = 0
@@ -350,6 +356,7 @@ def toggle_whatsapp_auto_pilot(
     conversation_id: str,
     payload: WhatsAppAutoPilotToggleSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Toggle AI auto-pilot mode for conversation."""
     try:
@@ -381,6 +388,7 @@ def update_conversation_tags(
     conversation_id: str,
     payload: WhatsAppTagsSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update tags/labels on a WhatsApp conversation."""
     try:
@@ -411,6 +419,7 @@ def update_conversation_tags(
 def archive_whatsapp_conversation(
     conversation_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Archive or hand off a WhatsApp conversation."""
     try:
@@ -442,7 +451,7 @@ class WhatsAppMediaUploadRequest(BaseModel):
 
 
 @router.post("/media/upload", response_model=Dict[str, Any])
-def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest):
+def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest, current_user: User = Depends(require_auth)):
     """Upload media file to Meta WhatsApp Cloud API and get a reusable media_id."""
     from services.whatsapp_cloud_service import WhatsAppCloudService
     return WhatsAppCloudService.upload_media(
@@ -453,7 +462,7 @@ def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest):
 
 
 @router.get("/templates", response_model=List[Dict[str, Any]])
-def list_whatsapp_templates(db: Session = Depends(get_db)):
+def list_whatsapp_templates(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """List Meta pre-approved message templates."""
     from database.models import WhatsAppTemplate
     from services.whatsapp_cloud_service import WhatsAppCloudService
@@ -477,7 +486,7 @@ def list_whatsapp_templates(db: Session = Depends(get_db)):
 
 
 @router.post("/templates/sync", response_model=Dict[str, Any])
-def sync_whatsapp_templates(db: Session = Depends(get_db)):
+def sync_whatsapp_templates(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Trigger template synchronization from Meta Business Manager."""
     from services.whatsapp_cloud_service import WhatsAppCloudService
     templates = WhatsAppCloudService.sync_templates(db)

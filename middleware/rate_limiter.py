@@ -10,7 +10,9 @@ from starlette.responses import JSONResponse, Response
 
 RATE_LIMIT_ENABLED = os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ["true", "1", "yes"]
 DEFAULT_REQUESTS_PER_MINUTE = int(os.getenv("RATE_LIMIT_RPM", "300"))
-AUTH_REQUESTS_PER_MINUTE = int(os.getenv("AUTH_RATE_LIMIT_RPM", "150"))
+# SECURITY: Strict rate limits for authentication endpoints to prevent brute-force
+AUTH_REQUESTS_PER_MINUTE = int(os.getenv("AUTH_RATE_LIMIT_RPM", "10"))
+LOGIN_REQUESTS_PER_MINUTE = int(os.getenv("LOGIN_RATE_LIMIT_RPM", "5"))
 
 
 class RateLimiter:
@@ -69,7 +71,17 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
         if client_ip in ["testclient", "127.0.0.1", "localhost"]:
             limit = 5000
         else:
-            limit = AUTH_REQUESTS_PER_MINUTE if "/api/auth/" in path else DEFAULT_REQUESTS_PER_MINUTE
+            # SECURITY: Stricter limits for login/register/forgot-password
+            if "/api/auth/login" in path:
+                limit = LOGIN_REQUESTS_PER_MINUTE
+            elif "/api/auth/register" in path:
+                limit = AUTH_REQUESTS_PER_MINUTE
+            elif "/api/auth/forgot-password" in path:
+                limit = LOGIN_REQUESTS_PER_MINUTE  # Prevent email bombing
+            elif "/api/auth/" in path:
+                limit = AUTH_REQUESTS_PER_MINUTE
+            else:
+                limit = DEFAULT_REQUESTS_PER_MINUTE
 
         allowed, remaining, reset_seconds = rate_limiter.is_allowed(client_key, limit=limit)
 

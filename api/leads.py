@@ -4,30 +4,32 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Any, List, Optional, Union
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from database.connection import get_db
 from database.models import Contact
+from services.auth_service import require_auth
+from database.models import User
 
 router = APIRouter()
 
 
 class LeadCreate(BaseModel):
     email: EmailStr
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    company_name: Optional[str] = None
-    job_title: Optional[str] = None
-    lead_source: Optional[str] = None
+    first_name: Optional[str] = Field(None, max_length=100)
+    last_name: Optional[str] = Field(None, max_length=100)
+    company_name: Optional[str] = Field(None, max_length=255)
+    job_title: Optional[str] = Field(None, max_length=255)
+    lead_source: Optional[str] = Field(None, max_length=100)
 
 
 class LeadUpdate(BaseModel):
-    email: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    job_title: Optional[str] = None
-    lead_source: Optional[str] = None
-    lead_score: Optional[int] = None
-    lead_status: Optional[str] = None
+    email: Optional[str] = Field(None, max_length=255)
+    first_name: Optional[str] = Field(None, max_length=100)
+    last_name: Optional[str] = Field(None, max_length=100)
+    job_title: Optional[str] = Field(None, max_length=255)
+    lead_source: Optional[str] = Field(None, max_length=100)
+    lead_score: Optional[int] = Field(None, ge=0, le=100)
+    lead_status: Optional[str] = Field(None, max_length=50)
 
 
 class LeadResponse(BaseModel):
@@ -77,14 +79,23 @@ class LeadResponse(BaseModel):
 
 
 @router.get("/", response_model=List[LeadResponse])
-async def list_leads(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+async def list_leads(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """List all leads"""
-    leads = db.query(Contact).offset(skip).limit(limit).all()
+    leads = db.query(Contact).offset(skip).limit(min(limit, 200)).all()
     return [LeadResponse.from_orm_contact(lead) for lead in leads]
 
 
 @router.get("/{lead_id}", response_model=LeadResponse)
-async def get_lead(lead_id: str, db: Session = Depends(get_db)):
+async def get_lead(
+    lead_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get lead by ID"""
     lead = db.query(Contact).filter(Contact.id == lead_id).first()
     if not lead:
@@ -93,7 +104,11 @@ async def get_lead(lead_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=LeadResponse)
-async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
+async def create_lead(
+    lead: LeadCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Create or update lead by email"""
     from services.audit_service import record_audit_log
     existing = db.query(Contact).filter(Contact.email == lead.email).first()
@@ -143,6 +158,7 @@ async def update_lead(
     lead_id: str,
     payload: LeadUpdate,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update lead by ID"""
     from services.audit_service import record_audit_log
@@ -170,7 +186,11 @@ async def update_lead(
 
 
 @router.delete("/{lead_id}")
-async def delete_lead(lead_id: str, db: Session = Depends(get_db)):
+async def delete_lead(
+    lead_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Delete lead"""
     from services.audit_service import record_audit_log
     lead = db.query(Contact).filter(Contact.id == lead_id).first()

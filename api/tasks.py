@@ -7,7 +7,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
-from database.models import Contact
+from database.models import Contact, User
+from services.auth_service import require_auth
 from services.task_queue_service import task_queue, TaskJob
 from services.forecasting_service import ForecastingService
 
@@ -39,6 +40,7 @@ class BulkEnrichmentTaskRequest(BaseModel):
 async def enqueue_monte_carlo_task(
     payload: SimulationTaskRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Enqueue a long-running stochastic Monte Carlo simulation in the background queue."""
     async def _run_sim(job: TaskJob) -> Dict[str, Any]:
@@ -97,6 +99,7 @@ async def enqueue_audio_synthesis_task(
 async def enqueue_bulk_enrichment_task(
     payload: BulkEnrichmentTaskRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Enqueue asynchronous bulk lead enrichment with external OSINT & company data."""
     async def _run_enrichment(job: TaskJob) -> Dict[str, Any]:

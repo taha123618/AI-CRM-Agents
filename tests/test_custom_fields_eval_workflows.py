@@ -7,9 +7,10 @@
 import pytest
 from fastapi.testclient import TestClient
 from main import app
+from tests.conftest import get_authenticated_client
 from database.connection import SessionLocal
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 # ============================================================================

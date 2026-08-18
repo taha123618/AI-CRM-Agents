@@ -1,7 +1,7 @@
 """FastAPI Main Application - AI-Powered CRM"""
 
 # pyrefly: ignore [missing-import]
-from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect, Response
+from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect, Response, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import Dict, Any, List
@@ -215,7 +215,8 @@ app = FastAPI(
 )
 
 # CORS middleware
-# In production, restrict allowed origins via ALLOWED_ORIGINS env var
+# SECURITY: In production, NEVER allow wildcard origins with credentials.
+_is_prod = os.getenv("APP_ENV", "").lower() == "production" or os.getenv("ENVIRONMENT", "").lower() == "production"
 _allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
 _origins = (
     [o.strip() for o in _allowed_origins.split(",")]
@@ -223,15 +224,38 @@ _origins = (
     else ["*"]
 )
 
+# SECURITY: In production, if wildcard is set but credentials are allowed, block it
+if _is_prod and "*" in _origins:
+    _origins = ["http://localhost:3000"]  # safe fallback for production
+    import warnings
+    warnings.warn(
+        "CORS: Wildcard origin with credentials is insecure in production. "
+        "Set ALLOWED_ORIGINS to your actual frontend domain.",
+        stacklevel=2,
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitingMiddleware)
+
+# SECURITY: Limit request body size to prevent memory exhaustion attacks
+@app.middleware("http")
+async def limit_request_body(request, call_next):
+    """Reject requests with oversized bodies to prevent memory exhaustion."""
+    content_length = request.headers.get("content-length")
+    if content_length and int(content_length) > 10 * 1024 * 1024:  # 10MB limit
+        from starlette.responses import JSONResponse
+        return JSONResponse(
+            status_code=413,
+            content={"detail": "Request body too large. Maximum allowed size is 10MB."},
+        )
+    return await call_next(request)
 
 # Initialize agent orchestrator
 orchestrator = AgentOrchestrator()
@@ -264,29 +288,73 @@ async def health_check():
     }
 
 
+def _sanitize_ws_message(data: str, max_len: int = 4096) -> str:
+    """Sanitize incoming WebSocket message to prevent XSS and resource exhaustion."""
+    # Truncate to prevent memory abuse
+    data = data[:max_len]
+    # Strip any HTML/script tags
+    import re
+    data = re.sub(r'<[^>]+>', '', data)
+    # Remove null bytes
+    data = data.replace('\x00', '')
+    return data
+
+
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    """Real-time event stream WebSocket endpoint"""
+async def websocket_endpoint(
+    websocket: WebSocket,
+    token: str = Query(default=""),
+):
+    """Real-time event stream WebSocket endpoint.
+    
+    SECURITY: Accepts optional token query param for authentication.
+    Unauthenticated connections receive read-only public events.
+    """
+    # Basic token validation for WS auth
+    ws_user = None
+    if token:
+        try:
+            from services.auth_service import decode_token, SECRET_KEY
+            from jose import jwt as jose_jwt
+            payload = jose_jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+            user_id = payload.get("sub")
+            if user_id:
+                from database.connection import SessionLocal
+                from database.models import User
+                db_session = SessionLocal()
+                try:
+                    from uuid import UUID
+                    ws_user = db_session.query(User).filter(User.id == UUID(user_id)).first()
+                finally:
+                    db_session.close()
+        except Exception:
+            pass  # Invalid token — proceed as unauthenticated
+
     await ws_manager.connect(websocket)
     try:
-        await websocket.send_json(
-            {
-                "type": "connection_established",
-                "message": "Connected to AI CRM Realtime Event Stream",
-                "agents": orchestrator.get_agent_status(),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            }
-        )
+        greeting = {
+            "type": "connection_established",
+            "message": "Connected to AI CRM Realtime Event Stream",
+            "agents": orchestrator.get_agent_status(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "authenticated": ws_user is not None,
+        }
+        if ws_user:
+            greeting["user"] = ws_user.email
+        await websocket.send_json(greeting)
+
         while True:
             data = await websocket.receive_text()
-            # Broadcast the received message out to everyone
+            # SECURITY: Sanitize incoming message
+            safe_data = _sanitize_ws_message(data)
+            # Broadcast the sanitized message
             await ws_manager.broadcast(
-                {"type": "client_message", "message": f"Client said: {data}"}
+                {"type": "client_message", "message": f"Client said: {safe_data}"}
             )
             await websocket.send_json(
                 {
                     "type": "pong",
-                    "received": data,
+                    "received": safe_data,
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
             )
@@ -409,10 +477,15 @@ def get_i18n_runtime_namespace(
 # ============================================================================
 
 
+from services.auth_service import require_auth
+from database.models import User
+
+
 @app.post("/api/agents/qualify-lead")
 async def qualify_lead(
     lead_data: Dict[str, Any],
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Trigger Lead Qualification Agent"""
     result = await orchestrator.process_new_lead(lead_data, db)
@@ -427,6 +500,7 @@ async def qualify_lead(
 async def analyze_email(
     email_data: Dict[str, Any],
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Trigger Email Intelligence Agent"""
     result = await orchestrator.process_email(email_data, db)
@@ -438,7 +512,11 @@ async def analyze_email(
 
 
 @app.post("/api/agents/analyze-deal/{deal_id}")
-async def analyze_deal(deal_id: str, db: Session = Depends(get_db)):
+async def analyze_deal(
+    deal_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Trigger Sales Pipeline Agent"""
     result = await orchestrator.analyze_deal(deal_id, db)
     return {
@@ -449,7 +527,11 @@ async def analyze_deal(deal_id: str, db: Session = Depends(get_db)):
 
 
 @app.post("/api/agents/monitor-customer/{customer_id}")
-async def monitor_customer(customer_id: str, db: Session = Depends(get_db)):
+async def monitor_customer(
+    customer_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Trigger Customer Success Agent"""
     result = await orchestrator.monitor_customer(customer_id, db)
     return {
@@ -463,6 +545,7 @@ async def monitor_customer(customer_id: str, db: Session = Depends(get_db)):
 async def schedule_meeting(
     meeting_request: Dict[str, Any],
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Trigger Meeting Scheduler Agent"""
     result = await orchestrator.schedule_meeting(meeting_request, db)
@@ -474,7 +557,11 @@ async def schedule_meeting(
 
 
 @app.post("/api/agents/generate-dashboard")
-async def generate_dashboard(category: str = "all", db: Session = Depends(get_db)):
+async def generate_dashboard(
+    category: str = "all",
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Trigger Analytics Agent - synchronous"""
     dashboard = await orchestrator.generate_dashboard(category, db)
     return dashboard

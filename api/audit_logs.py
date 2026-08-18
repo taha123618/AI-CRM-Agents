@@ -8,7 +8,8 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from database.connection import get_db
-from database.models import AuditLog
+from database.models import AuditLog, User
+from services.auth_service import require_auth
 from pydantic import ConfigDict
 
 router = APIRouter()
@@ -79,7 +80,8 @@ def list_audit_logs(
 
 
 @router.get("/stats", response_model=AuditLogStatsSchema)
-def get_audit_log_stats(db: Session = Depends(get_db)):
+def get_audit_log_stats(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get audit activity summary metrics."""
     total_logs = db.query(func.count(AuditLog.id)).scalar() or 0
 

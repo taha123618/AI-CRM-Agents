@@ -6,8 +6,9 @@ from main import app
 from database.connection import SessionLocal
 from database.models import Customer, Company, Contact, CustomerIntervention, OutreachSequence
 import uuid
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 def test_get_customer_journey_stages():

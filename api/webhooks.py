@@ -8,7 +8,8 @@ from pydantic import BaseModel, HttpUrl, ConfigDict, Field
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
-from database.models import WebhookEndpoint, WebhookDelivery
+from database.models import WebhookEndpoint, WebhookDelivery, User
+from services.auth_service import require_auth, require_role
 from services.webhook_service import (
     dispatch_webhook_event,
     verify_inbound_signature,
@@ -54,7 +55,10 @@ class WebhookDeliveryResponse(BaseModel):
 
 
 @router.get("/", response_model=List[WebhookResponse])
-async def list_webhooks(db: Session = Depends(get_db)):
+async def list_webhooks(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """List all registered outbound webhook subscriptions."""
     endpoints = db.query(WebhookEndpoint).order_by(WebhookEndpoint.created_at.desc()).all()
     return [
@@ -72,7 +76,11 @@ async def list_webhooks(db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=WebhookResponse, status_code=status.HTTP_201_CREATED)
-async def create_webhook(payload: WebhookCreate, db: Session = Depends(get_db)):
+async def create_webhook(
+    payload: WebhookCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"])),
+):
     """Register a new outbound webhook endpoint with HMAC secret, SSRF verification, and subscribed events."""
     is_safe, reason = is_safe_webhook_url(payload.url)
     if not is_safe:
@@ -105,7 +113,11 @@ async def create_webhook(payload: WebhookCreate, db: Session = Depends(get_db)):
 
 
 @router.delete("/{webhook_id}")
-async def delete_webhook(webhook_id: str, db: Session = Depends(get_db)):
+async def delete_webhook(
+    webhook_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"])),
+):
     """Delete a registered webhook endpoint."""
     try:
         val_uuid = uuid.UUID(webhook_id)
@@ -122,7 +134,11 @@ async def delete_webhook(webhook_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/{webhook_id}/test")
-async def test_webhook(webhook_id: str, db: Session = Depends(get_db)):
+async def test_webhook(
+    webhook_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"])),
+):
     """Trigger a test ping event dispatch to a specific registered webhook."""
     try:
         val_uuid = uuid.UUID(webhook_id)
@@ -142,7 +158,11 @@ async def test_webhook(webhook_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/deliveries", response_model=List[WebhookDeliveryResponse])
-async def list_deliveries(limit: int = 50, db: Session = Depends(get_db)):
+async def list_deliveries(
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """List recent webhook delivery audit attempts with status codes."""
     deliveries = db.query(WebhookDelivery).order_by(WebhookDelivery.created_at.desc()).limit(limit).all()
     return [

@@ -1,4 +1,5 @@
 import { AgentEventLog } from '@/types/crm.types';
+import { safeStorage } from '@/lib/storage';
 
 export type ConnectionStatus = 'CONNECTING' | 'OPEN' | 'CLOSED' | 'ERROR';
 export type EventListener = (event: AgentEventLog) => void;
@@ -25,6 +26,19 @@ class RealtimeWebSocketClient {
     }
   }
 
+  /**
+   * SECURITY: Build WebSocket URL with auth token query parameter.
+   * The backend accepts optional `token` for authenticated connections.
+   */
+  private getAuthenticatedUrl(): string {
+    const token = safeStorage.getItem('crm_access_token');
+    if (token) {
+      const separator = this.url.includes('?') ? '&' : '?';
+      return `${this.url}${separator}token=${encodeURIComponent(token)}`;
+    }
+    return this.url;
+  }
+
   public connect() {
     if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
       return;
@@ -33,7 +47,9 @@ class RealtimeWebSocketClient {
     this.setStatus('CONNECTING');
 
     try {
-      this.socket = new WebSocket(this.url);
+      // SECURITY: Pass auth token for authenticated WebSocket connections
+      const wsUrl = this.getAuthenticatedUrl();
+      this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
         this.setStatus('OPEN');

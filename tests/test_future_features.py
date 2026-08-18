@@ -5,10 +5,11 @@ from fastapi.testclient import TestClient
 import uuid
 
 from main import app
+from tests.conftest import get_authenticated_client
 from database.connection import SessionLocal
 from database.seed import seed_voice_and_whatsapp
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 @pytest.fixture(autouse=True)

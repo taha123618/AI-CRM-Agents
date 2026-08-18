@@ -9,9 +9,10 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
-from database.models import Email, Contact
+from database.models import Email, Contact, User
 from services.task_queue_service import task_queue
 from services.audit_service import record_audit_log
+from services.auth_service import require_auth
 from loguru import logger
 
 router = APIRouter()
@@ -91,6 +92,7 @@ async def list_emails(
     limit: int = 100,
     priority: Optional[str] = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """List emails with priority filtering and AI enrichment."""
     query = db.query(Email)
@@ -101,7 +103,7 @@ async def list_emails(
 
 
 @router.get("/{email_id}", response_model=EmailResponse)
-async def get_email(email_id: str, db: Session = Depends(get_db)):
+async def get_email(email_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Fetch single email details by ID."""
     email = None
     try:
@@ -119,6 +121,7 @@ async def send_email_response(
     email_id: str,
     payload: EmailSendRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Deliver email reply to the intended recipient via the background task queue and centralized email_service."""
     email = None
@@ -206,6 +209,7 @@ async def send_email_response(
 async def compose_and_send_email(
     payload: EmailComposeRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Compose and immediately queue a new outbound email to a customer or lead."""
     contact = None

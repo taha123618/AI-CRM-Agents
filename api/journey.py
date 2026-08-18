@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
-from database.models import Customer, Deal, Contact, Activity, CustomerIntervention
+from database.models import Customer, Deal, Contact, Activity, CustomerIntervention, User
+from services.auth_service import require_auth
 from workflows.orchestrator import AgentOrchestrator
 
 router = APIRouter()
@@ -106,7 +107,8 @@ def get_customer_journey_stages(
 
 
 @router.get("/customers/{customer_id}", response_model=Dict[str, Any])
-def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)):
+def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Get detailed lifecycle journey history, telemetry timeline, and recommended interventions from PostgreSQL."""
     customer = None
     try:
@@ -173,7 +175,8 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
 
 
 @router.post("/interventions/trigger", response_model=Dict[str, Any])
-async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: Session = Depends(get_db)):
+async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Trigger an autonomous retention intervention, execute AI playbook, save to PostgreSQL, and boost DB health score."""
     customer = None
     try:
@@ -315,7 +318,8 @@ def list_journey_interventions(
 
 
 @router.post("/interventions/{intervention_id}/resolve", response_model=Dict[str, Any])
-def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get_db)):
+def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Mark an intervention as resolved/completed in PostgreSQL database."""
     intv = None
     try:

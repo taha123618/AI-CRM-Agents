@@ -58,9 +58,8 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${
-          sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
-        }`}
+        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
+          }`}
       >
         {/* Search & AI Spotlight Bar */}
         <div className="flex items-center gap-3 w-64 sm:w-80 lg:w-96">
@@ -85,52 +84,25 @@ export function Header() {
 
         {/* Status, Language Selector & Quick Actions */}
         <div className="flex items-center gap-3">
-          {/* Active Workspace Selector */}
-          <button
-            onClick={() => {
-              setActivePage('settings');
-              navigate('/settings');
-            }}
-            title="Active Organization Workspace"
-            className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 transition-all"
-          >
-            <Building2 className="w-3.5 h-3.5 text-brand-400" />
-            <span className="font-semibold text-white">Default Workspace</span>
-            <Badge variant="purple" className="text-[9px] py-0 px-1 font-mono">
-              ENTERPRISE
-            </Badge>
-          </button>
-
           {/* Language Switcher */}
           <LanguageSelector onOpenSettings={() => setIsLangManagerOpen(true)} />
 
           {/* Realtime Stream Indicator */}
           <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs">
             <Radio
-              className={`w-3.5 h-3.5 ${
-                connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
-              }`}
+              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
+                }`}
             />
             <span className="text-slate-300 font-medium">
               {connectionStatus === 'OPEN' ? 'WS Realtime Stream' : 'Event Stream (Polling)'}
             </span>
             <span
-              className={`w-2 h-2 rounded-full ${
-                backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
-              }`}
+              className={`w-2 h-2 rounded-full ${backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
+                }`}
             />
           </div>
 
-          {/* AI Semantic RAG Spotlight Link */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setGlobalSearchOpen(true)}
-            className="hidden md:inline-flex border-indigo-500/30 text-indigo-300 hover:bg-indigo-950/40"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-            <span>AI Search</span>
-          </Button>
+
 
           {/* Agent Console Quick Link */}
           <Button

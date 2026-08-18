@@ -12,6 +12,7 @@ from database.models import User
 from services.auth_service import (
     hash_password,
     verify_password,
+    validate_password_strength,
     create_access_token,
     create_refresh_token,
     store_refresh_token,
@@ -47,12 +48,14 @@ COOKIE_SECURE = (
 
 def set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
     """Set secure HTTP-only cookies for access and refresh tokens."""
+    # SECURITY: Use SameSite=Strict in production to prevent CSRF
+    samesite_value = "strict" if COOKIE_SECURE else "lax"
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
         max_age=3600 * 24,  # 1 day
-        samesite="lax",
+        samesite=samesite_value,
         secure=COOKIE_SECURE,
     )
     response.set_cookie(
@@ -60,7 +63,7 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str) 
         value=refresh_token,
         httponly=True,
         max_age=3600 * 24 * 7,  # 7 days
-        samesite="lax",
+        samesite=samesite_value,
         secure=COOKIE_SECURE,
     )
 
@@ -73,8 +76,8 @@ def clear_auth_cookies(response: Response) -> None:
 
 class UserRegisterRequest(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=6, description="Password min 6 characters")
-    full_name: str = Field(..., min_length=2)
+    password: str = Field(..., min_length=8, description="Password min 8 characters")
+    full_name: str = Field(..., min_length=2, max_length=150)
     role: Optional[str] = Field("sales", description="'admin', 'sales', 'support', 'auditor'")
 
 
@@ -129,20 +132,20 @@ class UserRoleUpdateRequest(BaseModel):
 
 class UserCreateAdminRequest(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=6)
-    full_name: str = Field(..., min_length=2)
+    password: str = Field(..., min_length=8)
+    full_name: str = Field(..., min_length=2, max_length=150)
     role: str = Field("sales", description="'admin', 'sales', 'support', 'auditor'")
     is_active: bool = True
     permissions: Optional[List[str]] = Field(default_factory=list)
 
 
 class UserUpdateAdminRequest(BaseModel):
-    full_name: Optional[str] = None
+    full_name: Optional[str] = Field(None, max_length=150)
     email: Optional[EmailStr] = None
     role: Optional[str] = None
     is_active: Optional[bool] = None
     permissions: Optional[List[str]] = None
-    password: Optional[str] = None
+    password: Optional[str] = Field(None, min_length=8)
 
 
 class UserStatusUpdateRequest(BaseModel):
@@ -161,6 +164,14 @@ async def register(
     db: Session = Depends(get_db),
 ):
     """Register a new CRM user, set secure HTTP-only cookies, and return JWT access token."""
+    # Password complexity validation
+    pw_error = validate_password_strength(payload.password)
+    if pw_error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=pw_error,
+        )
+
     existing = db.query(User).filter(User.email == payload.email.lower().strip()).first()
     if existing:
         raise HTTPException(
@@ -174,6 +185,7 @@ async def register(
             detail="Super Admin accounts cannot be self-registered publicly. They must be provisioned by an existing Super Admin via Settings > Access Control & RBAC.",
         )
 
+    # SECURITY: Only allow safe non-admin roles during public registration
     valid_roles = ["sales", "support", "auditor"]
     user_role = payload.role if payload.role in valid_roles else "sales"
     user_permissions = get_default_permissions_for_role(user_role)
@@ -342,7 +354,9 @@ async def logout(
     db: Session = Depends(get_db),
 ):
     """Invalidate session cookies, revoke refresh token in database, and record audit log."""
-    rf_token = request.cookies.get("refresh_token")
+    rf_token = request.cookies.get("refresh_token") or (
+        request.json().get("refresh_token") if request.headers.get("content-type", "").startswith("application/json") else None
+    )
     if rf_token:
         revoke_refresh_token(db, rf_token)
 
@@ -424,6 +438,14 @@ async def reset_password(
     db: Session = Depends(get_db),
 ):
     """Reset account password using a validated single-use reset token."""
+    # Password complexity validation
+    pw_error = validate_password_strength(payload.new_password)
+    if pw_error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=pw_error,
+        )
+
     user = verify_and_use_password_reset_token(db, payload.token, payload.new_password)
     record_audit_log(
         db=db,
@@ -698,7 +720,13 @@ async def update_user_details(
     if payload.permissions is not None:
         user.permissions = payload.permissions
 
-    if payload.password is not None and len(payload.password.strip()) >= 6:
+    if payload.password is not None and payload.password.strip():
+        pw_error = validate_password_strength(payload.password.strip())
+        if pw_error:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"New password does not meet requirements: {pw_error}",
+            )
         user.hashed_password = hash_password(payload.password.strip())
 
     db.commit()

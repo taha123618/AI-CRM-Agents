@@ -37,11 +37,44 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ detail?: string }>) => {
+  async (error: AxiosError<{ detail?: string }>) => {
+    const status = error.response?.status;
     const message =
       error.response?.data?.detail ||
       error.message ||
       'An unexpected network error occurred';
+
+    // SECURITY: Handle 401 Unauthorized — attempt token refresh once
+    if (status === 401 && !error.config?.url?.includes('/api/auth/')) {
+      const originalRequest = error.config as any;
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshRes = await apiClient.post('/api/auth/refresh');
+          if (refreshRes.data?.access_token) {
+            safeStorage.setItem('crm_access_token', refreshRes.data.access_token);
+            originalRequest.headers.Authorization = `Bearer ${refreshRes.data.access_token}`;
+            return apiClient(originalRequest);
+          }
+        } catch {
+          // Refresh failed — clear session and redirect to login
+          safeStorage.removeItem('crm_access_token');
+          safeStorage.removeItem('crm_user');
+          window.location.href = '/login';
+          return Promise.reject(new Error('Session expired. Please sign in again.'));
+        }
+      }
+    }
+
+    // SECURITY: Handle 403 Forbidden — redirect to unauthorized page
+    if (status === 403) {
+      // Don't redirect for auth endpoints (login/register errors are expected)
+      if (!error.config?.url?.includes('/api/auth/')) {
+        // Store the attempted URL for potential redirect back
+        safeStorage.setItem('crm_unauthorized_url', error.config?.url || '');
+      }
+    }
+
     return Promise.reject(new Error(message));
   }
 );

@@ -5,8 +5,9 @@ from fastapi.testclient import TestClient
 import uuid
 
 from main import app
+from tests.conftest import get_authenticated_client
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 # ============================================================================

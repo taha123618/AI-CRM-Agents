@@ -22,12 +22,54 @@ from database.models import (
 )
 
 # Configuration
-SECRET_KEY = os.getenv("SECRET_KEY", "ai-crm-enterprise-super-secret-production-key-2026")
+# SECURITY: No hardcoded default — must be provided via environment variable.
+_env_secret = os.getenv("SECRET_KEY")
+if not _env_secret:
+    import warnings
+    warnings.warn(
+        "SECRET_KEY environment variable is not set! Using a temporary ephemeral key. "
+        "All tokens will be invalid after restart. Set SECRET_KEY in your .env file.",
+        stacklevel=2,
+    )
+    _env_secret = secrets.token_hex(32)
+SECRET_KEY: str = _env_secret
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))  # 24 hours
 REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
+
+
+def validate_password_strength(password: str) -> Optional[str]:
+    """Validate password meets minimum complexity requirements.
+    
+    Returns None if valid, or an error message string if invalid.
+    Requirements:
+    - Minimum 8 characters
+    - At least one uppercase letter
+    - At least one lowercase letter
+    - At least one digit
+    - At least one special character (!@#$%^&*()_+-=[]{}|;:'",.<>?/)
+    """
+    if len(password) < 8:
+        return "Password must be at least 8 characters long."
+    if not any(c.isupper() for c in password):
+        return "Password must contain at least one uppercase letter."
+    if not any(c.islower() for c in password):
+        return "Password must contain at least one lowercase letter."
+    if not any(c.isdigit() for c in password):
+        return "Password must contain at least one digit."
+    special_chars = set(r"!@#$%^&*()_+-=[]{}|:;\'\",.<>?/~`")
+    if not any(c in special_chars for c in password):
+        return "Password must contain at least one special character."
+    # Block common weak passwords
+    weak_passwords = {
+        'password1!', 'passw0rd!', 'admin123!', 'letmein1!',
+        'welcome1!', 'qwerty1!', 'abc12345!', 'monkey12!',
+    }
+    if password.lower() in weak_passwords:
+        return "This password is too common. Please choose a more unique password."
+    return None
 
 
 def hash_password(password: str) -> str:
@@ -308,12 +350,10 @@ async def get_current_user(
         effective_token = request.cookies.get("access_token")
 
     if not effective_token:
-        # Fallback to active admin or first user if in local dev without credentials
-        admin_user = db.query(User).filter(User.role == "admin", User.is_active == True).first()  # noqa: E712
-        if admin_user:
-            return admin_user
-        any_user = db.query(User).filter(User.is_active == True).first()  # noqa: E712
-        return any_user
+        # SECURITY: No automatic auth bypass. Unauthenticated requests must be
+        # handled by require_auth which returns 401. Returning None here allows
+        # require_auth to enforce authentication properly.
+        return None
 
     payload = decode_token(effective_token)
     user_id: Optional[str] = payload.get("sub")

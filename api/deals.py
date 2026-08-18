@@ -4,19 +4,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Any, List, Optional, Union
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from database.connection import get_db
-from database.models import Deal
+from database.models import Deal, User
+from services.auth_service import require_auth
 
 router = APIRouter()
 
 
 class DealCreate(BaseModel):
-    name: str
-    value: float
-    stage: str
-    contact_id: Optional[str] = None
-    company_id: Optional[str] = None
+    name: str = Field(..., min_length=1, max_length=255)
+    value: float = Field(..., ge=0)
+    stage: str = Field(..., max_length=50)
+    contact_id: Optional[str] = Field(None, max_length=100)
+    company_id: Optional[str] = Field(None, max_length=100)
 
 
 class DealResponse(BaseModel):
@@ -62,15 +63,15 @@ class DealResponse(BaseModel):
 
 
 class DealUpdate(BaseModel):
-    name: Optional[str] = None
-    value: Optional[float] = None
-    stage: Optional[str] = None
-    health_score: Optional[int] = None
+    name: Optional[str] = Field(None, max_length=255)
+    value: Optional[float] = Field(None, ge=0)
+    stage: Optional[str] = Field(None, max_length=50)
+    health_score: Optional[int] = Field(None, ge=0, le=100)
     is_stalled: Optional[bool] = None
     risk_factors: Optional[List[str]] = None
-    close_probability: Optional[int] = None
+    close_probability: Optional[int] = Field(None, ge=0, le=100)
     next_actions: Optional[List[str]] = None
-    forecast_close_date: Optional[str] = None
+    forecast_close_date: Optional[str] = Field(None, max_length=20)
 
 
 @router.get("/", response_model=List[DealResponse])
@@ -79,6 +80,7 @@ async def list_deals(
     limit: int = 100,
     stage: Optional[str] = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """List all deals"""
     query = db.query(Deal)
@@ -89,7 +91,11 @@ async def list_deals(
 
 
 @router.get("/{deal_id}", response_model=DealResponse)
-async def get_deal(deal_id: str, db: Session = Depends(get_db)):
+async def get_deal(
+    deal_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get deal by ID"""
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
@@ -98,7 +104,11 @@ async def get_deal(deal_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=DealResponse)
-async def create_deal(deal: DealCreate, db: Session = Depends(get_db)):
+async def create_deal(
+    deal: DealCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Create new deal"""
     from services.audit_service import record_audit_log
     db_deal = Deal(**deal.model_dump())
@@ -117,7 +127,12 @@ async def create_deal(deal: DealCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{deal_id}", response_model=DealResponse)
-async def update_deal(deal_id: str, payload: DealUpdate, db: Session = Depends(get_db)):
+async def update_deal(
+    deal_id: str,
+    payload: DealUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Update deal details"""
     from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
@@ -154,7 +169,12 @@ async def update_deal(deal_id: str, payload: DealUpdate, db: Session = Depends(g
 
 
 @router.patch("/{deal_id}/stage")
-async def update_deal_stage(deal_id: str, stage: str, db: Session = Depends(get_db)):
+async def update_deal_stage(
+    deal_id: str,
+    stage: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Update deal stage"""
     from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
@@ -175,7 +195,11 @@ async def update_deal_stage(deal_id: str, stage: str, db: Session = Depends(get_
 
 
 @router.delete("/{deal_id}")
-async def delete_deal(deal_id: str, db: Session = Depends(get_db)):
+async def delete_deal(
+    deal_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Delete deal"""
     from services.audit_service import record_audit_log
     deal = db.query(Deal).filter(Deal.id == deal_id).first()

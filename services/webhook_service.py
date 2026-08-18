@@ -17,6 +17,18 @@ from database.models import WebhookEndpoint, WebhookDelivery
 ALLOW_LOCAL_WEBHOOKS = os.getenv("ALLOW_LOCAL_WEBHOOKS", "false").lower() in ("true", "1", "yes")
 
 
+def _is_private_ip(ip: Any) -> bool:
+    """Check if an IP address belongs to a restricted network range."""
+    return (
+        ip.is_loopback
+        or ip.is_link_local
+        or ip.is_reserved
+        or ip.is_multicast
+        or ip.is_unspecified
+        or ip.is_private
+    )
+
+
 def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[bool, str]:
     """Validate webhook URL against SSRF (Server-Side Request Forgery) attacks.
     
@@ -25,6 +37,7 @@ def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[b
     - Loopback addresses (127.0.0.1, localhost, ::1)
     - Link-local and cloud metadata addresses (169.254.169.254)
     - Private RFC-1918 subnets (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) in production
+    - DNS rebinding: resolves hostname to IP and validates the resolved address
     """
     if allow_local is None:
         allow_local = ALLOW_LOCAL_WEBHOOKS
@@ -44,19 +57,36 @@ def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[b
     lower_host = hostname.lower().strip()
 
     # Block well-known loopback names and cloud metadata endpoints
-    if lower_host in ("localhost", "127.0.0.1", "::1", "0.0.0.0", "169.254.169.254", "metadata.google.internal"):
-        if not allow_local:
-            return False, f"Destination host '{hostname}' is a restricted local or metadata address."
+    blocked_hosts = {
+        "localhost", "127.0.0.1", "::1", "0.0.0.0",
+        "169.254.169.254", "metadata.google.internal",
+        "metadata.google", "metadata.gcp.internal",
+        "169.254.169.254.nip.io",
+    }
+    if lower_host in blocked_hosts and not allow_local:
+        return False, f"Destination host '{hostname}' is a restricted local or metadata address."
 
-    # Resolve IP and check address classes
+    # SECURITY: DNS Rebinding Protection — resolve hostname to IP and validate
+    if not allow_local:
+        try:
+            resolved_ips = socket.getaddrinfo(lower_host, None, socket.AF_UNSPEC)
+            for _, _, _, _, sockaddr in resolved_ips:
+                resolved_ip = ipaddress.ip_address(sockaddr[0])
+                if _is_private_ip(resolved_ip):
+                    return False, (
+                        f"Hostname '{hostname}' resolves to restricted IP {resolved_ip} "
+                        f"(DNS rebinding protection)."
+                    )
+        except (socket.gaierror, OSError):
+            # DNS resolution failure — reject to be safe
+            return False, f"Failed to resolve hostname '{hostname}'."
+
+    # Also check if hostname itself is a raw IP
     try:
         ip = ipaddress.ip_address(lower_host)
-        if (ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast or ip.is_unspecified) and not allow_local:
-            return False, f"Destination IP {ip} is restricted (loopback/link-local/reserved)."
-        if ip.is_private and not allow_local:
-            return False, f"Destination IP {ip} is within a private network range."
+        if _is_private_ip(ip) and not allow_local:
+            return False, f"Destination IP {ip} is within a restricted network range."
     except ValueError:
-        # Not a raw IP; hostname is resolved via DNS or allowed if valid domain
         pass
 
     return True, "URL is safe."

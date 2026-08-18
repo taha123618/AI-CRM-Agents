@@ -6,7 +6,8 @@ from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 from database.connection import get_db
-from database.models import ForecastSimulation
+from database.models import ForecastSimulation, User
+from services.auth_service import require_auth
 from services.forecasting_service import ForecastingService
 
 router = APIRouter()
@@ -51,6 +52,7 @@ class SaveSimulationSchema(BaseModel):
 def run_monte_carlo(
     payload: MonteCarloRunSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Run Monte Carlo simulation across all pipeline deals with customizable confidence bounds."""
     res = ForecastingService.run_monte_carlo_simulation(
@@ -63,19 +65,22 @@ def run_monte_carlo(
 
 
 @router.get("/pipeline-velocity", response_model=Dict[str, Any])
-def get_pipeline_velocity(db: Session = Depends(get_db)):
+def get_pipeline_velocity(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Compute pipeline velocity, stage duration averages, and conversion hazard rates."""
     return ForecastingService.get_pipeline_velocity_matrix(db)
 
 
 @router.get("/arr-trend", response_model=List[Dict[str, Any]])
-def get_arr_trend(db: Session = Depends(get_db)):
+def get_arr_trend(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Return monthly ARR trend data for the current fiscal year."""
     return ForecastingService.get_arr_trend(db)
 
 
 @router.get("/stage-breakdown", response_model=List[Dict[str, Any]])
-def get_stage_breakdown(db: Session = Depends(get_db)):
+def get_stage_breakdown(db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth)):
     """Return current pipeline revenue value breakdown per stage."""
     return ForecastingService.get_stage_revenue_breakdown(db)
 
@@ -84,6 +89,7 @@ def get_stage_breakdown(db: Session = Depends(get_db)):
 def save_simulation(
     payload: SaveSimulationSchema,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Save simulation forecast scenario for executive board review."""
     sim = ForecastingService.save_simulation(db, payload.model_dump())
@@ -127,6 +133,7 @@ def list_saved_simulations(
 def get_saved_simulation(
     simulation_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Retrieve details for a single saved simulation scenario."""
     sim = (
@@ -154,6 +161,7 @@ def get_saved_simulation(
 def delete_simulation(
     simulation_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Delete a saved forecast simulation scenario."""
     deleted = ForecastingService.delete_simulation(db, simulation_id)
