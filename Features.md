@@ -128,7 +128,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 
 ### 12. 💻 Frontend Architecture & UI/UX
 - [x] **React 19 + TypeScript SPA**: Strict type-safety with zero `any` leaks and modular feature architecture (`src/features/*`).
-- [x] **Tailwind CSS Glassmorphism Design**: Custom dark-mode aesthetic with gradients, subtle micro-animations, and backdrop blur.
+- [x] **Premium Neutral & Monochromatic Design System**: Warm Off-White Light mode (`#F6F5F2`) and Charcoal Dark mode (`#141311`/`#1D1B18`), Obsidian primary branding (`#1A1917`), Burnished Champagne Gold accents (`#C7A66A`), and muted semantic tokens without saturated neons or rainbow gradients.
 - [x] **TanStack Query v5**: Optimized server state caching, background refetching, and cache invalidation.
 - [x] **Zustand UI Store**: Global client state for navigation, active modals, and notification banners.
 - [x] **Platform Governance & Integrations Studio (`src/features/settings`)**: Unified control center with 5 tabs: User RBAC Management, Universal Webhooks Studio, Bulk CSV Import & Export Studio, Async Background Task Queue Monitor, and Compliance Audit Trail.

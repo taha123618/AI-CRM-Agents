@@ -35,22 +35,22 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', labelKey: 'nav.dashboard', defaultLabel: 'Dashboard', icon: LayoutDashboard },
-  { id: 'leads', labelKey: 'nav.leads', defaultLabel: 'Leads', icon: Users, badge: '' },
+  { id: 'leads', labelKey: 'nav.leads', defaultLabel: 'Leads', icon: Users },
   { id: 'deals', labelKey: 'nav.deals', defaultLabel: 'Deals Pipeline', icon: Briefcase },
   { id: 'war-room', labelKey: 'nav.war_room', defaultLabel: 'Deal War Room', icon: Swords, badge: 'AI' },
   { id: 'sequences', labelKey: 'nav.sequences', defaultLabel: 'AI SDR Cadences', icon: Send, badge: 'AI' },
   { id: 'customers', labelKey: 'nav.customers', defaultLabel: 'Customer Success', icon: Building2 },
   { id: 'journey', labelKey: 'nav.journey', defaultLabel: 'Journey & Churn', icon: Milestone, badge: 'New' },
-  { id: 'emails', labelKey: 'nav.emails', defaultLabel: 'Smart Inbox', icon: Mail, badge: '' },
+  { id: 'emails', labelKey: 'nav.emails', defaultLabel: 'Smart Inbox', icon: Mail },
   { id: 'meetings', labelKey: 'nav.meetings', defaultLabel: 'AI Calendar', icon: Calendar },
   { id: 'voice-ai', labelKey: 'nav.voice_ai', defaultLabel: 'Voice AI Studio', icon: PhoneCall, badge: 'Live' },
-  { id: 'whatsapp', labelKey: 'nav.whatsapp', defaultLabel: 'WhatsApp Hub', icon: MessageSquare, badge: '' },
+  { id: 'whatsapp', labelKey: 'nav.whatsapp', defaultLabel: 'WhatsApp Hub', icon: MessageSquare },
   { id: 'forecasting', labelKey: 'nav.forecasting', defaultLabel: 'ARR Forecasting', icon: TrendingUp, badge: 'AI' },
   { id: 'analytics', labelKey: 'nav.analytics', defaultLabel: 'Analytics', icon: BarChart3 },
-  { id: 'reports', labelKey: 'nav.reports', defaultLabel: 'AI Reports', icon: FileText, badge: '' },
-  { id: 'agents', labelKey: 'nav.agents', defaultLabel: 'Agent Console', icon: Bot, badge: '' },
+  { id: 'reports', labelKey: 'nav.reports', defaultLabel: 'AI Reports', icon: FileText },
+  { id: 'agents', labelKey: 'nav.agents', defaultLabel: 'Agent Console', icon: Bot },
   { id: 'custom-agents', labelKey: 'nav.custom_agents', defaultLabel: 'Agent Studio', icon: Sparkles, badge: 'New' },
-  { id: 'languages', labelKey: 'nav.languages', defaultLabel: 'Languages & I18n', icon: Globe, badge: '' },
+  { id: 'languages', labelKey: 'nav.languages', defaultLabel: 'Languages & I18n', icon: Globe },
   { id: 'settings', labelKey: 'nav.settings', defaultLabel: 'Settings & Security', icon: Sliders, badge: 'Auth' },
 ];
 
@@ -67,33 +67,34 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-0 left-0 z-40 h-screen glass-panel border-r border-slate-800/80 transition-all duration-300 flex flex-col',
+        'fixed top-0 left-0 z-40 h-screen bg-[#1A1917] border-r border-[#252421] transition-all duration-300 flex flex-col',
         sidebarOpen ? 'w-64' : 'w-20'
       )}
     >
       {/* Brand Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800/80">
+      <div className="flex items-center justify-between h-16 px-4 border-b border-[#252421]">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 via-orange-500 to-orange-500 flex items-center justify-center shadow-lg shadow-brand-500/20 shrink-0">
-            <Sparkles className="w-5 h-5 text-white animate-pulse" />
+          <div className="w-9 h-9 rounded-xl bg-[#252421] border border-[#35332F] flex items-center justify-center shrink-0">
+            <Sparkles className="w-4 h-4 text-[#C7A66A]" />
           </div>
           {sidebarOpen && (
             <div className="flex flex-col">
-              <span className="font-bold text-sm tracking-tight text-white">AI-Powered CRM</span>
-              <span className="text-[10px] font-mono text-brand-400">Agentic Architecture</span>
+              <span className="font-semibold text-sm tracking-tight text-white">AI CRM</span>
+              <span className="text-[10px] text-[#85817A] tracking-wider uppercase font-medium">Enterprise Suite</span>
             </div>
           )}
         </div>
         <button
           onClick={toggleSidebar}
-          className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+          className="p-1.5 rounded-lg text-[#85817A] hover:bg-[#2A2825] hover:text-white transition-colors"
+          aria-label="Toggle sidebar"
         >
           {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>
       </div>
 
       {/* Navigation List */}
-      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activePage === item.id;
@@ -102,22 +103,22 @@ export function Sidebar() {
               key={item.id}
               onClick={() => handleNav(item.id)}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative',
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors group relative',
                 isActive
-                  ? 'bg-brand-600/20 text-brand-400 border border-brand-500/30 shadow-md shadow-brand-500/5'
-                  : 'text-slate-400 hover:bg-slate-850 hover:text-slate-200 border border-transparent'
+                  ? 'bg-[#35322E] text-white border-l-2 border-[#C7A66A]'
+                  : 'text-[#B9B5AD] hover:bg-[#2A2825] hover:text-white border-l-2 border-transparent'
               )}
             >
-              <Icon className={cn('w-5 h-5 shrink-0 transition-colors', isActive ? 'text-brand-400' : 'group-hover:text-slate-200')} />
+              <Icon className={cn('w-4 h-4 shrink-0 transition-colors', isActive ? 'text-[#C7A66A]' : 'text-[#85817A] group-hover:text-white')} />
               {sidebarOpen && <span className="truncate">{t(item.labelKey, item.defaultLabel)}</span>}
 
               {item.badge && sidebarOpen && (
                 <span
                   className={cn(
-                    'ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full border',
-                    item.badge.includes('Active')
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                      : 'bg-brand-500/10 text-brand-400 border-brand-500/20'
+                    'ml-auto text-[9px] font-semibold px-2 py-0.5 rounded border',
+                    item.badge === 'AI'
+                      ? 'bg-[#2B2418] text-[#DEC28C] border-[#5A492B]'
+                      : 'bg-[#252421] text-[#B9B5AD] border-[#35332F]'
                   )}
                 >
                   {item.badge}
@@ -130,15 +131,14 @@ export function Sidebar() {
 
       {/* Footer Info */}
       {sidebarOpen && (
-        <div className="p-4 border-t border-slate-800/80 m-3 rounded-xl bg-slate-900/50 border border-slate-800">
+        <div className="p-3 m-3 rounded-lg bg-[#252421] border border-[#35332F]">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#64705B]"></span>
             </span>
-            <span className="text-xs font-medium text-slate-300">FastAPI Backend</span>
+            <span className="text-xs font-medium text-[#F5F3EE]">Autonomous Engine</span>
           </div>
-          <p className="text-[10px] text-slate-500 mt-1 font-mono">v1.0.0 • Connected to API</p>
+          <p className="text-[10px] text-[#85817A] mt-0.5">Enterprise v1.0 • Connected</p>
         </div>
       )}
     </aside>

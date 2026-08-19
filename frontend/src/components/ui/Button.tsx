@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'orange';
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'danger' | 'orange';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
 }
@@ -10,12 +10,20 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
     const variants = {
-      primary: 'bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-600/20 border border-brand-500/30',
-      secondary: 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700',
-      outline: 'bg-transparent hover:bg-slate-800/60 text-slate-200 border border-slate-700',
-      ghost: 'bg-transparent hover:bg-slate-800/50 text-slate-300 hover:text-white',
-      danger: 'bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20',
-      orange: 'bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20',
+      primary:
+        'bg-[#1A1917] dark:bg-[#F5F3EE] hover:bg-[#35332F] dark:hover:bg-[#EAE8E3] text-white dark:text-[#141311] border border-[#1A1917] dark:border-[#F5F3EE] shadow-sm',
+      secondary:
+        'bg-white dark:bg-[#25231F] hover:bg-[#F6F5F2] dark:hover:bg-[#302D28] text-[#1A1917] dark:text-[#F5F3EE] border border-[#DEDAD3] dark:border-[#35322E] shadow-sm',
+      accent:
+        'bg-[#C7A66A] hover:bg-[#B8955A] text-[#1A1917] font-semibold shadow-sm',
+      outline:
+        'bg-transparent hover:bg-[#F6F5F2] dark:hover:bg-[#25231F] text-[#1A1917] dark:text-[#F5F3EE] border border-[#DEDAD3] dark:border-[#35322E]',
+      ghost:
+        'bg-transparent hover:bg-[#F1F0EC] dark:hover:bg-[#25231F] text-[#5F5C56] dark:text-[#B9B5AD] hover:text-[#1A1917] dark:hover:text-[#F5F3EE]',
+      danger:
+        'bg-[#A64B45] hover:bg-[#8E3E39] text-white border border-[#A64B45] shadow-sm',
+      orange:
+        'bg-[#1A1917] dark:bg-[#F5F3EE] hover:bg-[#35332F] dark:hover:bg-[#EAE8E3] text-white dark:text-[#141311] border border-[#1A1917] dark:border-[#F5F3EE] shadow-sm',
     };
 
     const sizes = {
@@ -29,7 +37,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          'inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:transform-none cursor-pointer',
+          'inline-flex items-center justify-center gap-2 transition-colors duration-150 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
           variants[variant],
           sizes[size],
           className
@@ -37,7 +45,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isLoading && (
-          <svg className="animate-spin h-4 w-4 text-current" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-3.5 w-3.5 text-current" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path
               className="opacity-75"

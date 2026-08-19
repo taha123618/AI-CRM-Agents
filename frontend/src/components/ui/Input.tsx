@@ -11,27 +11,27 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, icon, required, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1">
         {label && (
-          <label className="block text-xs font-medium text-slate-300">
+          <label className="block text-xs font-medium text-[#252421] dark:text-[#F5F3EE]">
             {label}
-            {required && <span className="text-rose-400 ml-0.5">*</span>}
+            {required && <span className="text-[#A64B45] ml-0.5">*</span>}
           </label>
         )}
         <div className="relative flex items-center">
-          {icon && <div className="absolute left-3 text-slate-400 pointer-events-none">{icon}</div>}
+          {icon && <div className="absolute left-3 text-[#85817A] dark:text-[#807C75] pointer-events-none">{icon}</div>}
           <input
             ref={ref}
             className={cn(
-              'w-full bg-slate-900/90 text-slate-100 placeholder:text-slate-500 border border-slate-700/80 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all duration-200',
+              'w-full bg-white dark:bg-[#1D1B18] text-[#1A1917] dark:text-[#F5F3EE] placeholder:text-[#85817A] dark:placeholder:text-[#807C75] border border-[#DEDAD3] dark:border-[#35322E] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1A1917] dark:focus:ring-[#F5F3EE] focus:border-[#1A1917] dark:focus:border-[#F5F3EE] transition-all',
               icon && 'pl-9',
-              error && 'border-rose-500/80 focus:ring-rose-500/50',
+              error && 'border-[#A64B45] focus:ring-[#A64B45] focus:border-[#A64B45]',
               className
             )}
             {...props}
           />
         </div>
-        {error && <p className="text-xs text-rose-400">{error}</p>}
+        {error && <p className="text-xs text-[#A64B45]">{error}</p>}
       </div>
     );
   }

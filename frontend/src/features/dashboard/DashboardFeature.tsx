@@ -38,97 +38,97 @@ export function DashboardFeature() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Leads */}
-        <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
+        <Card className="bg-white dark:bg-[#1D1B18] border-[#E9E6E0] dark:border-[#35322E] hover:border-[#DEDAD3] dark:hover:border-[#3F3B36] transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#85817A] dark:text-[#807C75]">
               {t('dashboard.total_leads', 'Total Monitored Leads')}
             </span>
-            <div className="p-2.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
-              <Users className="w-5 h-5" />
+            <div className="p-2 rounded-xl bg-[#FAF9F6] dark:bg-[#25231F] text-[#1A1917] dark:text-[#F5F3EE] border border-[#E9E6E0] dark:border-[#35322E]">
+              <Users className="w-4 h-4 text-[#1A1917] dark:text-[#F5F3EE]" />
             </div>
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-24 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-bold text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-mono">
                 {formatNumber(metrics?.leads.total || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                <span className="text-emerald-400 font-bold">{metrics?.leads.qualified || 0} Qualified</span> by AI Agent
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1.5 flex items-center gap-1">
+                <span className="text-[#64705B] font-semibold">{metrics?.leads.qualified || 0} Qualified</span> by AI Agent
               </p>
             </div>
           )}
         </Card>
 
         {/* Pipeline Value */}
-        <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
+        <Card className="bg-white dark:bg-[#1D1B18] border-[#E9E6E0] dark:border-[#35322E] hover:border-[#DEDAD3] dark:hover:border-[#3F3B36] transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#85817A] dark:text-[#807C75]">
               {t('dashboard.active_pipeline', 'Active Pipeline Value')}
             </span>
-            <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              <Briefcase className="w-5 h-5" />
+            <div className="p-2 rounded-xl bg-[#FAF9F6] dark:bg-[#25231F] text-[#1A1917] dark:text-[#F5F3EE] border border-[#E9E6E0] dark:border-[#35322E]">
+              <Briefcase className="w-4 h-4 text-[#1A1917] dark:text-[#F5F3EE]" />
             </div>
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-28 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-bold text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-mono">
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                <span className="text-blue-400 font-bold">{formatNumber(metrics?.deals.total || 0)} Deals</span> in progress
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1.5 flex items-center gap-1">
+                <span className="text-[#806638] dark:text-[#DEC28C] font-semibold">{formatNumber(metrics?.deals.total || 0)} Deals</span> in progress
               </p>
             </div>
           )}
         </Card>
 
         {/* Total Customers */}
-        <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-emerald">
+        <Card className="bg-white dark:bg-[#1D1B18] border-[#E9E6E0] dark:border-[#35322E] hover:border-[#DEDAD3] dark:hover:border-[#3F3B36] transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#85817A] dark:text-[#807C75]">
               {t('dashboard.active_customers', 'Active Accounts')}
             </span>
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <Building2 className="w-5 h-5" />
+            <div className="p-2 rounded-xl bg-[#FAF9F6] dark:bg-[#25231F] text-[#1A1917] dark:text-[#F5F3EE] border border-[#E9E6E0] dark:border-[#35322E]">
+              <Building2 className="w-4 h-4 text-[#1A1917] dark:text-[#F5F3EE]" />
             </div>
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-24 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-bold text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-mono">
                 {formatNumber(metrics?.customers.total || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">100% Health Monitored</span>
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1.5 flex items-center gap-1">
+                <TrendingUp className="w-3.5 h-3.5 text-[#64705B]" />
+                <span className="text-[#64705B] font-semibold">100% Health Monitored</span>
               </p>
             </div>
           )}
         </Card>
 
         {/* Monthly Recurring Revenue */}
-        <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-purple">
+        <Card className="bg-white dark:bg-[#1D1B18] border-[#E9E6E0] dark:border-[#35322E] hover:border-[#DEDAD3] dark:hover:border-[#3F3B36] transition-colors">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              {t('dashboard.monthly_revenue', 'Monthly Recurring Revenue (MRR)')}
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#85817A] dark:text-[#807C75]">
+              {t('dashboard.monthly_revenue', 'Monthly Recurring Revenue')}
             </span>
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              <DollarSign className="w-5 h-5" />
+            <div className="p-2 rounded-xl bg-[#FAF9F6] dark:bg-[#25231F] text-[#1A1917] dark:text-[#F5F3EE] border border-[#E9E6E0] dark:border-[#35322E]">
+              <DollarSign className="w-4 h-4 text-[#1A1917] dark:text-[#F5F3EE]" />
             </div>
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-28 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-bold text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-mono">
                 {formatCurrency(metrics?.customers.mrr || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                <span className="text-purple-400 font-bold">ARR: {formatCurrency(metrics?.customers.arr || 0)}</span>
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1.5 flex items-center gap-1">
+                <span className="text-[#1A1917] dark:text-[#F5F3EE] font-semibold">ARR: {formatCurrency(metrics?.customers.arr || 0)}</span>
               </p>
             </div>
           )}
@@ -138,11 +138,11 @@ export function DashboardFeature() {
       {/* Main Dashboard Section: Chart & Real-Time Event Log */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pipeline Chart */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 bg-white dark:bg-[#1D1B18]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
               <CardTitle>{t('deals.title', 'Sales Pipeline Distribution')}</CardTitle>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1">
                 {t('deals.subtitle', 'Real-time opportunity values across stages managed by SalesPipelineAgent')}
               </p>
             </div>
@@ -156,34 +156,34 @@ export function DashboardFeature() {
         </Card>
 
         {/* Real-time Agent Activity Feed */}
-        <Card>
+        <Card className="bg-white dark:bg-[#1D1B18]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
               <CardTitle>
-                <Zap className="w-4 h-4 text-brand-400 animate-pulse" />
+                <Zap className="w-4 h-4 text-[#C7A66A]" />
                 {t('dashboard.agent_telemetry', 'Live Agent Telemetry')}
               </CardTitle>
-              <p className="text-xs text-slate-400 mt-1">Real-time WebSocket event stream</p>
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-1">Real-time WebSocket event stream</p>
             </div>
           </CardHeader>
           <CardContent className="pt-2">
             <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
               {events.length === 0 ? (
-                <div className="text-center py-8 text-slate-500 text-xs">Waiting for agent events...</div>
+                <div className="text-center py-8 text-[#85817A] dark:text-[#807C75] text-xs">Waiting for agent events...</div>
               ) : (
                 events.map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-1 hover:border-slate-700 transition-colors"
+                    className="p-3 rounded-xl bg-[#FAF9F6] dark:bg-[#25231F] border border-[#E9E6E0] dark:border-[#35322E] text-xs space-y-1 hover:border-[#DEDAD3] dark:hover:border-[#3F3B36] transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-brand-400 font-mono">{evt.agent}</span>
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      <span className="font-semibold text-[#1A1917] dark:text-[#F5F3EE] font-mono">{evt.agent}</span>
+                      <span className="text-[10px] text-[#85817A] dark:text-[#807C75] font-mono">
                         {new Date(evt.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <p className="text-slate-300 font-medium">{evt.type.replace('_', ' ')}</p>
-                    {evt.data?.message && <p className="text-[11px] text-slate-400">{evt.data.message}</p>}
+                    <p className="text-[#5F5C56] dark:text-[#B9B5AD] font-medium">{evt.type.replace('_', ' ')}</p>
+                    {evt.data?.message && <p className="text-[11px] text-[#85817A] dark:text-[#807C75]">{evt.data.message}</p>}
                   </div>
                 ))
               )}
@@ -193,30 +193,28 @@ export function DashboardFeature() {
       </div>
 
       {/* Quick Agent Execution Triggers Banner */}
-      <Card className="bg-gradient-to-r from-slate-900 via-brand-950/40 to-slate-900 border-brand-500/30">
+      <Card className="bg-[#FAF9F6] dark:bg-[#25231F] border-[#E9E6E0] dark:border-[#35322E]">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-2">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-brand-600/20 border border-brand-500/40 flex items-center justify-center text-brand-400 shrink-0">
-              <Bot className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-[#1A1917] dark:bg-[#1D1B18] border border-[#35332F] flex items-center justify-center text-white shrink-0">
+              <Bot className="w-5 h-5 text-[#C7A66A]" />
             </div>
             <div>
-              <h4 className="text-base font-bold text-white">Trigger Autonomous Workflows</h4>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <h4 className="text-sm font-bold text-[#1A1917] dark:text-[#F5F3EE]">Trigger Autonomous Workflows</h4>
+              <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] mt-0.5">
                 Run lead qualification, analyze emails, monitor churn risk, or schedule calendar prep automatically.
               </p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button size="sm" onClick={() => setLeadModalOpen(true)}>
-              <Sparkles className="w-3.5 h-3.5" />
+            <Button size="sm" variant="primary" onClick={() => setLeadModalOpen(true)}>
+              <Sparkles className="w-3.5 h-3.5 text-[#C7A66A]" />
               <span>Qualify Lead</span>
             </Button>
             <Button size="sm" variant="secondary" onClick={() => setDealModalOpen(true)}>
-              <Sparkles className="w-3.5 h-3.5" />
               <span>Analyze Deal</span>
             </Button>
             <Button size="sm" variant="outline" onClick={() => setEmailModalOpen(true)}>
-              <Sparkles className="w-3.5 h-3.5" />
               <span>Analyze Email</span>
             </Button>
           </div>

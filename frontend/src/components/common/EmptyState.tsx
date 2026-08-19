@@ -23,19 +23,19 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-3xl border border-dashed border-slate-800/80 bg-slate-900/20 max-w-lg mx-auto my-6',
+        'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-2xl border border-dashed border-[#DEDAD3] dark:border-[#35322E] bg-[#FAF9F6] dark:bg-[#1D1B18] max-w-lg mx-auto my-6',
         className
       )}
     >
-      <div className="w-12 h-12 rounded-2xl bg-slate-800/60 text-slate-400 flex items-center justify-center mb-4 border border-slate-700/50">
-        {icon || <Inbox className="w-6 h-6" />}
+      <div className="w-12 h-12 rounded-xl bg-[#EAE8E3] dark:bg-[#25231F] text-[#5F5C56] dark:text-[#B9B5AD] flex items-center justify-center mb-4 border border-[#DEDAD3] dark:border-[#35322E]">
+        {icon || <Inbox className="w-6 h-6 text-[#5F5C56] dark:text-[#B9B5AD]" />}
       </div>
 
-      <h3 className="text-sm font-bold text-white mb-1">{title}</h3>
-      <p className="text-xs text-slate-400 max-w-sm mb-6 leading-relaxed">{description}</p>
+      <h3 className="text-sm font-semibold text-[#1A1917] dark:text-[#F5F3EE] mb-1">{title}</h3>
+      <p className="text-xs text-[#5F5C56] dark:text-[#B9B5AD] max-w-sm mb-5 leading-relaxed">{description}</p>
 
       {actionLabel && onAction && (
-        <Button size="sm" onClick={onAction}>
+        <Button size="sm" variant="primary" onClick={onAction}>
           {actionLabel}
         </Button>
       )}

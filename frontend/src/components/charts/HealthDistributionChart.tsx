@@ -12,9 +12,9 @@ export function HealthDistributionChart({
   highRiskCount = 2,
 }: HealthDistributionProps) {
   const data = [
-    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#10b981' },
-    { name: 'Medium Risk', value: mediumRiskCount, color: '#f59e0b' },
-    { name: 'High Risk (Churn Warning)', value: highRiskCount, color: '#f43f5e' },
+    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#64705B' },
+    { name: 'Medium Risk', value: mediumRiskCount, color: '#9A6B2F' },
+    { name: 'High Risk (Warning)', value: highRiskCount, color: '#A64B45' },
   ];
 
   return (
@@ -27,23 +27,24 @@ export function HealthDistributionChart({
             cy="50%"
             innerRadius={50}
             outerRadius={80}
-            paddingAngle={5}
+            paddingAngle={4}
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} stroke="transparent" />
+              <Cell key={`cell-${index}`} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
             ))}
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderColor: '#334155',
-              borderRadius: '0.75rem',
-              color: '#ffffff',
+              backgroundColor: '#1A1917',
+              borderColor: '#35332F',
+              borderRadius: '0.5rem',
+              color: '#FFFFFF',
+              fontSize: '12px',
             }}
           />
           <Legend
-            wrapperStyle={{ fontSize: '12px', color: '#fff' }}
+            wrapperStyle={{ fontSize: '11px', color: '#5F5C56' }}
             verticalAlign="bottom"
             height={36}
           />

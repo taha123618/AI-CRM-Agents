@@ -8,7 +8,7 @@ export function Container({ children }: { children: React.ReactNode }) {
   return (
     <main
       className={cn(
-        'min-h-[calc(100vh-4rem)] p-6 transition-all duration-300',
+        'min-h-[calc(100vh-4rem)] p-6 bg-[#F6F5F2] dark:bg-[#141311] text-[#1A1917] dark:text-[#F5F3EE] transition-all duration-300',
         sidebarOpen ? 'ml-64' : 'ml-20'
       )}
     >

@@ -99,9 +99,16 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
 * **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
 
-### 5. Frontend Development
+### 5. Frontend Development & Design System
 * **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/`.
-* **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
+* **Premium Neutral & Monochromatic Color System**:
+  - **Primary Brand (Obsidian)**: Deep charcoal/black (`#1A1917`, `#252421`, `#35332F`, `#111110`) for buttons, sidebar, active headers, and typography.
+  - **Accent (Burnished Champagne Gold)**: Subtle gold (`#C7A66A`, `#806638`, `#DEC28C`) used strictly for AI insights, selected indicators, and key metric badges (never overused).
+  - **Warm Neutral Light Mode**: Background `#F6F5F2`, cards `#FFFFFF`, nested surfaces `#FAF9F6`, subtle borders `#E9E6E0`, typography `#1A1917`/`#5F5C56`/`#85817A`.
+  - **Rich Charcoal Dark Mode**: Background `#141311`, cards `#1D1B18`, nested `#25231F`, borders `#35322E`, typography `#F5F3EE`/`#B9B5AD`/`#807C75`.
+  - **Muted Semantic Statuses**: Success `#64705B`/`#EEF0EA`, Warning `#9A6B2F`/`#FAF1E4`, Error `#A64B45`/`#FAECEA`, Info `#5F5C56`/`#F0EFEB`.
+  - **Design Constraints**: Zero purple/blue glowing gradients, zero neon colors, zero saturated buttons, and minimal 14px card elevations (`box-shadow: 0 1px 2px rgba(26,25,23,0.04)`).
+* **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state (`useUIStore`, `useAgentStore`, `useAuthStore`).
 * **Strict Type Safety**: Run `npm run type-check` and `npm run build` after changes to verify zero errors.
 
 ### 6. Testing Guidelines

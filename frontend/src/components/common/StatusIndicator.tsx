@@ -10,25 +10,16 @@ interface StatusIndicatorProps {
 export function StatusIndicator({
   status,
   label,
-  pulse = true,
+  pulse = false,
   className,
 }: StatusIndicatorProps) {
   const colorMap = {
-    active: 'bg-emerald-500',
-    online: 'bg-emerald-500',
-    idle: 'bg-amber-500',
-    warning: 'bg-orange-500',
-    error: 'bg-rose-500',
-    offline: 'bg-slate-500',
-  };
-
-  const ringMap = {
-    active: 'bg-emerald-400',
-    online: 'bg-emerald-400',
-    idle: 'bg-amber-400',
-    warning: 'bg-orange-400',
-    error: 'bg-rose-400',
-    offline: 'bg-slate-400',
+    active: 'bg-[#64705B]',
+    online: 'bg-[#64705B]',
+    idle: 'bg-[#9A6B2F]',
+    warning: 'bg-[#9A6B2F]',
+    error: 'bg-[#A64B45]',
+    offline: 'bg-[#85817A]',
   };
 
   return (
@@ -38,13 +29,13 @@ export function StatusIndicator({
           <span
             className={cn(
               'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
-              ringMap[status]
+              colorMap[status]
             )}
           />
         )}
         <span className={cn('relative inline-flex rounded-full h-2 w-2', colorMap[status])} />
       </span>
-      {label && <span className="text-xs font-semibold text-slate-300 capitalize">{label}</span>}
+      {label && <span className="text-xs font-medium text-[#5F5C56] capitalize">{label}</span>}
     </div>
   );
 }

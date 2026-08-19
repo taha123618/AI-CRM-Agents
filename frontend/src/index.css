@@ -4,79 +4,186 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Main Background System */
+    --background: #F6F5F2;
+    --background-subtle: #F1F0EC;
+    --background-muted: #EAE8E3;
+
+    /* Surfaces */
+    --surface: #FFFFFF;
+    --surface-secondary: #FAF9F6;
+    --surface-tertiary: #F3F1EC;
+
+    /* Primary Brand Palette — Obsidian */
+    --primary: #1A1917;
+    --primary-hover: #35332F;
+    --primary-950: #111110;
+    --primary-900: #1A1917;
+    --primary-800: #252421;
+    --primary-700: #35332F;
+    --primary-600: #4A4742;
+    --primary-500: #625E57;
+
+    /* Accent Color — Burnished Champagne Gold */
+    --accent: #C7A66A;
+    --accent-hover: #B8955A;
+    --accent-950: #2B2418;
+    --accent-900: #3D321F;
+    --accent-800: #5A492B;
+    --accent-700: #806638;
+    --accent-600: #A7834A;
+    --accent-500: #C7A66A;
+    --accent-400: #DEC28C;
+    --accent-300: #EAD5AA;
+    --accent-200: #F3E5C8;
+    --accent-100: #FAF3E6;
+
+    /* Typography Colors */
+    --text-primary: #1A1917;
+    --text-secondary: #5F5C56;
+    --text-tertiary: #85817A;
+    --text-muted: #85817A;
+    --text-disabled: #AAA69F;
+    --text-inverse: #FFFFFF;
+
+    /* Border System */
+    --border: #E9E6E0;
+    --border-subtle: #E9E6E0;
+    --border-default: #DEDAD3;
+    --border-strong: #CFCAC1;
+
+    /* Semantic Statuses */
+    --success: #64705B;
+    --success-bg: #EEF0EA;
+    --success-border: #D8DDD0;
+
+    --warning: #9A6B2F;
+    --warning-bg: #FAF1E4;
+    --warning-border: #ECD8BA;
+
+    --error: #A64B45;
+    --error-bg: #FAECEA;
+    --error-border: #EBCBC7;
+
+    --info: #5F5C56;
+    --info-bg: #F0EFEB;
+    --info-border: #DCD9D2;
+
+    /* AI Feature Color System */
+    --ai-primary: #252421;
+    --ai-accent: #C7A66A;
+    --ai-background: #FAF7F0;
+    --ai-border: #E7DCC6;
+
+    /* Sidebar System */
+    --sidebar-bg: #1A1917;
+    --sidebar-text: #B9B5AD;
+    --sidebar-text-hover: #FFFFFF;
+    --sidebar-active-text: #FFFFFF;
+    --sidebar-hover-bg: #2A2825;
+    --sidebar-active-bg: #35322E;
+  }
+
+  .dark {
+    --background: #141311;
+    --background-subtle: #1D1B18;
+    --background-muted: #25231F;
+    --surface: #1D1B18;
+    --surface-secondary: #25231F;
+    --surface-tertiary: #302D28;
+    --border: #35322E;
+    --border-subtle: #35322E;
+    --border-default: #3F3B36;
+    --border-strong: #544F49;
+    --text-primary: #F5F3EE;
+    --text-secondary: #B9B5AD;
+    --text-muted: #807C75;
+    --text-disabled: #625E57;
+    --text-inverse: #141311;
+    --primary: #F5F3EE;
+    --primary-hover: #EAE8E3;
+    --accent: #C7A66A;
+    --accent-hover: #DEC28C;
   }
 
   body {
-    @apply bg-slate-950 text-slate-100 antialiased font-sans;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    background-image: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 600px),
-                      radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.05), transparent 600px);
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Custom Scrollbars */
+/* Subtle, refined scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--background-subtle);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.6);
+  background: var(--border-strong);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(71, 85, 105, 0.8);
+  background: var(--text-tertiary);
 }
 
-/* Glassmorphism premium styles */
+/* Clean Editorial Card & Panel Utilities */
+.crm-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(26, 25, 23, 0.04);
+}
+
+.crm-card-nested {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
 .glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 2px rgba(26, 25, 23, 0.04);
 }
 
 .glass-panel-premium {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+  background: var(--surface);
+  border: 1px solid var(--border-default);
+  box-shadow: 0 1px 3px rgba(26, 25, 23, 0.06);
 }
 
 .glass-card {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(26, 25, 23, 0.04);
 }
 
-/* Glow effects and modern animations */
-.glow-card-brand {
-  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.15);
+/* AI Feature Styling */
+.ai-card {
+  border-left: 3px solid var(--ai-accent);
+  background: var(--ai-background);
+  border-top: 1px solid var(--ai-border);
+  border-right: 1px solid var(--ai-border);
+  border-bottom: 1px solid var(--ai-border);
 }
 
-.glow-card-emerald {
-  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.15);
+.ai-thinking {
+  background: var(--background-muted);
+  color: var(--primary-500);
 }
 
-.glow-card-purple {
-  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.15);
-}
-
-.glow-text-brand {
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
-}
-
-.animate-pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Subtle Micro-Interactions */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* RTL Layout Utilities */
@@ -97,15 +204,3 @@
 [dir="rtl"] select {
   text-align: right;
 }
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: .8;
-    transform: scale(0.98);
-  }
-}
-
