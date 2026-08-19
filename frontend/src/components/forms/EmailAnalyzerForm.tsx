@@ -32,9 +32,9 @@ export function EmailAnalyzerForm({ onSuccess, onCancel }: EmailAnalyzerFormProp
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 font-mono">
       <Input
-        label="Sender Email Address"
+        label="SENDER EMAIL ADDRESS"
         type="email"
         placeholder="prospect@company.com"
         value={fromEmail}
@@ -43,33 +43,33 @@ export function EmailAnalyzerForm({ onSuccess, onCancel }: EmailAnalyzerFormProp
       />
 
       <Input
-        label="Email Subject"
-        placeholder="Urgent: Clarification on security & contract pricing"
+        label="EMAIL SUBJECT"
+        placeholder="URGENT: CLARIFICATION ON SECURITY & CONTRACT PRICING"
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
         required
       />
 
-      <div className="space-y-1">
-        <label className="text-xs font-semibold text-slate-300">Email Body Text</label>
+      <div className="space-y-1 font-mono">
+        <label className="text-[10px] font-bold uppercase text-slate-300">EMAIL BODY TEXT</label>
         <textarea
           rows={4}
-          className="w-full rounded-xl bg-slate-900 border border-slate-800 p-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-          placeholder="Paste incoming customer email contents here for AI sentiment & auto-drafting analysis..."
+          className="w-full rounded-none bg-[#0B0C10] border border-[#3A4552] p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+          placeholder="PASTE INCOMING CUSTOMER EMAIL CONTENTS HERE FOR AI SENTIMENT & AUTO-DRAFTING..."
           value={body}
           onChange={(e) => setBody(e.target.value)}
           required
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+          <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
+            CANCEL
           </Button>
         )}
-        <Button type="submit" isLoading={triggerEmailMutation.isPending}>
-          Analyze Sentiment & Generate Draft
+        <Button type="submit" variant="primary" isLoading={triggerEmailMutation.isPending} className="text-xs uppercase">
+          ANALYZE &amp; GENERATE DRAFT
         </Button>
       </div>
     </form>

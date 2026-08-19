@@ -79,11 +79,11 @@ export function DataTable<T extends { id?: string | number }>({
   };
 
   return (
-    <Card className="overflow-hidden space-y-4">
+    <Card className="overflow-hidden space-y-3 font-mono">
       {searchFilter && (
-        <div className="p-4 border-b border-slate-800/80 flex items-center justify-between gap-4">
+        <div className="p-3 border-b border-[#3A4552] flex items-center justify-between gap-4">
           <div className="relative w-72">
-            <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
             <Input
               value={search}
               onChange={(e) => {
@@ -91,23 +91,23 @@ export function DataTable<T extends { id?: string | number }>({
                 setPage(1);
               }}
               placeholder={searchPlaceholder}
-              className="pl-9 text-xs"
+              className="pl-8 text-xs font-mono"
             />
           </div>
-          <span className="text-xs text-slate-500 font-mono">
-            Showing {filteredData.length} records
+          <span className="text-[10px] text-slate-400 font-mono uppercase">
+            SHOWING {filteredData.length} RECORDS
           </span>
         </div>
       )}
 
       {isLoading ? (
-        <div className="p-6 space-y-3">
+        <div className="p-4 space-y-2">
           {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full" />
+            <Skeleton key={i} className="h-10 w-full" />
           ))}
         </div>
       ) : paginatedData.length === 0 ? (
-        <div className="text-center py-12 text-slate-500 text-xs">{emptyMessage}</div>
+        <div className="text-center py-10 text-slate-500 text-xs uppercase font-mono">{emptyMessage}</div>
       ) : (
         <Table>
           <TableHeader>
@@ -130,7 +130,7 @@ export function DataTable<T extends { id?: string | number }>({
             {paginatedData.map((row, rIdx) => (
               <TableRow
                 key={row.id ?? rIdx}
-                className={onRowClick ? 'cursor-pointer hover:bg-slate-900/60' : undefined}
+                className={onRowClick ? 'cursor-pointer' : undefined}
                 onClick={() => onRowClick?.(row)}
               >
                 {columns.map((col, cIdx) => (
@@ -149,9 +149,9 @@ export function DataTable<T extends { id?: string | number }>({
       )}
 
       {totalPages > 1 && (
-        <div className="p-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3 border-t border-[#3A4552] flex items-center justify-between text-xs text-slate-400 font-mono uppercase">
           <span>
-            Page {page} of {totalPages}
+            PAGE {page} OF {totalPages}
           </span>
           <div className="flex items-center gap-2">
             <Button
@@ -159,16 +159,18 @@ export function DataTable<T extends { id?: string | number }>({
               variant="outline"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
+              className="h-7 px-2"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             </Button>
             <Button
               size="sm"
               variant="outline"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
+              className="h-7 px-2"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>
         </div>

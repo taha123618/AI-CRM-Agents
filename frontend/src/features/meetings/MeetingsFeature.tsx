@@ -68,7 +68,6 @@ export function MeetingsFeature() {
     setInviteSuccessMsg(null);
     setInviteErrorMsg(null);
 
-    // Populate attendee email default
     let defaultAttendee = 'executive@customer-domain.com';
     if (meeting.attendees) {
       if (Array.isArray(meeting.attendees) && meeting.attendees.length > 0) {
@@ -106,15 +105,12 @@ export function MeetingsFeature() {
         meeting: {
           title: editTitle,
           meeting_type: editType,
-          duration_minutes: Number(editDuration),
+          duration_minutes: editDuration,
           location: editLocation,
           notes: editNotes,
         },
       });
       setEditingMeeting(null);
-      if (selectedMeeting?.id === editingMeeting.id) {
-        setSelectedMeeting(null);
-      }
       await refetch();
     } catch {
       // Error handled by mutation
@@ -123,15 +119,27 @@ export function MeetingsFeature() {
 
   const handleDeleteMeeting = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    try {
-      await deleteMeetingMutation.mutateAsync(id);
-      if (selectedMeeting?.id === id) {
-        setSelectedMeeting(null);
-      }
-      await refetch();
-    } catch {
-      // Error handled by mutation
-    }
+    if (!window.confirm('Are you sure you want to cancel and delete this scheduled meeting?')) return;
+    await deleteMeetingMutation.mutateAsync(id);
+    if (selectedMeeting?.id === id) setSelectedMeeting(null);
+    await refetch();
+  };
+
+  const handleDeleteFromModal = async (id: string) => {
+    if (!window.confirm('Are you sure you want to cancel and delete this scheduled meeting?')) return;
+    await deleteMeetingMutation.mutateAsync(id);
+    setSelectedMeeting(null);
+    await refetch();
+  };
+
+  const handleTriggerAgent = async (e: React.MouseEvent, meeting: Meeting) => {
+    e.stopPropagation();
+    await triggerMeetingMutation.mutateAsync({
+      title: meeting.title,
+      meeting_type: meeting.meeting_type,
+      attendee_email: 'attendee@company.com',
+    });
+    await refetch();
   };
 
   const handleSendEmailInvite = async () => {
@@ -139,13 +147,13 @@ export function MeetingsFeature() {
     setInviteErrorMsg(null);
     setInviteSuccessMsg(null);
 
-    const emailList = inviteEmailInput
-      .split(',')
+    const emails = inviteEmailInput
+      .split(/[,;\s]+/)
       .map((e) => e.trim())
-      .filter((e) => e && e.includes('@'));
+      .filter((e) => e.length > 0 && e.includes('@'));
 
-    if (emailList.length === 0) {
-      setInviteErrorMsg('Please provide at least one valid attendee email address.');
+    if (emails.length === 0) {
+      setInviteErrorMsg('Please provide at least one valid recipient email address.');
       return;
     }
 
@@ -153,50 +161,25 @@ export function MeetingsFeature() {
       const res = await sendMeetingInviteMutation.mutateAsync({
         id: selectedMeeting.id,
         payload: {
-          attendee_emails: emailList,
+          attendee_emails: emails,
         },
       });
-      setInviteSuccessMsg(res.message || `Meeting briefing sent to ${emailList.join(', ')}`);
-      await refetch();
-      setTimeout(() => {
-        setInviteSuccessMsg(null);
-      }, 3000);
+      setInviteSuccessMsg(
+        res.message || `Briefing successfully dispatched to ${emails.length} attendee(s).`
+      );
     } catch (err: any) {
-      setInviteErrorMsg(err.response?.data?.detail || err.message || 'Failed to dispatch meeting briefing email.');
-    }
-  };
-
-  const handleTriggerAgent = async (e: React.MouseEvent, meeting: Meeting) => {
-    e.stopPropagation();
-    try {
-      await triggerMeetingMutation.mutateAsync({
-        title: meeting.title,
-        meeting_type: meeting.meeting_type || 'Executive Demo',
-        attendee_email: 'buyer@acme.org',
-      });
-      await refetch();
-    } catch {
-      // Error handled by mutation
-    }
-  };
-
-  const handleDeleteFromModal = async (id: string) => {
-    try {
-      await deleteMeetingMutation.mutateAsync(id);
-      setSelectedMeeting(null);
-      await refetch();
-    } catch {
-      // Error handled by mutation
+      setInviteErrorMsg(
+        err?.response?.data?.detail || err?.message || 'Failed to dispatch email invite via SMTP queue.'
+      );
     }
   };
 
   const handleBulkSchedule = async () => {
-    if (!meetings || meetings.length === 0) return;
     setIsBulkScheduling(true);
     try {
-      for (const meeting of meetings.slice(0, 5)) {
+      for (const meeting of meetings || []) {
         await triggerMeetingMutation.mutateAsync({
-          title: meeting.title,
+          title: meeting.title || 'Executive Strategy Demo',
           meeting_type: meeting.meeting_type || 'Executive Demo',
           attendee_email: 'buyer@acme.org',
         });
@@ -215,88 +198,88 @@ export function MeetingsFeature() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <CalendarIcon className="w-6 h-6 text-purple-400" />
-            {t('meetings.title', 'Autonomous Meeting Scheduling & Email Delivery')}
+          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <CalendarIcon className="w-5 h-5 text-[#FFB800]" />
+            <span>{t('meetings.title', 'MEETING SCHEDULER & BRIEFING STUDIO')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            {t('meetings.subtitle', 'Automated agenda builder, participant email briefing dispatch, and CRM sync')}
+          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+            {t('meetings.subtitle', 'AUTOMATED AGENDA BUILDER, PARTICIPANT BRIEFINGS, AND SMTP QUEUE DISPATCH')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleBulkSchedule} isLoading={isBulkScheduling}>
-            <Sparkles className="w-4 h-4 text-purple-400" />
-            <span>{t('meetings.prep_materials', 'Run AI Fleet Prep Audit')}</span>
+          <Button variant="outline" onClick={handleBulkSchedule} isLoading={isBulkScheduling} className="text-xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+            <span>{t('meetings.prep_materials', 'AUDIT ALL MEETINGS')}</span>
           </Button>
-          <Button onClick={() => setMeetingModalOpen(true)} className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white">
-            <Sparkles className="w-4 h-4" />
-            <span>{t('meetings.schedule_btn', 'Schedule AI Briefing')}</span>
+          <Button onClick={() => setMeetingModalOpen(true)} variant="primary" className="text-xs">
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            <span>{t('meetings.schedule_btn', 'SCHEDULE BRIEFING')}</span>
           </Button>
         </div>
       </div>
 
       {/* Meetings List / Agenda */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {isLoading ? (
-          [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 w-full" />)
+          [...Array(4)].map((_, i) => <Skeleton key={i} className="h-32 w-full" />)
         ) : filteredMeetings.length === 0 ? (
-          <Card className="md:col-span-2 p-12 text-center text-slate-500 text-sm">
-            No upcoming meetings scheduled.
+          <Card className="md:col-span-2 p-10 text-center text-slate-500 text-xs font-mono uppercase">
+            NO UPCOMING MEETINGS SCHEDULED.
           </Card>
         ) : (
           filteredMeetings.map((meeting) => (
             <Card
               key={meeting.id}
-              className="p-5 space-y-3 hover:border-slate-700/80 transition-all cursor-pointer group"
+              className="p-4 space-y-2.5 hover:border-[#FFB800] transition-none cursor-pointer group font-mono"
               onClick={() => handleOpenMeeting(meeting)}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <Badge variant="purple">{meeting.meeting_type}</Badge>
-                  <h3 className="font-bold text-sm text-white mt-1 group-hover:text-purple-300 transition-colors">
+                  <Badge variant="purple" className="text-[8px] uppercase">{meeting.meeting_type}</Badge>
+                  <h3 className="font-bold text-xs text-white mt-1 group-hover:text-[#FFB800] transition-none uppercase">
                     {meeting.title}
                   </h3>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   <Badge statusValue={meeting.status}>{meeting.status}</Badge>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={(e) => handleOpenEdit(e, meeting)}
-                    className="text-slate-500 hover:text-brand-400 p-1.5 h-7 w-7"
+                    className="text-slate-400 hover:text-white p-1 h-6 w-6"
                     title="Edit Meeting Details"
                   >
-                    <Pencil className="w-3.5 h-3.5" />
+                    <Pencil className="w-3 h-3" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={(e) => handleDeleteMeeting(e, meeting.id)}
-                    className="text-slate-500 hover:text-rose-400 p-1.5 h-7 w-7"
+                    className="text-slate-400 hover:text-[#FF2A54] p-1 h-6 w-6"
                     title="Cancel & Delete Meeting"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-2 border-t border-slate-800">
-                <div className="flex items-center gap-1.5 font-mono">
-                  <Clock className="w-3.5 h-3.5 text-brand-400" />
+              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 pt-2 border-t border-[#3A4552]">
+                <div className="flex items-center gap-1 font-mono text-[10px]">
+                  <Clock className="w-3 h-3 text-[#FFB800]" />
                   <span>{formatDate(meeting.scheduled_at)}</span>
                 </div>
-                <div className="flex items-center gap-1 text-emerald-400 font-medium">
-                  <UserCheck className="w-3.5 h-3.5" />
-                  <span>AI Prep Ready</span>
+                <div className="flex items-center gap-1 text-[#FFB800] font-bold text-[10px] uppercase">
+                  <UserCheck className="w-3 h-3" />
+                  <span>AI PREP READY</span>
                 </div>
-                <div className="flex items-center gap-1 text-purple-400 font-medium ml-auto">
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>SMTP Briefing</span>
+                <div className="flex items-center gap-1 text-cyan-400 font-bold text-[10px] uppercase ml-auto">
+                  <Mail className="w-3 h-3" />
+                  <span>SMTP QUEUE</span>
                 </div>
               </div>
             </Card>
@@ -309,36 +292,36 @@ export function MeetingsFeature() {
         <Modal
           isOpen={Boolean(selectedMeeting)}
           onClose={() => setSelectedMeeting(null)}
-          title={`Meeting Prep — ${selectedMeeting.title}`}
-          description={`Automated briefing created by MeetingSchedulerAgent for ${selectedMeeting.meeting_type}`}
-          className="max-w-2xl"
+          title={`MEETING PREP — ${selectedMeeting.title.toUpperCase()}`}
+          description={`AUTOMATED BRIEFING CREATED BY MEETINGSCHEDULERAGENT FOR ${selectedMeeting.meeting_type.toUpperCase()}`}
+          className="max-w-2xl font-mono"
         >
-          <div className="space-y-4 min-w-0">
+          <div className="space-y-3 min-w-0 font-mono">
             {inviteErrorMsg && (
-              <div className="p-3 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                <div>{inviteErrorMsg}</div>
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+                <div className="uppercase">{inviteErrorMsg}</div>
               </div>
             )}
 
             {inviteSuccessMsg && (
-              <div className="p-3 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <div>{inviteSuccessMsg}</div>
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0 mt-0.5" />
+                <div className="uppercase">{inviteSuccessMsg}</div>
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 min-w-0">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Scheduled Time</span>
-                <div className="text-xs font-mono text-white mt-1 break-words">
-                  {new Date(selectedMeeting.scheduled_at).toLocaleString()} ({selectedMeeting.duration_minutes || 30} mins)
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] min-w-0">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">SCHEDULED TIME</span>
+                <div className="text-xs font-mono text-white mt-0.5 break-words">
+                  {new Date(selectedMeeting.scheduled_at).toLocaleString()} ({selectedMeeting.duration_minutes || 30} MINS)
                 </div>
               </div>
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 min-w-0">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Location / Link</span>
-                <div className="text-xs font-medium text-brand-400 mt-1 flex items-center gap-1 min-w-0">
-                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] min-w-0">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">LOCATION / LINK</span>
+                <div className="text-xs font-mono text-[#FFB800] mt-0.5 flex items-center gap-1 min-w-0">
+                  <MapPin className="w-3 h-3 shrink-0" />
                   <span className="truncate block" title={selectedMeeting.location || 'Google Meet (auto-generated)'}>
                     {selectedMeeting.location || 'Google Meet (auto-generated)'}
                   </span>
@@ -347,13 +330,11 @@ export function MeetingsFeature() {
             </div>
 
             {/* Email Dispatch Action Card */}
-            <div className="p-3.5 rounded-xl bg-purple-500/5 border border-purple-500/20 space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-purple-400" />
-                  Dispatch Email Briefing to Attendees
-                </h4>
-              </div>
+            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
+              <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
+                <Mail className="w-3 h-3 text-[#FFB800]" />
+                DISPATCH EMAIL BRIEFING TO ATTENDEES
+              </h4>
               <div className="flex items-center gap-2">
                 <Input
                   placeholder="attendee@company.com, cto@enterprise.com"
@@ -362,38 +343,40 @@ export function MeetingsFeature() {
                   className="font-mono text-xs flex-1"
                 />
                 <Button
+                  variant="primary"
+                  size="sm"
                   onClick={handleSendEmailInvite}
                   isLoading={sendMeetingInviteMutation.isPending}
-                  className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white shrink-0 flex items-center gap-1.5"
+                  className="text-xs h-7 shrink-0"
                 >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Send Email Invite</span>
+                  <Send className="w-3 h-3 mr-1" />
+                  <span>SEND INVITE</span>
                 </Button>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Dispatches full meeting briefing, Google Meet details, and agenda directly through centralized SMTP queue.
+              <p className="text-[9px] text-slate-400 uppercase">
+                DISPATCHES FULL BRIEFING, GOOGLE MEET DETAILS, AND AGENDAS VIA SMTP QUEUE.
               </p>
             </div>
 
             {/* Agenda section */}
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 min-w-0">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                Proposed Meeting Agenda
+            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5 min-w-0">
+              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                <FileText className="w-3 h-3 text-[#FFB800] shrink-0" />
+                PROPOSED MEETING AGENDA
               </h4>
-              <ul className="text-xs text-slate-300 space-y-1.5 pl-2 pt-1 min-w-0">
+              <ul className="text-xs text-slate-300 space-y-1 pl-1 min-w-0 font-mono">
                 {Array.isArray(selectedMeeting.agenda) && selectedMeeting.agenda.length > 0 ? (
                   selectedMeeting.agenda.map((item: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-2 min-w-0">
-                      <span className="text-purple-400 font-bold shrink-0">•</span>
-                      <span className="break-words flex-1">{item}</span>
+                    <li key={idx} className="flex items-start gap-1.5 min-w-0">
+                      <span className="text-[#FFB800] font-bold shrink-0">•</span>
+                      <span className="break-words flex-1 uppercase">{item}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-slate-400 break-words">
-                    1. Welcome & Alignment (5 mins)<br />
-                    2. Product Architecture & Enterprise Security Review (15 mins)<br />
-                    3. Custom Pricing & Implementation Next Steps (10 mins)
+                  <li className="text-slate-400 break-words uppercase">
+                    1. WELCOME &amp; ALIGNMENT (5 MINS)<br />
+                    2. PRODUCT ARCHITECTURE &amp; SECURITY REVIEW (15 MINS)<br />
+                    3. PRICING &amp; NEXT STEPS (10 MINS)
                   </li>
                 )}
               </ul>
@@ -401,24 +384,24 @@ export function MeetingsFeature() {
 
             {/* Context & Notes */}
             {selectedMeeting.notes && (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 break-words min-w-0">
-                <span className="text-slate-500 font-semibold block mb-1">Context Notes:</span>
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 break-words min-w-0 font-mono uppercase">
+                <span className="text-slate-500 font-bold block mb-0.5">CONTEXT NOTES:</span>
                 {selectedMeeting.notes}
               </div>
             )}
 
             {/* Prep Materials from MeetingSchedulerAgent */}
             {selectedMeeting.prep_materials && typeof selectedMeeting.prep_materials === 'object' && (
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 min-w-0">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <Bot className="w-3.5 h-3.5 text-brand-400 shrink-0" />
-                  MeetingSchedulerAgent — Prep Materials
+              <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5 min-w-0 font-mono">
+                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                  <Bot className="w-3 h-3 text-[#FFB800] shrink-0" />
+                  MEETINGSCHEDULERAGENT — PREP MATERIALS
                 </h4>
                 <ul className="space-y-1 min-w-0">
                   {Object.entries(selectedMeeting.prep_materials).map(([k, v]) => (
-                    <li key={k} className="flex items-start gap-2 text-xs text-slate-300 min-w-0">
-                      <ChevronRight className="w-3 h-3 text-brand-400 mt-0.5 shrink-0" />
-                      <span className="break-all flex-1"><span className="font-semibold text-slate-400 capitalize">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
+                    <li key={k} className="flex items-start gap-1.5 text-xs text-slate-300 min-w-0 font-mono uppercase">
+                      <ChevronRight className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
+                      <span className="break-all flex-1"><span className="font-bold text-slate-400">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
                     </li>
                   ))}
                 </ul>
@@ -427,15 +410,15 @@ export function MeetingsFeature() {
 
             {/* Follow-up Tasks Checklist */}
             {selectedMeeting.followup_tasks?.length ? (
-              <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2 min-w-0">
-                <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <CheckSquare className="w-3.5 h-3.5 shrink-0" />
-                  Post-Meeting Follow-up Tasks
+              <div className="p-3 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1.5 min-w-0 font-mono">
+                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
+                  <CheckSquare className="w-3 h-3 shrink-0" />
+                  POST-MEETING FOLLOW-UP TASKS
                 </h4>
-                <ul className="space-y-1.5 min-w-0">
+                <ul className="space-y-1 min-w-0">
                   {selectedMeeting.followup_tasks.map((task: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-300 min-w-0">
-                      <CheckSquare className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0 opacity-60" />
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 min-w-0 font-mono uppercase">
+                      <CheckSquare className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{task}</span>
                     </li>
                   ))}
@@ -445,17 +428,17 @@ export function MeetingsFeature() {
 
             {/* Attendees */}
             {selectedMeeting.attendees && (
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1 min-w-0">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                  Attendees
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1 min-w-0 font-mono">
+                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                  <Users className="w-3 h-3 text-[#FFB800] shrink-0" />
+                  ATTENDEES
                 </h4>
-                <div className="flex flex-wrap gap-1.5 pt-1 min-w-0">
+                <div className="flex flex-wrap gap-1 pt-0.5 min-w-0">
                   {(Array.isArray(selectedMeeting.attendees)
                     ? selectedMeeting.attendees
                     : Object.values(selectedMeeting.attendees || {})
                   ).map((a: any, i: number) => (
-                    <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 break-all">
+                    <span key={i} className="px-1.5 py-0.2 text-[9px] font-mono uppercase bg-[#1F2833] text-slate-200 border border-[#3A4552] break-all">
                       {typeof a === 'string' ? a : a?.name || a?.email || JSON.stringify(a)}
                     </span>
                   ))}
@@ -463,39 +446,40 @@ export function MeetingsFeature() {
               </div>
             )}
 
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between pt-1 border-t border-[#3A4552]">
+              <div className="flex items-center gap-1.5">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={(e) => handleTriggerAgent(e, selectedMeeting)}
                   isLoading={triggerMeetingMutation.isPending}
+                  className="text-xs h-7"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                  <span>AI Re-Prep</span>
+                  <Sparkles className="w-3 h-3 text-[#FFB800]" />
+                  <span>AI RE-PREP</span>
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={(e) => handleOpenEdit(e, selectedMeeting)}
+                  className="text-xs h-7"
                 >
-                  <Pencil className="w-3.5 h-3.5" />
-                  <span>Edit Meeting</span>
+                  <Pencil className="w-3 h-3" />
+                  <span>EDIT</span>
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleDeleteFromModal(selectedMeeting.id)}
                   isLoading={deleteMeetingMutation.isPending}
-                  className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
+                  className="text-[#FF2A54] hover:bg-rose-950/30 p-1 h-7"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Delete</span>
+                  <Trash2 className="w-3 h-3" />
                 </Button>
               </div>
 
-              <Button variant="outline" onClick={() => setSelectedMeeting(null)}>
-                Close
+              <Button variant="outline" onClick={() => setSelectedMeeting(null)} className="text-xs">
+                CLOSE
               </Button>
             </div>
           </div>
@@ -507,27 +491,28 @@ export function MeetingsFeature() {
         <Modal
           isOpen={Boolean(editingMeeting)}
           onClose={() => setEditingMeeting(null)}
-          title="Edit Meeting Details"
-          description="Update agenda, meeting type, duration, or notes."
+          title="EDIT MEETING DETAILS"
+          description="UPDATE AGENDA, MEETING TYPE, DURATION, OR CONTEXT NOTES."
+          className="font-mono"
         >
-          <form onSubmit={handleSaveEdit} className="space-y-4">
+          <form onSubmit={handleSaveEdit} className="space-y-3 font-mono">
             <Input
-              label="Meeting Title"
+              label="MEETING TITLE"
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
               required
             />
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <Select
-                label="Meeting Type"
+                label="MEETING TYPE"
                 options={TYPE_OPTIONS}
                 value={editType}
                 onChange={(e) => setEditType(e.target.value)}
                 required
               />
               <Input
-                label="Duration (minutes)"
+                label="DURATION (MINS)"
                 type="number"
                 value={editDuration}
                 onChange={(e) => setEditDuration(Number(e.target.value))}
@@ -536,28 +521,28 @@ export function MeetingsFeature() {
             </div>
 
             <Input
-              label="Location / Video Link"
+              label="LOCATION / VIDEO LINK"
               value={editLocation}
               onChange={(e) => setEditLocation(e.target.value)}
             />
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-slate-300">Context / Notes</label>
+            <div className="space-y-1">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">CONTEXT / NOTES</label>
               <textarea
                 rows={3}
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
-                className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-              <Button type="button" variant="outline" onClick={() => setEditingMeeting(null)}>
-                Cancel
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
+              <Button type="button" variant="outline" onClick={() => setEditingMeeting(null)} className="text-xs">
+                CANCEL
               </Button>
-              <Button type="submit" isLoading={updateMeetingMutation.isPending}>
-                <Pencil className="w-4 h-4" />
-                <span>Save Changes</span>
+              <Button type="submit" variant="primary" isLoading={updateMeetingMutation.isPending} className="text-xs">
+                <Pencil className="w-3.5 h-3.5 mr-1" />
+                <span>SAVE CHANGES</span>
               </Button>
             </div>
           </form>

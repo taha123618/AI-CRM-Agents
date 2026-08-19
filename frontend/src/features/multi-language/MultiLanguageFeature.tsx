@@ -49,152 +49,153 @@ export function MultiLanguageFeature() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Globe className="w-6 h-6 text-brand-400" />
-            {t('languages.title', 'Multi-Language & Localization Console')}
+          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <Globe className="w-5 h-5 text-[#FFB800]" />
+            <span>{t('languages.title', 'MULTI-LANGUAGE & LOCALIZATION CONSOLE')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            {t('languages.subtitle', 'Manage supported languages, customize translation strings, and configure locale formats')}
+          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+            {t('languages.subtitle', 'MANAGE SUPPORTED LANGUAGES, CUSTOMIZE TRANSLATION STRINGS, AND CONFIGURE LOCALE FORMATS')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleExportAll}>
-            <Download className="w-3.5 h-3.5" />
-            <span>{t('languages.export_translations', 'Export JSON')}</span>
+          <Button variant="outline" size="sm" onClick={handleExportAll} className="text-xs h-7">
+            <Download className="w-3.5 h-3.5 mr-1" />
+            <span>{t('languages.export_translations', 'EXPORT JSON')}</span>
           </Button>
 
-          <Button size="sm" onClick={() => setIsLangManagerOpen(true)}>
-            <Plus className="w-3.5 h-3.5" />
-            <span>{t('languages.add_language', 'Manage Languages')}</span>
+          <Button size="sm" variant="primary" onClick={() => setIsLangManagerOpen(true)} className="text-xs h-7">
+            <Plus className="w-3.5 h-3.5 mr-1" />
+            <span>{t('languages.add_language', 'MANAGE LOCALES')}</span>
           </Button>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 space-y-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            {t('languages.active_language', 'Active Language')}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            {t('languages.active_language', 'ACTIVE LOCALE')}
           </span>
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-2 pt-0.5">
             <span className="text-2xl">{activeLang.flag_emoji || '🌐'}</span>
             <div>
-              <div className="text-lg font-extrabold text-white">{activeLang.name}</div>
-              <div className="text-xs text-slate-400 font-mono">ISO: {activeLang.code}</div>
+              <div className="text-sm font-black text-white uppercase">{activeLang.name}</div>
+              <div className="text-[10px] text-slate-400 font-mono uppercase">ISO: {activeLang.code}</div>
             </div>
           </div>
         </Card>
 
-        <Card className="p-4 space-y-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            {t('languages.direction', 'Text Direction')}
+        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            {t('languages.direction', 'TEXT DIRECTION')}
           </span>
-          <div className="flex items-center gap-2 pt-1">
-            <div className="text-lg font-extrabold text-white uppercase">{currentDirection}</div>
-            <Badge variant={isRTL ? 'info' : 'purple'}>
-              {isRTL ? 'Right-to-Left (RTL)' : 'Left-to-Right (LTR)'}
+          <div className="flex items-center gap-2 pt-0.5">
+            <div className="text-sm font-black text-white uppercase">{currentDirection}</div>
+            <Badge variant={isRTL ? 'info' : 'purple'} className="text-[8px] font-mono">
+              {isRTL ? 'RIGHT-TO-LEFT (RTL)' : 'LEFT-TO-RIGHT (LTR)'}
             </Badge>
           </div>
         </Card>
 
-        <Card className="p-4 space-y-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            Installed Languages
+        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            INSTALLED LOCALES
           </span>
-          <div className="text-lg font-extrabold text-white pt-1">
-            {availableLanguages.length} Locales
+          <div className="text-sm font-black text-white pt-0.5 font-mono">
+            {availableLanguages.length} LOCALES
           </div>
-          <span className="text-xs text-emerald-400 font-medium">
-            {availableLanguages.filter((l) => l.is_enabled).length} Enabled for Users
+          <span className="text-[10px] text-[#FFB800] font-bold uppercase">
+            {availableLanguages.filter((l) => l.is_enabled).length} ENABLED FOR USERS
           </span>
         </Card>
 
-        <Card className="p-4 space-y-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            Fallback Resolution
+        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            FALLBACK RESOLUTION
           </span>
-          <div className="flex items-center gap-1.5 text-lg font-extrabold text-brand-400 pt-1">
-            <Shield className="w-5 h-5 text-brand-400" />
-            <span>English (en)</span>
+          <div className="flex items-center gap-1.5 text-sm font-black text-[#FFB800] pt-0.5 uppercase">
+            <Shield className="w-4 h-4 text-[#FFB800]" />
+            <span>ENGLISH (EN)</span>
           </div>
-          <span className="text-xs text-slate-400">Zero missing key crashes</span>
+          <span className="text-[10px] text-slate-500 uppercase">ZERO MISSING KEY CRASHES</span>
         </Card>
       </div>
 
       {/* Languages Directory Grid */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
-            <Languages className="w-4 h-4 text-brand-400" />
-            Configured System Languages
+          <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
+            <Languages className="w-3.5 h-3.5 text-[#FFB800]" />
+            CONFIGURED SYSTEM LANGUAGES
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {availableLanguages.map((lang) => {
             const isCurrent = lang.code === currentLanguage;
             return (
               <Card
                 key={lang.code}
-                className={`p-5 space-y-4 hover:border-brand-500/50 transition-all flex flex-col justify-between ${
-                  isCurrent ? 'border-brand-500/60 ring-1 ring-brand-500/20' : ''
-                }`}
+                className={`p-4 bg-[#1F2833] border-[#3A4552] space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between ${isCurrent ? 'border-[#FFB800]' : ''
+                  }`}
               >
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl">{lang.flag_emoji || '🌐'}</span>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-2xl">{lang.flag_emoji || '🌐'}</span>
                       <div>
-                        <h4 className="font-bold text-base text-white">{lang.name}</h4>
-                        <span className="text-xs text-slate-400">{lang.english_name}</span>
+                        <h4 className="font-bold text-xs text-white uppercase">{lang.name}</h4>
+                        <span className="text-[10px] text-slate-400 uppercase">{lang.english_name}</span>
                       </div>
                     </div>
 
                     <div className="flex flex-col items-end gap-1">
                       {lang.is_default && (
-                        <Badge variant="purple" className="text-[10px]">
-                          Default
+                        <Badge variant="purple" className="text-[8px]">
+                          DEFAULT
                         </Badge>
                       )}
                       {lang.direction === 'rtl' && (
-                        <Badge variant="info" className="text-[10px]">
+                        <Badge variant="info" className="text-[8px]">
                           RTL
                         </Badge>
                       )}
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-300 font-mono flex items-center gap-2">
-                    <span>Code: {lang.code}</span>
+                  <div className="text-[10px] text-slate-300 font-mono flex items-center gap-2">
+                    <span>CODE: {lang.code}</span>
                     <span>•</span>
-                    <span className={lang.is_enabled ? 'text-emerald-400' : 'text-slate-500'}>
-                      {lang.is_enabled ? 'Enabled' : 'Disabled'}
+                    <span className={lang.is_enabled ? 'text-[#FFB800] font-bold' : 'text-slate-500'}>
+                      {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between gap-2">
                   <Button
                     size="sm"
-                    variant={isCurrent ? 'secondary' : 'primary'}
+                    variant={isCurrent ? 'outline' : 'primary'}
                     onClick={() => setLanguage(lang.code)}
                     disabled={isCurrent || !lang.is_enabled}
+                    className="text-xs h-7"
                   >
-                    {isCurrent ? 'Active Language' : 'Switch to this'}
+                    {isCurrent ? 'ACTIVE LOCALE' : 'SWITCH TO THIS'}
                   </Button>
 
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => setEditingLangCode(lang.code)}
+                    className="text-xs h-7"
                   >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>Translations</span>
+                    <BookOpen className="w-3.5 h-3.5 mr-1" />
+                    <span>TRANSLATIONS</span>
                   </Button>
                 </div>
               </Card>
@@ -204,38 +205,38 @@ export function MultiLanguageFeature() {
       </div>
 
       {/* Locale Format Preview Card */}
-      <Card className="p-6 space-y-4">
-        <h3 className="text-base font-bold text-white flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-brand-400" />
-          Live Locale-Aware Formatting Sandbox ({activeLang.name})
+      <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3 font-mono">
+        <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+          LOCALE-AWARE FORMATTING SANDBOX ({activeLang.name.toUpperCase()})
         </h3>
-        <p className="text-xs text-slate-400">
-          Currencies, numbers, dates, and times automatically adapt based on the active locale selection.
+        <p className="text-[10px] text-slate-400 uppercase">
+          CURRENCIES, NUMBERS, DATES, AND TIMES AUTOMATICALLY ADAPT BASED ON THE ACTIVE LOCALE SELECTION.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Currency Formatter</span>
-            <div className="text-base font-bold text-emerald-400">{formatCurrency(124500.5)}</div>
-            <span className="text-[10px] text-slate-500 font-mono">124,500.50 USD</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-1">
+          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-slate-400 block">CURRENCY FORMATTER</span>
+            <div className="text-sm font-black text-[#FFB800]">{formatCurrency(124500.5)}</div>
+            <span className="text-[9px] text-slate-500 font-mono">124,500.50 USD</span>
           </div>
 
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Number Formatter</span>
-            <div className="text-base font-bold text-brand-300">{formatNumber(9876543)}</div>
-            <span className="text-[10px] text-slate-500 font-mono">9,876,543 leads</span>
+          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-slate-400 block">NUMBER FORMATTER</span>
+            <div className="text-sm font-black text-cyan-400">{formatNumber(9876543)}</div>
+            <span className="text-[9px] text-slate-500 font-mono">9,876,543 LEADS</span>
           </div>
 
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Date Formatter</span>
-            <div className="text-base font-bold text-white">{formatDate(new Date())}</div>
-            <span className="text-[10px] text-slate-500 font-mono">Short Month, Day, Year</span>
+          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-slate-400 block">DATE FORMATTER</span>
+            <div className="text-sm font-black text-white">{formatDate(new Date())}</div>
+            <span className="text-[9px] text-slate-500 font-mono">SHORT MONTH, DAY, YEAR</span>
           </div>
 
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Layout Direction</span>
-            <div className="text-base font-bold text-amber-400 uppercase">{currentDirection}</div>
-            <span className="text-[10px] text-slate-500 font-mono">HTML dir="{currentDirection}"</span>
+          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-slate-400 block">LAYOUT DIRECTION</span>
+            <div className="text-sm font-black text-[#FFB800] uppercase">{currentDirection}</div>
+            <span className="text-[9px] text-slate-500 font-mono">HTML DIR=&ldquo;{currentDirection}&rdquo;</span>
           </div>
         </div>
       </Card>

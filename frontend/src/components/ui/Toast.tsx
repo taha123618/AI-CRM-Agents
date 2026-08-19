@@ -22,28 +22,28 @@ export function Toast({ toast, onDismiss }: ToastProps) {
   return (
     <div
       className={cn(
-        'flex items-start gap-3 p-4 rounded-2xl border shadow-2xl backdrop-blur-xl transition-all duration-300 animate-in slide-in-from-top-4 max-w-sm w-full pointer-events-auto',
-        isSuccess && 'bg-emerald-950/90 border-emerald-500/40 text-emerald-100',
-        isError && 'bg-rose-950/90 border-rose-500/40 text-rose-100',
-        !isSuccess && !isError && 'bg-slate-900/90 border-slate-800 text-slate-100'
+        'flex items-start gap-3 p-3.5 rounded-none border shadow-2xl transition-none max-w-sm w-full pointer-events-auto font-mono',
+        isSuccess && 'bg-[#1F2833] border-[#FFB800] text-slate-100',
+        isError && 'bg-[#1F2833] border-[#FF2A54] text-slate-100',
+        !isSuccess && !isError && 'bg-[#1F2833] border-[#3A4552] text-slate-100'
       )}
     >
       <div className="shrink-0 mt-0.5">
-        {isSuccess && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
-        {isError && <AlertCircle className="w-5 h-5 text-rose-400" />}
-        {!isSuccess && !isError && <Info className="w-5 h-5 text-blue-400" />}
+        {isSuccess && <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />}
+        {isError && <AlertCircle className="w-4 h-4 text-[#FF2A54]" />}
+        {!isSuccess && !isError && <Info className="w-4 h-4 text-cyan-400" />}
       </div>
 
       <div className="flex-1 min-w-0">
-        <h4 className="text-xs font-bold leading-tight">{toast.title}</h4>
+        <h4 className="text-xs font-bold leading-tight uppercase">{toast.title}</h4>
         {toast.description && (
-          <p className="text-[11px] opacity-80 mt-1 leading-snug break-words">{toast.description}</p>
+          <p className="text-[10px] text-slate-400 mt-1 leading-snug break-words uppercase">{toast.description}</p>
         )}
       </div>
 
       <button
         onClick={() => onDismiss(toast.id)}
-        className="text-slate-400 hover:text-white transition-colors p-1"
+        className="text-slate-400 hover:text-white transition-none p-1"
         aria-label="Close"
       >
         <X className="w-3.5 h-3.5" />

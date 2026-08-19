@@ -43,24 +43,24 @@ export function ObservabilityMetricsTab() {
 
   const filteredLines = metricsText
     ? metricsText
-        .split('\n')
-        .filter((line) => !filterText || line.toLowerCase().includes(filterText.toLowerCase()))
+      .split('\n')
+      .filter((line) => !filterText || line.toLowerCase().includes(filterText.toLowerCase()))
     : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header & Quick Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Activity className="w-5 h-5 text-brand-400" />
-            <h2 className="text-lg font-bold text-white">Prometheus & OpenTelemetry Observability</h2>
-            <Badge variant="success" className="text-[10px]">
-              Live 10s Scrape
+            <Activity className="w-4 h-4 text-[#FFB800]" />
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">PROMETHEUS &amp; OPENTELEMETRY OBSERVABILITY</h2>
+            <Badge variant="success" className="text-[9px] uppercase font-mono">
+              LIVE 10S SCRAPE
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Standard Prometheus text exposition format (v0.0.4) tracking agent execution latency, token consumption, task queue status, and API throughput.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            TRACK AGENT EXECUTION LATENCY, TOKEN CONSUMPTION, TASK QUEUE STATUS, AND API THROUGHPUT.
           </p>
         </div>
 
@@ -70,120 +70,127 @@ export function ObservabilityMetricsTab() {
             variant="outline"
             onClick={() => refetch()}
             disabled={isRefetching}
-            className="flex items-center gap-1.5"
+            className="text-xs h-7 uppercase flex items-center gap-1.5"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefetching ? 'animate-spin text-brand-400' : ''}`} />
-            <span>Refresh</span>
+            <RefreshCw className={`w-3 h-3 ${isRefetching ? 'animate-spin text-[#FFB800]' : ''}`} />
+            <span>REFRESH</span>
           </Button>
 
           <Button
             size="sm"
-            variant="secondary"
+            variant="primary"
             onClick={handleCopy}
             disabled={!metricsText}
-            className="flex items-center gap-1.5"
+            className="text-xs h-7 uppercase flex items-center gap-1.5"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? 'Copied' : 'Copy Metrics'}</span>
+            {copied ? <Check className="w-3 h-3 text-[#0B0C10]" /> : <Copy className="w-3 h-3 text-[#0B0C10]" />}
+            <span>{copied ? 'COPIED!' : 'COPY EXPOSITION'}</span>
           </Button>
         </div>
       </div>
 
-      {/* KPI Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-            <Network className="w-5 h-5" />
+      {/* Metric Stat Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-bold uppercase">ACTIVE WEBSOCKETS</span>
+            <Network className="w-3.5 h-3.5 text-cyan-400" />
           </div>
-          <div>
-            <span className="text-[11px] text-slate-400 uppercase font-mono">Live WebSockets</span>
-            <div className="text-xl font-bold text-white font-mono">{wsActive}</div>
-          </div>
+          <p className="text-xl font-bold text-white font-mono">{wsActive}</p>
+          <span className="text-[9px] text-[#FFB800] uppercase">REAL-TIME BROADCAST CHANNELS</span>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
-            <Cpu className="w-5 h-5" />
+        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-bold uppercase">TOTAL API CALLS</span>
+            <Database className="w-3.5 h-3.5 text-[#FFB800]" />
           </div>
-          <div>
-            <span className="text-[11px] text-slate-400 uppercase font-mono">Agent Runs</span>
-            <div className="text-xl font-bold text-white font-mono">{agentExecs}</div>
-          </div>
+          <p className="text-xl font-bold text-white font-mono">{totalApiRequests}</p>
+          <span className="text-[9px] text-slate-400 uppercase">SERVER-SIDE TELEMETRY</span>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <Database className="w-5 h-5" />
+        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-bold uppercase">AGENT EXECUTIONS</span>
+            <Cpu className="w-3.5 h-3.5 text-[#FFB800]" />
           </div>
-          <div>
-            <span className="text-[11px] text-slate-400 uppercase font-mono">Queue Jobs</span>
-            <div className="text-xl font-bold text-white font-mono">{taskJobs}</div>
-          </div>
+          <p className="text-xl font-bold text-white font-mono">{agentExecs}</p>
+          <span className="text-[9px] text-[#FFB800] uppercase">AUTONOMOUS ORCHESTRATIONS</span>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <ShieldCheck className="w-5 h-5" />
+        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-bold uppercase">TASK QUEUE JOBS</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
           </div>
-          <div>
-            <span className="text-[11px] text-slate-400 uppercase font-mono">API Requests</span>
-            <div className="text-xl font-bold text-white font-mono">{totalApiRequests}</div>
-          </div>
+          <p className="text-xl font-bold text-white font-mono">{taskJobs}</p>
+          <span className="text-[9px] text-slate-400 uppercase">REDIS QUEUE PROCESSED</span>
         </div>
       </div>
 
-      {/* Raw Prometheus Exporter Viewer */}
-      <div className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 bg-slate-900/90 border-b border-slate-800">
+      {/* Terminal View */}
+      <div className="rounded-none bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
+        <div className="p-3 bg-[#1F2833] border-b border-[#3A4552] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-brand-400" />
-            <span className="text-xs font-semibold text-white font-mono">/api/metrics &amp; /metrics Telemetry</span>
-            <Badge variant="purple" className="text-[10px] font-mono">
-              text/plain
-            </Badge>
+            <Terminal className="w-3.5 h-3.5 text-[#FFB800]" />
+            <span className="text-xs font-bold text-white uppercase">/API/METRICS EXPOSITION STREAM</span>
           </div>
 
           <div className="flex items-center gap-2">
             <input
               type="text"
-              placeholder="Filter metric keys (e.g. crm_agent)..."
+              placeholder="FILTER METRIC LABELS..."
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
-              className="px-3 py-1.5 text-xs bg-slate-950 text-slate-200 border border-slate-800 rounded-lg focus:outline-none focus:border-brand-500 w-56 font-mono"
+              className="bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono w-56"
             />
+            {filterText && (
+              <Button size="sm" variant="ghost" onClick={() => setFilterText('')} className="text-xs h-7 px-2 uppercase">
+                CLEAR
+              </Button>
+            )}
           </div>
         </div>
 
-        <div className="p-4 max-h-[420px] overflow-y-auto font-mono text-xs text-slate-300 space-y-1 bg-slate-950/80">
+        <div className="p-4 max-h-[480px] overflow-y-auto font-mono text-[11px] leading-relaxed text-slate-300 select-text">
           {isLoading ? (
             <div className="py-12 flex justify-center">
               <LoadingSpinner />
             </div>
-          ) : filteredLines.length > 0 ? (
+          ) : filteredLines.length === 0 ? (
+            <div className="text-center py-12 text-slate-600 uppercase">NO METRICS MATCHING '{filterText}'</div>
+          ) : (
             filteredLines.map((line, idx) => {
-              const isComment = line.startsWith('#');
-              const isHelp = line.startsWith('# HELP');
-              const isType = line.startsWith('# TYPE');
+              if (line.startsWith('# HELP')) {
+                return (
+                  <div key={idx} className="text-slate-500 font-semibold mt-2">
+                    {line}
+                  </div>
+                );
+              }
+              if (line.startsWith('# TYPE')) {
+                return (
+                  <div key={idx} className="text-[#FFB800] mb-0.5">
+                    {line}
+                  </div>
+                );
+              }
+              if (!line.trim()) {
+                return <div key={idx} className="h-2" />;
+              }
+
+              // Highlight metric name and values
+              const parts = line.split(' ');
+              const metricName = parts[0];
+              const value = parts.slice(1).join(' ');
 
               return (
-                <div
-                  key={idx}
-                  className={`leading-relaxed whitespace-pre-wrap ${
-                    isHelp
-                      ? 'text-slate-500'
-                      : isType
-                      ? 'text-brand-400/80'
-                      : isComment
-                      ? 'text-slate-600'
-                      : 'text-emerald-400'
-                  }`}
-                >
-                  {line}
+                <div key={idx} className="flex items-baseline justify-between hover:bg-[#1F2833] px-1 py-0.5 transition-none">
+                  <span className="text-cyan-400">{metricName}</span>
+                  <span className="text-[#FFB800] font-bold">{value}</span>
                 </div>
               );
             })
-          ) : (
-            <div className="text-slate-500 py-8 text-center">No metrics matching &quot;{filterText}&quot;</div>
           )}
         </div>
       </div>

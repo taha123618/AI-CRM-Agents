@@ -74,28 +74,28 @@ export function RegisterPage() {
 
   return (
     <AuthLayout
-      title="Create an account"
-      subtitle="Get started with multi-agent AI CRM intelligence"
+      title="OPERATOR PROVISIONING"
+      subtitle="CREATE CREDENTIALS FOR COMMAND FLEET"
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-          <div>{errorMessage}</div>
+        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+          <div className="uppercase">{errorMessage}</div>
         </div>
       )}
 
       {/* Social SSO Buttons */}
-      <div className="space-y-2.5">
+      <div className="space-y-2 font-mono">
         <Button
           type="button"
           variant="outline"
           onClick={() => handleSsoClick('google')}
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2 text-xs py-2 h-9"
         >
-          <Building className="w-4 h-4 text-orange-400" />
-          Sign up with Google Workspace
+          <Building className="w-3.5 h-3.5 text-amber-400" />
+          <span>SIGN UP WITH GOOGLE WORKSPACE</span>
         </Button>
 
         <Button
@@ -103,151 +103,149 @@ export function RegisterPage() {
           variant="outline"
           onClick={() => handleSsoClick('microsoft')}
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2 text-xs py-2 h-9"
         >
-          <Building className="w-4 h-4 text-cyan-400" />
-          Sign up with Microsoft Entra ID
+          <Building className="w-3.5 h-3.5 text-cyan-400" />
+          <span>SIGN UP WITH MICROSOFT ENTRA ID</span>
         </Button>
       </div>
 
-      <div className="relative my-4">
+      <div className="relative my-3 font-mono">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-[#3A4552]" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-slate-900 px-2 text-slate-500">Or register with email</span>
+        <div className="relative flex justify-center text-[10px] uppercase">
+          <span className="bg-[#1F2833] px-2 text-slate-500">OR REGISTER WITH EMAIL</span>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3 font-mono">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-            Full Name
+          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            FULL NAME
           </label>
           <div className="relative">
-            <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <User className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Jordan Vance"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              placeholder="JORDAN VANCE"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-            Work Email Address
+          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            WORK EMAIL ADDRESS
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="jordan.vance@company.com"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              placeholder="JORDAN.VANCE@COMPANY.COM"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Password
+            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+              PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
                 tabIndex={-1}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               </button>
             </div>
-            <PasswordStrengthIndicator password={password} className="mt-2" />
+            <PasswordStrengthIndicator password={password} className="mt-1" />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Confirm Password
+            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+              CONFIRM PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
                 tabIndex={-1}
               >
-                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               </button>
             </div>
           </div>
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300">
-              Department Role
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-[10px] font-bold text-slate-300 uppercase">
+              DEPARTMENT ROLE
             </label>
-            <span className="text-[10px] text-amber-400/90 font-mono">
-              Admin provisioned via Settings
+            <span className="text-[9px] text-[#FFB800] font-mono uppercase">
+              ADMIN PROVISIONED VIA SETTINGS
             </span>
           </div>
           <div className="relative">
-            <ShieldCheck className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <ShieldCheck className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[#FFB800] cursor-pointer font-mono uppercase"
             >
-              <option value="sales">Sales (Pipeline, SDR & Deals)</option>
-              <option value="support">Support (Customer Success & Journey)</option>
-              <option value="auditor">Auditor (Read-Only Compliance)</option>
+              <option value="sales">SALES (PIPELINE, SDR &amp; DEALS)</option>
+              <option value="support">SUPPORT (CUSTOMER SUCCESS &amp; JOURNEY)</option>
+              <option value="auditor">AUDITOR (READ-ONLY COMPLIANCE)</option>
             </select>
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">
-            Super Admin accounts (<code className="text-slate-400">admin@gmail.com</code>) manage system permissions and user provisioning in Settings & Governance.
-          </p>
         </div>
 
         <Button
           type="submit"
+          variant="primary"
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-2.5 shadow-lg shadow-brand-500/20 text-sm font-semibold mt-2"
+          className="w-full flex items-center justify-center gap-2 text-xs font-bold py-2 h-9 mt-2 uppercase"
         >
-          <UserPlus className="w-4 h-4" />
-          {isRegistering ? 'Creating account...' : 'Create Account'}
+          <UserPlus className="w-3.5 h-3.5" />
+          <span>{isRegistering ? 'PROVISIONING...' : 'CREATE ACCOUNT'}</span>
         </Button>
       </form>
 
-      <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/60">
-        Already have an account?{' '}
-        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
-          Sign In
+      <div className="text-center text-[10px] text-slate-400 pt-2 border-t border-[#3A4552] font-mono uppercase">
+        ALREADY HAVE AN ACCOUNT?{' '}
+        <Link to="/login" className="text-[#FFB800] font-bold hover:underline">
+          SIGN IN
         </Link>
       </div>
     </AuthLayout>

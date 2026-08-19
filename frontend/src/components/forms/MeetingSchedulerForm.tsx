@@ -10,10 +10,10 @@ interface MeetingSchedulerFormProps {
 }
 
 const MEETING_TYPE_OPTIONS = [
-  { value: 'Discovery Call', label: 'Discovery Call' },
-  { value: 'Technical Review', label: 'Technical Review' },
-  { value: 'Executive Demo', label: 'Executive Demo' },
-  { value: 'Renewal Discussion', label: 'Renewal Discussion' },
+  { value: 'Discovery Call', label: 'DISCOVERY CALL' },
+  { value: 'Technical Review', label: 'TECHNICAL REVIEW' },
+  { value: 'Executive Demo', label: 'EXECUTIVE DEMO' },
+  { value: 'Renewal Discussion', label: 'RENEWAL DISCUSSION' },
 ];
 
 export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFormProps) {
@@ -44,24 +44,24 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 font-mono">
       <Input
-        label="Meeting Subject / Title"
-        placeholder="Product Architecture Review & Security Q&A"
+        label="MEETING SUBJECT / TITLE"
+        placeholder="PRODUCT ARCHITECTURE REVIEW & SECURITY Q&A"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <Select
-          label="Meeting Type"
+          label="MEETING TYPE"
           options={MEETING_TYPE_OPTIONS}
           value={meetingType}
           onChange={(e) => setMeetingType(e.target.value)}
         />
         <Input
-          label="Duration (Minutes)"
+          label="DURATION (MINUTES)"
           type="number"
           value={durationMinutes}
           onChange={(e) => setDurationMinutes(e.target.value)}
@@ -69,7 +69,7 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
       </div>
 
       <Input
-        label="Attendee Email"
+        label="ATTENDEE EMAIL"
         type="email"
         placeholder="cto@prospectcompany.com"
         value={attendeeEmail}
@@ -78,24 +78,24 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
       />
 
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-slate-300">Meeting Focus Notes (Optional)</label>
+        <label className="text-[10px] font-bold uppercase text-slate-300">MEETING FOCUS NOTES (OPTIONAL)</label>
         <textarea
           rows={3}
-          className="w-full rounded-xl bg-slate-900 border border-slate-800 p-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-          placeholder="e.g. Focus on SOC2 compliance, PostgreSQL encryption, and API integrations"
+          className="w-full rounded-none bg-[#0B0C10] border border-[#3A4552] p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+          placeholder="E.G. FOCUS ON SOC2 COMPLIANCE, POSTGRESQL ENCRYPTION, AND API INTEGRATIONS"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+          <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
+            CANCEL
           </Button>
         )}
-        <Button type="submit" isLoading={triggerMeetingMutation.isPending}>
-          Generate AI Meeting Prep
+        <Button type="submit" variant="primary" isLoading={triggerMeetingMutation.isPending} className="text-xs uppercase">
+          GENERATE AI PREP
         </Button>
       </div>
     </form>

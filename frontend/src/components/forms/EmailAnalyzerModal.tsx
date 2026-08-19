@@ -48,12 +48,13 @@ export function EmailAnalyzerModal() {
     <Modal
       isOpen={isEmailModalOpen}
       onClose={() => setEmailModalOpen(false)}
-      title="Analyze Email Sentiment & Draft Response"
-      description="Email Intelligence Agent will evaluate sentiment, assign priority, and generate an AI draft reply."
+      title="ANALYZE EMAIL SENTIMENT &amp; DRAFT"
+      description="EMAILINTELLIGENCEAGENT WILL EVALUATE SENTIMENT, ASSIGN PRIORITY, AND GENERATE A DRAFT."
+      className="font-mono"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 font-mono">
         <Input
-          label="Sender Email"
+          label="SENDER EMAIL"
           placeholder="john.doe@techcorp.io"
           required
           {...register('sender')}
@@ -61,32 +62,32 @@ export function EmailAnalyzerModal() {
         />
 
         <Input
-          label="Email Subject"
-          placeholder="Pricing Inquiry"
+          label="EMAIL SUBJECT"
+          placeholder="PRICING INQUIRY"
           required
           {...register('subject')}
           error={errors.subject?.message}
         />
 
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-slate-300">
-            Email Content / Body <span className="text-rose-400 ml-0.5">*</span>
+        <div className="space-y-1">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">
+            EMAIL CONTENT / BODY <span className="text-[#FF2A54] ml-0.5">*</span>
           </label>
           <textarea
             rows={4}
-            className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
             {...register('body')}
           />
-          {errors.body && <p className="text-xs text-rose-400">{errors.body.message}</p>}
+          {errors.body && <p className="text-xs text-[#FF2A54] font-mono">{errors.body.message}</p>}
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <Button type="button" variant="outline" onClick={() => setEmailModalOpen(false)}>
-            Cancel
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+          <Button type="button" variant="outline" onClick={() => setEmailModalOpen(false)} className="text-xs">
+            CANCEL
           </Button>
-          <Button type="submit" isLoading={analyzeEmailMutation.isPending}>
-            <Sparkles className="w-4 h-4" />
-            <span>Analyze & Draft Reply</span>
+          <Button type="submit" variant="primary" isLoading={analyzeEmailMutation.isPending} className="text-xs">
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            <span>ANALYZE &amp; DRAFT</span>
           </Button>
         </div>
       </form>

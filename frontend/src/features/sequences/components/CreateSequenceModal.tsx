@@ -86,157 +86,157 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
+      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-5 sm:p-6 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-500/30">
-              <Send className="w-6 h-6" />
+            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
+              <Send className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-white flex items-center gap-2">
-                <span>Create AI SDR Outreach Cadence</span>
-                <Badge variant="purple" className="text-[10px] bg-purple-500/20 text-purple-300">
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span>CREATE AI SDR OUTREACH CADENCE</span>
+                <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   {channel}
                 </Badge>
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Design automated multi-channel sequences executed by autonomous AI agents.
+              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                DESIGN AUTOMATED MULTI-CHANNEL SEQUENCES EXECUTED BY AUTONOMOUS AI AGENTS.
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 scrollbar-thin">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
           {/* Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-[#0B0C10] p-3.5 rounded-none border border-[#3A4552]">
             <div className="space-y-1 sm:col-span-2">
-              <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">
-                Cadence Name
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                CADENCE NAME
               </label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Enterprise RevOps High-Conversion Sequence"
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+                placeholder="E.G. ENTERPRISE REVOPS HIGH-CONVERSION SEQUENCE"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">
-                Cadence Channel
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                CADENCE CHANNEL
               </label>
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
-                <option value="multichannel">Omnichannel Fleet</option>
-                <option value="email">Email Intelligence</option>
-                <option value="whatsapp">WhatsApp Auto-Pilot</option>
-                <option value="voice">Voice AI Studio</option>
+                <option value="multichannel">OMNICHANNEL FLEET</option>
+                <option value="email">EMAIL INTELLIGENCE</option>
+                <option value="whatsapp">WHATSAPP AUTO-PILOT</option>
+                <option value="voice">VOICE AI STUDIO</option>
               </select>
             </div>
 
             <div className="space-y-1 sm:col-span-3">
-              <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">
-                Target Persona
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                TARGET PERSONA
               </label>
               <input
                 type="text"
                 required
                 value={targetPersona}
                 onChange={(e) => setTargetPersona(e.target.value)}
-                placeholder="e.g. VP of Sales"
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+                placeholder="E.G. VP OF SALES / CRO"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
           </div>
 
           {/* Cadence Steps */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Cadence Steps ({steps.length})
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                CADENCE STEPS ({steps.length})
               </span>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={addStep}
-                className="text-xs border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
+                className="text-xs h-7 uppercase"
               >
                 <Plus className="w-3.5 h-3.5 mr-1" />
-                <span>Add Step</span>
+                <span>ADD STEP</span>
               </Button>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {steps.map((step, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3"
+                  className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2.5 font-mono"
                 >
-                  <div className="flex items-center justify-between border-b border-slate-850 pb-2">
-                    <span className="text-xs font-black text-blue-400 uppercase tracking-wider">
-                      Step #{step.step_number}
+                  <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+                    <span className="text-xs font-bold text-[#FFB800] uppercase tracking-wider">
+                      STEP #{step.step_number}
                     </span>
                     <div className="flex items-center gap-2">
                       <select
                         value={step.channel}
                         onChange={(e) => updateStep(idx, 'channel', e.target.value)}
-                        className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white focus:outline-none"
+                        className="bg-[#1F2833] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none uppercase"
                       >
-                        <option value="email">Email</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="voice">Voice Call</option>
-                        <option value="linkedin">LinkedIn</option>
+                        <option value="email">EMAIL</option>
+                        <option value="whatsapp">WHATSAPP</option>
+                        <option value="voice">VOICE CALL</option>
+                        <option value="linkedin">LINKEDIN</option>
                       </select>
 
-                      <div className="flex items-center gap-1 text-xs text-slate-400">
-                        <span>Wait</span>
+                      <div className="flex items-center gap-1 text-[10px] text-slate-400 uppercase">
+                        <span>WAIT</span>
                         <input
                           type="number"
                           min="0"
                           max="30"
                           value={step.delay_days}
                           onChange={(e) => updateStep(idx, 'delay_days', Number(e.target.value))}
-                          className="w-12 bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white text-center focus:outline-none"
+                          className="w-12 bg-[#1F2833] border border-[#3A4552] rounded-none px-1.5 py-0.5 text-xs text-white text-center focus:outline-none"
                         />
-                        <span>days</span>
+                        <span>DAYS</span>
                       </div>
 
                       {steps.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeStep(idx)}
-                          className="p-1 text-slate-500 hover:text-rose-400 transition-colors"
+                          className="p-1 text-slate-500 hover:text-[#FF2A54] transition-none"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 font-mono">
                     <input
                       type="text"
                       required
                       value={step.subject}
                       onChange={(e) => updateStep(idx, 'subject', e.target.value)}
-                      placeholder="Subject Line"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500 font-medium"
+                      placeholder="SUBJECT LINE"
+                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-bold"
                     />
                     <textarea
                       rows={3}
@@ -244,7 +244,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.template}
                       onChange={(e) => updateStep(idx, 'template', e.target.value)}
                       placeholder="Template copy with {{first_name}}, {{company_name}} tags..."
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500 leading-relaxed font-sans"
+                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] leading-relaxed font-mono"
                     />
                   </div>
                 </div>
@@ -253,19 +253,19 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
           </div>
 
           {/* Action Footer */}
-          <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
-            <Button type="button" variant="outline" size="sm" onClick={onClose}>
-              Cancel
+          <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+            <Button type="button" variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
+              CANCEL
             </Button>
             <Button
               type="submit"
               variant="primary"
               size="sm"
               isLoading={createMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-500 text-white font-bold"
+              className="text-xs uppercase"
             >
               <Sparkles className="w-3.5 h-3.5 mr-1" />
-              <span>Launch Sequence</span>
+              <span>LAUNCH SEQUENCE</span>
             </Button>
           </div>
         </form>

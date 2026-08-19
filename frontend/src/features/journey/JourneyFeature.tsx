@@ -84,93 +84,93 @@ export function JourneyFeature() {
   const activeCust = selectedCustomer || (filteredCustomers.length > 0 ? filteredCustomers[0].customer : null);
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300 pb-12">
-      {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-950/50 via-slate-900/80 to-purple-950/50 border border-blue-500/30 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-        <div className="flex items-start sm:items-center gap-4 z-10">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-500/30 to-purple-500/20 border border-blue-500/40 text-blue-400 shadow-xl shadow-blue-500/20 shrink-0">
-            <Milestone className="w-7 h-7 animate-pulse" />
+    <div className="space-y-4 font-mono pb-12">
+      {/* ── Header Banner ── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+        <div className="flex items-start sm:items-center gap-3.5 z-10">
+          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
+            <Milestone className="w-6 h-6" />
           </div>
           <div>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                Customer Journey & Churn Prevention Studio
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+                CUSTOMER JOURNEY &amp; CHURN RADAR STUDIO
               </h1>
-              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-wider">
-                Telemetry Guided
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 uppercase tracking-wider">
+                TELEMETRY GUIDED
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-              Track lifecycle stage velocity, monitor real-time health decay, and trigger 1-click autonomous retention rescue interventions.
+            <p className="text-xs text-slate-400 mt-1 max-w-2xl uppercase">
+              TRACK LIFECYCLE STAGE VELOCITY, MONITOR REAL-TIME HEALTH DECAY, AND TRIGGER 1-CLICK AUTONOMOUS RETENTION RESCUE PLAYS.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 z-10">
+        <div className="flex items-center gap-2 z-10">
           <Button
             variant="outline"
             size="sm"
             onClick={() => refetch()}
             isLoading={isRefetching}
-            className="border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 text-xs h-9 px-3.5 rounded-xl"
+            className="text-xs h-8 px-3 uppercase"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-            <span>Refresh Telemetry</span>
+            <RefreshCw className="w-3.5 h-3.5 mr-1 text-slate-400" />
+            <span>REFRESH TELEMETRY</span>
           </Button>
         </div>
       </div>
 
       {/* Summary KPI Ribbon */}
       {journeyData?.summary && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-5 bg-slate-900/60 backdrop-blur-xl border-slate-800/80">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-              Total Monitored ARR
+              TOTAL MONITORED ARR
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-1">
+            <div className="text-2xl font-black font-mono text-[#FFB800] mt-0.5">
               ${journeyData.summary.total_arr.toLocaleString()}
             </div>
-            <span className="text-[11px] text-slate-400 font-mono mt-1 block">
-              Across {journeyData.summary.total_customers} accounts
+            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+              ACROSS {journeyData.summary.total_customers} ACCOUNTS
             </span>
           </Card>
 
-          <Card className="p-5 bg-rose-950/30 border-rose-500/30">
-            <span className="text-[10px] font-bold text-rose-300 uppercase tracking-wider block flex items-center gap-1">
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-              Revenue at Risk
+          <Card className="p-4 bg-[#1F2833] border-[#FF2A54]/50 rounded-none hover:border-[#FF2A54] transition-none">
+            <span className="text-[10px] font-bold text-[#FF2A54] uppercase tracking-wider block flex items-center gap-1.5">
+              <ShieldAlert className="w-3.5 h-3.5 text-[#FF2A54]" />
+              REVENUE AT RISK
             </span>
-            <div className="text-2xl font-black font-mono text-rose-400 mt-1">
+            <div className="text-2xl font-black font-mono text-[#FF2A54] mt-0.5">
               ${journeyData.summary.at_risk_arr.toLocaleString()}
             </div>
-            <span className="text-[11px] text-rose-300/80 font-mono mt-1 block">
-              {journeyData.summary.at_risk_count} accounts flagged
+            <span className="text-[10px] text-[#FF2A54]/80 font-mono mt-1 block uppercase">
+              {journeyData.summary.at_risk_count} ACCOUNTS FLAGGED
             </span>
           </Card>
 
-          <Card className="p-5 bg-emerald-950/30 border-emerald-500/30">
-            <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider block flex items-center gap-1">
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-              Expansion Potential ARR
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+            <span className="text-[10px] font-bold text-[#00E5FF] uppercase tracking-wider block flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
+              EXPANSION POTENTIAL ARR
             </span>
-            <div className="text-2xl font-black font-mono text-emerald-400 mt-1">
+            <div className="text-2xl font-black font-mono text-[#00E5FF] mt-0.5">
               ${journeyData.summary.expansion_arr.toLocaleString()}
             </div>
-            <span className="text-[11px] text-emerald-300/80 font-mono mt-1 block">
-              High health advocates
+            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+              HIGH HEALTH ADVOCATES
             </span>
           </Card>
 
-          <Card className="p-5 bg-purple-950/30 border-purple-500/30">
-            <span className="text-[10px] font-bold text-purple-300 uppercase tracking-wider block flex items-center gap-1">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+            <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider block flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 text-purple-400" />
-              Autonomous Rescue Fleet
+              AUTONOMOUS RESCUE FLEET
             </span>
-            <div className="text-2xl font-black font-mono text-purple-300 mt-1">
-              24/7 AI Auto-Pilot
+            <div className="text-2xl font-black font-mono text-purple-300 mt-0.5">
+              24/7 AI AUTO-PILOT
             </div>
-            <span className="text-[11px] text-purple-300/80 font-mono mt-1 block">
-              Customer Success Agent
+            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+              CUSTOMER SUCCESS AGENT
             </span>
           </Card>
         </div>
@@ -178,34 +178,32 @@ export function JourneyFeature() {
 
       {/* Lifecycle Stage Progression Track */}
       {journeyData?.stages && journeyData?.distribution && (
-        <div className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-              <Milestone className="w-4 h-4 text-blue-400" />
-              <span>Customer Lifecycle Pipeline</span>
+        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3.5 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Milestone className="w-4 h-4 text-[#FFB800]" />
+              <span>CUSTOMER LIFECYCLE PIPELINE</span>
             </span>
             <div className="flex flex-wrap items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => setActiveStageFilter('all')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                  activeStageFilter === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                }`}
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === 'all'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+                    : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                  }`}
               >
-                All ({allCustomers.length})
+                ALL ({allCustomers.length})
               </button>
               {journeyData.stages.map((st) => (
                 <button
                   key={st.id}
                   type="button"
                   onClick={() => setActiveStageFilter(st.id)}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                    activeStageFilter === st.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                  }`}
+                  className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === st.id
+                      ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+                      : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                    }`}
                 >
                   {st.label} ({journeyData.distribution[st.id]?.count || 0})
                 </button>
@@ -213,7 +211,7 @@ export function JourneyFeature() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
             {journeyData.stages.map((st) => {
               const bucket = journeyData.distribution[st.id] || { count: 0, total_arr: 0 };
               const isFiltered = activeStageFilter === st.id;
@@ -221,22 +219,21 @@ export function JourneyFeature() {
                 <div
                   key={st.id}
                   onClick={() => setActiveStageFilter(isFiltered ? 'all' : st.id)}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                    isFiltered
-                      ? 'bg-slate-950 border-blue-500 shadow-lg shadow-blue-500/10'
-                      : 'bg-slate-950/60 border-slate-800/80 hover:border-slate-700'
-                  }`}
+                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${isFiltered
+                      ? 'bg-[#0B0C10] border-[#FFB800] shadow-lg'
+                      : 'bg-[#0B0C10]/60 border-[#3A4552] hover:border-slate-500'
+                    }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-300">{st.label}</span>
-                    <Badge variant="default" className="text-[10px]">
+                    <span className="text-xs font-bold text-slate-300 uppercase">{st.label}</span>
+                    <Badge variant="default" className="text-[9px] uppercase font-mono">
                       {bucket.count}
                     </Badge>
                   </div>
-                  <div className="text-base font-black font-mono text-emerald-400 mt-2">
+                  <div className="text-base font-black font-mono text-[#FFB800] mt-1.5">
                     ${bucket.total_arr.toLocaleString()}
                   </div>
-                  <span className="text-[10px] text-slate-500 font-mono">Stage ARR</span>
+                  <span className="text-[9px] text-slate-500 font-mono uppercase">STAGE ARR</span>
                 </div>
               );
             })}
@@ -245,36 +242,36 @@ export function JourneyFeature() {
       )}
 
       {/* Main Grid: Customer Fleet + Detailed Journey Telemetry */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left: Searchable & Sortable Accounts List */}
-        <div className="lg:col-span-5 space-y-3">
+        <div className="lg:col-span-5 space-y-2.5">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              Accounts in Stage ({filteredCustomers.length})
+              ACCOUNTS IN STAGE ({filteredCustomers.length})
             </span>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setSortAscending(!sortAscending)}
-              className="text-[10px] h-7 px-2 border-slate-800"
+              className="text-[10px] h-6 px-2 uppercase"
             >
               <ArrowUpDown className="w-3 h-3 mr-1" />
-              <span>{sortAscending ? 'Health: Low to High' : 'Health: High to Low'}</span>
+              <span>{sortAscending ? 'HEALTH: ASC' : 'HEALTH: DESC'}</span>
             </Button>
           </div>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search accounts by name..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+              placeholder="SEARCH ACCOUNTS BY NAME..."
+              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
             />
           </div>
 
-          <div className="space-y-2.5 max-h-[580px] overflow-y-auto pr-1 scrollbar-thin">
+          <div className="space-y-2 max-h-[580px] overflow-y-auto pr-1 scrollbar-thin">
             {filteredCustomers.map(({ stage: _stage, customer }) => {
               const isSelected = activeCust?.id === customer.id;
               const isAtRisk = customer.churn_risk_pct >= 40 || customer.health_score < 50;
@@ -282,46 +279,47 @@ export function JourneyFeature() {
                 <div
                   key={customer.id}
                   onClick={() => setSelectedCustomer(customer)}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
-                    isSelected
-                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500 text-white shadow-xl shadow-blue-500/10'
-                      : 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700 text-slate-300'
-                  }`}
+                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
+                      ? 'bg-[#1F2833] border-[#FFB800] text-white shadow-xl'
+                      : 'bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                    }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-3.5 h-3.5 text-blue-400" />
-                      <h4 className="text-xs font-bold text-white truncate">{customer.name}</h4>
+                    <div className="flex items-center gap-1.5">
+                      <Briefcase className="w-3.5 h-3.5 text-[#FFB800]" />
+                      <h4 className="text-xs font-bold text-white uppercase truncate">{customer.name}</h4>
                     </div>
                     <Badge
                       variant={isAtRisk ? 'danger' : customer.health_score >= 75 ? 'success' : 'warning'}
-                      className="text-[9px]"
+                      className="text-[9px] uppercase font-mono"
                     >
-                      {customer.health_score}% Health
+                      {customer.health_score}% HEALTH
                     </Badge>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono mt-2 pt-2 border-t border-slate-800/60">
-                    <span className="text-emerald-400 font-bold">${customer.arr.toLocaleString()} ARR</span>
-                    <span className="text-slate-400">{customer.churn_risk_pct}% Churn Risk</span>
+                  <div className="flex items-center justify-between text-[10px] font-mono mt-2 pt-2 border-t border-[#3A4552] uppercase">
+                    <span className="text-[#FFB800] font-bold">${customer.arr.toLocaleString()} ARR</span>
+                    <span className={isAtRisk ? 'text-[#FF2A54] font-bold' : 'text-slate-400'}>
+                      {customer.churn_risk_pct}% CHURN RISK
+                    </span>
                   </div>
 
                   {isAtRisk && (
-                    <div className="mt-2.5 pt-2 border-t border-rose-500/20 flex items-center justify-between">
-                      <span className="text-[10px] text-rose-300 font-bold flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3 text-rose-400" />
-                        Rescue Play Ready
+                    <div className="mt-2 pt-2 border-t border-[#FF2A54]/30 flex items-center justify-between">
+                      <span className="text-[9px] text-[#FF2A54] font-bold flex items-center gap-1 uppercase">
+                        <AlertTriangle className="w-3 h-3 text-[#FF2A54]" />
+                        RESCUE PLAY READY
                       </span>
                       <Button
                         size="sm"
-                        variant="outline"
+                        variant="danger"
                         onClick={(e) => {
                           e.stopPropagation();
                           setInterventionCustomer(customer);
                         }}
-                        className="text-[10px] h-7 px-2 border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20"
+                        className="text-[9px] h-6 px-2 uppercase font-bold"
                       >
-                        <span>Trigger Rescue</span>
+                        <span>TRIGGER RESCUE</span>
                       </Button>
                     </div>
                   )}
@@ -334,16 +332,16 @@ export function JourneyFeature() {
         {/* Right: Detailed Account Journey & Interventions */}
         <div className="lg:col-span-7 space-y-4">
           {activeCust && customerDetails ? (
-            <div className="p-6 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 space-y-6 shadow-xl">
+            <div className="p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-4 shadow-xl">
               {/* Account Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
                 <div>
-                  <h3 className="text-lg font-black text-white">{customerDetails.customer_name}</h3>
+                  <h3 className="text-base font-black text-white uppercase">{customerDetails.customer_name}</h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <Badge variant="info" className="text-[10px] uppercase font-mono">
-                      Stage: {customerDetails.lifecycle_stage}
+                    <Badge variant="info" className="text-[9px] uppercase font-mono">
+                      STAGE: {customerDetails.lifecycle_stage}
                     </Badge>
-                    <span className="text-xs text-slate-400 font-mono">
+                    <span className="text-xs text-[#FFB800] font-mono font-bold">
                       MRR: ${customerDetails.mrr.toLocaleString()}
                     </span>
                   </div>
@@ -353,41 +351,40 @@ export function JourneyFeature() {
                   variant="primary"
                   size="sm"
                   onClick={() => setInterventionCustomer(activeCust)}
-                  className="bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 font-bold text-xs"
+                  className="font-bold text-xs h-8 px-3 uppercase"
                 >
-                  <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-                  <span>Launch Retention Playbook</span>
+                  <Sparkles className="w-3.5 h-3.5 mr-1 text-[#0B0C10]" />
+                  <span>LAUNCH RETENTION PLAYBOOK</span>
                 </Button>
               </div>
 
               {/* Journey Timeline */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Lifecycle Milestone Timeline</span>
+                  <Clock className="w-3.5 h-3.5 text-[#00E5FF]" />
+                  <span>LIFECYCLE MILESTONE TIMELINE</span>
                 </span>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {customerDetails.timeline.map((t, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs uppercase"
                     >
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <CheckCircle2
-                          className={`w-4 h-4 ${
-                            t.status === 'completed'
-                              ? 'text-emerald-400'
+                          className={`w-3.5 h-3.5 ${t.status === 'completed'
+                              ? 'text-[#FFB800]'
                               : t.status === 'in_progress'
-                              ? 'text-blue-400 animate-pulse'
-                              : t.status === 'flagged'
-                              ? 'text-rose-400'
-                              : 'text-slate-600'
-                          }`}
+                                ? 'text-[#00E5FF]'
+                                : t.status === 'flagged'
+                                  ? 'text-[#FF2A54]'
+                                  : 'text-slate-600'
+                            }`}
                         />
                         <span className="text-slate-200 font-medium">{t.event}</span>
                       </div>
-                      <span className="text-[11px] font-mono text-slate-500">{t.date}</span>
+                      <span className="text-[10px] font-mono text-slate-500">{t.date}</span>
                     </div>
                   ))}
                 </div>
@@ -395,28 +392,28 @@ export function JourneyFeature() {
 
               {/* Active Interventions History */}
               {customerDetails.active_interventions && customerDetails.active_interventions.length > 0 && (
-                <div className="space-y-3">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-                    <span>Dispatched Interventions ({customerDetails.active_interventions.length})</span>
+                <div className="space-y-2.5">
+                  <span className="text-xs font-bold text-[#FF2A54] uppercase tracking-wider flex items-center gap-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5 text-[#FF2A54]" />
+                    <span>DISPATCHED INTERVENTIONS ({customerDetails.active_interventions.length})</span>
                   </span>
 
                   <div className="space-y-2">
                     {customerDetails.active_interventions.map((intv) => (
                       <div
                         key={intv.id}
-                        className="p-3 rounded-xl bg-slate-950 border border-rose-500/30 flex items-start justify-between gap-3 text-xs"
+                        className="p-3 rounded-none bg-[#0B0C10] border border-[#FF2A54]/50 flex items-start justify-between gap-3 text-xs uppercase"
                       >
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-white uppercase font-mono text-[10px]">
                               {intv.intervention_type}
                             </span>
-                            <Badge variant={intv.status === 'completed' ? 'success' : 'warning'} className="text-[9px]">
+                            <Badge variant={intv.status === 'completed' ? 'success' : 'warning'} className="text-[8px] uppercase font-mono">
                               {intv.status}
                             </Badge>
                           </div>
-                          <p className="text-slate-300 text-[11px] mt-1">{intv.action_summary}</p>
+                          <p className="text-slate-300 text-[10px] mt-1">{intv.action_summary}</p>
                         </div>
 
                         {intv.status !== 'completed' && (
@@ -425,10 +422,10 @@ export function JourneyFeature() {
                             variant="outline"
                             onClick={() => resolveMutation.mutate(intv.id)}
                             isLoading={resolveMutation.isPending}
-                            className="text-[10px] h-7 px-2 shrink-0 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20"
+                            className="text-[9px] h-6 px-2 shrink-0 border-[#FFB800] text-[#FFB800] hover:bg-[#FFB800] hover:text-[#0B0C10] uppercase font-bold"
                           >
                             <CheckCircle className="w-3 h-3 mr-1" />
-                            <span>Resolve</span>
+                            <span>RESOLVE</span>
                           </Button>
                         )}
                       </div>
@@ -438,19 +435,19 @@ export function JourneyFeature() {
               )}
 
               {/* Recommended Plays */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Proactive AI Recommendations</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+                  <span>PROACTIVE AI RECOMMENDATIONS</span>
                 </span>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {customerDetails.recommended_plays.map((play, idx) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-xl bg-slate-950/80 border border-purple-500/20 text-xs text-slate-300 flex items-start gap-2.5"
+                      className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 flex items-start gap-2 uppercase"
                     >
-                      <span className="text-purple-400 font-bold shrink-0">⚡</span>
+                      <span className="text-[#FFB800] font-bold shrink-0">⚡</span>
                       <span>{play}</span>
                     </div>
                   ))}
@@ -458,9 +455,13 @@ export function JourneyFeature() {
               </div>
             </div>
           ) : isLoadingDetails ? (
-            <div className="p-12 text-center text-slate-500 text-xs">Loading customer journey details...</div>
+            <div className="p-12 text-center text-slate-500 text-xs uppercase font-mono">
+              LOADING CUSTOMER JOURNEY DETAILS...
+            </div>
           ) : (
-            <div className="p-12 text-center text-slate-500 text-xs">Select an account to view telemetry.</div>
+            <div className="p-12 text-center text-slate-500 text-xs uppercase font-mono">
+              SELECT AN ACCOUNT TO VIEW TELEMETRY.
+            </div>
           )}
         </div>
       </div>
@@ -475,3 +476,4 @@ export function JourneyFeature() {
     </div>
   );
 }
+

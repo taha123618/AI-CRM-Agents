@@ -50,175 +50,175 @@ export function ImportExportStudioTab() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 font-mono">
       {/* 1-Click Exporters */}
       <div className="space-y-3">
-        <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Download className="w-5 h-5 text-brand-400" />
-            1-Click Data Exporters
+        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <Download className="w-4 h-4 text-[#FFB800]" />
+            1-CLICK DATA EXPORTERS
           </h2>
-          <p className="text-sm text-slate-400">
-            Export CRM records and compliance audit trails directly into CSV format.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            EXPORT CRM RECORDS AND COMPLIANCE AUDIT TRAILS DIRECTLY INTO CSV FORMAT WITH SANITIZED OUTPUT.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card className="glass-card border border-slate-800/80 p-5 space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-semibold">
-                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-                All Contacts & Leads
+              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
+                <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
+                ALL CONTACTS &amp; LEADS
               </div>
-              <p className="text-xs text-slate-400">
-                Full directory of enriched contacts, lead scores, and status tags.
+              <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+                FULL DIRECTORY OF ENRICHED CONTACTS, LEAD SCORES, AND STATUS TAGS.
               </p>
             </div>
             <Button
               onClick={() => handleDownload('/api/import-export/export/leads', 'crm_leads_export.csv')}
               variant="outline"
               size="sm"
-              className="w-full flex items-center justify-center gap-2 text-xs border-slate-700 hover:bg-slate-800"
+              className="w-full flex items-center justify-center gap-1.5 text-xs h-7 uppercase font-bold"
             >
               <Download className="w-3.5 h-3.5" />
-              Download Leads CSV
+              DOWNLOAD LEADS CSV
             </Button>
           </Card>
 
-          <Card className="glass-card border border-slate-800/80 p-5 space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-semibold">
-                <FileSpreadsheet className="w-4 h-4 text-orange-400" />
-                Active Deals Pipeline
+              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
+                <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
+                ACTIVE DEALS PIPELINE
               </div>
-              <p className="text-xs text-slate-400">
-                Deal valuations, pipeline stages, health scores, and close probabilities.
+              <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+                DEAL VALUATIONS, PIPELINE STAGES, HEALTH SCORES, AND CLOSE PROBABILITIES.
               </p>
             </div>
             <Button
               onClick={() => handleDownload('/api/import-export/export/deals', 'crm_deals_export.csv')}
               variant="outline"
               size="sm"
-              className="w-full flex items-center justify-center gap-2 text-xs border-slate-700 hover:bg-slate-800"
+              className="w-full flex items-center justify-center gap-1.5 text-xs h-7 uppercase font-bold"
             >
               <Download className="w-3.5 h-3.5" />
-              Download Deals CSV
+              DOWNLOAD DEALS CSV
             </Button>
           </Card>
 
-          <Card className="glass-card border border-slate-800/80 p-5 space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-semibold">
+              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-purple-400" />
-                Compliance Audit Trail
+                COMPLIANCE AUDIT TRAIL
               </div>
-              <p className="text-xs text-slate-400">
-                GDPR & SOC2 compliance logs with actors, timestamps, and IP addresses.
+              <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+                GDPR &amp; SOC2 COMPLIANCE LOGS WITH ACTORS, TIMESTAMPS, AND IP ADDRESSES.
               </p>
             </div>
             <Button
               onClick={() => handleDownload('/api/import-export/export/audit-logs', 'compliance_audit_logs.csv')}
               variant="outline"
               size="sm"
-              className="w-full flex items-center justify-center gap-2 text-xs border-slate-700 hover:bg-slate-800"
+              className="w-full flex items-center justify-center gap-1.5 text-xs h-7 uppercase font-bold"
             >
               <Download className="w-3.5 h-3.5" />
-              Download Audit CSV
+              DOWNLOAD AUDIT CSV
             </Button>
           </Card>
         </div>
       </div>
 
       {/* CSV Importer */}
-      <div className="space-y-4 pt-4 border-t border-slate-800/80">
-        <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Upload className="w-5 h-5 text-brand-400" />
-            Bulk CSV Ingestion Studio
+      <div className="space-y-3 pt-3 border-t border-[#3A4552]">
+        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <Upload className="w-4 h-4 text-[#FFB800]" />
+            BULK CSV INGESTION STUDIO
           </h2>
-          <p className="text-sm text-slate-400">
-            Import legacy data from Salesforce, HubSpot, or spreadsheets with case-insensitive column matching.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            IMPORT LEGACY DATA FROM SALESFORCE, HUBSPOT, OR SPREADSHEETS WITH COLUMN MATCHING.
           </p>
         </div>
 
-        <form onSubmit={handleImport} className="space-y-4">
-          <div className="flex items-center gap-4">
-            <label className="text-xs font-semibold text-slate-300">Target Entity:</label>
-            <div className="flex items-center gap-2">
+        <form onSubmit={handleImport} className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3">
+          <div className="flex items-center gap-3">
+            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">TARGET ENTITY:</label>
+            <div className="flex items-center gap-1.5 font-mono">
               <button
                 type="button"
                 onClick={() => setImportType('leads')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  importType === 'leads'
-                    ? 'bg-brand-500 text-white shadow-md'
-                    : 'bg-slate-900 text-slate-400 hover:text-white'
-                }`}
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'leads'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+                    : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                  }`}
               >
-                Contacts & Leads
+                CONTACTS &amp; LEADS
               </button>
               <button
                 type="button"
                 onClick={() => setImportType('deals')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  importType === 'deals'
-                    ? 'bg-brand-500 text-white shadow-md'
-                    : 'bg-slate-900 text-slate-400 hover:text-white'
-                }`}
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'deals'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+                    : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                  }`}
               >
-                Sales Deals
+                SALES DEALS
               </button>
             </div>
           </div>
 
           <div className="space-y-1">
-            <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>Paste CSV Content or Template:</span>
+            <div className="flex items-center justify-between text-[10px] text-slate-400 uppercase">
+              <span>PASTE CSV CONTENT OR USE SAMPLE:</span>
               <button
                 type="button"
                 onClick={() => setCsvInput(SAMPLE_LEADS_CSV)}
-                className="text-brand-400 hover:underline flex items-center gap-1"
+                className="text-[#FFB800] hover:underline flex items-center gap-1 font-bold"
               >
                 <Sparkles className="w-3 h-3" />
-                Reset Sample Data
+                RESET SAMPLE DATA
               </button>
             </div>
             <textarea
               rows={7}
               value={csvInput}
               onChange={(e) => setCsvInput(e.target.value)}
-              className="w-full font-mono text-xs bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-brand-500"
-              placeholder="Paste raw CSV with header row here..."
+              className="w-full font-mono text-xs bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-slate-200 focus:outline-none focus:border-[#FFB800]"
+              placeholder="PASTE RAW CSV WITH HEADER ROW HERE..."
             />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-1">
             <Button
               type="submit"
+              variant="primary"
+              size="sm"
               disabled={importLeadsMutation.isPending || importDealsMutation.isPending}
-              className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white shadow-lg shadow-brand-500/20"
+              className="flex items-center gap-2 text-xs uppercase font-bold h-8 px-4"
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-3.5 h-3.5 text-[#0B0C10]" />
               {importLeadsMutation.isPending || importDealsMutation.isPending
-                ? 'Processing Import...'
-                : `Run Bulk Import (${importType.toUpperCase()})`}
+                ? 'PROCESSING INGESTION...'
+                : `RUN BULK INGESTION (${importType.toUpperCase()})`}
             </Button>
           </div>
         </form>
 
         {importResult && (
-          <Card className="glass-card border border-slate-800/80 p-4 space-y-2 animate-in fade-in duration-200">
-            <div className="flex items-center gap-2 text-sm font-semibold text-white">
+          <Card className="bg-[#0B0C10] border border-[#FFB800] p-3.5 space-y-2 animate-in fade-in font-mono">
+            <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
               {importResult.success ? (
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
               ) : (
-                <AlertCircle className="w-5 h-5 text-rose-400" />
+                <AlertCircle className="w-4 h-4 text-[#FF2A54]" />
               )}
-              Import Completed: {importResult.created_count} records created, {importResult.updated_count || 0} updated.
+              IMPORT COMPLETED: {importResult.created_count} CREATED, {importResult.updated_count || 0} UPDATED.
             </div>
 
             {importResult.errors && importResult.errors.length > 0 && (
-              <div className="space-y-1 text-xs text-rose-400 pt-2 border-t border-slate-800">
-                <span className="font-semibold">Import Warnings:</span>
+              <div className="space-y-0.5 text-[10px] text-[#FF2A54] pt-2 border-t border-[#3A4552] uppercase font-mono">
+                <span className="font-bold">IMPORT WARNINGS:</span>
                 {importResult.errors.map((err, i) => (
                   <div key={i}>• {err}</div>
                 ))}

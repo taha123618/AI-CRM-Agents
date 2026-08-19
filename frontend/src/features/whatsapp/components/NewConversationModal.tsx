@@ -36,43 +36,43 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-emerald-500/10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 font-mono">
+      <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800">
-          <h2 className="text-sm font-black text-white flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+        <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10]">
+          <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="p-1 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
               <Phone className="w-3.5 h-3.5" />
             </div>
-            New WhatsApp Conversation
+            NEW WHATSAPP CONVERSATION
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="p-1 rounded-none text-slate-400 hover:text-white transition-none"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <User className="w-3 h-3" /> Contact Name
+        <form onSubmit={handleSubmit} className="p-4 space-y-3 font-mono">
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <User className="w-3 h-3 text-[#FFB800]" /> CONTACT NAME
             </label>
             <input
               type="text"
               value={contactName}
               onChange={(e) => setContactName(e.target.value)}
-              placeholder="e.g. Sarah Johnson"
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+              placeholder="E.G. SARAH JOHNSON"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800] uppercase"
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <Phone className="w-3 h-3" /> Phone Number *
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <Phone className="w-3 h-3 text-[#FFB800]" /> PHONE NUMBER *
             </label>
             <input
               type="text"
@@ -80,43 +80,43 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="+1 (555) 000-0000"
               required
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800]"
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Opening Message *
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              OPENING MESSAGE *
             </label>
             <textarea
               rows={3}
               value={firstMessage}
               onChange={(e) => setFirstMessage(e.target.value)}
-              placeholder="Hi [Name], I'm reaching out from AI CRM..."
+              placeholder="HI [NAME], I'M REACHING OUT FROM AI CRM..."
               required
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 resize-none"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800] resize-none"
             />
           </div>
 
-          <div className="flex items-center gap-2 pt-2">
+          <div className="flex items-center gap-2 pt-2 border-t border-[#3A4552]">
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="flex-1 border-slate-700 text-slate-400"
+              className="flex-1 text-xs"
               onClick={onClose}
             >
-              Cancel
+              CANCEL
             </Button>
             <Button
               type="submit"
               variant="primary"
               size="sm"
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500"
+              className="flex-1 text-xs"
               isLoading={sendMutation.isPending}
             >
-              <Send className="w-3.5 h-3.5 mr-1.5" />
-              Send Message
+              <Send className="w-3.5 h-3.5 mr-1" />
+              DISPATCH
             </Button>
           </div>
         </form>

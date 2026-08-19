@@ -37,18 +37,18 @@ export function LeadForm({ onSuccess, onCancel }: LeadFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-3 font-mono">
+      <div className="grid grid-cols-2 gap-3">
         <Input
-          label="First Name"
-          placeholder="Jane"
+          label="FIRST NAME"
+          placeholder="JANE"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
         <Input
-          label="Last Name"
-          placeholder="Doe"
+          label="LAST NAME"
+          placeholder="DOE"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           required
@@ -56,7 +56,7 @@ export function LeadForm({ onSuccess, onCancel }: LeadFormProps) {
       </div>
 
       <Input
-        label="Email Address"
+        label="WORK EMAIL ADDRESS"
         type="email"
         placeholder="jane.doe@company.com"
         value={email}
@@ -64,36 +64,36 @@ export function LeadForm({ onSuccess, onCancel }: LeadFormProps) {
         required
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <Input
-          label="Company"
-          placeholder="Acme Corp"
+          label="COMPANY NAME"
+          placeholder="ACME CORP"
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
         />
         <Input
-          label="Job Title"
-          placeholder="VP of Engineering"
+          label="JOB TITLE"
+          placeholder="VP OF ENGINEERING"
           value={jobTitle}
           onChange={(e) => setJobTitle(e.target.value)}
         />
       </div>
 
       <Input
-        label="Phone (Optional)"
+        label="PHONE (OPTIONAL)"
         placeholder="+1 (555) 000-0000"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
 
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+          <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
+            CANCEL
           </Button>
         )}
-        <Button type="submit" isLoading={createLeadMutation.isPending}>
-          Create & Score Lead
+        <Button type="submit" variant="primary" isLoading={createLeadMutation.isPending} className="text-xs uppercase">
+          PROVISION &amp; SCORE LEAD
         </Button>
       </div>
     </form>

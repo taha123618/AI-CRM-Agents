@@ -20,6 +20,7 @@ import {
   Milestone,
   Send,
   Sliders,
+  Terminal,
 } from 'lucide-react';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 import { useTranslation } from '@/features/multi-language';
@@ -67,33 +68,33 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-0 left-0 z-40 h-screen glass-panel border-r border-slate-800/80 transition-all duration-300 flex flex-col',
-        sidebarOpen ? 'w-64' : 'w-20'
+        'fixed top-0 left-0 z-40 h-screen bg-[#1F2833] border-r border-[#3A4552] transition-none flex flex-col font-mono',
+        sidebarOpen ? 'w-64' : 'w-16'
       )}
     >
       {/* Brand Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800/80">
-        <div className="flex items-center gap-3 overflow-hidden">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 via-orange-500 to-orange-500 flex items-center justify-center shadow-lg shadow-brand-500/20 shrink-0">
-            <Sparkles className="w-5 h-5 text-white animate-pulse" />
+      <div className="flex items-center justify-between h-14 px-3 border-b border-[#3A4552] bg-[#0B0C10]">
+        <div className="flex items-center gap-2.5 overflow-hidden">
+          <div className="w-8 h-8 rounded-none bg-[#FFB800] text-[#0B0C10] flex items-center justify-center font-mono font-black text-xs shrink-0 border border-[#FFB800]">
+            <Terminal className="w-4 h-4 text-[#0B0C10]" />
           </div>
           {sidebarOpen && (
             <div className="flex flex-col">
-              <span className="font-bold text-sm tracking-tight text-white">AI-Powered CRM</span>
-              <span className="text-[10px] font-mono text-brand-400">Agentic Architecture</span>
+              <span className="font-bold text-xs uppercase tracking-wider text-white">TACTICAL CRM</span>
+              <span className="text-[9px] font-mono text-[#FFB800] uppercase">COMMAND OS</span>
             </div>
           )}
         </div>
         <button
           onClick={toggleSidebar}
-          className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+          className="p-1 rounded-none text-slate-400 hover:bg-[#1F2833] hover:text-white transition-none"
         >
           {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>
       </div>
 
       {/* Navigation List */}
-      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+      <nav className="flex-1 px-2 py-3 space-y-1 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activePage === item.id;
@@ -102,22 +103,22 @@ export function Sidebar() {
               key={item.id}
               onClick={() => handleNav(item.id)}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative',
+                'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-none text-xs font-mono font-bold uppercase transition-none group relative',
                 isActive
-                  ? 'bg-brand-600/20 text-brand-400 border border-brand-500/30 shadow-md shadow-brand-500/5'
-                  : 'text-slate-400 hover:bg-slate-850 hover:text-slate-200 border border-transparent'
+                  ? 'bg-[#0B0C10] text-[#FFB800] border-l-2 border-l-[#FFB800] border border-[#FFB800]/40'
+                  : 'text-slate-400 hover:bg-[#0B0C10] hover:text-white border border-transparent'
               )}
             >
-              <Icon className={cn('w-5 h-5 shrink-0 transition-colors', isActive ? 'text-brand-400' : 'group-hover:text-slate-200')} />
+              <Icon className={cn('w-4 h-4 shrink-0 transition-none', isActive ? 'text-[#FFB800]' : 'group-hover:text-white')} />
               {sidebarOpen && <span className="truncate">{t(item.labelKey, item.defaultLabel)}</span>}
 
               {item.badge && sidebarOpen && (
                 <span
                   className={cn(
-                    'ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full border',
-                    item.badge.includes('Active')
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                      : 'bg-brand-500/10 text-brand-400 border-brand-500/20'
+                    'ml-auto text-[8px] font-mono font-bold px-1.5 py-0.2 rounded-none border',
+                    isActive
+                      ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
+                      : 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]/40'
                   )}
                 >
                   {item.badge}
@@ -130,15 +131,12 @@ export function Sidebar() {
 
       {/* Footer Info */}
       {sidebarOpen && (
-        <div className="p-4 border-t border-slate-800/80 m-3 rounded-xl bg-slate-900/50 border border-slate-800">
+        <div className="p-3 border-t border-[#3A4552] bg-[#0B0C10] font-mono">
           <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-xs font-medium text-slate-300">FastAPI Backend</span>
+            <span className="w-2 h-2 rounded-none bg-[#FFB800]"></span>
+            <span className="text-[11px] font-bold uppercase text-slate-300">COMMAND TELEMETRY</span>
           </div>
-          <p className="text-[10px] text-slate-500 mt-1 font-mono">v1.0.0 • Connected to API</p>
+          <p className="text-[9px] text-slate-500 mt-0.5 font-mono uppercase">ONLINE • POSTGRES &amp; REDIS</p>
         </div>
       )}
     </aside>

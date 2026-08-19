@@ -33,103 +33,104 @@ export function ForgotPasswordPage() {
 
   return (
     <AuthLayout
-      title="Reset your password"
-      subtitle="Enter your account email to receive secure recovery instructions."
+      title="PASSWORD RECOVERY"
+      subtitle="ENTER ACCOUNT EMAIL FOR SECURE RECOVERY"
     >
       {errorMessage && (
-        <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-          <div>{errorMessage}</div>
+        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+          <div className="uppercase">{errorMessage}</div>
         </div>
       )}
 
       {isSubmitted ? (
-        <div className="space-y-4 text-center animate-in fade-in">
-          <div className="w-14 h-14 rounded-full bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-400 shadow-lg shadow-emerald-950/50">
-            <CheckCircle2 className="w-7 h-7" />
+        <div className="space-y-3 text-center font-mono">
+          <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#FFB800] flex items-center justify-center mx-auto text-[#FFB800]">
+            <CheckCircle2 className="w-6 h-6" />
           </div>
 
-          <div className="space-y-1.5">
-            <h3 className="text-base font-bold text-white">Check Your Inbox</h3>
-            <p className="text-xs text-slate-300 leading-relaxed max-w-sm mx-auto">
-              If an account is associated with <strong className="text-slate-100 font-mono">{submittedEmail}</strong>, we have dispatched a single-use password reset link.
+          <div className="space-y-1">
+            <h3 className="text-xs font-bold text-white uppercase">RECOVERY DISPATCHED</h3>
+            <p className="text-[10px] text-slate-300 leading-relaxed max-w-sm mx-auto uppercase">
+              IF AN ACCOUNT IS ASSOCIATED WITH <strong className="text-white font-mono">{submittedEmail}</strong>, A SINGLE-USE TOKEN HAS BEEN SENT.
             </p>
           </div>
 
-          <div className="p-4 bg-slate-950 border border-slate-800/80 rounded-xl space-y-2.5 text-left text-xs">
-            <div className="flex items-center gap-2 text-slate-200 font-semibold">
-              <Inbox className="w-4 h-4 text-brand-400 shrink-0" />
-              <span>Next Steps:</span>
+          <div className="p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none space-y-1 text-left text-xs uppercase">
+            <div className="flex items-center gap-1.5 text-[#FFB800] font-bold text-[10px]">
+              <Inbox className="w-3.5 h-3.5" />
+              <span>NEXT STEPS:</span>
             </div>
-            <ul className="space-y-1.5 text-slate-400 list-disc list-inside text-[11px] leading-relaxed">
-              <li>Click the reset link in the email to set a new password.</li>
-              <li>The secure link expires in <strong>60 minutes</strong> and can only be used once.</li>
-              <li>Check your spam or junk folder if the email does not appear within 2 minutes.</li>
+            <ul className="space-y-1 text-slate-400 text-[10px] leading-relaxed">
+              <li>• CLICK THE RESET LINK IN THE EMAIL TO SET A NEW PASSWORD.</li>
+              <li>• LINK EXPIRES IN <strong className="text-white">60 MINUTES</strong> (SINGLE-USE ONLY).</li>
+              <li>• CHECK SPAM / JUNK FOLDER IF NOT RECEIVED WITHIN 2 MINUTES.</li>
             </ul>
           </div>
 
-          <div className="p-3 bg-amber-950/30 border border-amber-500/20 rounded-xl flex items-start gap-2 text-left text-[11px] text-amber-300">
-            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <span>Never share your password reset link with anyone. Our team will never ask for your credentials.</span>
+          <div className="p-2 bg-[#0B0C10] border border-amber-500/40 rounded-none flex items-start gap-2 text-left text-[10px] text-amber-300 uppercase">
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+            <span>NEVER SHARE YOUR RESET LINK. OUR REPS NEVER ASK FOR PASSWORDS.</span>
           </div>
 
-          <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+          <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between text-[10px] uppercase">
             <button
               onClick={() => {
                 setIsSubmitted(false);
                 setEmail('');
               }}
-              className="text-brand-400 hover:text-brand-300 transition-colors"
+              className="text-[#FFB800] hover:underline"
             >
-              ← Try another email
+              ← TRY ANOTHER EMAIL
             </button>
             <Link
               to="/login"
-              className="inline-flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-1 text-slate-400 hover:text-white"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to Sign In
+              <ArrowLeft className="w-3 h-3" />
+              BACK TO SIGN IN
             </Link>
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 font-mono">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Work Email Address
+            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+              WORK EMAIL ADDRESS
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@enterprise.com"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono uppercase"
               />
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">
-              Instructions will be dispatched asynchronously via the task queue.
+            <p className="text-[9px] text-slate-500 mt-1 uppercase">
+              INSTRUCTIONS DISPATCHED ASYNCHRONOUSLY VIA THE TASK QUEUE.
             </p>
           </div>
 
           <Button
             type="submit"
+            variant="primary"
             disabled={isForgotSubmitting}
-            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-2.5 shadow-lg shadow-brand-500/20 text-sm font-semibold mt-2"
+            className="w-full flex items-center justify-center gap-2 text-xs font-bold py-2 h-9 mt-2 uppercase"
           >
-            <KeyRound className="w-4 h-4" />
-            {isForgotSubmitting ? 'Queueing instructions...' : 'Send Reset Instructions'}
+            <KeyRound className="w-3.5 h-3.5" />
+            <span>{isForgotSubmitting ? 'QUEUEING RECOVERY...' : 'SEND RESET INSTRUCTIONS'}</span>
           </Button>
 
-          <div className="text-center pt-2">
+          <div className="text-center pt-1 border-t border-[#3A4552]">
             <Link
               to="/login"
-              className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-white uppercase"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to Sign In
+              <ArrowLeft className="w-3 h-3" />
+              BACK TO SIGN IN
             </Link>
           </div>
         </form>

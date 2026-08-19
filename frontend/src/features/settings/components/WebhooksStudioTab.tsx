@@ -138,50 +138,52 @@ export function WebhooksStudioTab() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Globe className="w-5 h-5 text-brand-400" />
-            Universal Outbound Webhooks & Ingestion Engine
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <Globe className="w-4 h-4 text-[#FFB800]" />
+            UNIVERSAL OUTBOUND WEBHOOKS &amp; INGESTION ENGINE
           </h2>
-          <p className="text-sm text-slate-400">
-            Dispatch cryptographically signed HMAC-SHA256 payloads to third-party endpoints (Zapier, Make, Slack, Customer Data Platforms).
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            DISPATCH CRYPTOGRAPHICALLY SIGNED HMAC-SHA256 PAYLOADS TO THIRD-PARTY ENDPOINTS.
           </p>
         </div>
         <Button
           onClick={() => setIsCreateOpen(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white shadow-lg shadow-brand-500/20"
+          variant="primary"
+          size="sm"
+          className="flex items-center gap-1.5 text-xs h-7 uppercase font-bold"
         >
-          <Plus className="w-4 h-4" />
-          Add Webhook Endpoint
+          <Plus className="w-3.5 h-3.5 text-[#0B0C10]" />
+          <span>ADD WEBHOOK ENDPOINT</span>
         </Button>
       </div>
 
       {feedback && (
-        <div className="p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-xl text-emerald-300 text-sm flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          {feedback}
+        <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span>{feedback}</span>
         </div>
       )}
 
       {/* Endpoints List */}
-      <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-white">Registered Destination Endpoints</h3>
+      <div className="space-y-3">
+        <h3 className="text-xs font-bold text-white uppercase tracking-wider">REGISTERED DESTINATION ENDPOINTS</h3>
 
         {webhooks.map((ep) => (
-          <Card key={ep.id} className="glass-card border border-slate-800/80 p-5 space-y-4">
+          <Card key={ep.id} className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 font-mono">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-sm font-medium text-white">{ep.url}</span>
-                  <Badge variant={ep.is_active ? 'success' : 'default'}>
-                    {ep.is_active ? 'Active' : 'Inactive'}
+                  <span className="font-mono text-xs font-bold text-white">{ep.url}</span>
+                  <Badge variant={ep.is_active ? 'success' : 'default'} className="text-[9px] uppercase">
+                    {ep.is_active ? 'ACTIVE' : 'INACTIVE'}
                   </Badge>
                 </div>
                 {ep.description && (
-                  <p className="text-xs text-slate-400">{ep.description}</p>
+                  <p className="text-[10px] text-slate-400 uppercase">{ep.description}</p>
                 )}
               </div>
 
@@ -191,41 +193,41 @@ export function WebhooksStudioTab() {
                   variant="outline"
                   onClick={() => testMutation.mutate(ep.id)}
                   disabled={testMutation.isPending}
-                  className="flex items-center gap-1.5 text-xs text-orange-400 border-orange-500/30 hover:bg-orange-500/10"
+                  className="flex items-center gap-1.5 text-xs h-7 uppercase"
                 >
-                  <Play className="w-3.5 h-3.5" />
-                  Test Ping
+                  <Play className="w-3 h-3 text-[#FFB800]" />
+                  <span>TEST PING</span>
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => deleteMutation.mutate(ep.id)}
-                  className="text-slate-400 hover:text-rose-400 hover:bg-rose-500/10"
+                  className="text-slate-400 hover:text-[#FF2A54] h-7 px-2"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </Button>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/60">
-              <span className="text-xs text-slate-400 font-semibold">Subscribed Events:</span>
+            <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-[#3A4552]">
+              <span className="text-[10px] text-slate-400 font-bold uppercase">SUBSCRIBED EVENTS:</span>
               {(ep.events || []).map((ev) => (
-                <Badge key={ev} variant="info" className="text-[10px] font-mono">
+                <Badge key={ev} variant="info" className="text-[9px] font-mono uppercase">
                   {ev}
                 </Badge>
               ))}
 
-              <div className="ml-auto flex items-center gap-2 text-xs font-mono text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-800">
-                <span>Secret: ••••••••••••</span>
+              <div className="ml-auto flex items-center gap-2 text-[10px] font-mono text-slate-400 bg-[#0B0C10] px-2 py-0.5 rounded-none border border-[#3A4552]">
+                <span>SECRET: ••••••••••••</span>
                 <button
                   onClick={() => handleCopySecret(ep.secret, ep.id)}
-                  className="hover:text-brand-400"
+                  className="hover:text-[#FFB800]"
                   title="Copy Signing Secret"
                 >
                   {copiedId === ep.id ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <CheckCircle2 className="w-3 h-3 text-[#FFB800]" />
                   ) : (
-                    <Copy className="w-3.5 h-3.5" />
+                    <Copy className="w-3 h-3" />
                   )}
                 </button>
               </div>
@@ -234,27 +236,27 @@ export function WebhooksStudioTab() {
         ))}
 
         {webhooks.length === 0 && (
-          <Card className="p-8 text-center glass-card border border-slate-800/80 text-slate-500">
-            No outbound webhooks configured yet. Register a destination endpoint above.
+          <Card className="p-8 text-center bg-[#1F2833]/50 border border-[#3A4552] text-slate-500 text-xs uppercase">
+            NO OUTBOUND WEBHOOKS CONFIGURED YET. REGISTER A DESTINATION ENDPOINT ABOVE.
           </Card>
         )}
       </div>
 
       {/* Deliveries Audit Stream */}
-      <div className="space-y-3 pt-4">
+      <div className="space-y-3 pt-3 border-t border-[#3A4552]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <RefreshCw className="w-4 h-4 text-brand-400" />
-              Delivery Receipts & Dispatches
+            <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <RefreshCw className="w-3.5 h-3.5 text-[#FFB800]" />
+              DELIVERY RECEIPTS &amp; DISPATCHES
             </h3>
-            <span className="text-xs text-slate-400">Live Auto-Refresh (5s)</span>
+            <span className="text-[9px] text-slate-400 uppercase font-mono">LIVE AUTO-REFRESH (5S)</span>
           </div>
 
           {/* Delivery Filter Toolbar */}
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:w-56">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={deliverySearch}
@@ -262,24 +264,24 @@ export function WebhooksStudioTab() {
                   setDeliverySearch(e.target.value);
                   setPage(1);
                 }}
-                placeholder="Search event, payload..."
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
+                placeholder="SEARCH EVENT, PAYLOAD..."
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
             <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+              <Filter className="w-3.5 h-3.5 text-slate-500" />
               <select
                 value={deliveryStatusFilter}
                 onChange={(e) => {
                   setDeliveryStatusFilter(e.target.value as any);
                   setPage(1);
                 }}
-                className="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-brand-500"
+                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
-                <option value="all">All Deliveries</option>
-                <option value="success">Success Only</option>
-                <option value="failed">Failed / Errors</option>
+                <option value="all">ALL DELIVERIES</option>
+                <option value="success">SUCCESS ONLY</option>
+                <option value="failed">FAILED / ERRORS</option>
               </select>
             </div>
 
@@ -292,55 +294,55 @@ export function WebhooksStudioTab() {
                   setDeliveryStatusFilter('all');
                   setPage(1);
                 }}
-                className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                className="text-xs h-7 px-2 text-slate-400 hover:text-white uppercase flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
-                Reset
+                RESET
               </Button>
             )}
           </div>
         </div>
 
-        <Card className="glass-card border border-slate-800/80 overflow-hidden">
+        <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-900/60 text-slate-400 uppercase font-semibold border-b border-slate-800/80">
+            <table className="w-full text-left text-xs text-slate-300 font-mono">
+              <thead className="bg-[#0B0C10] text-slate-400 uppercase font-bold text-[10px] border-b border-[#3A4552]">
                 <tr>
-                  <th className="px-4 py-3">Event Type</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Payload Summary</th>
-                  <th className="px-4 py-3">Response</th>
-                  <th className="px-4 py-3 text-right">Timestamp</th>
+                  <th className="px-3 py-2.5">EVENT TYPE</th>
+                  <th className="px-3 py-2.5">STATUS</th>
+                  <th className="px-3 py-2.5">PAYLOAD SUMMARY</th>
+                  <th className="px-3 py-2.5">RESPONSE</th>
+                  <th className="px-3 py-2.5 text-right">TIMESTAMP</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/50">
+              <tbody className="divide-y divide-[#3A4552]">
                 {paginatedDeliveries.map((d) => (
-                  <tr key={d.id} className="hover:bg-slate-800/20">
-                    <td className="px-4 py-2.5 font-mono text-brand-400 font-medium">
+                  <tr key={d.id} className="hover:bg-[#0B0C10] transition-none">
+                    <td className="px-3 py-2 font-mono text-[#FFB800] font-bold uppercase text-[11px]">
                       {d.event_type}
                     </td>
-                    <td className="px-4 py-2.5">
-                      <Badge variant={d.success ? 'success' : 'danger'}>
+                    <td className="px-3 py-2">
+                      <Badge variant={d.success ? 'success' : 'danger'} className="text-[9px] uppercase">
                         {d.response_status ? `HTTP ${d.response_status}` : 'ERR'}
                       </Badge>
                     </td>
-                    <td className="px-4 py-2.5 font-mono text-slate-400 truncate max-w-xs">
+                    <td className="px-3 py-2 font-mono text-slate-400 truncate max-w-xs text-[10px]">
                       {JSON.stringify(d.payload?.data || d.payload || {})}
                     </td>
-                    <td className="px-4 py-2.5 text-slate-400 truncate max-w-xs">
+                    <td className="px-3 py-2 text-slate-400 truncate max-w-xs text-[10px]">
                       {d.response_body || (d.success ? 'Delivered successfully' : 'No response')}
                     </td>
-                    <td className="px-4 py-2.5 text-right text-slate-400">
-                      {d.created_at ? new Date(d.created_at).toLocaleTimeString() : 'Recent'}
+                    <td className="px-3 py-2 text-right text-slate-500 text-[10px]">
+                      {d.created_at ? new Date(d.created_at).toLocaleTimeString() : 'RECENT'}
                     </td>
                   </tr>
                 ))}
                 {paginatedDeliveries.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-6 text-center text-slate-500">
+                    <td colSpan={5} className="px-4 py-6 text-center text-slate-500 uppercase">
                       {hasActiveFilters
-                        ? 'No webhook deliveries match the filter criteria.'
-                        : 'No webhook deliveries dispatched yet.'}
+                        ? 'NO WEBHOOK DELIVERIES MATCH THE FILTER CRITERIA.'
+                        : 'NO WEBHOOK DELIVERIES DISPATCHED YET.'}
                     </td>
                   </tr>
                 )}
@@ -366,25 +368,25 @@ export function WebhooksStudioTab() {
 
       {/* Create Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-4 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Globe className="w-5 h-5 text-brand-400" />
-                Register Webhook Endpoint
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm font-mono">
+          <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <Globe className="w-4 h-4 text-[#FFB800]" />
+                REGISTER WEBHOOK ENDPOINT
               </h3>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-slate-400 hover:text-white text-sm"
+                className="text-slate-400 hover:text-white text-xs"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleCreate} className="space-y-4">
+            <form onSubmit={handleCreate} className="space-y-3 font-mono">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Destination URL (HTTPS Recommended)
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  DESTINATION URL (HTTPS RECOMMENDED)
                 </label>
                 <input
                   type="url"
@@ -392,61 +394,61 @@ export function WebhooksStudioTab() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://api.yourdomain.com/webhooks/crm-events"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500 font-mono"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Description / Service Name
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  DESCRIPTION / SERVICE NAME
                 </label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="e.g. Zapier Lead Notification Pipeline"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500"
+                  placeholder="E.G. ZAPIER LEAD NOTIFICATION PIPELINE"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-2">
-                  Event Subscriptions
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  EVENT SUBSCRIPTIONS
                 </label>
-                <div className="grid grid-cols-2 gap-2 max-h-44 overflow-y-auto p-1 bg-slate-950/60 rounded-xl border border-slate-800">
-                  <label className="flex items-center gap-2 text-xs text-slate-300 p-2 rounded hover:bg-slate-800/40 cursor-pointer">
+                <div className="grid grid-cols-2 gap-1.5 max-h-44 overflow-y-auto p-2 bg-[#0B0C10] rounded-none border border-[#3A4552]">
+                  <label className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#1F2833] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={selectedEvents.includes('*')}
                       onChange={() => handleToggleEvent('*')}
-                      className="rounded border-slate-700 text-brand-500 focus:ring-0"
+                      className="rounded-none border-[#3A4552] text-[#FFB800] accent-[#FFB800]"
                     />
-                    <span className="font-mono text-amber-400 font-bold">* (All Events)</span>
+                    <span className="font-mono text-[#FFB800] font-bold text-[11px]">* (ALL EVENTS)</span>
                   </label>
                   {AVAILABLE_EVENTS.map((ev) => (
                     <label
                       key={ev}
-                      className="flex items-center gap-2 text-xs text-slate-300 p-2 rounded hover:bg-slate-800/40 cursor-pointer"
+                      className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#1F2833] cursor-pointer"
                     >
                       <input
                         type="checkbox"
                         checked={selectedEvents.includes(ev)}
                         onChange={() => handleToggleEvent(ev)}
                         disabled={selectedEvents.includes('*')}
-                        className="rounded border-slate-700 text-brand-500 focus:ring-0"
+                        className="rounded-none border-[#3A4552] text-[#FFB800] accent-[#FFB800]"
                       />
-                      <span className="font-mono">{ev}</span>
+                      <span className="font-mono text-[11px] uppercase">{ev}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
-                <Button variant="ghost" type="button" onClick={() => setIsCreateOpen(false)}>
-                  Cancel
+              <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+                <Button variant="outline" size="sm" type="button" onClick={() => setIsCreateOpen(false)} className="text-xs uppercase">
+                  CANCEL
                 </Button>
-                <Button type="submit" disabled={createMutation.isPending}>
-                  {createMutation.isPending ? 'Registering...' : 'Register Endpoint'}
+                <Button type="submit" variant="primary" size="sm" disabled={createMutation.isPending} className="text-xs uppercase font-bold">
+                  {createMutation.isPending ? 'REGISTERING...' : 'REGISTER ENDPOINT'}
                 </Button>
               </div>
             </form>

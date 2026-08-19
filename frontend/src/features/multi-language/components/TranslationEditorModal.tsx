@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-  Sparkles,
   Search,
   Download,
   Upload,
@@ -10,7 +9,6 @@ import {
 } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { useLanguageStore } from '../stores/useLanguageStore';
 import { languagesApi } from '../api/languagesApi';
@@ -80,52 +78,52 @@ export function TranslationEditorModal({
   }> = [];
 
   allNamespacesToRender.forEach((ns) => {
-    const defaultNs = DEFAULT_ENGLISH_TRANSLATIONS[ns] || {};
-    const currentNs = editingValues[ns] || {};
-    const allKeys = Array.from(new Set([...Object.keys(defaultNs), ...Object.keys(currentNs)]));
+    const englishNsKeys = (DEFAULT_ENGLISH_TRANSLATIONS as any)[ns] || {};
+    const currentNsKeys = editingValues[ns] || {};
+    const allKeys = Array.from(new Set([...Object.keys(englishNsKeys), ...Object.keys(currentNsKeys)]));
 
-    allKeys.forEach((key) => {
-      const fallbackVal = defaultNs[key] || '';
-      const currentVal = currentNs[key] !== undefined ? currentNs[key] : fallbackVal;
+    allKeys.forEach((k) => {
+      const fallback = englishNsKeys[k] || '';
+      const current = currentNsKeys[k] !== undefined ? currentNsKeys[k] : fallback;
 
       if (
         !searchQuery ||
-        key.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        currentVal.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        fallbackVal.toLowerCase().includes(searchQuery.toLowerCase())
+        k.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        fallback.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        current.toLowerCase().includes(searchQuery.toLowerCase())
       ) {
         translationRows.push({
           namespace: ns,
-          key,
-          englishFallback: fallbackVal,
-          currentValue: currentVal,
+          key: k,
+          englishFallback: fallback,
+          currentValue: current,
         });
       }
     });
   });
 
-  const handleInputChange = (ns: string, key: string, value: string) => {
+  const handleValueChange = (ns: string, key: string, val: string) => {
     setEditingValues((prev) => ({
       ...prev,
       [ns]: {
         ...(prev[ns] || {}),
-        [key]: value,
+        [key]: val,
       },
     }));
   };
 
-  const handleSaveSingleKey = async (ns: string, key: string) => {
-    const val = editingValues[ns]?.[key] ?? '';
-    const rowKey = `${ns}:${key}`;
+  const handleSaveRow = async (ns: string, key: string) => {
+    const value = editingValues[ns]?.[key] || '';
     try {
-      await languagesApi.updateSingleTranslation(languageCode, ns, key, val);
-      updateTranslationInMemory(languageCode, ns, key, val);
-      setSaveSuccessMap((prev) => ({ ...prev, [rowKey]: true }));
+      await languagesApi.updateSingleTranslation(languageCode, ns, key, value);
+
+      updateTranslationInMemory(languageCode, ns, key, value);
+      setSaveSuccessMap((prev) => ({ ...prev, [`${ns}.${key}`]: true }));
       setTimeout(() => {
-        setSaveSuccessMap((prev) => ({ ...prev, [rowKey]: false }));
+        setSaveSuccessMap((prev) => ({ ...prev, [`${ns}.${key}`]: false }));
       }, 2000);
     } catch (err: any) {
-      alert(err?.response?.data?.detail || err.message || 'Failed to update key');
+      alert(err?.response?.data?.detail || err.message || 'Failed to save translation');
     }
   };
 
@@ -133,182 +131,194 @@ export function TranslationEditorModal({
     setIsSaving(true);
     try {
       await languagesApi.bulkUpsertTranslations(languageCode, editingValues);
-      await fetchTranslationsForLanguage(languageCode);
-      alert('All translations saved successfully!');
+      for (const row of translationRows) {
+        const value = editingValues[row.namespace]?.[row.key];
+        if (value !== undefined) {
+          updateTranslationInMemory(languageCode, row.namespace, row.key, value);
+        }
+      }
+      alert(`All ${translationRows.length} translation strings saved successfully!`);
     } catch (err: any) {
-      alert(err?.response?.data?.detail || err.message || 'Failed to save translations');
+      alert(err?.response?.data?.detail || err.message || 'Failed to batch save translations');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleExportJSON = async () => {
-    try {
-      const data = await languagesApi.exportLanguage(languageCode);
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `translations-${languageCode}.json`;
-      a.click();
-    } catch (err: any) {
-      alert('Failed to export JSON: ' + err.message);
-    }
+  const handleExportJson = () => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(editingValues, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `translations_${languageCode}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
   };
 
-  const handleImportJSON = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    try {
-      const text = await file.text();
-      const payload = JSON.parse(text);
-      await languagesApi.importLanguage(languageCode, payload);
-      await fetchTranslationsForLanguage(languageCode);
-      alert('Translations imported successfully!');
-    } catch (err: any) {
-      alert('Import failed: ' + err.message);
-    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target?.result as string);
+        setEditingValues(parsed);
+        alert('Translation file imported into editor memory. Click "Save All Translations" to persist.');
+      } catch {
+        alert('Invalid JSON file format.');
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Edit Translations — ${targetLang.flag_emoji} ${targetLang.name} (${languageCode})`}
-      description="Update translated text strings with live preview and automatic English fallback."
-      className="max-w-4xl"
+      title={`TRANSLATION DICTIONARY EDITOR: ${targetLang.name.toUpperCase()} (${languageCode.toUpperCase()})`}
+      description="MODIFY LOCALIZED UI STRINGS, OVERRIDE LABELS, AND SYNCHRONIZE I18N STRINGS IN REAL-TIME."
+      className="max-w-5xl font-mono"
     >
-      <div className="space-y-4">
-        {/* Controls Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 bg-slate-900 rounded-2xl border border-slate-800">
-          <div className="relative flex-1">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search translation keys or values..."
-              className="pl-8 text-xs py-1.5 h-9"
-            />
+      <div className="space-y-3 font-mono">
+        {/* Actions & Filters Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {/* Search Input */}
+            <div className="relative flex-1 sm:w-64">
+              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2" />
+              <input
+                type="text"
+                placeholder="SEARCH TRANSLATION KEYS..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              />
+            </div>
+
+            {/* Namespace Filter */}
+            <div className="flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5 text-slate-500" />
+              <select
+                value={activeNamespace}
+                onChange={(e) => setActiveNamespace(e.target.value)}
+                className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              >
+                {namespaces.map((ns) => (
+                  <option key={ns} value={ns} className="bg-[#0B0C10]">
+                    {ns.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <label className="cursor-pointer">
-              <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
-              <Button size="sm" variant="outline" type="button">
-                <Upload className="w-3.5 h-3.5" />
-                <span>Import JSON</span>
-              </Button>
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold uppercase rounded-none bg-[#1F2833] hover:bg-[#26313F] text-slate-200 border border-[#3A4552] transition-none h-7">
+              <Upload className="w-3 h-3 text-cyan-400" />
+              <span>IMPORT JSON</span>
+              <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
             </label>
 
-            <Button size="sm" variant="outline" onClick={handleExportJSON}>
-              <Download className="w-3.5 h-3.5" />
-              <span>Export JSON</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportJson}
+              className="text-xs h-7 uppercase flex items-center gap-1"
+            >
+              <Download className="w-3 h-3 text-[#FFB800]" />
+              <span>EXPORT</span>
             </Button>
 
-            <Button size="sm" onClick={handleSaveAll} isLoading={isSaving}>
-              <Save className="w-3.5 h-3.5" />
-              <span>Save All</span>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleSaveAll}
+              isLoading={isSaving}
+              className="text-xs h-7 uppercase flex items-center gap-1"
+            >
+              <Save className="w-3 h-3 text-[#0B0C10]" />
+              <span>SAVE ALL</span>
             </Button>
           </div>
         </div>
 
-        {/* Namespaces Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-          <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0 mr-1" />
-          {namespaces.map((ns) => (
-            <button
-              key={ns}
-              onClick={() => setActiveNamespace(ns)}
-              className={`px-3 py-1 rounded-xl capitalize font-medium whitespace-nowrap transition-all ${
-                activeNamespace === ns
-                  ? 'bg-brand-600 text-white shadow'
-                  : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              {ns}
-            </button>
-          ))}
+        {/* Translation Keys Table */}
+        <div className="border border-[#3A4552] rounded-none overflow-hidden max-h-[480px] overflow-y-auto">
+          <table className="w-full text-left border-collapse font-mono">
+            <thead className="sticky top-0 z-10">
+              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-[10px] uppercase font-bold text-slate-400">
+                <th className="py-2 px-3 w-1/4">NAMESPACE &amp; KEY</th>
+                <th className="py-2 px-3 w-1/3">ENGLISH FALLBACK</th>
+                <th className="py-2 px-3 w-1/3">LOCALIZED TRANSLATION</th>
+                <th className="py-2 px-3 text-right w-16">SAVE</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#3A4552] text-xs">
+              {translationRows.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-slate-500 uppercase">
+                    NO TRANSLATION KEYS FOUND FOR CURRENT QUERY.
+                  </td>
+                </tr>
+              ) : (
+                translationRows.map((row) => {
+                  const rowId = `${row.namespace}.${row.key}`;
+                  const isSaved = saveSuccessMap[rowId];
+                  return (
+                    <tr key={rowId} className="hover:bg-[#0B0C10] transition-none">
+                      <td className="py-2 px-3 font-mono space-y-0.5">
+                        <Badge variant="default" className="text-[8px] uppercase font-mono px-1 py-0.2">
+                          {row.namespace}
+                        </Badge>
+                        <span className="block text-[11px] text-[#FFB800] font-bold truncate" title={row.key}>
+                          {row.key}
+                        </span>
+                      </td>
+
+                      <td className="py-2 px-3 text-slate-400 text-xs">
+                        <span className="line-clamp-2" title={row.englishFallback}>
+                          {row.englishFallback || '—'}
+                        </span>
+                      </td>
+
+                      <td className="py-2 px-3">
+                        <input
+                          type="text"
+                          value={editingValues[row.namespace]?.[row.key] || ''}
+                          onChange={(e) => handleValueChange(row.namespace, row.key, e.target.value)}
+                          placeholder={row.englishFallback}
+                          className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
+                        />
+                      </td>
+
+                      <td className="py-2 px-3 text-right">
+                        <button
+                          type="button"
+                          onClick={() => handleSaveRow(row.namespace, row.key)}
+                          className={`p-1 rounded-none border transition-none ${isSaved
+                              ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
+                              : 'bg-[#1F2833] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#FFB800]'
+                            }`}
+                          title="Save Key"
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
         </div>
 
-        {/* Translation Rows List */}
-        <div className="max-h-96 overflow-y-auto space-y-2 pr-1">
-          {translationRows.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 text-xs">
-              No matching translation keys found.
-            </div>
-          ) : (
-            translationRows.map((row) => {
-              const rowKey = `${row.namespace}:${row.key}`;
-              const isSaved = saveSuccessMap[rowKey];
-              const isCustomized = row.currentValue !== row.englishFallback;
-
-              return (
-                <div
-                  key={rowKey}
-                  className="p-3 bg-slate-900/80 hover:bg-slate-900 rounded-xl border border-slate-800 space-y-2"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="info" className="text-[10px]">
-                        {row.namespace}
-                      </Badge>
-                      <span className="font-mono text-xs font-bold text-slate-200">
-                        {row.key}
-                      </span>
-                    </div>
-
-                    {isCustomized ? (
-                      <span className="text-[10px] text-emerald-400 font-medium">Localized</span>
-                    ) : (
-                      <span className="text-[10px] text-slate-500 font-mono">English Fallback</span>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {/* Fallback Reference */}
-                    <div className="p-2 rounded-lg bg-slate-950 border border-slate-800/80 text-xs text-slate-400">
-                      <span className="text-[9px] uppercase font-bold text-slate-500 block mb-0.5">
-                        English Default Reference
-                      </span>
-                      <span>{row.englishFallback}</span>
-                    </div>
-
-                    {/* Target Translation Input */}
-                    <div className="flex items-center gap-2">
-                      <Input
-                        value={row.currentValue}
-                        onChange={(e) => handleInputChange(row.namespace, row.key, e.target.value)}
-                        placeholder={`Translate in ${targetLang.name}...`}
-                        className="text-xs h-9"
-                      />
-                      <Button
-                        size="sm"
-                        variant={isSaved ? 'primary' : 'secondary'}
-                        onClick={() => handleSaveSingleKey(row.namespace, row.key)}
-                        className="shrink-0 h-9 px-3"
-                      >
-                        {isSaved ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Sparkles className="w-3.5 h-3.5 text-brand-400" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-800">
-          <span className="text-xs text-slate-500 font-mono">
-            {translationRows.length} Translation Keys Available
+        {/* Modal Footer */}
+        <div className="flex items-center justify-between pt-2 border-t border-[#3A4552]">
+          <span className="text-[10px] text-slate-500 uppercase font-mono">
+            {translationRows.length} STRINGS DISPLAYED • ALL EDITS IMMEDIATELY BROADCAST VIA REACT STATE
           </span>
-          <Button variant="outline" onClick={onClose}>
-            Close
+          <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
+            CLOSE EDITOR
           </Button>
         </div>
       </div>

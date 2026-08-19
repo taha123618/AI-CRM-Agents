@@ -16,29 +16,29 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, options, error, required, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1 font-mono">
         {label && (
-          <label className="block text-xs font-medium text-slate-300">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">
             {label}
-            {required && <span className="text-rose-400 ml-0.5">*</span>}
+            {required && <span className="text-[#FF2A54] ml-0.5">*</span>}
           </label>
         )}
         <select
           ref={ref}
           className={cn(
-            'w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all cursor-pointer',
-            error && 'border-rose-500/80',
+            'w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none px-3 py-1.5 text-xs focus:outline-none focus:border-[#FFB800] transition-none cursor-pointer font-mono uppercase',
+            error && 'border-[#FF2A54]',
             className
           )}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-slate-900 text-slate-100">
+            <option key={opt.value} value={opt.value} className="bg-[#0B0C10] text-slate-100">
               {opt.label}
             </option>
           ))}
         </select>
-        {error && <p className="text-xs text-rose-400">{error}</p>}
+        {error && <p className="text-[10px] text-[#FF2A54] font-mono uppercase">{error}</p>}
       </div>
     );
   }

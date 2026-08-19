@@ -141,15 +141,15 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
       case 'query_crm':
         return <Database className="w-4 h-4 text-cyan-400" />;
       case 'update_deal':
-        return <TrendingUp className="w-4 h-4 text-emerald-400" />;
+        return <TrendingUp className="w-4 h-4 text-[#FFB800]" />;
       case 'send_email':
         return <Mail className="w-4 h-4 text-brand-400" />;
       case 'schedule_meeting':
         return <Calendar className="w-4 h-4 text-purple-400" />;
       case 'generate_summary':
-        return <FileText className="w-4 h-4 text-amber-400" />;
+        return <FileText className="w-4 h-4 text-[#FFB800]" />;
       case 'webhook_call':
-        return <Webhook className="w-4 h-4 text-rose-400" />;
+        return <Webhook className="w-4 h-4 text-[#FF2A54]" />;
       default:
         return <Wrench className="w-4 h-4 text-slate-400" />;
     }
@@ -159,28 +159,27 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={agentToEdit ? `${t('custom_agents.edit_agent') || 'Edit Agent Configuration'}: ${agentToEdit.name}` : (t('custom_agents.builder_title') || 'No-Code Agent Builder Studio')}
-      description={t('custom_agents.builder_desc') || 'Design, configure LLM reasoning parameters, connect CRM tools, and deploy autonomous agents.'}
-      className="max-w-3xl"
+      title={agentToEdit ? `${t('custom_agents.edit_agent') || 'EDIT AGENT'}: ${agentToEdit.name.toUpperCase()}` : (t('custom_agents.builder_title') || 'NO-CODE AGENT BUILDER STUDIO')}
+      description={t('custom_agents.builder_desc') || 'DESIGN, CONFIGURE LLM REASONING PARAMETERS, CONNECT CRM TOOLS, AND DEPLOY AUTONOMOUS AGENTS.'}
+      className="max-w-3xl font-mono"
     >
-      <div className="space-y-6">
+      <div className="space-y-4 font-mono">
         {/* Step Indicator */}
-        <div className="grid grid-cols-4 gap-2 border-b border-slate-800 pb-4 text-center">
+        <div className="grid grid-cols-4 gap-1.5 border-b border-[#3A4552] pb-3 text-center">
           {[
-            { num: 1, labelKey: 'custom_agents.step_identity', defaultLabel: 'Identity & Trigger', icon: Bot },
-            { num: 2, labelKey: 'custom_agents.step_persona', defaultLabel: 'Persona & LLM', icon: Sliders },
-            { num: 3, labelKey: 'custom_agents.step_capabilities', defaultLabel: 'CRM Capabilities', icon: Wrench },
-            { num: 4, labelKey: 'custom_agents.step_deploy', defaultLabel: 'Deploy & Confirm', icon: CheckCircle2 },
+            { num: 1, labelKey: 'custom_agents.step_identity', defaultLabel: 'IDENTITY & TRIGGER', icon: Bot },
+            { num: 2, labelKey: 'custom_agents.step_persona', defaultLabel: 'PERSONA & LLM', icon: Sliders },
+            { num: 3, labelKey: 'custom_agents.step_capabilities', defaultLabel: 'CAPABILITIES', icon: Wrench },
+            { num: 4, labelKey: 'custom_agents.step_deploy', defaultLabel: 'DEPLOY & CONFIRM', icon: CheckCircle2 },
           ].map((s) => (
             <button
               key={s.num}
               type="button"
               onClick={() => setStep(s.num as any)}
-              className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 p-2 rounded-xl text-xs font-semibold transition-all ${
-                step === s.num
-                  ? 'bg-brand-500/10 text-brand-400 border border-brand-500/30'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
+              className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 p-1.5 rounded-none text-[11px] font-bold uppercase transition-none ${step === s.num
+                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+                  : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                }`}
             >
               <s.icon className="w-3.5 h-3.5" />
               <span>{t(s.labelKey) || s.defaultLabel}</span>
@@ -189,20 +188,20 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         </div>
 
         {errorMsg && (
-          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
+          <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs font-mono uppercase">
             {errorMsg}
           </div>
         )}
 
         {/* STEP 1: IDENTITY & TRIGGER */}
         {step === 1 && (
-          <div className="space-y-4 animate-in fade-in duration-200">
+          <div className="space-y-3 font-mono">
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">
-                {t('custom_agents.agent_name') || 'Agent Name'} <span className="text-rose-400">*</span>
+              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                {t('custom_agents.agent_name') || 'AGENT NAME'} <span className="text-[#FF2A54]">*</span>
               </label>
               <Input
-                placeholder="e.g. VIP Customer Onboarding Concierge"
+                placeholder="E.G. VIP CUSTOMER ONBOARDING CONCIERGE"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -210,39 +209,38 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">
-                {t('custom_agents.mission_desc') || 'Mission Description'}
+              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                {t('custom_agents.mission_desc') || 'MISSION DESCRIPTION'}
               </label>
               <Input
-                placeholder="What objective does this agent accomplish autonomously?"
+                placeholder="WHAT OBJECTIVE DOES THIS AGENT ACCOMPLISH AUTONOMOUSLY?"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">
-                {t('custom_agents.trigger_mode') || 'Trigger Mode'}
+              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                {t('custom_agents.trigger_mode') || 'TRIGGER MODE'}
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { id: 'manual', labelKey: 'custom_agents.filter_manual', defaultLabel: 'Manual Run', desc: 'Triggered on-demand' },
-                  { id: 'event', labelKey: 'custom_agents.filter_event', defaultLabel: 'CRM Event', desc: 'On lead or deal change' },
-                  { id: 'webhook', labelKey: 'custom_agents.filter_webhook', defaultLabel: 'Inbound Webhook', desc: 'External HTTP POST' },
-                  { id: 'schedule', label: 'Scheduled Cron', desc: 'Periodic hourly/daily' }, // Keep cron as it is rare
+                  { id: 'manual', labelKey: 'custom_agents.filter_manual', defaultLabel: 'MANUAL RUN', desc: 'TRIGGERED ON-DEMAND' },
+                  { id: 'event', labelKey: 'custom_agents.filter_event', defaultLabel: 'CRM EVENT', desc: 'ON LEAD / DEAL CHANGE' },
+                  { id: 'webhook', labelKey: 'custom_agents.filter_webhook', defaultLabel: 'INBOUND WEBHOOK', desc: 'EXTERNAL HTTP POST' },
+                  { id: 'schedule', label: 'SCHEDULED CRON', desc: 'PERIODIC EXECUTION' },
                 ].map((tItem) => (
                   <button
                     key={tItem.id}
                     type="button"
                     onClick={() => setTriggerType(tItem.id as TriggerType)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
-                      triggerType === tItem.id
-                        ? 'border-brand-500 bg-brand-500/10 text-white'
-                        : 'border-slate-800 bg-slate-900/50 text-slate-400 hover:border-slate-700'
-                    }`}
+                    className={`p-2.5 rounded-none border text-left transition-none uppercase font-mono ${triggerType === tItem.id
+                        ? 'border-[#FFB800] bg-[#0B0C10] text-[#FFB800]'
+                        : 'border-[#3A4552] bg-[#0B0C10] text-slate-400 hover:border-slate-500'
+                      }`}
                   >
                     <div className="text-xs font-bold">{tItem.labelKey ? t(tItem.labelKey) : tItem.label}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">{tItem.desc}</div>
+                    <div className="text-[9px] text-slate-500 mt-0.5">{tItem.desc}</div>
                   </button>
                 ))}
               </div>
@@ -250,19 +248,19 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
             {triggerType === 'event' && (
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">
-                  Trigger Event Name
+                <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                  TRIGGER EVENT NAME
                 </label>
                 <select
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 >
-                  <option value="lead.created">On New Lead Created</option>
-                  <option value="lead.qualified">On Lead Qualified (Score &gt; 70)</option>
-                  <option value="deal.stage_changed">On Deal Stage Changed</option>
-                  <option value="customer.tier1_created">On Tier-1 Customer Added</option>
-                  <option value="email.received">On Inbound Prospect Email</option>
+                  <option value="lead.created">ON NEW LEAD CREATED</option>
+                  <option value="lead.qualified">ON LEAD QUALIFIED (SCORE &gt; 70)</option>
+                  <option value="deal.stage_changed">ON DEAL STAGE CHANGED</option>
+                  <option value="customer.tier1_created">ON TIER-1 CUSTOMER ADDED</option>
+                  <option value="email.received">ON INBOUND PROSPECT EMAIL</option>
                 </select>
               </div>
             )}
@@ -271,28 +269,28 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
         {/* STEP 2: PERSONA & LLM CONFIG */}
         {step === 2 && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-3 font-mono">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5">
-                  {t('custom_agents.llm_model') || 'LLM Model Engine'}
+                <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                  {t('custom_agents.llm_model') || 'LLM MODEL ENGINE'}
                 </label>
                 <select
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 >
-                  <option value="smart-fallback">SmartFallback (Auto-Routing)</option>
-                  <option value="gpt-4o">OpenAI GPT-4o</option>
-                  <option value="claude-3-5-sonnet">Anthropic Claude 3.5 Sonnet</option>
-                  <option value="gpt-4o-mini">OpenAI GPT-4o Mini</option>
+                  <option value="smart-fallback">SMARTFALLBACK (AUTO-ROUTING)</option>
+                  <option value="gpt-4o">OPENAI GPT-4O</option>
+                  <option value="claude-3-5-sonnet">ANTHROPIC CLAUDE 3.5 SONNET</option>
+                  <option value="gpt-4o-mini">OPENAI GPT-4O MINI</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1.5 flex justify-between">
-                  <span>{t('custom_agents.temperature') || 'Temperature (Creativity)'}</span>
-                  <span className="text-brand-400 font-mono">{temperature}</span>
+                <label className="text-[10px] font-bold text-slate-300 block mb-1 flex justify-between uppercase tracking-wider">
+                  <span>{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
+                  <span className="text-[#FFB800] font-mono">{temperature}</span>
                 </label>
                 <input
                   type="range"
@@ -301,25 +299,25 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                   step="0.1"
                   value={temperature}
                   onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                  className="w-full accent-brand-500 mt-2"
+                  className="w-full accent-[#FFB800] mt-2"
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-semibold text-slate-300">
-                  {t('custom_agents.system_prompt') || 'System Persona & Instructions'} <span className="text-rose-400">*</span>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">
+                  {t('custom_agents.system_prompt') || 'SYSTEM PERSONA & INSTRUCTIONS'} <span className="text-[#FF2A54]">*</span>
                 </label>
-                <span className="text-[10px] text-slate-500">{t('custom_agents.insert_variables') || 'Insert variables into prompt'}</span>
+                <span className="text-[9px] text-slate-500 uppercase">{t('custom_agents.insert_variables') || 'INSERT VARIABLES'}</span>
               </div>
-              <div className="flex flex-wrap gap-1.5 mb-2">
+              <div className="flex flex-wrap gap-1 mb-2">
                 {TEMPLATE_VARIABLES.map((v) => (
                   <button
                     key={v.label}
                     type="button"
                     onClick={() => handleInsertVariable(v.label)}
-                    className="px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-400 hover:border-brand-500/50 transition-all"
+                    className="px-1.5 py-0.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono text-[#FFB800] hover:border-[#FFB800] transition-none uppercase"
                     title={v.desc}
                   >
                     + {v.label}
@@ -330,8 +328,8 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 rows={6}
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
-                placeholder="Describe how the agent should think, what criteria to apply, and what decisions to produce..."
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs font-mono text-white focus:outline-none focus:border-brand-500 resize-none leading-relaxed"
+                placeholder="DESCRIBE HOW THE AGENT SHOULD REASON AND WHAT STRUCTURED OUTPUT TO PRODUCE..."
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs font-mono text-white focus:outline-none focus:border-[#FFB800] resize-none leading-relaxed uppercase"
                 required
               />
             </div>
@@ -340,40 +338,39 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
         {/* STEP 3: CAPABILITY TOOLS */}
         {step === 3 && (
-          <div className="space-y-4 animate-in fade-in duration-200">
+          <div className="space-y-3 font-mono">
             <div>
-              <h4 className="text-xs font-semibold text-slate-300 mb-1">
-                {t('custom_agents.authorized_tools') || 'Authorized CRM Capability Tools'}
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">
+                {t('custom_agents.authorized_tools') || 'AUTHORIZED CRM CAPABILITY TOOLS'}
               </h4>
-              <p className="text-[11px] text-slate-500 mb-3">
-                {t('custom_agents.enable_tools_desc') || 'Enable tools this agent is permitted to execute autonomously during workflows.'}
+              <p className="text-[10px] text-slate-400 uppercase">
+                {t('custom_agents.enable_tools_desc') || 'ENABLE TOOLS THIS AGENT IS PERMITTED TO EXECUTE AUTONOMOUSLY.'}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[280px] overflow-y-auto pr-1">
               {(availableTools || []).map((tool) => {
                 const isSelected = selectedTools.includes(tool.id);
                 return (
                   <div
                     key={tool.id}
                     onClick={() => handleToolToggle(tool.id)}
-                    className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
-                      isSelected
-                        ? 'border-brand-500/40 bg-brand-500/10 text-white'
-                        : 'border-slate-800 bg-slate-900/50 text-slate-400 hover:border-slate-700'
-                    }`}
+                    className={`p-2.5 rounded-none border cursor-pointer transition-none flex items-start gap-2.5 ${isSelected
+                        ? 'border-[#FFB800] bg-[#0B0C10] text-white'
+                        : 'border-[#3A4552] bg-[#0B0C10] text-slate-400 hover:border-slate-500'
+                      }`}
                   >
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 shrink-0">
+                    <div className="p-1.5 rounded-none bg-[#1F2833] border border-[#3A4552] shrink-0">
                       {getToolIcon(tool.id)}
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-white truncate">{tool.name}</span>
-                        <Badge variant={isSelected ? 'success' : 'default'} className="text-[9px]">
-                          {isSelected ? 'Enabled' : 'Disabled'}
+                        <span className="text-xs font-bold text-white uppercase truncate">{tool.name}</span>
+                        <Badge variant={isSelected ? 'success' : 'default'} className="text-[8px] uppercase">
+                          {isSelected ? 'ENABLED' : 'DISABLED'}
                         </Badge>
                       </div>
-                      <p className="text-[10px] text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                      <p className="text-[9px] text-slate-400 mt-0.5 uppercase leading-relaxed line-clamp-2">
                         {tool.description}
                       </p>
                     </div>
@@ -386,45 +383,45 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
         {/* STEP 4: REVIEW & DEPLOY */}
         {step === 4 && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+          <div className="space-y-3 font-mono">
+            <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2.5">
+              <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
                 <div>
-                  <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-brand-400" />
-                    <span>{name || 'Untitled Custom Agent'}</span>
+                  <h4 className="text-xs font-bold text-white flex items-center gap-2 uppercase">
+                    <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+                    <span>{name || 'UNTITLED CUSTOM AGENT'}</span>
                   </h4>
-                  <p className="text-xs text-slate-400 mt-0.5">{description || 'No description'}</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5 uppercase">{description || 'NO DESCRIPTION'}</p>
                 </div>
-                <Badge variant={isActive ? 'success' : 'default'}>
-                  {isActive ? 'Active & Ready' : 'Paused'}
+                <Badge variant={isActive ? 'success' : 'default'} className="text-[9px] uppercase">
+                  {isActive ? 'ACTIVE & READY' : 'PAUSED'}
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs uppercase">
                 <div>
-                  <span className="text-[10px] text-slate-500 uppercase font-semibold block">{t('custom_agents.trigger_mode') || 'Trigger'}</span>
-                  <span className="font-medium text-white capitalize">{triggerType}</span>
+                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.trigger_mode') || 'TRIGGER'}</span>
+                  <span className="font-bold text-white">{triggerType}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 uppercase font-semibold block">{t('custom_agents.llm_model') || 'Model Engine'}</span>
-                  <span className="font-medium text-white">{modelName}</span>
+                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.llm_model') || 'MODEL ENGINE'}</span>
+                  <span className="font-bold text-white">{modelName}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 uppercase font-semibold block">{t('custom_agents.temperature') || 'Temperature'}</span>
-                  <span className="font-medium text-brand-400 font-mono">{temperature}</span>
+                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
+                  <span className="font-bold text-[#FFB800] font-mono">{temperature}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-[10px] text-slate-500 uppercase font-semibold block mb-1">
-                  {t('custom_agents.active_tools') || 'Active Tools'} ({selectedTools.length})
+                <span className="text-[9px] text-slate-500 uppercase font-bold block mb-1">
+                  {t('custom_agents.active_tools') || 'ACTIVE TOOLS'} ({selectedTools.length})
                 </span>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-1">
                   {selectedTools.map((tItem) => (
                     <span
                       key={tItem}
-                      className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20"
+                      className="px-1.5 py-0.5 rounded-none text-[9px] font-bold bg-[#1F2833] text-[#FFB800] border border-[#3A4552] uppercase"
                     >
                       {tItem}
                     </span>
@@ -439,39 +436,41 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 id="activeToggle"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-4 h-4 rounded accent-brand-500"
+                className="w-3.5 h-3.5 rounded-none accent-[#FFB800]"
               />
-              <label htmlFor="activeToggle" className="text-xs font-semibold text-slate-300 cursor-pointer">
-                {t('custom_agents.enable_immediately') || 'Enable agent immediately upon creation'}
+              <label htmlFor="activeToggle" className="text-xs font-bold text-slate-300 uppercase cursor-pointer">
+                {t('custom_agents.enable_immediately') || 'ENABLE AGENT IMMEDIATELY UPON CREATION'}
               </label>
             </div>
           </div>
         )}
 
         {/* Modal Actions */}
-        <div className="flex items-center justify-between border-t border-slate-800 pt-4">
+        <div className="flex items-center justify-between border-t border-[#3A4552] pt-3">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => setStep((prev) => Math.max(1, prev - 1) as any)}
             disabled={step === 1}
+            className="text-xs uppercase"
           >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            {t('custom_agents.previous') || 'Previous'}
+            <ChevronLeft className="w-3.5 h-3.5 mr-1" />
+            {t('custom_agents.previous') || 'PREVIOUS'}
           </Button>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              {t('common.cancel') || 'Cancel'}
+            <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
+              {t('common.cancel') || 'CANCEL'}
             </Button>
             {step < 4 ? (
               <Button
                 variant="primary"
                 size="sm"
                 onClick={() => setStep((prev) => Math.min(4, prev + 1) as any)}
+                className="text-xs uppercase"
               >
-                {t('custom_agents.next') || 'Next'}
-                <ChevronRight className="w-4 h-4 ml-1" />
+                {t('custom_agents.next') || 'NEXT'}
+                <ChevronRight className="w-3.5 h-3.5 ml-1" />
               </Button>
             ) : (
               <Button
@@ -479,9 +478,10 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 size="sm"
                 onClick={handleSubmit}
                 isLoading={createMutation.isPending || updateMutation.isPending}
+                className="text-xs uppercase font-bold"
               >
-                <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                {agentToEdit ? (t('common.save') || 'Save Changes') : (t('custom_agents.deploy') || 'Deploy Custom Agent')}
+                <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
+                {agentToEdit ? (t('common.save') || 'SAVE CHANGES') : (t('custom_agents.deploy') || 'DEPLOY CUSTOM AGENT')}
               </Button>
             )}
           </div>

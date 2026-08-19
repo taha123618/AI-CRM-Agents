@@ -37,12 +37,12 @@ export function StatusIndicator({
         {pulse && (
           <span
             className={cn(
-              'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
+              'animate-ping absolute inline-flex h-full w-full rounded-none opacity-75',
               ringMap[status]
             )}
           />
         )}
-        <span className={cn('relative inline-flex rounded-full h-2 w-2', colorMap[status])} />
+        <span className={cn('relative inline-flex rounded-none h-2 w-2', colorMap[status])} />
       </span>
       {label && <span className="text-xs font-semibold text-slate-300 capitalize">{label}</span>}
     </div>

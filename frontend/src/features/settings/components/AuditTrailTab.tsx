@@ -74,27 +74,27 @@ export function AuditTrailTab() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <History className="w-5 h-5 text-brand-400" />
-            Compliance Audit Trail & Forensic Ledger
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <History className="w-4 h-4 text-[#FFB800]" />
+            COMPLIANCE AUDIT TRAIL &amp; FORENSIC LEDGER
           </h2>
-          <p className="text-sm text-slate-400">
-            Immutable write-ahead audit entries capturing actor IDs, IP addresses, entity mutations, and authentication events.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            IMMUTABLE WRITE-AHEAD AUDIT ENTRIES CAPTURING ACTOR IDS, IP ADDRESSES, AND ENTITY MUTATIONS.
           </p>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <Card className="glass-card border border-slate-800/80 p-4">
+      <Card className="bg-[#1F2833] border-[#3A4552] p-3 font-mono">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Search */}
             <div className="relative flex-1 sm:w-64">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={filterQuery}
@@ -102,26 +102,26 @@ export function AuditTrailTab() {
                   setFilterQuery(e.target.value);
                   setPage(1);
                 }}
-                placeholder="Search entity, actor, action, IP..."
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
+                placeholder="SEARCH ENTITY, ACTOR, ACTION, IP..."
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
             {/* Entity Filter */}
-            <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+            <div className="flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5 text-slate-500" />
               <select
                 value={entityFilter}
                 onChange={(e) => {
                   setEntityFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 uppercase font-mono"
+                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
-                <option value="all">All Entities</option>
+                <option value="all">ALL ENTITIES</option>
                 {availableEntityTypes.map((et) => (
                   <option key={et} value={et}>
-                    {et}
+                    {et.toUpperCase()}
                   </option>
                 ))}
               </select>
@@ -134,11 +134,11 @@ export function AuditTrailTab() {
                 setActionFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
+              className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             >
-              <option value="all">All Actions</option>
-              <option value="write">Mutations & Writes</option>
-              <option value="auth">Auth & Session Events</option>
+              <option value="all">ALL ACTIONS</option>
+              <option value="write">MUTATIONS &amp; WRITES</option>
+              <option value="auth">AUTH &amp; SESSION EVENTS</option>
             </select>
 
             {/* Reset */}
@@ -152,68 +152,68 @@ export function AuditTrailTab() {
                   setActionFilter('all');
                   setPage(1);
                 }}
-                className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                className="text-xs h-7 px-2 text-slate-400 hover:text-white uppercase flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
-                Reset
+                RESET
               </Button>
             )}
           </div>
 
-          <div className="text-xs text-slate-400 font-mono self-end sm:self-center">
-            {filteredLogs.length} audit entries matched
+          <div className="text-[10px] text-slate-400 font-mono self-end sm:self-center uppercase">
+            {filteredLogs.length} AUDIT ENTRIES MATCHED
           </div>
         </div>
       </Card>
 
       {/* Audit Logs Table */}
-      <Card className="glass-card border border-slate-800/80 overflow-hidden">
+      <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-900/60 text-slate-400 uppercase font-semibold border-b border-slate-800/80">
+          <table className="w-full text-left text-xs text-slate-300 font-mono">
+            <thead className="bg-[#0B0C10] text-slate-400 uppercase font-bold text-[10px] border-b border-[#3A4552]">
               <tr>
-                <th className="px-6 py-3.5">Timestamp</th>
-                <th className="px-6 py-3.5">Entity</th>
-                <th className="px-6 py-3.5">Action</th>
-                <th className="px-6 py-3.5">Actor</th>
-                <th className="px-6 py-3.5">Details Summary</th>
-                <th className="px-6 py-3.5 text-right">IP Address</th>
+                <th className="px-3 py-2.5">TIMESTAMP</th>
+                <th className="px-3 py-2.5">ENTITY</th>
+                <th className="px-3 py-2.5">ACTION</th>
+                <th className="px-3 py-2.5">ACTOR</th>
+                <th className="px-3 py-2.5">DETAILS SUMMARY</th>
+                <th className="px-3 py-2.5 text-right">IP ADDRESS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/50">
+            <tbody className="divide-y divide-[#3A4552]">
               {paginatedLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-slate-800/20 transition-colors">
-                  <td className="px-6 py-3.5 text-slate-400 whitespace-nowrap">
-                    {new Date(log.created_at).toLocaleString()}
+                <tr key={log.id} className="hover:bg-[#0B0C10] transition-none">
+                  <td className="px-3 py-2 text-slate-400 whitespace-nowrap text-[10px]">
+                    {new Date(log.created_at).toLocaleTimeString()}
                   </td>
-                  <td className="px-6 py-3.5">
-                    <span className="font-mono text-brand-400 uppercase font-medium">
+                  <td className="px-3 py-2">
+                    <span className="font-mono text-[#FFB800] uppercase font-bold text-[11px]">
                       {log.entity_type}
                     </span>
                   </td>
-                  <td className="px-6 py-3.5">
-                    <Badge variant={getActionBadgeVariant(log.action)}>
+                  <td className="px-3 py-2">
+                    <Badge variant={getActionBadgeVariant(log.action)} className="text-[9px] uppercase font-mono">
                       {log.action}
                     </Badge>
                   </td>
-                  <td className="px-6 py-3.5 font-medium text-white flex items-center gap-1.5">
-                    <UserCheck className="w-3.5 h-3.5 text-slate-400" />
+                  <td className="px-3 py-2 font-bold text-white flex items-center gap-1.5 uppercase text-[11px]">
+                    <UserCheck className="w-3 h-3 text-slate-400" />
                     {log.actor}
                   </td>
-                  <td className="px-6 py-3.5 font-mono text-slate-400 max-w-xs truncate">
+                  <td className="px-3 py-2 font-mono text-slate-400 max-w-xs truncate text-[10px]">
                     {JSON.stringify(log.details || {})}
                   </td>
-                  <td className="px-6 py-3.5 text-right font-mono text-slate-500">
+                  <td className="px-3 py-2 text-right font-mono text-slate-500 text-[10px]">
                     {log.ip_address || 'internal'}
                   </td>
                 </tr>
               ))}
               {paginatedLogs.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-4 py-8 text-center text-slate-500 uppercase">
                     {hasActiveFilters
-                      ? 'No compliance logs match the filter criteria.'
-                      : 'No compliance logs registered yet.'}
+                      ? 'NO COMPLIANCE LOGS MATCH THE FILTER CRITERIA.'
+                      : 'NO COMPLIANCE LOGS REGISTERED YET.'}
                   </td>
                 </tr>
               )}

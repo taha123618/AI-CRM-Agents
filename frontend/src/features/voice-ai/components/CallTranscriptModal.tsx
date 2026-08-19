@@ -58,8 +58,8 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
   const transcripts = call.transcripts?.length ? call.transcripts : MOCK_TRANSCRIPTS;
 
   const sentimentColor = (s?: string) => {
-    if (s === 'positive') return 'text-emerald-400';
-    if (s === 'negative') return 'text-red-400';
+    if (s === 'positive') return 'text-[#FFB800]';
+    if (s === 'negative') return 'text-[#FF2A54]';
     return 'text-slate-400';
   };
 
@@ -70,71 +70,69 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-purple-500/10 flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm font-mono">
+      <div className="w-full max-w-2xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[#3A4552]">
           <div>
-            <h2 className="text-sm font-black text-white flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400">
+            <h2 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <div className="p-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800]">
                 <Mic className="w-3.5 h-3.5" />
               </div>
-              Call Transcript — {call.contact_name}
+              CALL TRANSCRIPT — {call.contact_name}
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5 font-mono">
-              {call.phone_number} • {Math.floor(call.duration_seconds / 60)}m {call.duration_seconds % 60}s •{' '}
-              <span className={sentimentColor(call.sentiment)}>{call.sentiment} sentiment</span>
+            <p className="text-[10px] text-slate-400 mt-0.5 font-mono uppercase">
+              {call.phone_number} • {Math.floor(call.duration_seconds / 60)}M {call.duration_seconds % 60}S •{' '}
+              <span className={sentimentColor(call.sentiment)}>{call.sentiment} SENTIMENT</span>
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="p-1.5 rounded-none text-slate-400 hover:bg-[#0B0C10] hover:text-white transition-none"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Transcript Stream */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-3">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 font-mono">
           {transcripts.map((t, idx) => {
             const isRep = t.speaker === 'rep';
             return (
-              <div key={idx} className={`flex gap-3 ${isRep ? 'flex-row-reverse' : ''}`}>
+              <div key={idx} className={`flex gap-2.5 ${isRep ? 'flex-row-reverse' : ''}`}>
                 <div
-                  className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center border ${
-                    isRep
-                      ? 'bg-brand-500/10 border-brand-500/30 text-brand-400'
-                      : 'bg-slate-800 border-slate-700 text-slate-400'
-                  }`}
+                  className={`shrink-0 w-6 h-6 rounded-none flex items-center justify-center border ${isRep
+                      ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
+                      : 'bg-[#0B0C10] border-[#3A4552] text-slate-400'
+                    }`}
                 >
-                  {isRep ? <Mic className="w-3.5 h-3.5" /> : <User className="w-3.5 h-3.5" />}
+                  {isRep ? <Mic className="w-3 h-3" /> : <User className="w-3 h-3" />}
                 </div>
-                <div className={`flex-1 space-y-1.5 ${isRep ? 'items-end' : 'items-start'} flex flex-col`}>
-                  <div className="flex items-center gap-2 text-[10px]">
-                    <span className={`font-bold uppercase tracking-wider ${isRep ? 'text-brand-400' : 'text-slate-400'}`}>
-                      {isRep ? 'Sales Rep' : call.contact_name}
+                <div className={`flex-1 space-y-1 ${isRep ? 'items-end' : 'items-start'} flex flex-col`}>
+                  <div className="flex items-center gap-2 text-[9px] uppercase font-mono">
+                    <span className={`font-bold ${isRep ? 'text-[#FFB800]' : 'text-slate-400'}`}>
+                      {isRep ? 'SALES REP' : call.contact_name}
                     </span>
-                    <span className="text-slate-600 flex items-center gap-1 font-mono">
+                    <span className="text-slate-500 flex items-center gap-1 font-mono">
                       <Clock className="w-2.5 h-2.5" />
                       {formatTime(t.timestamp_seconds)}
                     </span>
-                    <span className={`text-[9px] font-semibold ${sentimentColor(t.sentiment)}`}>
+                    <span className={`font-bold ${sentimentColor(t.sentiment)}`}>
                       {t.sentiment}
                     </span>
                   </div>
                   <div
-                    className={`max-w-[90%] p-3 rounded-2xl text-xs leading-relaxed ${
-                      isRep
-                        ? 'bg-brand-600/20 border border-brand-500/30 text-slate-200 rounded-tr-none'
-                        : 'bg-slate-900 border border-slate-800 text-slate-300 rounded-tl-none'
-                    }`}
+                    className={`max-w-[90%] p-2.5 rounded-none text-xs leading-relaxed font-mono ${isRep
+                        ? 'bg-[#0B0C10] border border-[#FFB800] text-slate-100'
+                        : 'bg-[#0B0C10] border border-[#3A4552] text-slate-200'
+                      }`}
                   >
                     {t.text}
                   </div>
                   {t.coaching_tip && (
-                    <div className="max-w-[90%] p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-start gap-2">
-                      <Sparkles className="w-3 h-3 shrink-0 mt-0.5" />
+                    <div className="max-w-[90%] p-2 rounded-none bg-[#0B0C10] border border-amber-500/40 text-amber-300 text-[10px] flex items-start gap-1.5 uppercase">
+                      <Sparkles className="w-3 h-3 shrink-0 mt-0.5 text-[#FFB800]" />
                       <span>{t.coaching_tip}</span>
                     </div>
                   )}
@@ -145,16 +143,16 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between">
-          <span className="text-[10px] text-slate-500 font-mono">
-            {transcripts.length} turns • AI battle-cards highlighted in amber
+        <div className="p-3 border-t border-[#3A4552] flex items-center justify-between font-mono">
+          <span className="text-[9px] text-slate-500 font-mono uppercase">
+            {transcripts.length} TURNS • BATTLE-CARDS HIGHLIGHTED IN AMBER
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
+            className="px-3 py-1 rounded-none text-xs font-bold uppercase bg-[#0B0C10] text-slate-300 hover:bg-[#1F2833] border border-[#3A4552] transition-none"
           >
-            Close
+            CLOSE
           </button>
         </div>
       </div>

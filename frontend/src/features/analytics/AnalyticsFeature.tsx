@@ -37,25 +37,27 @@ export function AnalyticsFeature() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-brand-400" />
-            {t('analytics.title', 'Executive ARR & Predictive Analytics')}
+          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-[#FFB800]" />
+            <span>{t('analytics.title', 'ARR & PREDICTIVE ANALYTICS')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            {t('analytics.subtitle', 'Live multi-agent strategic forecasting and pipeline trajectory')}
+          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+            {t('analytics.subtitle', 'MULTI-AGENT STRATEGIC FORECASTING AND REVENUE TELEMETRY')}
           </p>
         </div>
 
         <Button
+          variant="primary"
           onClick={handleGenerate}
           isLoading={generateDashboardMutation.isPending}
+          className="text-xs"
         >
-          <Sparkles className="w-4 h-4" />
-          <span>{t('analytics.run_analytics', 'Generate Live AI Forecast')}</span>
+          <Sparkles className="w-3.5 h-3.5 mr-1" />
+          <span>{t('analytics.run_analytics', 'GENERATE AI FORECAST')}</span>
         </Button>
       </div>
 
@@ -63,12 +65,12 @@ export function AnalyticsFeature() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <Bot className="w-4 h-4 text-brand-400" />
-            AnalyticsAgent — Live AI Insights
+            <Bot className="w-4 h-4 text-[#FFB800]" />
+            <span>ANALYTICS AGENT — LIVE AI INSIGHTS</span>
           </CardTitle>
-          <Button variant="outline" size="sm" onClick={() => refetchInsights()} disabled={insightsLoading}>
+          <Button variant="outline" size="sm" onClick={() => refetchInsights()} disabled={insightsLoading} className="text-xs h-7">
             <RefreshCw className={`w-3.5 h-3.5 ${insightsLoading ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
+            <span>REFRESH</span>
           </Button>
         </CardHeader>
         <CardContent>
@@ -77,21 +79,20 @@ export function AnalyticsFeature() {
               {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-4 w-full" />)}
             </div>
           ) : insights ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {/* Summary */}
-              <p className="text-xs text-slate-400 italic border-l-2 border-brand-500/40 pl-3">{insights.summary}</p>
+              <p className="text-xs text-slate-300 font-mono border-l-2 border-[#FFB800] pl-3 uppercase">{insights.summary}</p>
 
               {/* KPI Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                 {insights.kpis.map((kpi) => (
-                  <div key={kpi.label} className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
-                    <div className="text-[10px] text-slate-400 uppercase font-semibold">{kpi.label}</div>
+                  <div key={kpi.label} className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1">
+                    <div className="text-[9px] text-slate-400 uppercase font-bold">{kpi.label}</div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-lg font-black ${
-                        kpi.trend === 'up' ? 'text-emerald-400' : kpi.trend === 'down' ? 'text-rose-400' : 'text-slate-300'
-                      }`}>{kpi.value}</span>
-                      {kpi.trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />}
-                      {kpi.trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-rose-400" />}
+                      <span className={`text-base font-black font-mono ${kpi.trend === 'up' ? 'text-[#FFB800]' : kpi.trend === 'down' ? 'text-[#FF2A54]' : 'text-slate-300'
+                        }`}>{kpi.value}</span>
+                      {kpi.trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-[#FFB800]" />}
+                      {kpi.trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-[#FF2A54]" />}
                       {kpi.trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-slate-500" />}
                     </div>
                   </div>
@@ -99,75 +100,75 @@ export function AnalyticsFeature() {
               </div>
 
               {/* Insight bullets */}
-              <div className="space-y-2">
+              <div className="space-y-1.5 pt-1">
                 {insights.insights.map((insight, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-400 mt-0.5 shrink-0" />
+                  <div key={i} className="flex items-start gap-2 text-xs text-slate-300 font-mono">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#FFB800] mt-0.5 shrink-0" />
                     <span>{insight}</span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-slate-500 text-xs">Unable to load insights.</div>
+            <div className="text-center py-6 text-slate-500 text-xs font-mono uppercase">UNABLE TO LOAD INSIGHTS.</div>
           )}
         </CardContent>
       </Card>
 
       {/* Summary Stat Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Leads & Conversion</span>
-            <TrendingUp className="w-5 h-5 text-brand-400" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">TOTAL LEADS &amp; CONVERSION</span>
+            <TrendingUp className="w-4 h-4 text-[#FFB800]" />
           </div>
           {metricsLoading ? (
-            <Skeleton className="h-10 w-24 mt-2" />
+            <Skeleton className="h-8 w-24 mt-2" />
           ) : (
-            <div className="mt-3 space-y-1">
-              <div className="text-2xl font-extrabold text-white">
-                {formatNumber(metrics?.leads.total || 0)} Leads
+            <div className="mt-2 space-y-0.5">
+              <div className="text-xl font-black font-mono text-white">
+                {formatNumber(metrics?.leads.total || 0)} LEADS
               </div>
-              <p className="text-xs text-emerald-400 font-medium">
-                {metrics?.leads.total ? Math.round(((metrics.leads.qualified || 0) / metrics.leads.total) * 100) : 0}% AI Qualification Rate
+              <p className="text-[10px] font-mono text-[#FFB800]">
+                {metrics?.leads.total ? Math.round(((metrics.leads.qualified || 0) / metrics.leads.total) * 100) : 0}% QUALIFICATION RATE
               </p>
             </div>
           )}
         </Card>
 
-        <Card className="p-5">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Annual Run Rate (ARR)</span>
-            <TrendingUp className="w-5 h-5 text-emerald-400" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">ANNUAL RUN RATE (ARR)</span>
+            <TrendingUp className="w-4 h-4 text-[#FFB800]" />
           </div>
           {metricsLoading ? (
-            <Skeleton className="h-10 w-32 mt-2" />
+            <Skeleton className="h-8 w-32 mt-2" />
           ) : (
-            <div className="mt-3 space-y-1">
-              <div className="text-2xl font-extrabold text-white">
+            <div className="mt-2 space-y-0.5">
+              <div className="text-xl font-black font-mono text-white">
                 {formatCurrency(metrics?.customers.arr || 0)}
               </div>
-              <p className="text-xs text-slate-400">
-                MRR: <span className="text-white font-semibold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
+              <p className="text-[10px] font-mono text-slate-400">
+                MRR: <span className="text-white font-bold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
               </p>
             </div>
           )}
         </Card>
 
-        <Card className="p-5">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Weighted Pipeline</span>
-            <TrendingUp className="w-5 h-5 text-blue-400" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">WEIGHTED PIPELINE</span>
+            <TrendingUp className="w-4 h-4 text-cyan-400" />
           </div>
           {metricsLoading ? (
-            <Skeleton className="h-10 w-32 mt-2" />
+            <Skeleton className="h-8 w-32 mt-2" />
           ) : (
-            <div className="mt-3 space-y-1">
-              <div className="text-2xl font-extrabold text-white">
+            <div className="mt-2 space-y-0.5">
+              <div className="text-xl font-black font-mono text-white">
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
-              <p className="text-xs text-slate-400">
-                Total Deals: <span className="text-white font-semibold">{metrics?.deals.total || 0}</span>
+              <p className="text-[10px] font-mono text-slate-400">
+                TOTAL DEALS: <span className="text-white font-bold">{metrics?.deals.total || 0}</span>
               </p>
             </div>
           )}
@@ -175,10 +176,10 @@ export function AnalyticsFeature() {
       </div>
 
       {/* Analytics Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Pipeline Volume by Stage</CardTitle>
+            <CardTitle>PIPELINE VOLUME BY STAGE</CardTitle>
           </CardHeader>
           <CardContent>
             {pipelineLoading ? <Skeleton className="h-64 w-full" /> : <PipelineChart metrics={pipeline} />}
@@ -188,8 +189,8 @@ export function AnalyticsFeature() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-emerald-400" />
-              Customer Retention & Health Distribution
+              <PieIcon className="w-4 h-4 text-[#FFB800]" />
+              <span>RETENTION &amp; HEALTH DISTRIBUTION</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -207,54 +208,54 @@ export function AnalyticsFeature() {
         <Modal
           isOpen={Boolean(forecastResult)}
           onClose={() => setForecastResult(null)}
-          title="AI Analytics & Revenue Forecast"
-          description="Real-time KPI calculations and predictive insights generated by AnalyticsAgent"
+          title="AI REVENUE FORECAST"
+          description="REAL-TIME KPI CALCULATIONS AND PREDICTIVE INSIGHTS GENERATED BY ANALYTICS AGENT"
         >
-          <div className="space-y-4">
+          <div className="space-y-3 font-mono">
             {/* KPI Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Conversion Rate</span>
-                <span className="text-sm font-extrabold text-emerald-400">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">CONVERSION</span>
+                <span className="text-xs font-black font-mono text-[#FFB800]">
                   {forecastResult.kpis?.lead_conversion_rate || 30}%
                 </span>
               </div>
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Win Rate</span>
-                <span className="text-sm font-extrabold text-brand-400">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">WIN RATE</span>
+                <span className="text-xs font-black font-mono text-cyan-400">
                   {forecastResult.kpis?.win_rate || 24}%
                 </span>
               </div>
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">MRR</span>
-                <span className="text-sm font-extrabold text-white">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">MRR</span>
+                <span className="text-xs font-black font-mono text-white">
                   {formatCurrency(forecastResult.kpis?.mrr || 50000)}
                 </span>
               </div>
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">ARR</span>
-                <span className="text-sm font-extrabold text-purple-400">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
+                <span className="text-[9px] text-slate-400 uppercase font-bold block">ARR</span>
+                <span className="text-xs font-black font-mono text-[#FFB800]">
                   {formatCurrency(forecastResult.kpis?.arr || 600000)}
                 </span>
               </div>
             </div>
 
             {/* Quick Insights */}
-            <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-brand-400" />
-                Strategic AI Insights
+            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
+              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-[#FFB800]" />
+                STRATEGIC AI INSIGHTS
               </h4>
-              <ul className="space-y-1.5 text-xs text-slate-300">
+              <ul className="space-y-1 text-xs font-mono text-slate-300">
                 {Array.isArray(forecastResult.insights) && forecastResult.insights.length > 0 ? (
                   forecastResult.insights.map((insight: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
                       <span>{insight}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-slate-400">
+                  <li className="text-slate-400 text-xs">
                     1. Revenue growing steadily at 12% MoM<br />
                     2. Strong lead conversion rate across tech accounts<br />
                     3. Recommended sales cycle optimization for proposal stage
@@ -263,9 +264,9 @@ export function AnalyticsFeature() {
               </ul>
             </div>
 
-            <div className="flex justify-end pt-2 border-t border-slate-800">
-              <Button variant="outline" onClick={() => setForecastResult(null)}>
-                Close Report
+            <div className="flex justify-end pt-1 border-t border-[#3A4552]">
+              <Button variant="outline" onClick={() => setForecastResult(null)} className="text-xs">
+                CLOSE REPORT
               </Button>
             </div>
           </div>

@@ -29,7 +29,7 @@ export function Tabs({ defaultValue, value, onValueChange, className, children }
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab: handleTabChange }}>
-      <div className={cn('space-y-4', className)}>{children}</div>
+      <div className={cn('space-y-4 font-mono', className)}>{children}</div>
     </TabsContext.Provider>
   );
 }
@@ -38,7 +38,7 @@ export function TabsList({ className, children }: { className?: string; children
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md',
+        'inline-flex items-center gap-1 p-1 rounded-none bg-[#0B0C10] border border-[#3A4552]',
         className
       )}
     >
@@ -68,10 +68,10 @@ export function TabsTrigger({
       type="button"
       onClick={() => ctx.setActiveTab(value)}
       className={cn(
-        'inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200',
+        'inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-bold font-mono uppercase transition-none',
         isActive
-          ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/20'
-          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60',
+          ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+          : 'text-slate-400 hover:text-white hover:bg-[#1F2833] border border-transparent',
         className
       )}
     >
@@ -95,5 +95,5 @@ export function TabsContent({
 
   if (ctx.activeTab !== value) return null;
 
-  return <div className={cn('animate-in fade-in-50 duration-200', className)}>{children}</div>;
+  return <div className={cn('transition-none font-mono', className)}>{children}</div>;
 }
