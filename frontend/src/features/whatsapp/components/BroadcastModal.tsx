@@ -58,31 +58,31 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
   const removePhone = (p: string) => setPhoneList(phoneList.filter((x) => x !== p));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-lg bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl shadow-emerald-500/10 flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 font-mono">
+      <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 shrink-0">
-          <h2 className="text-sm font-black text-white flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+        <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10] shrink-0">
+          <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="p-1.5 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
               <Megaphone className="w-3.5 h-3.5" />
             </div>
-            Broadcast Message Campaign
+            BROADCAST CAMPAIGN STUDIO
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+            className="p-1 rounded-none text-slate-400 hover:text-white transition-none"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 font-mono">
           {/* Template Selector */}
-          <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              Select Template
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              SELECT TEMPLATE
             </label>
             <div className="grid grid-cols-2 gap-2">
               {TEMPLATES.map((tmpl) => (
@@ -93,10 +93,10 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                     setSelectedTemplate(tmpl);
                     setCustomText(tmpl.text);
                   }}
-                  className={`p-2.5 rounded-xl text-left text-xs border transition-all ${
+                  className={`p-2.5 rounded-none text-left text-xs uppercase font-mono border transition-none ${
                     selectedTemplate.name === tmpl.name
-                      ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                      ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
+                      : 'bg-[#0B0C10] border-[#3A4552] text-slate-400 hover:text-white'
                   }`}
                 >
                   {tmpl.name}
@@ -106,34 +106,34 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
           </div>
 
           {/* Message Text */}
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              Message Content
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              MESSAGE CONTENT
             </label>
             <textarea
               rows={4}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 resize-none"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-[#39FF14] resize-none"
             />
           </div>
 
           {/* Recipients */}
-          <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              Recipients ({phoneList.length})
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              RECIPIENTS ({phoneList.length})
             </label>
-            <div className="space-y-1.5 max-h-32 overflow-y-auto">
+            <div className="space-y-1 max-h-32 overflow-y-auto">
               {phoneList.map((p) => (
                 <div
                   key={p}
-                  className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 font-mono"
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 font-mono"
                 >
                   <span>{p}</span>
                   <button
                     type="button"
                     onClick={() => removePhone(p)}
-                    className="text-slate-600 hover:text-red-400 transition-colors"
+                    className="text-slate-500 hover:text-[#FF2A54] transition-none"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -147,14 +147,14 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                 onChange={(e) => setNewPhone(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addPhone()}
                 placeholder="+1 (555) 000-0000"
-                className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="flex-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#39FF14]"
               />
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={addPhone}
-                className="border-slate-700 text-slate-400"
+                className="text-xs h-8"
               >
                 <Plus className="w-3.5 h-3.5" />
               </Button>
@@ -163,26 +163,26 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center gap-2 shrink-0">
+        <div className="p-3 border-t border-[#3A4552] flex items-center gap-2 shrink-0">
           <Button
             type="button"
             variant="outline"
             size="sm"
-            className="flex-1 border-slate-700 text-slate-400"
+            className="flex-1 text-xs"
             onClick={onClose}
           >
-            Cancel
+            CANCEL
           </Button>
           <Button
             type="button"
             variant="primary"
             size="sm"
-            className="flex-1 bg-emerald-600 hover:bg-emerald-500"
+            className="flex-1 text-xs"
             isLoading={broadcastMutation.isPending}
             onClick={() => broadcastMutation.mutate()}
           >
-            <Send className="w-3.5 h-3.5 mr-1.5" />
-            Send to {phoneList.length} Recipients
+            <Send className="w-3.5 h-3.5 mr-1" />
+            DISPATCH TO {phoneList.length} RECIPIENTS
           </Button>
         </div>
       </div>

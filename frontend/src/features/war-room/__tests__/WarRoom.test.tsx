@@ -29,16 +29,16 @@ describe('AI Deal War Room Components', () => {
     const { getByText, getByRole } = renderWithClient(
       <ProposalStudioModal deal={mockDeal} onClose={() => {}} />
     );
-    expect(getByText(/AI Smart Proposal & Pitch Studio/i)).toBeInTheDocument();
+    expect(getByText(/1-CLICK SMART PROPOSAL STUDIO/i)).toBeInTheDocument();
     expect(getByText('Apex Innovations Corp')).toBeInTheDocument();
-    expect(getByRole('button', { name: /Auto-Generate AI Proposal/i })).toBeInTheDocument();
+    expect(getByRole('button', { name: /GENERATE PROPOSAL/i })).toBeInTheDocument();
   });
 
   it('renders AutomationRulesModal with autonomous triggers header', () => {
     const { getByText, getByRole } = renderWithClient(
       <AutomationRulesModal onClose={() => {}} />
     );
-    expect(getByText(/Multi-Agent Workflow Automation Triggers/i)).toBeInTheDocument();
-    expect(getByRole('button', { name: /New Automation/i })).toBeInTheDocument();
+    expect(getByText(/WORKFLOW AUTOMATION TRIGGERS/i)).toBeInTheDocument();
+    expect(getByRole('button', { name: /NEW AUTOMATION/i })).toBeInTheDocument();
   });
 });

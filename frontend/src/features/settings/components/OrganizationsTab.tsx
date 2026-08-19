@@ -58,25 +58,25 @@ export function OrganizationsTab() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Tab Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-brand-400" />
-            <h2 className="text-lg font-bold text-white">Multi-Tenant Workspaces &amp; Organizations</h2>
-            <Badge variant="purple" className="text-[10px]">
-              Multi-Tenancy
+            <Building2 className="w-4 h-4 text-[#39FF14]" />
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">MULTI-TENANT WORKSPACES &amp; ORGANIZATIONS</h2>
+            <Badge variant="purple" className="text-[9px] uppercase font-mono">
+              MULTI-TENANCY
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Isolate contacts, deals, customer interactions, and agent executions within secure organization boundaries.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            ISOLATE CONTACTS, DEALS, CUSTOMER INTERACTIONS, AND AGENT EXECUTIONS WITHIN SECURE BOUNDARIES.
           </p>
         </div>
 
-        <Button size="sm" variant="orange" onClick={() => setIsCreateModalOpen(true)} className="flex items-center gap-1.5">
-          <Plus className="w-4 h-4" />
-          <span>New Workspace</span>
+        <Button size="sm" variant="primary" onClick={() => setIsCreateModalOpen(true)} className="text-xs h-7 uppercase font-bold flex items-center gap-1.5">
+          <Plus className="w-3.5 h-3.5 text-[#0B0C10]" />
+          <span>NEW WORKSPACE</span>
         </Button>
       </div>
 
@@ -86,47 +86,47 @@ export function OrganizationsTab() {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 font-mono">
           {orgs?.map((org: Organization) => (
             <div
               key={org.id}
-              className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+              className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 font-bold text-xs">
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs font-mono">
                     {org.name.slice(0, 2).toUpperCase()}
                   </div>
-                  <Badge variant={org.plan_tier === 'enterprise' ? 'purple' : 'info'} className="text-[10px] uppercase font-mono">
+                  <Badge variant={org.plan_tier === 'enterprise' ? 'purple' : 'info'} className="text-[9px] uppercase font-mono">
                     {org.plan_tier}
                   </Badge>
                 </div>
 
-                <h3 className="text-base font-bold text-white tracking-tight">{org.name}</h3>
-                <p className="text-xs font-mono text-slate-400 mt-0.5">slug: {org.slug}</p>
+                <h3 className="text-xs font-bold text-white uppercase tracking-wide">{org.name}</h3>
+                <p className="text-[10px] font-mono text-[#39FF14] mt-0.5">SLUG: {org.slug}</p>
 
-                <div className="mt-4 space-y-2 text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-3.5 h-3.5 text-slate-500" />
-                    <span>{org.domain || 'Internal Workspace'}</span>
+                <div className="mt-3 space-y-1.5 text-xs text-slate-300">
+                  <div className="flex items-center gap-2 text-[10px] uppercase">
+                    <Globe className="w-3 h-3 text-slate-500" />
+                    <span>{org.domain || 'INTERNAL WORKSPACE'}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Status: {org.is_active ? 'Active' : 'Suspended'}</span>
+                  <div className="flex items-center gap-2 text-[10px] uppercase">
+                    <CheckCircle2 className="w-3 h-3 text-[#39FF14]" />
+                    <span>STATUS: {org.is_active ? 'ACTIVE' : 'SUSPENDED'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                <span className="font-mono text-[10px] text-slate-500 truncate max-w-[120px]">{org.id}</span>
+              <div className="mt-4 pt-3 border-t border-[#3A4552] flex items-center justify-between text-xs">
+                <span className="font-mono text-[9px] text-slate-500 truncate max-w-[120px]">{org.id}</span>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => handleCopy(org.id)}
-                  className="h-7 px-2 text-[11px] text-slate-400 hover:text-white"
+                  className="h-6 px-1.5 text-[10px] text-slate-400 hover:text-white uppercase"
                 >
-                  {copiedId === org.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span className="ml-1">{copiedId === org.id ? 'Copied' : 'Copy ID'}</span>
+                  {copiedId === org.id ? <Check className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                  <span className="ml-1">{copiedId === org.id ? 'COPIED' : 'COPY ID'}</span>
                 </Button>
               </div>
             </div>
@@ -136,81 +136,81 @@ export function OrganizationsTab() {
 
       {/* Create Workspace Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-brand-400" />
-                Create Organization Workspace
+        <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <Building2 className="w-4 h-4 text-[#39FF14]" />
+                CREATE ORGANIZATION WORKSPACE
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-slate-400 hover:text-white text-sm"
+                className="text-slate-400 hover:text-white text-xs"
               >
                 ✕
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-xl">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs rounded-none uppercase font-mono">
                 {formError}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Organization Name *</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">ORGANIZATION NAME *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Apex Global Ventures"
+                  placeholder="E.G. APEX GLOBAL VENTURES"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Identifier Slug (Optional)</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">IDENTIFIER SLUG (OPTIONAL)</label>
                 <input
                   type="text"
-                  placeholder="e.g. apex-global"
+                  placeholder="E.G. APEX-GLOBAL"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Company Domain</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">COMPANY DOMAIN</label>
                 <input
                   type="text"
-                  placeholder="e.g. apexglobal.com"
+                  placeholder="E.G. APEXGLOBAL.COM"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Subscription Plan Tier</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">SUBSCRIPTION PLAN TIER</label>
                 <select
                   value={planTier}
                   onChange={(e) => setPlanTier(e.target.value as any)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 >
-                  <option value="starter">Starter (Small Business)</option>
-                  <option value="growth">Growth (Scale-up)</option>
-                  <option value="enterprise">Enterprise (Unlimited Agents)</option>
+                  <option value="starter">STARTER (SMALL BUSINESS)</option>
+                  <option value="growth">GROWTH (SCALE-UP)</option>
+                  <option value="enterprise">ENTERPRISE (UNLIMITED AGENTS)</option>
                 </select>
               </div>
 
-              <div className="pt-2 flex justify-end gap-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)}>
-                  Cancel
+              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+                <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)} className="text-xs uppercase">
+                  CANCEL
                 </Button>
-                <Button type="submit" variant="orange" size="sm" disabled={createMutation.isPending}>
-                  {createMutation.isPending ? 'Provisioning...' : 'Create Workspace'}
+                <Button type="submit" variant="primary" size="sm" disabled={createMutation.isPending} className="text-xs uppercase font-bold">
+                  {createMutation.isPending ? 'PROVISIONING...' : 'CREATE WORKSPACE'}
                 </Button>
               </div>
             </form>

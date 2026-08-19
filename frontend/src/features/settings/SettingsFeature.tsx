@@ -19,38 +19,38 @@ export function SettingsFeature() {
   const isAdmin = currentUser?.role === 'admin';
 
   const tabs = [
-    { id: 'rbac' as const, label: 'Access Control & RBAC', icon: Shield, badge: 'Auth' },
-    { id: 'organizations' as const, label: 'Workspaces & Tenancy', icon: Building2, badge: 'New' },
-    { id: 'observability' as const, label: 'Metrics & Observability', icon: Activity, badge: 'Live' },
-    { id: 'custom-fields' as const, label: 'Custom Fields & Schema', icon: SlidersHorizontal, badge: 'ETL' },
-    { id: 'webhooks' as const, label: 'Webhooks & APIs', icon: Globe, badge: '' },
-    { id: 'import-export' as const, label: 'Bulk Import / Export', icon: Download },
-    { id: 'tasks' as const, label: 'Task Queue & Workers', icon: Cpu, badge: 'Async' },
-    { id: 'audits' as const, label: 'Compliance Audit Trail', icon: History },
+    { id: 'rbac' as const, label: 'ACCESS CONTROL & RBAC', icon: Shield, badge: 'AUTH' },
+    { id: 'organizations' as const, label: 'WORKSPACES & TENANCY', icon: Building2, badge: 'NEW' },
+    { id: 'observability' as const, label: 'METRICS & OBSERVABILITY', icon: Activity, badge: 'LIVE' },
+    { id: 'custom-fields' as const, label: 'CUSTOM FIELDS & SCHEMA', icon: SlidersHorizontal, badge: 'ETL' },
+    { id: 'webhooks' as const, label: 'WEBHOOKS & APIS', icon: Globe, badge: '' },
+    { id: 'import-export' as const, label: 'BULK IMPORT / EXPORT', icon: Download },
+    { id: 'tasks' as const, label: 'TASK QUEUE & WORKERS', icon: Cpu, badge: 'ASYNC' },
+    { id: 'audits' as const, label: 'COMPLIANCE AUDIT TRAIL', icon: History },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <Sliders className="w-6 h-6 text-brand-400" />
-            Platform Governance, Integrations & Security
+          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <Sliders className="w-5 h-5 text-[#39FF14]" />
+            <span>PLATFORM GOVERNANCE, INTEGRATIONS &amp; SECURITY</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Enterprise RBAC permissions, outbound webhooks, bulk ETL migration, async task workers, and forensic audit logs.
+          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+            ENTERPRISE RBAC PERMISSIONS, OUTBOUND WEBHOOKS, BULK ETL, ASYNC WORKERS, AND FORENSIC AUDIT LOGS.
           </p>
         </div>
 
         {currentUser && (
-          <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-xs shrink-0 self-start md:self-auto">
-            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-brand-400' : 'text-slate-400'}`} />
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs shrink-0 self-start md:self-auto font-mono">
+            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-[#39FF14]' : 'text-slate-400'}`} />
             <div>
-              <span className="text-slate-400 block text-[10px]">Active Session</span>
-              <span className="font-mono text-slate-200 font-medium">{currentUser.email}</span>
+              <span className="text-slate-500 block text-[9px] uppercase">ACTIVE SESSION</span>
+              <span className="font-mono text-slate-200 text-xs font-bold uppercase">{currentUser.email}</span>
             </div>
-            <Badge variant={isAdmin ? 'purple' : 'info'} className="text-[10px] font-mono uppercase ml-1">
+            <Badge variant={isAdmin ? 'purple' : 'info'} className="text-[8px] font-mono uppercase ml-1">
               {currentUser.role}
             </Badge>
           </div>
@@ -58,7 +58,7 @@ export function SettingsFeature() {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800/80 pb-2">
+      <div className="flex flex-wrap items-center gap-1.5 bg-[#0B0C10] p-2 border border-[#3A4552] font-mono">
         {tabs?.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -66,17 +66,19 @@ export function SettingsFeature() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${isActive
-                ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/25'
-                : 'bg-slate-900/60 text-slate-400 hover:text-white hover:bg-slate-800/60'
-                }`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-mono font-bold uppercase transition-none ${
+                isActive
+                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                  : 'bg-[#1F2833] text-slate-400 hover:text-white border border-[#3A4552]'
+              }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
               {tab.badge && (
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-slate-800 text-brand-400'
-                    }`}
+                  className={`text-[8px] px-1 py-0.2 rounded-none font-mono ${
+                    isActive ? 'bg-[#0B0C10] text-[#39FF14] font-bold' : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552]'
+                  }`}
                 >
                   {tab.badge}
                 </span>
@@ -87,7 +89,7 @@ export function SettingsFeature() {
       </div>
 
       {/* Active Tab Panel */}
-      <div className="animate-in fade-in duration-200">
+      <div className="font-mono">
         {activeTab === 'rbac' && <UserManagementTab />}
         {activeTab === 'organizations' && <OrganizationsTab />}
         {activeTab === 'observability' && <ObservabilityMetricsTab />}

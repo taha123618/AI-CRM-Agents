@@ -12,14 +12,10 @@ import {
   Play,
   Pause,
   Bot,
-  ArrowRight,
-  Sparkles,
   Edit2,
   CheckCircle,
-  Activity,
   Copy,
   Check,
-  Cpu,
 } from 'lucide-react';
 
 interface AutomationRulesModalProps {
@@ -99,7 +95,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
       setExecutionResult({
         message: data?.message || 'Automation trigger executed successfully!',
         ai_generated_payload: data?.ai_generated_payload,
-        llm_engine: data?.llm_engine || 'Multi-Agent Smart Inference Engine',
+        llm_engine: data?.llm_engine,
         action_agent: data?.action_agent,
         action_type: data?.action_type,
       });
@@ -116,7 +112,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
     setActionType('send_welcome_template');
   };
 
-  const handleStartEdit = (rule: AutomationRule) => {
+  const handleEdit = (rule: AutomationRule) => {
     setEditingRuleId(rule.id);
     setRuleName(rule.name);
     setTriggerEvent(rule.trigger_event);
@@ -126,328 +122,296 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
     setShowForm(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!ruleName.trim()) return;
-    saveMutation.mutate();
-  };
-
-  const handleCopyExecution = () => {
-    if (!executionResult?.ai_generated_payload) return;
-    navigator.clipboard.writeText(executionResult.ai_generated_payload);
-    setCopiedResult(true);
-    setTimeout(() => setCopiedResult(false), 2000);
+  const handleCopyPayload = () => {
+    if (executionResult?.ai_generated_payload) {
+      navigator.clipboard.writeText(executionResult.ai_generated_payload);
+      setCopiedResult(true);
+      setTimeout(() => setCopiedResult(false), 2000);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-3xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
-        {/* Modal Header */}
-        <div className="p-5 sm:p-6 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between shrink-0">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
+      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+        {/* Header */}
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
-              <Zap className="w-6 h-6" />
+            <div className="p-2 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-white flex items-center gap-2">
-                <span>Multi-Agent Workflow Automation Triggers</span>
-                <Badge variant="purple" className="text-[10px] bg-purple-500/20 text-purple-300">
-                  OpenAI & Claude Orchestrator
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span>MULTI-AGENT WORKFLOW AUTOMATION TRIGGERS</span>
+                <Badge variant="purple" className="text-[9px] uppercase font-mono">
+                  ACTIVE STUDIO
                 </Badge>
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Autonomous event triggers executed directly through AgentOrchestrator and specialized AI agents.
+              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                CONFIGURE EVENT-DRIVEN DISPATCH CHAINS ACROSS CRM AGENTS WITH REAL-TIME TEST SIMULATION.
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Live AI Execution HUD Banner */}
-        {executionResult && (
-          <div className="p-4 bg-gradient-to-r from-purple-950/60 via-slate-950/90 to-emerald-950/60 border-b border-purple-500/30 space-y-2 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-300">
-                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{executionResult.message}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-purple-300 font-mono flex items-center gap-1 bg-purple-500/10 px-2 py-0.5 rounded-lg border border-purple-500/20">
-                  <Cpu className="w-3 h-3" />
-                  {executionResult.llm_engine}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setExecutionResult(null)}
-                  className="text-slate-400 hover:text-white text-xs"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-
-            {executionResult.ai_generated_payload && (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 font-sans space-y-2">
-                <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono border-b border-slate-850 pb-1">
-                  <span>AI Generated Output ({executionResult.action_agent})</span>
-                  <button
-                    type="button"
-                    onClick={handleCopyExecution}
-                    className="flex items-center gap-1 text-purple-300 hover:text-purple-200"
-                  >
-                    {copiedResult ? (
-                      <Check className="w-3 h-3 text-emerald-400" />
-                    ) : (
-                      <Copy className="w-3 h-3" />
-                    )}
-                    <span>{copiedResult ? 'Copied' : 'Copy Output'}</span>
-                  </button>
-                </div>
-                <p className="leading-relaxed whitespace-pre-wrap">
-                  {executionResult.ai_generated_payload}
-                </p>
-              </div>
+        {/* Modal Body */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
+          {/* Action Toolbar */}
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              REGISTERED RULES ({rules?.length || 0})
+            </span>
+            {!showForm && (
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={() => setShowForm(true)}
+                className="text-xs h-7 uppercase"
+              >
+                <Plus className="w-3.5 h-3.5 mr-1" />
+                <span>NEW AUTOMATION TRIGGER</span>
+              </Button>
             )}
           </div>
-        )}
 
-        {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 scrollbar-thin">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-purple-400" />
-              <span>Configured Triggers ({rules?.length || 0})</span>
-            </span>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                if (showForm) resetForm();
-                else {
-                  resetForm();
-                  setShowForm(true);
-                }
-              }}
-              className="bg-purple-600 hover:bg-purple-500 text-xs font-bold"
-            >
-              <Plus className="w-3.5 h-3.5 mr-1" />
-              <span>{showForm ? 'Cancel Edit' : 'New Automation'}</span>
-            </Button>
-          </div>
-
-          {/* Form (Create / Edit) */}
+          {/* Form */}
           {showForm && (
-            <form
-              onSubmit={handleSubmit}
-              className="p-5 rounded-2xl bg-slate-950 border border-purple-500/30 space-y-4 animate-in fade-in duration-150 shadow-xl"
-            >
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-xs font-black text-purple-300 uppercase tracking-wider">
-                  {editingRuleId ? 'Edit Automation Rule' : 'Create New Automation Rule'}
+            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
+              <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+                <span className="text-xs font-bold text-white uppercase">
+                  {editingRuleId ? 'EDIT AUTOMATION TRIGGER' : 'CREATE AUTOMATION TRIGGER'}
                 </span>
-                <span className="text-[10px] text-slate-500 font-mono">
-                  {editingRuleId ? `ID: ${editingRuleId}` : 'New Autonomous Trigger'}
-                </span>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                  Rule Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={ruleName}
-                  onChange={(e) => setRuleName(e.target.value)}
-                  placeholder="e.g. High Value Lead ➔ Trigger Voice AI Battle-Card Briefing"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
-                />
+                <button onClick={resetForm} className="text-slate-400 hover:text-white text-xs">
+                  CANCEL
+                </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                    RULE NAME
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={ruleName}
+                    onChange={(e) => setRuleName(e.target.value)}
+                    placeholder="E.G. HIGH-INTENT LEAD WHATSAPP AUTO-DISPATCH"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  />
+                </div>
+
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                    Trigger Event
+                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                    TRIGGER EVENT
                   </label>
                   <select
                     value={triggerEvent}
                     onChange={(e) => setTriggerEvent(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   >
-                    <option value="lead_score_above">Lead Score Exceeds Threshold</option>
-                    <option value="deal_stage_changed">Deal Stage Advances</option>
-                    <option value="churn_risk_above">Churn Risk High Alert</option>
-                    <option value="voice_objection_detected">Voice Call Objection Logged</option>
+                    <option value="lead_score_above">LEAD SCORE &gt; THRESHOLD</option>
+                    <option value="deal_stage_changed">DEAL STAGE CHANGED</option>
+                    <option value="churn_risk_above">CHURN RISK &gt; THRESHOLD</option>
+                    <option value="inbound_email_intent">INBOUND EMAIL INTENT DETECTED</option>
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                    Threshold / Parameter
+                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                    TRIGGER THRESHOLD / MATCH
                   </label>
                   <input
                     type="text"
                     required
                     value={triggerThreshold}
                     onChange={(e) => setTriggerThreshold(e.target.value)}
-                    placeholder="e.g. 80 or proposal"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
+                    placeholder="E.G. 80 OR 'PROPOSAL_SENT'"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                    Target Agent
+                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                    TARGET AGENT
                   </label>
                   <select
                     value={actionAgent}
                     onChange={(e) => setActionAgent(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   >
-                    <option value="whatsapp_agent">WhatsApp Business Auto-Pilot</option>
-                    <option value="proposal_agent">Smart Proposal Studio</option>
-                    <option value="customer_success_agent">Customer Success Agent</option>
-                    <option value="voice_agent">Voice Call Intelligence Agent</option>
-                    <option value="lead_agent">Lead Qualification Agent</option>
+                    <option value="whatsapp_agent">WHATSAPP AUTO-PILOT AGENT</option>
+                    <option value="email_intelligence">EMAIL INTELLIGENCE AGENT</option>
+                    <option value="voice_call_agent">VOICE AI INTELLIGENCE AGENT</option>
+                    <option value="customer_success">CUSTOMER SUCCESS AGENT</option>
+                    <option value="sales_pipeline">SALES PIPELINE AGENT</option>
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                    Action Type
+                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                    ACTION DISPATCH TYPE
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    required
                     value={actionType}
                     onChange={(e) => setActionType(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
-                  >
-                    <option value="send_welcome_template">Send WhatsApp Template Broadcast</option>
-                    <option value="draft_enterprise_proposal">Auto-Draft Enterprise Proposal</option>
-                    <option value="schedule_retention_call">Auto-Schedule Account Review</option>
-                    <option value="generate_battle_card">Generate Competitor Battle-Card</option>
-                  </select>
+                    placeholder="E.G. SEND_WELCOME_TEMPLATE"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
-                <Button type="button" variant="outline" size="sm" onClick={resetForm}>
-                  Cancel
+              <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+                <Button type="button" variant="outline" size="sm" onClick={resetForm} className="text-xs uppercase">
+                  CANCEL
                 </Button>
                 <Button
-                  type="submit"
+                  type="button"
                   variant="primary"
                   size="sm"
+                  disabled={!ruleName.trim()}
+                  onClick={() => saveMutation.mutate()}
                   isLoading={saveMutation.isPending}
-                  className="bg-purple-600 hover:bg-purple-500"
+                  className="text-xs uppercase"
                 >
-                  <Sparkles className="w-3.5 h-3.5 mr-1" />
-                  <span>{editingRuleId ? 'Update Trigger' : 'Create Trigger'}</span>
+                  <span>{editingRuleId ? 'UPDATE RULE' : 'SAVE RULE'}</span>
                 </Button>
               </div>
-            </form>
+            </div>
+          )}
+
+          {/* Test Execution Result Banner */}
+          {executionResult && (
+            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#39FF14] space-y-2.5 animate-in fade-in">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-[#39FF14]" />
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                    SIMULATED LIVE AGENT EXECUTION
+                  </h4>
+                  {executionResult.llm_engine && (
+                    <Badge variant="purple" className="text-[9px] uppercase font-mono">
+                      {executionResult.llm_engine}
+                    </Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {executionResult.ai_generated_payload && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCopyPayload}
+                      className="text-xs h-6 px-2 uppercase"
+                    >
+                      {copiedResult ? <Check className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                    </Button>
+                  )}
+                  <button onClick={() => setExecutionResult(null)} className="text-slate-400 hover:text-white text-xs">
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-300 uppercase">{executionResult.message}</p>
+
+              {executionResult.ai_generated_payload && (
+                <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-[11px] text-[#39FF14] whitespace-pre-wrap">
+                  {executionResult.ai_generated_payload}
+                </div>
+              )}
+            </div>
           )}
 
           {/* Rules List */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {isLoading ? (
-              <div className="py-12 text-center text-slate-500 text-xs">Loading automation rules...</div>
-            ) : !rules?.length ? (
-              <div className="py-12 text-center text-slate-500 text-xs">
-                No active automation rules. Click "New Automation" to create one.
-              </div>
+              <div className="p-8 text-center text-xs text-slate-500 uppercase font-mono">LOADING RULES...</div>
+            ) : rules?.length === 0 ? (
+              <div className="p-8 text-center text-xs text-slate-500 uppercase font-mono">NO AUTOMATION RULES CONFIGURED.</div>
             ) : (
-              rules.map((rule) => {
-                const isActive = rule.status === 'active';
+              rules?.map((r) => {
+                const isActive = r.status === 'active';
                 return (
                   <div
-                    key={rule.id}
-                    className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md"
+                    key={r.id}
+                    className={`p-3.5 rounded-none border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-none ${
+                      isActive ? 'bg-[#0B0C10] border-[#3A4552]' : 'bg-[#0B0C10]/50 border-[#3A4552]/40 opacity-70'
+                    }`}
                   >
-                    <div className="space-y-1.5 min-w-0 flex-1">
+                    <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <h4 className="text-xs font-bold text-white truncate">{rule.name}</h4>
-                        <Badge
-                          variant={isActive ? 'success' : 'default'}
-                          className={`text-[9px] ${
-                            isActive
-                              ? 'bg-emerald-500/20 text-emerald-300'
-                              : 'bg-slate-800 text-slate-400'
-                          }`}
-                        >
-                          {rule.status.toUpperCase()}
+                        <span className="text-xs font-bold text-white uppercase">{r.name}</span>
+                        <Badge variant={isActive ? 'success' : 'default'} className="text-[9px] uppercase font-mono">
+                          {isActive ? 'ACTIVE' : 'PAUSED'}
                         </Badge>
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400 font-mono">
-                        <span className="text-slate-300 font-bold">{rule.trigger_event}</span>
-                        <span>({String(rule.trigger_threshold)})</span>
-                        <ArrowRight className="w-3 h-3 text-purple-400" />
-                        <span className="text-purple-300 font-bold flex items-center gap-1">
-                          <Bot className="w-3 h-3 text-purple-400" />
-                          {rule.action_agent}
-                        </span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-900 text-slate-400 text-[10px]">
-                          {rule.action_type}
-                        </span>
-                        <span className="text-emerald-400 font-bold text-[10px]">
-                          ⚡ {rule.executions_count} executions
+                      <div className="flex items-center gap-2 text-[10px] text-slate-400 uppercase">
+                        <span>TRIGGER: <strong className="text-slate-200">{r.trigger_event}</strong> ({r.trigger_threshold})</span>
+                        <span>→</span>
+                        <span className="flex items-center gap-1 text-[#39FF14]">
+                          <Bot className="w-3 h-3" />
+                          {r.action_agent}: {r.action_type}
                         </span>
                       </div>
+
+                      <span className="text-[9px] font-mono text-slate-500 block uppercase">
+                        FIRED {r.executions_count || 0} TIMES
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      {/* Test Execute Button */}
                       <Button
-                        size="sm"
+                        type="button"
                         variant="outline"
-                        onClick={() => testExecutionMutation.mutate(rule.id)}
+                        size="sm"
+                        onClick={() => testExecutionMutation.mutate(r.id)}
                         isLoading={testExecutionMutation.isPending}
-                        className="text-[11px] h-8 px-2.5 border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20"
-                        title="Execute with Live AI Orchestrator"
+                        className="text-xs h-7 uppercase"
                       >
-                        <Zap className="w-3 h-3 mr-1" />
-                        <span>Run AI Trigger</span>
+                        <Play className="w-3 h-3 mr-1 text-[#39FF14]" />
+                        <span>TEST RUN</span>
                       </Button>
 
-                      {/* Edit Button */}
-                      <button
+                      <Button
                         type="button"
-                        onClick={() => handleStartEdit(rule)}
-                        className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors"
-                        title="Edit Rule"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleMutation.mutate(r.id)}
+                        className="h-7 px-2 text-slate-400 hover:text-white"
+                      >
+                        {isActive ? <Pause className="w-3.5 h-3.5 text-[#FFB800]" /> : <Play className="w-3.5 h-3.5 text-[#39FF14]" />}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(r)}
+                        className="h-7 px-2 text-slate-400 hover:text-white"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
-                      </button>
+                      </Button>
 
-                      {/* Toggle Pause / Resume Button */}
-                      <button
+                      <Button
                         type="button"
-                        onClick={() => toggleMutation.mutate(rule.id)}
-                        className={`p-2 rounded-xl border text-xs font-bold transition-colors ${
-                          isActive
-                            ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-amber-400'
-                            : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
-                        }`}
-                        title={isActive ? 'Pause rule' : 'Resume rule'}
-                      >
-                        {isActive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                      </button>
-
-                      {/* Delete Button */}
-                      <button
-                        type="button"
-                        onClick={() => deleteMutation.mutate(rule.id)}
-                        className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400 transition-colors"
-                        title="Delete rule"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteMutation.mutate(r.id)}
+                        className="h-7 px-2 text-slate-500 hover:text-[#FF2A54]"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 );

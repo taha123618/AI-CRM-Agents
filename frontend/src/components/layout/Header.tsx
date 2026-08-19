@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Radio, Bot, Plus, User, LogOut, Sparkles, Building2 } from 'lucide-react';
+import { Search, Radio, Bot, Plus, User, LogOut } from 'lucide-react';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useAgentStore } from '@/stores/use-agent-store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
@@ -26,27 +26,31 @@ export function Header() {
       addEvent(event);
     });
 
-    fetch('/health')
-      .then((res) => (res.ok ? setBackendHealth('healthy') : setBackendHealth('error')))
-      .catch(() => {
-        fetch('http://localhost:8000/health')
-          .then((res) => (res.ok ? setBackendHealth('healthy') : setBackendHealth('error')))
-          .catch(() => setBackendHealth('error'));
-      });
+    const checkBackend = async () => {
+      try {
+        const res = await fetch('/health');
+        if (res.ok) setBackendHealth('healthy');
+        else setBackendHealth('error');
+      } catch {
+        setBackendHealth('error');
+      }
+    };
+
+    checkBackend();
+    const interval = setInterval(checkBackend, 30000);
 
     return () => {
       unsubStatus();
       unsubEvents();
+      clearInterval(interval);
     };
   }, [setConnectionStatus, addEvent]);
 
-  const getRoleBadgeVariant = (role?: string): 'danger' | 'purple' | 'warning' | 'info' | 'default' => {
+  const getRoleBadgeVariant = (role: string): 'purple' | 'info' | 'warning' | 'default' => {
     switch (role) {
       case 'admin':
-        return 'danger';
-      case 'sales':
         return 'purple';
-      case 'support':
+      case 'sales':
         return 'warning';
       case 'auditor':
         return 'info';
@@ -58,8 +62,9 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-16 glass-panel border-b border-slate-800/80 px-6 flex items-center justify-between transition-all duration-300 ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-20 rtl:mr-20'
-          }`}
+        className={`sticky top-0 z-30 h-14 bg-[#1F2833] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${
+          sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
+        }`}
       >
         {/* Search & AI Spotlight Bar */}
         <div className="flex items-center gap-3 w-64 sm:w-80 lg:w-96">
@@ -67,42 +72,42 @@ export function Header() {
             onClick={() => setGlobalSearchOpen(true)}
             className="relative flex items-center w-full cursor-pointer group"
           >
-            <Search className="absolute ltr:left-3 rtl:right-3 w-4 h-4 text-slate-400 group-hover:text-brand-400 transition-colors pointer-events-none" />
+            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-slate-400 group-hover:text-[#39FF14] transition-none pointer-events-none" />
             <input
               type="text"
               readOnly
               value={searchQuery}
               onFocus={() => setGlobalSearchOpen(true)}
-              placeholder="Search or ask CRM AI... (⌘K)"
-              className="w-full bg-slate-900/80 text-slate-200 placeholder:text-slate-500 text-xs rounded-xl ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-2 border border-slate-800 group-hover:border-slate-700 cursor-pointer transition-all"
+              placeholder="SEARCH OR EXECUTE COMMAND (⌘K)..."
+              className="w-full bg-[#0B0C10] text-slate-200 placeholder:text-slate-500 text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-[#3A4552] group-hover:border-[#39FF14] cursor-pointer transition-none uppercase"
             />
-            <kbd className="absolute ltr:right-2.5 rtl:left-2.5 px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-slate-950 border border-slate-800 rounded-md pointer-events-none">
+            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#39FF14] bg-[#1F2833] border border-[#3A4552] rounded-none pointer-events-none">
               ⌘K
             </kbd>
           </div>
         </div>
 
         {/* Status, Language Selector & Quick Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Language Switcher */}
           <LanguageSelector onOpenSettings={() => setIsLangManagerOpen(true)} />
 
           {/* Realtime Stream Indicator */}
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs">
+          <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs font-mono">
             <Radio
-              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'
-                }`}
+              className={`w-3.5 h-3.5 ${
+                connectionStatus === 'OPEN' ? 'text-[#39FF14]' : 'text-amber-400'
+              }`}
             />
-            <span className="text-slate-300 font-medium">
-              {connectionStatus === 'OPEN' ? 'WS Realtime Stream' : 'Event Stream (Polling)'}
+            <span className="text-slate-300 font-bold uppercase text-[10px]">
+              {connectionStatus === 'OPEN' ? 'WS STREAM ONLINE' : 'POLLING'}
             </span>
             <span
-              className={`w-2 h-2 rounded-full ${backendHealth === 'healthy' ? 'bg-emerald-400' : 'bg-rose-400'
-                }`}
+              className={`w-1.5 h-1.5 rounded-none ${
+                backendHealth === 'healthy' ? 'bg-[#39FF14]' : 'bg-[#FF2A54]'
+              }`}
             />
           </div>
-
-
 
           {/* Agent Console Quick Link */}
           <Button
@@ -112,35 +117,35 @@ export function Header() {
               setActivePage('agents');
               navigate('/agents');
             }}
-            className="hidden md:inline-flex"
+            className="hidden md:inline-flex text-xs h-7"
           >
-            <Bot className="w-4 h-4 text-brand-400" />
-            <span>{t('nav.agents', 'Agents Hub')}</span>
+            <Bot className="w-3.5 h-3.5 text-[#39FF14]" />
+            <span>{t('nav.agents', 'AGENTS')}</span>
           </Button>
 
           {/* Quick Add Actions */}
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="orange" onClick={() => setLeadModalOpen(true)}>
-              <Plus className="w-4 h-4" />
-              <span>{t('leads.qualify_btn', 'New Lead')}</span>
+          <div className="flex items-center gap-1.5">
+            <Button size="sm" variant="primary" onClick={() => setLeadModalOpen(true)} className="text-xs h-7 px-2.5">
+              <Plus className="w-3.5 h-3.5" />
+              <span>{t('leads.qualify_btn', 'LEAD')}</span>
             </Button>
 
-            <Button variant="orange" size="sm" onClick={() => setDealModalOpen(true)}>
-              <Plus className="w-4 h-4" />
-              <span>{t('deals.title', 'New Deal')}</span>
+            <Button variant="primary" size="sm" onClick={() => setDealModalOpen(true)} className="text-xs h-7 px-2.5">
+              <Plus className="w-3.5 h-3.5" />
+              <span>{t('deals.title', 'DEAL')}</span>
             </Button>
           </div>
 
           {/* Authenticated User & Logout */}
           {user && (
-            <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-slate-800">
+            <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-[#3A4552]">
               <div className="hidden sm:flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 font-semibold text-xs">
-                  <User className="w-4 h-4" />
+                <div className="w-7 h-7 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs font-mono">
+                  <User className="w-3.5 h-3.5" />
                 </div>
-                <div className="text-left leading-tight hidden xl:block">
-                  <div className="text-xs font-semibold text-white truncate max-w-[120px]">{user.full_name}</div>
-                  <Badge variant={getRoleBadgeVariant(user.role)} className="text-[9px] py-0 px-1 font-mono">
+                <div className="text-left leading-tight hidden xl:block font-mono">
+                  <div className="text-xs font-bold text-white truncate max-w-[120px] uppercase">{user.full_name}</div>
+                  <Badge variant={getRoleBadgeVariant(user.role)} className="text-[8px] py-0 px-1 font-mono">
                     {user.role.toUpperCase()}
                   </Badge>
                 </div>
@@ -152,9 +157,9 @@ export function Header() {
                 onClick={() => logout()}
                 disabled={isLoggingOut}
                 title="Log Out & Invalidate Session Cookies"
-                className="text-slate-400 hover:text-rose-400 hover:bg-rose-950/30 p-2 h-8 w-8"
+                className="text-slate-400 hover:text-[#FF2A54] hover:bg-rose-950/30 p-1.5 h-7 w-7"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </Button>
             </div>
           )}

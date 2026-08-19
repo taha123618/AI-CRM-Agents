@@ -52,7 +52,7 @@ export function AuthCallbackPage() {
     >
       {errorMessage ? (
         <div className="space-y-4">
-          <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5">
+          <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-none text-rose-300 text-xs flex items-start gap-2.5">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
             <div>{errorMessage}</div>
           </div>

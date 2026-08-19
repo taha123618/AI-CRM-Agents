@@ -157,7 +157,7 @@ export function LeadsFeature() {
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-3 py-1 rounded-xl text-xs font-medium transition-all ${
+                className={`px-3 py-1 rounded-none text-xs font-medium transition-none ${
                   filterStatus === status
                     ? 'bg-brand-600 text-white shadow-md'
                     : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
@@ -214,7 +214,7 @@ export function LeadsFeature() {
                             : 'Prospect'}
                         </span>
                         {lead.lead_status === 'qualified' && (
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-brand-500/20 text-brand-300 border border-brand-500/40 uppercase tracking-wider flex items-center gap-0.5">
+                          <span className="px-1.5 py-0.5 rounded-none text-[9px] font-extrabold bg-brand-500/20 text-brand-300 border border-brand-500/40 uppercase tracking-wider flex items-center gap-0.5">
                             <Sparkles className="w-2.5 h-2.5" />
                             NEW AI QUALIFIED
                           </span>
@@ -229,9 +229,9 @@ export function LeadsFeature() {
                           <Sparkles className="w-3 h-3 text-brand-400" />
                           <span className={`text-xs font-bold ${getScoreColor(lead.lead_score).split(' ')[0]}`}>{lead.lead_score}/100</span>
                         </div>
-                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-slate-800 rounded-none overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${lead.lead_score >= 70 ? 'bg-emerald-500' : lead.lead_score >= 40 ? 'bg-amber-500' : 'bg-rose-500'}`}
+                            className={`h-full rounded-none ${lead.lead_score >= 70 ? 'bg-emerald-500' : lead.lead_score >= 40 ? 'bg-amber-500' : 'bg-rose-500'}`}
                             style={{ width: `${lead.lead_score}%` }}
                           />
                         </div>
@@ -244,7 +244,7 @@ export function LeadsFeature() {
                       {lead.buying_signals?.length ? (
                         <div className="flex flex-wrap gap-1">
                           {lead.buying_signals.slice(0, 2).map((sig, i) => (
-                            <span key={i} className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span key={i} className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-none text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                               <Zap className="w-2.5 h-2.5" />{sig}
                             </span>
                           ))}
@@ -256,7 +256,7 @@ export function LeadsFeature() {
                     </TableCell>
                     <TableCell>
                       {lead.routing_team ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
                           <Target className="w-2.5 h-2.5" />{lead.routing_team}
                         </span>
                       ) : <span className="text-slate-600 text-xs">—</span>}

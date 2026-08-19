@@ -78,34 +78,45 @@ export function TaskQueueMonitorTab() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge variant="success">Completed</Badge>;
+        return <Badge variant="success" className="text-[9px] uppercase">COMPLETED</Badge>;
       case 'running':
-        return <Badge variant="warning">Running</Badge>;
+        return <Badge variant="purple" className="text-[9px] uppercase animate-pulse">RUNNING</Badge>;
+      case 'queued':
+        return <Badge variant="warning" className="text-[9px] uppercase">QUEUED</Badge>;
       case 'failed':
-        return <Badge variant="danger">Failed</Badge>;
+        return <Badge variant="danger" className="text-[9px] uppercase">FAILED</Badge>;
       case 'cancelled':
-        return <Badge variant="purple">Cancelled</Badge>;
+        return <Badge variant="default" className="text-[9px] uppercase">CANCELLED</Badge>;
       default:
-        return <Badge variant="default">Pending</Badge>;
+        return <Badge variant="default" className="text-[9px] uppercase">{status}</Badge>;
     }
   };
 
-  const runningCount = tasks.filter((t) => t.status === 'running').length;
-  const completedCount = tasks.filter((t) => t.status === 'completed').length;
+  const getTaskIcon = (type: string) => {
+    switch (type) {
+      case 'monte_carlo_simulation':
+        return <Layers className="w-3.5 h-3.5 text-cyan-400" />;
+      case 'bulk_lead_enrichment':
+        return <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />;
+      case 'voice_call_audio_synthesis':
+        return <Mic className="w-3.5 h-3.5 text-[#FFB800]" />;
+      default:
+        return <Cpu className="w-3.5 h-3.5 text-purple-400" />;
+    }
+  };
 
-  // Filtered & Paginated Tasks
   const filteredTasks = useMemo(() => {
     return tasks.filter((t) => {
       const typeStr = t.task_type || t.task_name || '';
-      const matchesSearch =
-        !taskSearch.trim() ||
-        t.task_id.toLowerCase().includes(taskSearch.toLowerCase()) ||
+      const idStr = t.task_id || '';
+      const errStr = t.error || '';
+      const matchSearch =
+        !taskSearch ||
         typeStr.toLowerCase().includes(taskSearch.toLowerCase()) ||
-        (t.error && t.error.toLowerCase().includes(taskSearch.toLowerCase()));
-
-      const matchesStatus = taskStatusFilter === 'all' || t.status === taskStatusFilter;
-
-      return matchesSearch && matchesStatus;
+        idStr.toLowerCase().includes(taskSearch.toLowerCase()) ||
+        errStr.toLowerCase().includes(taskSearch.toLowerCase());
+      const matchStatus = taskStatusFilter === 'all' || t.status === taskStatusFilter;
+      return matchSearch && matchStatus;
     });
   }, [tasks, taskSearch, taskStatusFilter]);
 
@@ -115,209 +126,171 @@ export function TaskQueueMonitorTab() {
     return filteredTasks.slice(start, start + pageSize);
   }, [filteredTasks, page, pageSize]);
 
-  const hasActiveFilters = taskSearch !== '' || taskStatusFilter !== 'all';
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-12">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="space-y-4 font-mono">
+      {/* Header Panel */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-brand-400" />
-            Persistent Background Task Queue & Worker Telemetry
-          </h2>
-          <p className="text-sm text-slate-400">
-            Monitor asynchronous Redis-backed background workers handling Monte Carlo simulations, bulk enrichments, and audio synthesis.
+          <div className="flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-[#39FF14]" />
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">ASYNC TASK QUEUE &amp; WORKER MONITOR</h2>
+            <Badge variant="purple" className="text-[9px] uppercase font-mono">
+              WORKER.PY ACTIVE
+            </Badge>
+          </div>
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            RESILIENT DISTRIBUTED WORKER PROCESS RUNNING SIMULATIONS, EMAIL DELIVERY, AND ENRICHMENTS.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
             size="sm"
+            variant="outline"
             onClick={() => clearCompletedMutation.mutate()}
-            disabled={clearCompletedMutation.isPending}
-            className="border-slate-700 text-slate-300 hover:bg-slate-800 text-xs flex items-center gap-1.5"
+            disabled={clearCompletedMutation.isPending || tasks.length === 0}
+            className="text-xs h-7 uppercase"
           >
-            <Trash2 className="w-3.5 h-3.5" />
-            Prune Finished
+            <Trash2 className="w-3 h-3 mr-1 text-slate-400" />
+            <span>PURGE LOGS</span>
+          </Button>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => queryClient.invalidateQueries({ queryKey: ['background-tasks'] })}
+            className="text-xs h-7 uppercase"
+          >
+            <RefreshCw className="w-3 h-3 mr-1 text-[#39FF14]" />
+            <span>REFRESH</span>
           </Button>
         </div>
       </div>
 
       {feedback && (
-        <div className="p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-xl text-emerald-300 text-sm flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          {feedback}
+        <div className="p-3 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span>{feedback}</span>
         </div>
       )}
 
-      {/* Task Queue Telemetry Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="glass-card border border-slate-800/80 p-4">
+      {/* Trigger Quick-Action Launchpad */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-semibold uppercase">Total Jobs Enqueued</span>
-            <Layers className="w-4 h-4 text-brand-400" />
+            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-cyan-400" />
+              MONTE CARLO SIMULATION
+            </span>
           </div>
-          <div className="text-2xl font-bold text-white mt-2">{tasks.length}</div>
-          <div className="text-xs text-slate-500 mt-1">Managed across Redis & memory buffer</div>
+          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+            DISPATCH COMPLEX STOCHASTIC SIMULATION RUNS OVER THE PIPELINE TO WORKER.PY.
+          </p>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min={100}
+              max={10000}
+              step={100}
+              value={simCount}
+              onChange={(e) => setSimCount(Number(e.target.value))}
+              className="w-20 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white font-mono"
+            />
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => launchSimMutation.mutate(simCount)}
+              disabled={launchSimMutation.isPending}
+              className="flex-1 text-xs uppercase h-7"
+            >
+              <Play className="w-3 h-3 mr-1 text-[#0B0C10]" />
+              <span>LAUNCH SIM</span>
+            </Button>
+          </div>
         </Card>
 
-        <Card className="glass-card border border-slate-800/80 p-4">
+        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-semibold uppercase">Active Workers</span>
-            <RefreshCw className={`w-4 h-4 text-amber-400 ${runningCount > 0 ? 'animate-spin' : ''}`} />
+            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#39FF14]" />
+              BULK LEAD ENRICHMENT
+            </span>
           </div>
-          <div className="text-2xl font-bold text-amber-400 mt-2">{runningCount}</div>
-          <div className="text-xs text-slate-500 mt-1">Executing in background processes</div>
+          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+            BATCH QUALIFY &amp; ENRICH UNTOUCHED INBOUND PROSPECTS WITH LLM SCORING.
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => launchEnrichMutation.mutate()}
+            disabled={launchEnrichMutation.isPending}
+            className="w-full text-xs uppercase h-7"
+          >
+            <Play className="w-3 h-3 mr-1 text-[#39FF14]" />
+            <span>TRIGGER ENRICHMENT</span>
+          </Button>
         </Card>
 
-        <Card className="glass-card border border-slate-800/80 p-4">
+        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-semibold uppercase">Completed Jobs</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+              <Mic className="w-4 h-4 text-[#FFB800]" />
+              AUDIO CALL SYNTHESIS
+            </span>
           </div>
-          <div className="text-2xl font-bold text-emerald-400 mt-2">{completedCount}</div>
-          <div className="text-xs text-slate-500 mt-1">Successfully finished execution</div>
+          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+            GENERATE FULL POST-CALL CRM NOTES, ACTION ITEMS, AND SENTIMENT RADAR.
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => launchAudioMutation.mutate()}
+            disabled={launchAudioMutation.isPending}
+            className="w-full text-xs uppercase h-7"
+          >
+            <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
+            <span>SYNTHESIZE CALL</span>
+          </Button>
         </Card>
       </div>
 
-      {/* Quick Launch Task Triggers */}
-      <Card className="glass-card border border-slate-800/80 p-5 space-y-4">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Play className="w-4 h-4 text-brand-400" />
-          Launch Heavy Async Background Jobs
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Monte Carlo Card */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-white">Monte Carlo Simulation</span>
-              <Cpu className="w-4 h-4 text-brand-400" />
-            </div>
-            <p className="text-xs text-slate-400">
-              Run stochastic revenue distribution model with 200–1,000 statistical iterations.
-            </p>
-            <div className="flex items-center gap-2 pt-2">
-              <select
-                value={simCount}
-                onChange={(e) => setSimCount(Number(e.target.value))}
-                className="bg-slate-950 border border-slate-700 text-xs text-slate-200 rounded-lg px-2 py-1.5 flex-1 focus:outline-none"
-              >
-                <option value={200}>200 Iterations</option>
-                <option value={500}>500 Iterations</option>
-                <option value={1000}>1,000 Iterations</option>
-              </select>
-              <Button
-                size="sm"
-                onClick={() => launchSimMutation.mutate(simCount)}
-                disabled={launchSimMutation.isPending}
-                className="text-xs bg-orange-600 hover:bg-orange-500 text-white"
-              >
-                Enqueue
-              </Button>
-            </div>
+      {/* Task Queue Table Container */}
+      <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
+        {/* Search and Filters Bar */}
+        <div className="p-3 bg-[#0B0C10] border-b border-[#3A4552] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="relative w-full sm:w-72">
+            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+            <input
+              type="text"
+              placeholder="SEARCH TASK ID OR TYPE..."
+              value={taskSearch}
+              onChange={(e) => {
+                setTaskSearch(e.target.value);
+                setPage(1);
+              }}
+              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+            />
           </div>
 
-          {/* Lead Enrichment Card */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-white">Bulk Lead OSINT Enrichment</span>
-              <Sparkles className="w-4 h-4 text-purple-400" />
-            </div>
-            <p className="text-xs text-slate-400">
-              Query external sources (Clearbit, LinkedIn, Hunter) asynchronously for all leads.
-            </p>
-            <div className="pt-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => launchEnrichMutation.mutate()}
-                disabled={launchEnrichMutation.isPending}
-                className="w-full text-xs border-purple-500/40 text-purple-300 hover:bg-purple-950/40"
-              >
-                Launch Enrichment
-              </Button>
-            </div>
-          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <select
+              value={taskStatusFilter}
+              onChange={(e) => {
+                setTaskStatusFilter(e.target.value);
+                setPage(1);
+              }}
+              className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+            >
+              <option value="all">ALL STATUSES</option>
+              <option value="completed">COMPLETED</option>
+              <option value="running">RUNNING</option>
+              <option value="queued">QUEUED</option>
+              <option value="failed">FAILED</option>
+              <option value="cancelled">CANCELLED</option>
+            </select>
 
-          {/* Audio Synthesis Card */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-white">Audio Intelligence Synthesis</span>
-              <Mic className="w-4 h-4 text-emerald-400" />
-            </div>
-            <p className="text-xs text-slate-400">
-              Process long-form audio transcripts into structured CRM action items and intent scores.
-            </p>
-            <div className="pt-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => launchAudioMutation.mutate()}
-                disabled={launchAudioMutation.isPending}
-                className="w-full text-xs border-emerald-500/40 text-emerald-300 hover:bg-emerald-950/40"
-              >
-                Synthesize Audio Call
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Task Queue Table */}
-      <Card className="glass-card border border-slate-800/80 overflow-hidden">
-        {/* Table Filters */}
-        <div className="p-4 border-b border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/40">
-          <div>
-            <h3 className="text-sm font-semibold text-white">Job Execution Queue & State</h3>
-            <span className="text-[11px] text-slate-400">Auto-refreshing every 2.5s</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-52">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={taskSearch}
-                onChange={(e) => {
-                  setTaskSearch(e.target.value);
-                  setPage(1);
-                }}
-                placeholder="Search task ID or type..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
-              />
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
-              <select
-                value={taskStatusFilter}
-                onChange={(e) => {
-                  setTaskStatusFilter(e.target.value);
-                  setPage(1);
-                }}
-                className="bg-slate-950 border border-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
-              >
-                <option value="all">All Statuses</option>
-                <option value="pending">Pending</option>
-                <option value="running">Running</option>
-                <option value="completed">Completed</option>
-                <option value="failed">Failed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-
-            {hasActiveFilters && (
+            {(taskSearch || taskStatusFilter !== 'all') && (
               <Button
                 size="sm"
                 variant="ghost"
@@ -326,86 +299,102 @@ export function TaskQueueMonitorTab() {
                   setTaskStatusFilter('all');
                   setPage(1);
                 }}
-                className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                className="text-xs h-7 px-2 text-slate-400 hover:text-white uppercase"
               >
-                <RotateCcw className="w-3 h-3" />
-                Reset
+                <RotateCcw className="w-3 h-3 mr-1" />
+                RESET
               </Button>
             )}
           </div>
         </div>
 
+        {/* Task List Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-900/60 text-slate-400 text-xs uppercase font-semibold border-b border-slate-800/80">
-              <tr>
-                <th className="px-6 py-3.5">Task ID</th>
-                <th className="px-6 py-3.5">Type</th>
-                <th className="px-6 py-3.5">Status</th>
-                <th className="px-6 py-3.5">Progress</th>
-                <th className="px-6 py-3.5">Created At</th>
-                <th className="px-6 py-3.5 text-right">Actions</th>
+          <table className="w-full text-left border-collapse font-mono">
+            <thead>
+              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-[10px] uppercase font-bold text-slate-400">
+                <th className="py-2.5 px-3">TASK ID / TYPE</th>
+                <th className="py-2.5 px-3">STATUS</th>
+                <th className="py-2.5 px-3">PROGRESS</th>
+                <th className="py-2.5 px-3">TIMING</th>
+                <th className="py-2.5 px-3 text-right">ACTION</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/50">
-              {paginatedTasks.map((task) => (
-                <tr key={task.task_id} className="hover:bg-slate-800/20 transition-colors">
-                  <td className="px-6 py-4 font-mono text-xs text-brand-400">
-                    {task.task_id.slice(0, 13)}...
-                  </td>
-                  <td className="px-6 py-4 font-medium text-slate-200">
-                    {(task.task_type || task.task_name || 'JOB').replace(/_/g, ' ').toUpperCase()}
-                  </td>
-                  <td className="px-6 py-4">{getStatusBadge(task.status)}</td>
-                  <td className="px-6 py-4">
-                    <div className="w-32 bg-slate-800 rounded-full h-2 overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-500 ${
-                          task.status === 'completed'
-                            ? 'bg-emerald-500'
-                            : task.status === 'failed'
-                            ? 'bg-rose-500'
-                            : task.status === 'cancelled'
-                            ? 'bg-purple-500'
-                            : 'bg-brand-500'
-                        }`}
-                        style={{ width: `${task.progress}%` }}
-                      />
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-xs text-slate-400">
-                    {new Date(task.created_at).toLocaleTimeString()}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    {(task.status === 'pending' || task.status === 'running') && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => cancelMutation.mutate(task.task_id)}
-                        disabled={cancelMutation.isPending}
-                        className="text-xs text-rose-400 hover:bg-rose-950/40 flex items-center gap-1"
-                      >
-                        <XCircle className="w-3 h-3" />
-                        Cancel
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-              {paginatedTasks.length === 0 && (
+            <tbody className="divide-y divide-[#3A4552] text-xs">
+              {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                    {hasActiveFilters
-                      ? 'No tasks match the filter criteria.'
-                      : 'No background tasks registered yet. Launch a job above to test the queue.'}
+                  <td colSpan={5} className="py-10 text-center text-slate-500">
+                    <LoadingSpinner size="sm" />
                   </td>
                 </tr>
+              ) : paginatedTasks.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-slate-500 uppercase">
+                    NO BACKGROUND TASKS MATCHING FILTER.
+                  </td>
+                </tr>
+              ) : (
+                paginatedTasks.map((task) => {
+                  const taskType = task.task_type || task.task_name || 'background_task';
+                  return (
+                    <tr key={task.task_id} className="hover:bg-[#0B0C10] transition-none">
+                      <td className="py-2.5 px-3 space-y-0.5">
+                        <div className="flex items-center gap-1.5 font-bold text-white uppercase text-[11px]">
+                          {getTaskIcon(taskType)}
+                          <span>{taskType.replace(/_/g, ' ')}</span>
+                        </div>
+                        <span className="text-[9px] text-slate-500 font-mono block">
+                          ID: {task.task_id}
+                        </span>
+                      </td>
+
+                      <td className="py-2.5 px-3">{getStatusBadge(task.status)}</td>
+
+                      <td className="py-2.5 px-3 space-y-1">
+                        <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono uppercase">
+                          <span>{task.progress}%</span>
+                        </div>
+                        <div className="w-32 h-1 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
+                          <div
+                            className="h-full bg-[#39FF14] transition-none"
+                            style={{ width: `${task.progress}%` }}
+                          />
+                        </div>
+                      </td>
+
+                      <td className="py-2.5 px-3 space-y-0.5 text-[10px] text-slate-400 uppercase">
+                        <div>QUEUED: {new Date(task.created_at).toLocaleTimeString()}</div>
+                        {task.completed_at && (
+                          <div className="text-slate-500">
+                            DONE: {new Date(task.completed_at).toLocaleTimeString()}
+                          </div>
+                        )}
+                      </td>
+
+                      <td className="py-2.5 px-3 text-right">
+                        {task.status === 'running' || task.status === 'pending' ? (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => cancelMutation.mutate(task.task_id)}
+                            className="h-6 px-2 text-slate-400 hover:text-[#FF2A54] text-[10px] uppercase"
+                          >
+                            <XCircle className="w-3 h-3 mr-1" />
+                            CANCEL
+                          </Button>
+                        ) : (
+                          <span className="text-[10px] text-slate-500 uppercase">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Task Queue Pagination */}
+        {/* Pagination Controls */}
         <TablePagination
           currentPage={page}
           totalPages={totalPages}
@@ -416,7 +405,6 @@ export function TaskQueueMonitorTab() {
             setPageSize(newSize);
             setPage(1);
           }}
-          pageSizeOptions={[5, 10, 25, 50]}
         />
       </Card>
     </div>

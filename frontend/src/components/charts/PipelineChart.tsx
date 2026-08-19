@@ -19,35 +19,39 @@ export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
       ];
 
   return (
-    <div className="w-full h-64">
+    <div className="w-full h-64 font-mono">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" vertical={false} />
           <XAxis
             dataKey="stage"
-            stroke="#64748b"
-            fontSize={10}
+            stroke="#94a3b8"
+            fontSize={9}
             tickLine={false}
             interval={0}
             angle={-15}
             textAnchor="end"
+            fontFamily="monospace"
           />
           <YAxis
-            stroke="#64748b"
-            fontSize={10}
+            stroke="#94a3b8"
+            fontSize={9}
             tickLine={false}
+            fontFamily="monospace"
             tickFormatter={(val) => `$${val / 1000}k`}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderColor: '#334155',
-              borderRadius: '0.75rem',
-              color: '#f8fafc',
+              backgroundColor: '#0B0C10',
+              borderColor: '#3A4552',
+              borderRadius: '0px',
+              color: '#F1F5F9',
+              fontSize: '11px',
+              fontFamily: 'monospace',
             }}
             formatter={(value: any) => [formatCurrency(Number(value)), 'Pipeline Value']}
           />
-          <Bar dataKey="value" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="value" fill="#39FF14" radius={[0, 0, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -39,28 +39,28 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-[400px] flex items-center justify-center p-6">
-          <Card className="max-w-md w-full p-6 text-center space-y-4 border-rose-500/30 bg-rose-950/20">
-            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center mx-auto">
+        <div className="min-h-[400px] flex items-center justify-center p-6 font-mono">
+          <Card className="max-w-md w-full p-6 text-center space-y-4 border-[#FF2A54] bg-[#1F2833]">
+            <div className="w-12 h-12 rounded-none bg-[#0B0C10] text-[#FF2A54] border border-[#FF2A54] flex items-center justify-center mx-auto">
               <AlertTriangle className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-base font-bold text-white">Something went wrong</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                An unexpected error occurred in this view. You can reload the application or return to the dashboard.
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">SYSTEM EXECUTION EXCEPTION</h3>
+              <p className="text-[11px] text-slate-400 leading-relaxed uppercase">
+                AN UNEXPECTED RUNTIME EXCEPTION OCCURRED IN THIS MODULE. RELOAD APPLICATION TO RESTORE TELEMETRY.
               </p>
             </div>
 
             {this.state.error && (
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-mono text-rose-300 text-left overflow-x-auto">
+              <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono text-[#FF2A54] text-left overflow-x-auto">
                 {this.state.error.message}
               </div>
             )}
 
-            <Button onClick={this.handleReset} className="w-full">
+            <Button onClick={this.handleReset} variant="primary" className="w-full text-xs uppercase">
               <RefreshCw className="w-4 h-4" />
-              <span>Reload Application</span>
+              <span>RELOAD APPLICATION</span>
             </Button>
           </Card>
         </div>
@@ -72,4 +72,3 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
-

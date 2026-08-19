@@ -11,7 +11,6 @@ import {
   Clock,
   Cpu,
   CheckCircle2,
-  Wrench,
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
@@ -75,169 +74,151 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`${t('custom_agents.sandbox_title') || 'Live Sandbox'} — ${agent.name}`}
-      description={t('custom_agents.sandbox_desc') || 'Test dynamic prompt rendering, contextual variable substitution, and tool capability execution in real-time.'}
-      className="max-w-4xl"
+      title={`${t('custom_agents.sandbox_title') || 'LIVE SANDBOX'} — ${agent.name.toUpperCase()}`}
+      description={t('custom_agents.sandbox_desc') || 'TEST DYNAMIC PROMPT RENDERING, CONTEXTUAL VARIABLE SUBSTITUTION, AND TOOL CAPABILITY EXECUTION IN REAL-TIME.'}
+      className="max-w-4xl font-mono"
     >
-      <div className="space-y-4 min-w-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Left Column: Input Payload & Configuration */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-brand-400" />
-                <span>{t('custom_agents.test_context') || 'Test Context Payload (JSON)'}</span>
-              </label>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-[11px] h-6 px-2 text-slate-400 hover:text-white"
-                onClick={() => setPayloadText(JSON.stringify(DEFAULT_SAMPLE_PAYLOAD, null, 2))}
-              >
-                {t('custom_agents.reset_sample') || 'Reset Sample'}
-              </Button>
-            </div>
+      <div className="space-y-4 font-mono">
+        {/* Top Info Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs">
+          <div>
+            <span className="text-[9px] text-slate-500 uppercase font-bold block">MODEL ENGINE</span>
+            <span className="font-bold text-white uppercase">{agent.model_name || 'smart-fallback'}</span>
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 uppercase font-bold block">TEMPERATURE</span>
+            <span className="font-bold text-[#39FF14]">{agent.temperature ?? 0.3}</span>
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 uppercase font-bold block">TRIGGER TYPE</span>
+            <span className="font-bold text-cyan-400 uppercase">{agent.trigger_type}</span>
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 uppercase font-bold block">TOOLS ENABLED</span>
+            <span className="font-bold text-purple-400 uppercase">{agent.tools_enabled?.length || 0} ACTIVE</span>
+          </div>
+        </div>
 
+        {/* Prompt Inspection Toggle */}
+        <div className="rounded-none bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowPromptPreview(!showPromptPreview)}
+            className="w-full flex items-center justify-between p-3 text-xs font-bold text-slate-300 hover:text-white uppercase"
+          >
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+              <span>INSPECT BASE SYSTEM PROMPT</span>
+            </div>
+            {showPromptPreview ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+          {showPromptPreview && (
+            <div className="p-3 border-t border-[#3A4552] bg-[#1F2833] text-xs text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
+              {agent.system_prompt}
+            </div>
+          )}
+        </div>
+
+        {/* Two-Column Testing Sandbox */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* Input Payload Console */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1.5">
+                <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                INPUT TEST PAYLOAD (JSON)
+              </label>
+              <button
+                type="button"
+                onClick={() => setPayloadText(JSON.stringify(DEFAULT_SAMPLE_PAYLOAD, null, 2))}
+                className="text-[9px] text-slate-400 hover:text-[#39FF14] uppercase font-bold"
+              >
+                RESET PAYLOAD
+              </button>
+            </div>
             <textarea
               rows={12}
               value={payloadText}
               onChange={(e) => setPayloadText(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs font-mono text-cyan-300 focus:outline-none focus:border-brand-500 resize-none"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-[#39FF14] leading-relaxed"
             />
-
-            {/* Prompt View Toggle */}
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-              <button
-                type="button"
-                onClick={() => setShowPromptPreview(!showPromptPreview)}
-                className="w-full flex items-center justify-between text-xs font-semibold text-slate-300 hover:text-white transition-colors"
-              >
-                <span>{t('custom_agents.system_prompt') || 'Configured System Prompt'}</span>
-                {showPromptPreview ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
-                )}
-              </button>
-              {showPromptPreview && (
-                <p className="text-[11px] font-mono text-slate-400 bg-slate-950 p-2.5 rounded-lg border border-slate-800 whitespace-pre-wrap leading-relaxed">
-                  {agent.system_prompt}
-                </p>
-              )}
-            </div>
-
-            <Button
-              variant="primary"
-              className="w-full justify-center"
-              onClick={handleRunTest}
-              isLoading={executeMutation.isPending}
-            >
-              <Play className="w-4 h-4 mr-1.5 fill-current" />
-              {t('custom_agents.execute_test') || 'Execute Live Sandbox Test'}
-            </Button>
           </div>
 
-          {/* Right Column: Execution Output & Reasoning Trace */}
-          <div className="space-y-3 min-w-0">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                <span>{t('custom_agents.agent_reasoning') || 'Agent Reasoning & Output'}</span>
-              </label>
-              {executionResult && (
-                <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-                  <span className="flex items-center gap-1 text-emerald-400">
-                    <Clock className="w-3 h-3" />
-                    {executionResult.duration_ms}ms
-                  </span>
-                  <span className="flex items-center gap-1 text-brand-400">
-                    <Cpu className="w-3 h-3" />
-                    ~{executionResult.tokens_used} tokens
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* Execution Output Console */}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-[#39FF14]" />
+              OUTPUT TELEMETRY &amp; SYNTHESIS
+            </label>
 
-            <div className="h-[340px] overflow-y-auto rounded-xl bg-slate-900/90 border border-slate-800 p-3 space-y-3 font-mono text-xs">
-              {executeMutation.isPending ? (
-                <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-2">
-                  <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-                  <span className="text-xs">Agent is reasoning & invoking tools...</span>
-                </div>
-              ) : executionResult ? (
-                <div className="space-y-3 animate-in fade-in">
-                  {/* Thought Steps */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">
-                      {t('custom_agents.execution_trace') || 'Execution Trace'}
-                    </span>
-                    {(executionResult.thought_trace || []).map((step, i) => (
-                      <div
-                        key={i}
-                        className="p-2 rounded-lg bg-slate-950 border border-slate-800/80 text-[11px] space-y-1"
-                      >
-                        <div className="flex items-center justify-between text-slate-500 text-[10px]">
-                          <span className="font-bold text-brand-400">{step.step}</span>
-                          <span>{step.timestamp}</span>
-                        </div>
-                        <p className="text-slate-300 font-sans leading-relaxed">{step.content}</p>
-                      </div>
-                    ))}
+            {executionResult ? (
+              <div className="bg-[#0B0C10] border border-[#39FF14] rounded-none p-3 space-y-3 h-[278px] overflow-y-auto font-mono text-xs">
+                {/* Result header telemetry */}
+                <div className="flex items-center justify-between border-b border-[#3A4552] pb-2 text-[10px] uppercase">
+                  <div className="flex items-center gap-1.5 text-[#39FF14] font-bold">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>STATUS: {executionResult.status}</span>
                   </div>
+                  <div className="flex items-center gap-3 text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {executionResult.duration_ms}MS
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Cpu className="w-3 h-3" />
+                      {executionResult.tokens_used} TOKENS
+                    </span>
+                  </div>
+                </div>
 
-                  {/* Tool Invocations */}
-                  {executionResult.tool_calls && executionResult.tool_calls.length > 0 && (
-                    <div className="space-y-1.5 pt-1">
-                      <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">
-                        {t('custom_agents.tool_invocations') || 'Tool Invocations'} ({executionResult.tool_calls.length})
-                      </span>
-                      {executionResult.tool_calls.map((tc, idx) => (
-                        <div
-                          key={idx}
-                          className="p-2 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-[11px] space-y-1"
-                        >
-                          <div className="flex items-center justify-between text-emerald-400 text-[10px]">
-                            <span className="font-bold flex items-center gap-1">
-                              <Wrench className="w-3 h-3" />
-                              {tc.tool}
-                            </span>
-                            <span>{tc.timestamp}</span>
-                          </div>
-                          <pre className="text-[10px] text-emerald-300 overflow-x-auto whitespace-pre-wrap">
-                            {JSON.stringify(tc.result, null, 2)}
-                          </pre>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Output Recommendation */}
-                  <div className="p-3 rounded-lg bg-brand-500/10 border border-brand-500/30 text-white space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-brand-400">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>{t('custom_agents.synthesized_output') || 'Synthesized Output'}</span>
-                    </div>
-                    <p className="text-xs font-sans text-slate-200 leading-relaxed">
-                      {executionResult.response}
+                {/* Recommendation summary */}
+                {(executionResult.response || executionResult.output?.recommendation) && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] text-slate-500 uppercase font-bold block">AGENT SYNTHESIS</span>
+                    <p className="text-slate-200 uppercase leading-relaxed">
+                      {executionResult.response || executionResult.output?.recommendation}
                     </p>
                   </div>
+                )}
+
+                {/* Raw JSON Payload */}
+                <div className="space-y-1">
+                  <span className="text-[9px] text-slate-500 uppercase font-bold block">STRUCTURED DATA</span>
+                  <pre className="p-2 bg-[#1F2833] border border-[#3A4552] rounded-none text-[10px] text-slate-300 overflow-x-auto">
+                    {JSON.stringify(executionResult.output, null, 2)}
+                  </pre>
                 </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-2">
-                  <Terminal className="w-8 h-8 opacity-40" />
-                  <p className="text-center text-xs">
-                    Click <strong>Execute Live Sandbox Test</strong> to evaluate prompt rendering and tool responses.
-                  </p>
-                </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="bg-[#0B0C10] border border-[#3A4552] rounded-none p-8 h-[278px] flex flex-col items-center justify-center text-center text-slate-500 space-y-2 uppercase">
+                <Play className="w-8 h-8 opacity-30 text-[#39FF14]" />
+                <p className="text-xs">CLICK 'RUN TEST' TO TRIGGER AGENT INFERENCE</p>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="flex justify-end pt-2 border-t border-slate-800">
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            {t('custom_agents.close_sandbox') || 'Close Sandbox'}
-          </Button>
+        {/* Modal Footer Controls */}
+        <div className="flex items-center justify-between pt-3 border-t border-[#3A4552]">
+          <span className="text-[10px] text-slate-500 uppercase font-mono">
+            USES SMARTFALLBACK ENGINE WITH ZERO LATENCY SPIKES
+          </span>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
+              {t('common.cancel') || 'CLOSE'}
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleRunTest}
+              isLoading={executeMutation.isPending}
+              className="text-xs uppercase"
+            >
+              <Play className="w-3.5 h-3.5 mr-1" />
+              <span>RUN INFERENCE TEST</span>
+            </Button>
+          </div>
         </div>
       </div>
     </Modal>

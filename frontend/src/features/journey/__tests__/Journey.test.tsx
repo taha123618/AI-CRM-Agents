@@ -23,11 +23,11 @@ function renderWithClient(ui: React.ReactElement) {
 
 describe('Customer Journey Studio Components', () => {
   it('renders InterventionModal with churn warning and launch button', () => {
-    const { getByText, getByRole } = renderWithClient(
+    const { getByText, getAllByText, getByRole } = renderWithClient(
       <InterventionModal customer={mockCustomer} onClose={() => {}} />
     );
     expect(getByText(/Autonomous Churn Rescue Intervention/i)).toBeInTheDocument();
-    expect(getByText(/Target: Acme Mega Corp/i)).toBeInTheDocument();
-    expect(getByRole('button', { name: /Launch AI Rescue Play/i })).toBeInTheDocument();
+    expect(getAllByText(/Acme Mega Corp/i).length).toBeGreaterThanOrEqual(1);
+    expect(getByRole('button', { name: /EXECUTE RETENTION PLAYBOOK/i })).toBeInTheDocument();
   });
 });

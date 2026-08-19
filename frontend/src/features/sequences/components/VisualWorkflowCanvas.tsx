@@ -16,12 +16,12 @@ import { Badge } from '@/components/ui/Badge';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 const AVAILABLE_AGENTS = [
-  { id: 'lead_qualification', name: 'Lead Qualification Agent', category: 'sdr' },
-  { id: 'email_intelligence', name: 'Email Intelligence Agent', category: 'outreach' },
-  { id: 'sales_pipeline', name: 'Sales Pipeline & War Room', category: 'deals' },
-  { id: 'customer_success', name: 'Customer Success & Retention', category: 'cs' },
-  { id: 'whatsapp_agent', name: 'WhatsApp Auto-Pilot Agent', category: 'messaging' },
-  { id: 'voice_call_agent', name: 'Voice AI Intelligence Agent', category: 'voice' },
+  { id: 'lead_qualification', name: 'LEAD QUALIFICATION AGENT', category: 'sdr' },
+  { id: 'email_intelligence', name: 'EMAIL INTELLIGENCE AGENT', category: 'outreach' },
+  { id: 'sales_pipeline', name: 'SALES PIPELINE & WAR ROOM', category: 'deals' },
+  { id: 'customer_success', name: 'CUSTOMER SUCCESS & RETENTION', category: 'cs' },
+  { id: 'whatsapp_agent', name: 'WHATSAPP AUTO-PILOT AGENT', category: 'messaging' },
+  { id: 'voice_call_agent', name: 'VOICE AI INTELLIGENCE AGENT', category: 'voice' },
 ];
 
 export function VisualWorkflowCanvas() {
@@ -152,9 +152,9 @@ export function VisualWorkflowCanvas() {
       trigger_type: newWfTrigger,
       trigger_config: { event: 'custom_trigger' },
       nodes: [
-        { id: 'n-start', type: 'trigger', label: 'Initial Trigger' },
-        { id: 'n-agent', type: 'agent', label: 'Lead Qualification Agent', agent: 'lead_qualification' },
-        { id: 'n-action', type: 'action', label: 'Autonomous Outreach Action' },
+        { id: 'n-start', type: 'trigger', label: 'INITIAL TRIGGER' },
+        { id: 'n-agent', type: 'agent', label: 'LEAD QUALIFICATION AGENT', agent: 'lead_qualification' },
+        { id: 'n-action', type: 'action', label: 'AUTONOMOUS OUTREACH ACTION' },
       ],
       edges: [
         { id: 'e-1', source: 'n-start', target: 'n-agent' },
@@ -178,19 +178,19 @@ export function VisualWorkflowCanvas() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Canvas Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Workflow className="w-5 h-5 text-brand-400" />
-            <h2 className="text-lg font-bold text-white">Visual Multi-Agent Workflow Canvas</h2>
-            <Badge variant="purple" className="text-[10px]">
-              Node Pipeline
+            <Workflow className="w-4 h-4 text-[#39FF14]" />
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
+            <Badge variant="purple" className="text-[9px] uppercase font-mono">
+              NODE PIPELINE
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Build, connect, and simulate autonomous multi-agent triggers across Lead SDR cadences, Deal War Rooms, and Churn prevention.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            BUILD, CONNECT, AND SIMULATE AUTONOMOUS MULTI-AGENT TRIGGERS ACROSS CADENCES, WAR ROOMS, AND CS PLAYBOOKS.
           </p>
         </div>
 
@@ -199,31 +199,31 @@ export function VisualWorkflowCanvas() {
             size="sm"
             variant="outline"
             onClick={() => setIsCreateModalOpen(true)}
-            className="border-slate-800 bg-slate-900/80 hover:bg-slate-800"
+            className="text-xs h-7 uppercase"
           >
             <Plus className="w-3.5 h-3.5 mr-1" />
-            <span>New Pipeline</span>
+            <span>NEW PIPELINE</span>
           </Button>
 
           <Button
             size="sm"
-            variant="orange"
+            variant="primary"
             onClick={handleRunSimulation}
             disabled={executeMutation.isPending || !activeWf}
-            className="flex items-center gap-1.5"
+            className="flex items-center gap-1 text-xs h-7 uppercase"
           >
             {executeMutation.isPending ? (
               <LoadingSpinner size="sm" />
             ) : (
-              <Play className="w-3.5 h-3.5 fill-current text-white" />
+              <Play className="w-3 h-3 fill-current text-[#0B0C10]" />
             )}
-            <span>{executeMutation.isPending ? 'Simulating...' : 'Run Simulation'}</span>
+            <span>{executeMutation.isPending ? 'SIMULATING...' : 'RUN SIMULATION'}</span>
           </Button>
         </div>
       </div>
 
       {/* Workflow Selector Bar */}
-      <div className="flex items-center justify-between gap-4 border-b border-slate-800/80 pb-2">
+      <div className="flex items-center justify-between gap-3 border-b border-[#3A4552] pb-2">
         <div className="flex items-center gap-2 overflow-x-auto">
           {workflows?.map((wf) => (
             <button
@@ -232,16 +232,16 @@ export function VisualWorkflowCanvas() {
                 setSelectedWorkflowId(wf.id);
                 setSimulationTrace(null);
               }}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-none text-[11px] font-bold uppercase whitespace-nowrap transition-none flex items-center gap-2 ${
                 activeWf?.id === wf.id
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/25'
-                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                  : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
               }`}
             >
-              <Zap className="w-3.5 h-3.5" />
+              <Zap className="w-3 h-3" />
               <span>{wf.name}</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-950/40 text-slate-300 font-mono">
-                {wf.execution_count} runs
+              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-[#1F2833] text-slate-300 font-mono border border-[#3A4552]">
+                {wf.execution_count} RUNS
               </span>
             </button>
           ))}
@@ -253,10 +253,10 @@ export function VisualWorkflowCanvas() {
               size="sm"
               variant="outline"
               onClick={() => setIsAddNodeOpen(true)}
-              className="text-xs h-8 border-brand-500/30 text-brand-300 hover:bg-brand-500/10"
+              className="text-xs h-7 uppercase"
             >
-              <Plus className="w-3.5 h-3.5 mr-1" />
-              <span>Add Step Node</span>
+              <Plus className="w-3 h-3 mr-1" />
+              <span>ADD STEP NODE</span>
             </Button>
 
             <Button
@@ -267,7 +267,7 @@ export function VisualWorkflowCanvas() {
                   deleteWfMutation.mutate(activeWf.id);
                 }
               }}
-              className="h-8 px-2 text-slate-500 hover:text-rose-400"
+              className="h-7 px-2 text-slate-500 hover:text-[#FF2A54]"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </Button>
@@ -276,25 +276,25 @@ export function VisualWorkflowCanvas() {
       </div>
 
       {isLoading ? (
-        <div className="py-16 flex justify-center">
+        <div className="py-12 flex justify-center">
           <LoadingSpinner />
         </div>
       ) : activeWf ? (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Visual Interactive Graph Stage */}
-          <div className="relative min-h-[320px] rounded-3xl bg-slate-950 border border-slate-800/90 p-8 overflow-x-auto flex items-center justify-between gap-6 shadow-inner">
+          <div className="relative min-h-[300px] rounded-none bg-[#0B0C10] border border-[#3A4552] p-6 overflow-x-auto flex items-center justify-between gap-6">
             {/* Background Grid Accent */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:24px_24px] opacity-20 pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F2833_1px,transparent_1px),linear-gradient(to_bottom,#1F2833_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
 
             {/* Nodes Pipeline */}
-            <div className="relative z-10 flex items-center gap-4 mx-auto">
+            <div className="relative z-10 flex items-center gap-4 mx-auto font-mono">
               {activeWf.nodes?.map((node, index) => (
                 <div key={node.id} className="flex items-center gap-4">
                   {/* Node Card */}
-                  <div className="w-56 p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand-500/50 shadow-xl transition-all space-y-2 group relative">
+                  <div className="w-56 p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none space-y-2 group relative">
                     <button
                       onClick={() => handleRemoveNode(node.id)}
-                      className="absolute top-3 right-3 text-slate-600 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-2.5 right-2.5 text-slate-500 hover:text-[#FF2A54] opacity-0 group-hover:opacity-100 transition-none"
                       title="Remove Step"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -304,16 +304,16 @@ export function VisualWorkflowCanvas() {
                       <Badge variant={getNodeBadgeVariant(node.type)} className="text-[9px] uppercase font-mono">
                         {node.type}
                       </Badge>
-                      <span className="text-[10px] font-mono text-slate-500">Step #{index + 1}</span>
+                      <span className="text-[10px] font-mono text-slate-400">STEP #{index + 1}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-white group-hover:text-brand-400 transition-colors">
+                    <h4 className="text-xs font-bold text-white group-hover:text-[#39FF14] transition-none uppercase">
                       {node.label}
                     </h4>
 
                     {node.agent && (
-                      <div className="flex items-center gap-1.5 text-[11px] font-mono text-purple-400">
-                        <Bot className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-1 text-[10px] font-mono text-purple-400 uppercase">
+                        <Bot className="w-3 h-3" />
                         <span>{node.agent}</span>
                       </div>
                     )}
@@ -321,8 +321,8 @@ export function VisualWorkflowCanvas() {
 
                   {/* Flow Arrow */}
                   {index < activeWf.nodes.length - 1 && (
-                    <div className="text-slate-600 flex items-center">
-                      <ArrowRight className="w-5 h-5 animate-pulse text-brand-500/60" />
+                    <div className="text-[#3A4552] flex items-center">
+                      <ArrowRight className="w-4 h-4 text-[#39FF14]" />
                     </div>
                   )}
                 </div>
@@ -332,34 +332,34 @@ export function VisualWorkflowCanvas() {
 
           {/* Real-time Simulation Trace */}
           {simulationTrace && (
-            <div className="p-5 rounded-2xl bg-slate-900/80 border border-brand-500/30 space-y-4 animate-in fade-in duration-200">
+            <div className="p-4 rounded-none bg-[#1F2833] border border-[#39FF14] space-y-3 font-mono">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                  <h3 className="text-sm font-bold text-white">Simulation Pipeline Complete</h3>
-                  <Badge variant="success" className="text-[10px]">
-                    {simulationTrace.nodes_processed} Nodes Executed
+                  <CheckCircle2 className="w-4 h-4 text-[#39FF14]" />
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
+                  <Badge variant="success" className="text-[9px] uppercase">
+                    {simulationTrace.nodes_processed} NODES EXECUTED
                   </Badge>
                 </div>
 
-                <span className="text-xs font-mono text-slate-400">
-                  Executed at: {new Date(simulationTrace.executed_at).toLocaleTimeString()}
+                <span className="text-[10px] font-mono text-slate-400 uppercase">
+                  EXECUTED AT: {new Date(simulationTrace.executed_at).toLocaleTimeString()}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                 {simulationTrace.trace?.map((step: any, idx: number) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs"
+                    className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs font-mono"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+                      <span className="w-4 h-4 rounded-none bg-[#1F2833] text-[#39FF14] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
                         ✓
                       </span>
-                      <span className="text-slate-200 font-medium">{step.node}</span>
+                      <span className="text-slate-200 font-bold text-[11px] uppercase">{step.node}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-slate-500">{step.latency_ms}ms</span>
+                    <span className="font-mono text-[9px] text-[#39FF14]">{step.latency_ms}MS</span>
                   </div>
                 ))}
               </div>
@@ -370,51 +370,51 @@ export function VisualWorkflowCanvas() {
 
       {/* Add Step Node Modal */}
       {isAddNodeOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Plus className="w-5 h-5 text-brand-400" />
-                Append Workflow Step Node
+        <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <Plus className="w-4 h-4 text-[#39FF14]" />
+                APPEND WORKFLOW STEP NODE
               </h3>
               <button onClick={() => setIsAddNodeOpen(false)} className="text-slate-400 hover:text-white">
                 ✕
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 font-mono">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Step Type</label>
+                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">STEP TYPE</label>
                 <select
                   value={nodeType}
                   onChange={(e) => setNodeType(e.target.value as any)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
                 >
-                  <option value="agent">Autonomous AI Agent</option>
-                  <option value="action">Outbound CRM Action</option>
-                  <option value="trigger">Conditional Check / Trigger</option>
+                  <option value="agent">AUTONOMOUS AI AGENT</option>
+                  <option value="action">OUTBOUND CRM ACTION</option>
+                  <option value="trigger">CONDITIONAL CHECK / TRIGGER</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Step Name / Label *</label>
+                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">STEP NAME / LABEL *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Email Intelligence Cadence Step"
+                  placeholder="E.G. EMAIL INTELLIGENCE CADENCE STEP"
                   value={nodeLabel}
                   onChange={(e) => setNodeLabel(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 />
               </div>
 
               {nodeType === 'agent' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Target AI Agent</label>
+                  <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">TARGET AI AGENT</label>
                   <select
                     value={nodeAgent}
                     onChange={(e) => setNodeAgent(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
                   >
                     {AVAILABLE_AGENTS.map((ag) => (
                       <option key={ag.id} value={ag.id}>
@@ -425,18 +425,19 @@ export function VisualWorkflowCanvas() {
                 </div>
               )}
 
-              <div className="pt-3 flex justify-end gap-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsAddNodeOpen(false)}>
-                  Cancel
+              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+                <Button type="button" variant="outline" size="sm" onClick={() => setIsAddNodeOpen(false)} className="text-xs uppercase">
+                  CANCEL
                 </Button>
                 <Button
                   type="button"
-                  variant="orange"
+                  variant="primary"
                   size="sm"
                   onClick={handleAddNodeToActive}
                   disabled={updateWfMutation.isPending || !nodeLabel.trim()}
+                  className="text-xs uppercase"
                 >
-                  {updateWfMutation.isPending ? 'Adding...' : 'Add Node to Pipeline'}
+                  {updateWfMutation.isPending ? 'ADDING...' : 'ADD NODE TO PIPELINE'}
                 </Button>
               </div>
             </div>
@@ -446,62 +447,62 @@ export function VisualWorkflowCanvas() {
 
       {/* Create New Pipeline Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Workflow className="w-5 h-5 text-brand-400" />
-                Create New Workflow Pipeline
+        <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <Workflow className="w-4 h-4 text-[#39FF14]" />
+                CREATE NEW WORKFLOW PIPELINE
               </h3>
               <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-white">
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleCreateWorkflowSubmit} className="space-y-4">
+            <form onSubmit={handleCreateWorkflowSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Pipeline Name *</label>
+                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">PIPELINE NAME *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Enterprise Churn Defense Pipeline"
+                  placeholder="E.G. ENTERPRISE CHURN DEFENSE PIPELINE"
                   value={newWfName}
                   onChange={(e) => setNewWfName(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">DESCRIPTION</label>
                 <textarea
                   rows={3}
-                  placeholder="Summarize the multi-agent cadence goals..."
+                  placeholder="SUMMARIZE MULTI-AGENT CADENCE GOALS..."
                   value={newWfDesc}
                   onChange={(e) => setNewWfDesc(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 resize-none"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Trigger Execution Mode</label>
+                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">TRIGGER EXECUTION MODE</label>
                 <select
                   value={newWfTrigger}
                   onChange={(e) => setNewWfTrigger(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
                 >
-                  <option value="event">Real-time CRM Event Trigger</option>
-                  <option value="manual">Manual 1-Click Trigger</option>
-                  <option value="webhook">Inbound Webhook Trigger</option>
-                  <option value="schedule">Scheduled Cron Trigger</option>
+                  <option value="event">REAL-TIME CRM EVENT TRIGGER</option>
+                  <option value="manual">MANUAL 1-CLICK TRIGGER</option>
+                  <option value="webhook">INBOUND WEBHOOK TRIGGER</option>
+                  <option value="schedule">SCHEDULED CRON TRIGGER</option>
                 </select>
               </div>
 
-              <div className="pt-3 flex justify-end gap-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)}>
-                  Cancel
+              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+                <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)} className="text-xs uppercase">
+                  CANCEL
                 </Button>
-                <Button type="submit" variant="orange" size="sm" disabled={createWfMutation.isPending}>
-                  {createWfMutation.isPending ? 'Creating...' : 'Create Pipeline'}
+                <Button type="submit" variant="primary" size="sm" disabled={createWfMutation.isPending} className="text-xs uppercase">
+                  {createWfMutation.isPending ? 'CREATING...' : 'CREATE PIPELINE'}
                 </Button>
               </div>
             </form>

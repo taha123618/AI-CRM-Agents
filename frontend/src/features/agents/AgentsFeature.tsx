@@ -80,58 +80,59 @@ export function AgentsFeature() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Bot className="w-6 h-6 text-brand-400" />
-            {t('agents.title', 'Autonomous Agent Fleet Control Center')}
+          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <Bot className="w-5 h-5 text-[#39FF14]" />
+            <span>{t('agents.title', 'AUTONOMOUS AGENT FLEET CONTROL')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            {t('agents.subtitle', 'Manage, trigger, and inspect multi-agent AI execution logs and event bus telemetry')}
+          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+            {t('agents.subtitle', 'MANAGE, TRIGGER, AND INSPECT MULTI-AGENT EXECUTION LOGS AND EVENT BUS TELEMETRY')}
           </p>
         </div>
 
-        <Button variant="outline" size="sm" onClick={clearEvents}>
+        <Button variant="outline" size="sm" onClick={clearEvents} className="text-xs h-7">
           <RefreshCw className="w-3.5 h-3.5" />
-          <span>{t('agents.clear_events', 'Clear Event Logs')}</span>
+          <span>{t('agents.clear_events', 'CLEAR LOGS')}</span>
         </Button>
       </div>
 
       {/* Agents Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 font-mono">
         {agentsList.map((agent) => (
-          <Card key={agent.name} className="p-5 space-y-4 hover:border-brand-500/40 transition-all">
+          <Card key={agent.name} className="p-4 space-y-3 hover:border-[#39FF14] transition-none">
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-brand-600/20 text-brand-400 border border-brand-500/30 flex items-center justify-center font-bold text-sm">
-                  {agent.name.substring(0, 2)}
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 flex items-center justify-center font-bold text-xs font-mono">
+                  {agent.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-white">{agent.name}</h3>
-                  <span className="text-[10px] font-mono text-slate-400">LLM: {agent.model}</span>
+                  <h3 className="font-bold text-xs text-white uppercase">{agent.name}</h3>
+                  <span className="text-[9px] font-mono text-slate-400 uppercase">LLM: {agent.model}</span>
                 </div>
               </div>
-              <Badge variant="success">Active</Badge>
+              <Badge variant="success" className="text-[8px]">ONLINE</Badge>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Autonomous execution loop subscribing to Redis pub/sub event bus and FastAPI BackgroundTasks.
+            <p className="text-xs text-slate-400 leading-relaxed font-mono uppercase">
+              SUBSCRIBING TO REDIS PUB/SUB EVENT BUS AND FASTAPI ASYNC QUEUES.
             </p>
 
-            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> {t('agents.ready', 'Ready for tasks')}
+            <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between">
+              <span className="text-[9px] text-[#39FF14] font-bold flex items-center gap-1 uppercase">
+                <CheckCircle2 className="w-3 h-3" /> {t('agents.ready', 'READY FOR TASKS')}
               </span>
               <Button
                 size="sm"
-                variant="secondary"
+                variant="primary"
                 isLoading={runningAgent === agent.name}
                 onClick={() => handleRunAgent(agent.name)}
+                className="text-xs h-7 px-2.5"
               >
-                <Play className="w-3.5 h-3.5 text-brand-400" />
-                <span>{t('agents.trigger_run', 'Trigger Run')}</span>
+                <Play className="w-3 h-3 text-[#0B0C10]" />
+                <span>{t('agents.trigger_run', 'DISPATCH')}</span>
               </Button>
             </div>
           </Card>
@@ -142,27 +143,27 @@ export function AgentsFeature() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-brand-400" />
-            Live Event Bus & Telemetry Console
+            <Terminal className="w-4 h-4 text-[#39FF14]" />
+            <span>LIVE EVENT BUS &amp; TELEMETRY CONSOLE</span>
           </CardTitle>
-          <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-            <Zap className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-            <span>{events.length} Telemetry Events</span>
+          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
+            <Zap className="w-3.5 h-3.5 text-[#39FF14]" />
+            <span>{events.length} EVENTS RECORDED</span>
           </div>
         </CardHeader>
         <CardContent className="pt-2">
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs max-h-96 overflow-y-auto space-y-2">
+          <div className="bg-[#0B0C10] p-3 rounded-none border border-[#3A4552] font-mono text-xs max-h-96 overflow-y-auto space-y-2">
             {events.length === 0 ? (
-              <p className="text-slate-600 text-center py-6">No event stream logs recorded yet.</p>
+              <p className="text-slate-600 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
             ) : (
               events.map((evt) => (
-                <div key={evt.id} className="p-2 rounded bg-slate-900/60 border border-slate-800/60 space-y-1">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-brand-400 font-bold">[{evt.agent}]</span>
-                    <span className="text-slate-500">{new Date(evt.timestamp).toLocaleTimeString()}</span>
+                <div key={evt.id} className="p-2 bg-[#1F2833] border border-[#3A4552] space-y-1">
+                  <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-[#39FF14] font-bold">[{evt.agent}]</span>
+                    <span className="text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  <div className="text-slate-300">
-                    <span className="text-amber-400 uppercase text-[10px] font-bold mr-2">
+                  <div className="text-slate-300 text-xs font-mono">
+                    <span className="text-cyan-400 uppercase text-[9px] font-bold mr-2">
                       {evt.type}
                     </span>
                     {JSON.stringify(evt.data)}
@@ -179,23 +180,24 @@ export function AgentsFeature() {
         <Modal
           isOpen={Boolean(lastRunOutput)}
           onClose={() => setLastRunOutput(null)}
-          title={`Agent Result — ${lastRunOutput.agent}`}
-          description={`Output returned by ${lastRunOutput.agent} background execution.`}
+          title={`AGENT EXECUTION RESULT — ${lastRunOutput.agent}`}
+          description={`OUTPUT RETURNED BY ${lastRunOutput.agent} BACKGROUND EXECUTION.`}
+          className="font-mono"
         >
-          <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                <Sparkles className="w-4 h-4 text-brand-400" />
-                <span>Execution Response</span>
+          <div className="space-y-3">
+            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#39FF14] uppercase">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>EXECUTION RESPONSE PAYLOAD</span>
               </div>
-              <pre className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
+              <pre className="p-2.5 bg-[#1F2833] border border-[#3A4552] text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
                 {JSON.stringify(lastRunOutput.result, null, 2)}
               </pre>
             </div>
 
-            <div className="flex justify-end pt-2 border-t border-slate-800">
-              <Button variant="outline" onClick={() => setLastRunOutput(null)}>
-                Close
+            <div className="flex justify-end pt-1 border-t border-[#3A4552]">
+              <Button variant="outline" onClick={() => setLastRunOutput(null)} className="text-xs">
+                CLOSE
               </Button>
             </div>
           </div>

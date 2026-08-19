@@ -86,23 +86,23 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
+      <div className="w-full max-w-5xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/90">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400">
-              <Mail className="w-5 h-5" />
+        <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+              <Mail className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-white">Bi-Directional Email IMAP &amp; OAuth Sync Studio</h3>
-                <Badge variant="purple" className="text-[10px] font-mono">
-                  Gmail &amp; Outlook 365
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">EMAIL IMAP &amp; OAUTH SYNC STUDIO</h3>
+                <Badge variant="purple" className="text-[8px] font-mono">
+                  GMAIL &amp; OUTLOOK 365
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">
-                2-way mailbox sync, automatic conversation thread aggregation, and inbound streaming.
+              <p className="text-[10px] text-slate-400 uppercase">
+                2-WAY MAILBOX SYNC, CONVERSATION AGGREGATION, AND STREAMING.
               </p>
             </div>
           </div>
@@ -110,43 +110,43 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              variant="orange"
+              variant="primary"
               onClick={() => setIsConnectOpen(true)}
-              className="text-xs"
+              className="text-xs h-7"
             >
               <Plus className="w-3.5 h-3.5 mr-1" />
-              <span>Connect Mailbox</span>
+              <span>CONNECT MAILBOX</span>
             </Button>
 
-            <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white">
-              <X className="w-5 h-5" />
+            <button onClick={onClose} className="p-1 rounded-none text-slate-400 hover:text-white">
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Content Layout */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        <div className="p-4 overflow-y-auto space-y-4 flex-1 font-mono">
           {/* Connected Mailboxes Bar */}
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-              Connected Mailboxes ({accounts?.length || 0})
+          <div className="space-y-2">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              CONNECTED MAILBOXES ({accounts?.length || 0})
             </span>
 
             {isLoadingAccounts ? (
               <LoadingSpinner size="sm" />
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                 {accounts?.map((acc: any) => (
                   <div
                     key={acc.id}
-                    className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2"
+                    className="p-3 bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between gap-2"
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                        <h4 className="text-xs font-bold text-white capitalize">{acc.provider}</h4>
+                        <span className="w-1.5 h-1.5 rounded-none bg-[#39FF14]"></span>
+                        <h4 className="text-xs font-bold text-white uppercase">{acc.provider}</h4>
                       </div>
-                      <p className="text-[11px] font-mono text-slate-300 mt-0.5">{acc.email_address}</p>
+                      <p className="text-[10px] font-mono text-slate-300 mt-0.5">{acc.email_address}</p>
                     </div>
 
                     <Button
@@ -154,10 +154,10 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                       variant="ghost"
                       onClick={() => syncAccountMutation.mutate(acc.id)}
                       disabled={syncAccountMutation.isPending}
-                      className="h-7 px-2 text-xs text-blue-400 hover:bg-blue-950/40"
+                      className="h-6 px-2 text-xs text-[#39FF14] hover:bg-[#1F2833]"
                       title="Sync Now"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${syncAccountMutation.isPending ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-3 h-3 ${syncAccountMutation.isPending ? 'animate-spin' : ''}`} />
                     </Button>
                   </div>
                 ))}
@@ -166,44 +166,44 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
           </div>
 
           {/* Conversation Threads & Messages Inspector */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 border-t border-slate-800/80">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-2 border-t border-[#3A4552]">
             {/* Threads List */}
             <div className="lg:col-span-5 space-y-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                Synchronized Conversation Threads ({threads?.length || 0})
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                CONVERSATION THREADS ({threads?.length || 0})
               </span>
 
-              <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
+              <div className="space-y-1.5 max-h-[340px] overflow-y-auto pr-1">
                 {threads?.map((th: any) => (
                   <div
                     key={th.id}
                     onClick={() => setSelectedThreadId(th.id)}
-                    className={`p-3 rounded-2xl border cursor-pointer transition-all ${
+                    className={`p-2.5 border cursor-pointer transition-none ${
                       selectedThreadId === th.id
-                        ? 'bg-blue-950/40 border-blue-500/60 text-white'
-                        : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 text-slate-300'
+                        ? 'bg-[#0B0C10] border-[#39FF14] text-white'
+                        : 'bg-[#0B0C10] border-[#3A4552] hover:border-slate-500 text-slate-300'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-[11px] mb-1">
-                      <Badge variant="purple" className="text-[9px] py-0">
-                        {th.message_count} msgs
+                    <div className="flex items-center justify-between text-[10px] mb-1">
+                      <Badge variant="purple" className="text-[8px] py-0">
+                        {th.message_count} MSGS
                       </Badge>
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      <span className="text-[9px] text-slate-500 font-mono">
                         {th.last_message_at ? new Date(th.last_message_at).toLocaleDateString() : ''}
                       </span>
                     </div>
 
-                    <h5 className="text-xs font-bold text-white truncate">{th.subject}</h5>
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{th.snippet}</p>
+                    <h5 className="text-xs font-bold text-white truncate uppercase">{th.subject}</h5>
+                    <p className="text-[10px] text-slate-400 truncate mt-0.5 uppercase">{th.snippet}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Thread Messages Timeline */}
-            <div className="lg:col-span-7 space-y-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                Thread Message History
+            <div className="lg:col-span-7 space-y-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                MESSAGE HISTORY
               </span>
 
               {isLoadingThreadMsgs ? (
@@ -211,33 +211,33 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                   <LoadingSpinner />
                 </div>
               ) : threadMessages ? (
-                <div className="space-y-3 max-h-[340px] overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                  <h4 className="text-xs font-bold text-white border-b border-slate-800 pb-2">
+                <div className="space-y-2.5 max-h-[340px] overflow-y-auto p-3 bg-[#0B0C10] border border-[#3A4552]">
+                  <h4 className="text-xs font-bold text-white border-b border-[#3A4552] pb-1.5 uppercase">
                     {threadMessages.subject}
                   </h4>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {threadMessages.messages?.map((msg: any, idx: number) => (
                       <div
                         key={idx}
-                        className={`p-3.5 rounded-2xl border text-xs space-y-1.5 ${
+                        className={`p-2.5 border text-xs space-y-1 ${
                           msg.direction === 'inbound'
-                            ? 'bg-slate-900 border-slate-800 text-slate-200'
-                            : 'bg-blue-950/40 border-blue-500/30 text-blue-100'
+                            ? 'bg-[#1F2833] border-[#3A4552] text-slate-200'
+                            : 'bg-[#0B0C10] border-[#39FF14]/40 text-[#39FF14]'
                         }`}
                       >
-                        <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                          <span className="font-bold text-white">{msg.sender}</span>
+                        <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono">
+                          <span className="font-bold text-white uppercase">{msg.sender}</span>
                           <span>{msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : ''}</span>
                         </div>
-                        <p className="text-xs leading-relaxed font-sans">{msg.body}</p>
+                        <p className="text-xs leading-relaxed font-mono whitespace-pre-wrap">{msg.body}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="p-12 text-center text-slate-500 text-xs rounded-2xl bg-slate-950/40 border border-slate-800/60">
-                  Select a conversation thread on the left to view message history.
+                <div className="p-10 text-center text-slate-500 text-xs bg-[#0B0C10] border border-[#3A4552] font-mono uppercase">
+                  SELECT A CONVERSATION THREAD TO INSPECT HISTORY.
                 </div>
               )}
             </div>
@@ -246,58 +246,59 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
 
         {/* Connect Modal */}
         {isConnectOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-              <h4 className="text-sm font-bold text-white">Connect Email Mailbox</h4>
+          <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
+            <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider">CONNECT EMAIL MAILBOX</h4>
 
-              <div className="space-y-3 text-xs">
+              <div className="space-y-2 text-xs">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Provider Type</label>
+                  <label className="block text-[10px] text-slate-300 font-bold uppercase mb-1">PROVIDER TYPE</label>
                   <select
                     value={provider}
                     onChange={(e) => setProvider(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-white text-xs font-mono"
                   >
-                    <option value="gmail">Google Workspace / Gmail OAuth</option>
-                    <option value="outlook_365">Microsoft Graph / Outlook 365</option>
-                    <option value="imap">Standard IMAP / SMTP Mailbox</option>
+                    <option value="gmail">GOOGLE WORKSPACE / GMAIL OAUTH</option>
+                    <option value="outlook_365">MICROSOFT GRAPH / OUTLOOK 365</option>
+                    <option value="imap">STANDARD IMAP / SMTP MAILBOX</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Email Address *</label>
+                  <label className="block text-[10px] text-slate-300 font-bold uppercase mb-1">EMAIL ADDRESS *</label>
                   <input
                     type="email"
                     required
                     placeholder="rep@enterprise.ai"
                     value={emailAddress}
                     onChange={(e) => setEmailAddress(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-white text-xs font-mono uppercase"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Display Label</label>
+                  <label className="block text-[10px] text-slate-300 font-bold uppercase mb-1">DISPLAY LABEL</label>
                   <input
                     type="text"
-                    placeholder="e.g. Sales Inbound Mailbox"
+                    placeholder="E.G. SALES INBOUND"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-white text-xs font-mono uppercase"
                   />
                 </div>
 
-                <div className="pt-3 flex justify-end gap-2">
-                  <Button size="sm" variant="outline" onClick={() => setIsConnectOpen(false)}>
-                    Cancel
+                <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+                  <Button size="sm" variant="outline" onClick={() => setIsConnectOpen(false)} className="text-xs">
+                    CANCEL
                   </Button>
                   <Button
                     size="sm"
-                    variant="orange"
+                    variant="primary"
                     onClick={() => connectMutation.mutate()}
                     disabled={connectMutation.isPending || !emailAddress.trim()}
+                    className="text-xs"
                   >
-                    {connectMutation.isPending ? 'Connecting...' : 'Authorize & Connect'}
+                    {connectMutation.isPending ? 'CONNECTING...' : 'AUTHORIZE'}
                   </Button>
                 </div>
               </div>

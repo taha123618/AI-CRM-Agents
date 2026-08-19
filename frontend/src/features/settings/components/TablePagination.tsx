@@ -26,24 +26,24 @@ export function TablePagination({
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="p-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 bg-slate-900/40">
+    <div className="p-3 border-t border-[#3A4552] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 bg-[#0B0C10] font-mono uppercase">
       <div className="flex items-center gap-3">
-        <span>
-          Showing <strong className="text-white">{startItem}</strong> to{' '}
-          <strong className="text-white">{endItem}</strong> of{' '}
-          <strong className="text-white">{totalItems}</strong> entries
+        <span className="text-[10px]">
+          SHOWING <strong className="text-white">{startItem}</strong> TO{' '}
+          <strong className="text-white">{endItem}</strong> OF{' '}
+          <strong className="text-white">{totalItems}</strong> ENTRIES
         </span>
 
         {onPageSizeChange && (
           <div className="flex items-center gap-1.5 ml-2">
-            <span className="text-slate-500">Per page:</span>
+            <span className="text-slate-500 text-[10px]">PER PAGE:</span>
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="bg-slate-950 border border-slate-800 text-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-brand-500"
+              className="bg-[#1F2833] border border-[#3A4552] text-slate-300 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#39FF14] font-mono"
             >
               {pageSizeOptions.map((opt) => (
-                <option key={opt} value={opt}>
+                <option key={opt} value={opt} className="bg-[#0B0C10]">
                   {opt}
                 </option>
               ))}
@@ -52,13 +52,13 @@ export function TablePagination({
         )}
       </div>
 
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
         <Button
           size="sm"
           variant="outline"
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
-          className="h-8 w-8 p-0 border-slate-800 text-slate-300 hover:bg-slate-800 disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
           title="First Page"
         >
           <ChevronsLeft className="w-3.5 h-3.5" />
@@ -68,14 +68,14 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="h-8 w-8 p-0 border-slate-800 text-slate-300 hover:bg-slate-800 disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
           title="Previous Page"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
         </Button>
 
-        <span className="px-2.5 py-1 text-slate-300 font-medium text-xs">
-          Page {currentPage} of {Math.max(1, totalPages)}
+        <span className="px-2 py-0.5 text-slate-300 font-bold text-[10px] font-mono">
+          PAGE {currentPage} OF {Math.max(1, totalPages)}
         </span>
 
         <Button
@@ -83,7 +83,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="h-8 w-8 p-0 border-slate-800 text-slate-300 hover:bg-slate-800 disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
           title="Next Page"
         >
           <ChevronRight className="w-3.5 h-3.5" />
@@ -93,7 +93,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
-          className="h-8 w-8 p-0 border-slate-800 text-slate-300 hover:bg-slate-800 disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
           title="Last Page"
         >
           <ChevronsRight className="w-3.5 h-3.5" />

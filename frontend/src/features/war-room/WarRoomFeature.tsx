@@ -72,52 +72,49 @@ export function WarRoomFeature() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300 pb-12">
-      {/* ── Header Banner ── */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-rose-950/50 via-slate-900/80 to-purple-950/50 border border-rose-500/30 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="flex items-start sm:items-center gap-4 z-10">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-500/30 to-purple-500/20 border border-rose-500/40 text-rose-400 shadow-xl shadow-rose-500/20 shrink-0">
-            <Swords className="w-7 h-7 animate-pulse" />
+    <div className="space-y-4 font-mono pb-12">
+      {/* ── Tactical Header Banner ── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+        <div className="flex items-start sm:items-center gap-3.5 z-10">
+          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#39FF14] shadow-md shrink-0">
+            <Swords className="w-6 h-6" />
           </div>
           <div>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                AI Deal War Room
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+                AI DEAL WAR ROOM & STRATEGY COMMAND
               </h1>
-              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 uppercase tracking-wider flex items-center gap-1.5">
-                <Flame className="w-3 h-3 text-rose-400 animate-bounce" />
-                Live Consensus Engine
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 uppercase tracking-wider flex items-center gap-1.5">
+                <Flame className="w-3 h-3 text-[#FF2A54]" />
+                CONSENSUS ENGINE ACTIVE
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-              Cross-agent collaborative war room aligning Sales Pipeline, Lead Qualifier, Voice AI, and Customer Success on high-stakes enterprise accounts.
+            <p className="text-xs text-slate-400 mt-1 max-w-2xl uppercase">
+              CROSS-AGENT COLLABORATIVE WAR ROOM ALIGNING PIPELINE, LEAD QUALIFIER, VOICE AI, AND CS AGENTS ON HIGH-STAKES DEALS.
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 z-10">
+        <div className="flex flex-wrap items-center gap-2 z-10">
           <Button
             variant="outline"
             size="sm"
             onClick={() => refetchDeals()}
             isLoading={isRefetching}
-            className="border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 text-xs h-9 px-3.5 rounded-xl"
+            className="text-xs h-8 px-3 uppercase"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-            <span>Refresh</span>
+            <RefreshCw className="w-3.5 h-3.5 mr-1 text-slate-400" />
+            <span>REFRESH</span>
           </Button>
 
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAutomationsModal(true)}
-            className="border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:text-white text-xs h-9 px-3.5 rounded-xl shadow-lg shadow-purple-500/10"
+            className="text-xs h-8 px-3 uppercase border-[#A855F7]/40 text-[#A855F7] hover:border-[#A855F7]"
           >
-            <Zap className="w-3.5 h-3.5 mr-1.5" />
-            <span>Triggers & Automations</span>
+            <Zap className="w-3.5 h-3.5 mr-1" />
+            <span>AUTOMATION RULES</span>
           </Button>
 
           {activeDeal && (
@@ -125,32 +122,32 @@ export function WarRoomFeature() {
               variant="primary"
               size="sm"
               onClick={() => setShowProposalModal(true)}
-              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs h-9 px-4 rounded-xl shadow-lg shadow-emerald-600/30"
+              className="text-xs h-8 px-3.5 uppercase font-bold"
             >
-              <FileText className="w-4 h-4 mr-1.5" />
-              <span>Smart Proposal Studio</span>
+              <FileText className="w-4 h-4 mr-1 text-[#0B0C10]" />
+              <span>SMART PROPOSAL STUDIO</span>
             </Button>
           )}
         </div>
       </div>
 
-      {/* ── Active Deal Selector Strip (Horizontal Mobile Scrollable) ── */}
-      <div className="p-4 rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 space-y-2">
+      {/* ── Active Deal Selector Strip (Horizontal Tactical Bar) ── */}
+      <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <Crosshair className="w-3.5 h-3.5 text-rose-400" />
-            <span>Target Enterprise Accounts ({deals?.length || 0})</span>
+          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <Crosshair className="w-3.5 h-3.5 text-[#FF2A54]" />
+            <span>TARGET ENTERPRISE ACCOUNTS ({deals?.length || 0})</span>
           </span>
-          <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
-            Select an account to load cross-agent consensus
+          <span className="text-[10px] text-slate-500 font-mono hidden sm:inline uppercase">
+            SELECT PIPELINE DEAL TO LOAD CROSS-AGENT CONSENSUS
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-1 pt-1 scrollbar-thin">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 scrollbar-thin">
           {isLoadingDeals ? (
-            <div className="text-xs text-slate-500 py-2">Loading target accounts...</div>
+            <div className="text-xs text-slate-500 py-2 uppercase">LOADING TARGET PIPELINE...</div>
           ) : !deals?.length ? (
-            <div className="text-xs text-slate-500 py-2">No deals registered in pipeline yet.</div>
+            <div className="text-xs text-slate-500 py-2 uppercase">NO DEALS REGISTERED IN PIPELINE YET.</div>
           ) : (
             deals?.map((d) => {
               const isSelected = activeDeal?.id === d.id;
@@ -159,23 +156,24 @@ export function WarRoomFeature() {
                   key={d.id}
                   type="button"
                   onClick={() => setSelectedDeal(d)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 flex items-center gap-3 border shrink-0 ${isSelected
-                    ? 'bg-gradient-to-r from-rose-500/20 to-purple-500/20 border-rose-500/50 text-white shadow-xl shadow-rose-500/15 scale-[1.02]'
-                    : 'bg-slate-950/80 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700 hover:bg-slate-900'
-                    }`}
+                  className={`px-3.5 py-2 rounded-none text-xs font-bold whitespace-nowrap transition-none flex items-center gap-2.5 border shrink-0 ${
+                    isSelected
+                      ? 'bg-[#0B0C10] border-[#39FF14] text-white shadow-lg'
+                      : 'bg-[#0B0C10]/60 border-[#3A4552] text-slate-400 hover:text-white hover:border-slate-500'
+                  }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <Briefcase className={`w-3.5 h-3.5 ${isSelected ? 'text-rose-400' : 'text-slate-500'}`} />
-                    <span>{d.company}</span>
+                  <div className="flex items-center gap-1.5">
+                    <Briefcase className={`w-3.5 h-3.5 ${isSelected ? 'text-[#39FF14]' : 'text-slate-500'}`} />
+                    <span className="uppercase">{d.company}</span>
                   </div>
-                  <span className="text-[11px] font-mono text-emerald-400 font-bold">
+                  <span className="text-[11px] font-mono text-[#39FF14] font-bold">
                     ${d.value.toLocaleString()}
                   </span>
                   <Badge
                     variant={d.health_score >= 70 ? 'success' : 'warning'}
-                    className="text-[9px] px-1.5 py-0.5"
+                    className="text-[9px] px-1.5 py-0.2 uppercase font-mono"
                   >
-                    {d.win_probability_pct}% win
+                    {d.win_probability_pct}% WIN
                   </Badge>
                 </button>
               );
@@ -185,80 +183,60 @@ export function WarRoomFeature() {
       </div>
 
       {activeDeal && strategy ? (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* ── Key Metrics & Consensus Gauge Strip ── */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             {/* 1. Multi-Agent Verdict & Radial Meter */}
-            <Card className="p-5 sm:p-6 bg-slate-900/60 backdrop-blur-xl border-slate-800/80 flex items-center justify-between gap-4 relative overflow-hidden group hover:border-rose-500/40 transition-all duration-300">
-              <div className="space-y-2">
+            <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none flex items-center justify-between gap-4 relative overflow-hidden group hover:border-[#39FF14] transition-none">
+              <div className="space-y-1.5 min-w-0">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-amber-400" />
-                  Consensus Verdict
+                  <Award className="w-3.5 h-3.5 text-[#FFB800]" />
+                  CONSENSUS VERDICT
                 </span>
-                <div className="text-base sm:text-lg font-black text-white leading-tight">
+                <div className="text-base font-black text-white leading-tight uppercase truncate">
                   {strategy.cross_agent_verdict}
                 </div>
-                <Badge variant="success" className="bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">
-                  {activeDeal.stage.toUpperCase()} STAGE
+                <Badge variant="success" className="text-[9px] uppercase font-mono">
+                  {activeDeal.stage} STAGE
                 </Badge>
               </div>
 
-              {/* Circular SVG Meter */}
-              <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <path
-                    className="text-slate-800"
-                    strokeWidth="3.5"
-                    stroke="currentColor"
-                    fill="none"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    className="text-rose-500 transition-all duration-1000 ease-out"
-                    strokeDasharray={`${strategy.consensus_health_score}, 100`}
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                    stroke="currentColor"
-                    fill="none"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-base font-black font-mono text-white">
-                    {strategy.consensus_health_score}
-                  </span>
-                  <span className="text-[8px] font-mono text-slate-400">SCORE</span>
-                </div>
+              {/* Square Meter Box */}
+              <div className="w-16 h-16 shrink-0 bg-[#0B0C10] border border-[#3A4552] flex flex-col items-center justify-center text-center">
+                <span className="text-lg font-black font-mono text-[#39FF14]">
+                  {strategy.consensus_health_score}
+                </span>
+                <span className="text-[8px] font-mono text-slate-400 uppercase">HEALTH</span>
               </div>
             </Card>
 
             {/* 2. Target ARR & Deal Momentum */}
-            <Card className="p-5 sm:p-6 bg-slate-900/60 backdrop-blur-xl border-slate-800/80 flex flex-col justify-between space-y-3 hover:border-blue-500/40 transition-all duration-300">
+            <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none flex flex-col justify-between space-y-2.5 hover:border-[#39FF14] transition-none">
               <div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-blue-400" />
-                  Account Valuation & Velocity
+                  <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
+                  ACCOUNT VALUATION &amp; ARR
                 </span>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-emerald-400 mt-1">
-                  ${strategy.value.toLocaleString()} <span className="text-xs text-slate-400 font-sans">ARR</span>
+                <div className="text-2xl font-black font-mono text-[#39FF14] mt-0.5">
+                  ${strategy.value.toLocaleString()} <span className="text-xs text-slate-400 font-mono uppercase">USD</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-slate-300 font-mono bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
-                <span>Closing Window: ~18 Days</span>
-                <span className="text-purple-300 font-bold">Enterprise Tier</span>
+              <div className="flex items-center justify-between text-xs text-slate-300 font-mono bg-[#0B0C10] p-2 rounded-none border border-[#3A4552] uppercase text-[10px]">
+                <span>CLOSING WINDOW: ~18 DAYS</span>
+                <span className="text-purple-400 font-bold">ENTERPRISE TIER</span>
               </div>
             </Card>
 
             {/* 3. Primary Win Action Highlight */}
-            <Card className="p-5 sm:p-6 bg-gradient-to-br from-rose-950/40 via-slate-900/90 to-purple-950/40 border-rose-500/30 flex flex-col justify-between space-y-3 shadow-xl">
+            <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none flex flex-col justify-between space-y-2.5 hover:border-[#39FF14] transition-none">
               <div>
-                <span className="text-[10px] font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-                  Recommended War Room Play
+                <span className="text-[10px] font-bold text-[#FF2A54] uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#FF2A54]" />
+                  RECOMMENDED WAR ROOM PLAY
                 </span>
-                <p className="text-xs text-slate-200 mt-1.5 font-medium leading-relaxed">
-                  {strategy.recommended_win_actions?.[0] || 'Propose tailored SOC2 security pack & dedicated solution architect onboarding SLA'}
+                <p className="text-xs text-slate-200 mt-1 font-medium leading-relaxed uppercase">
+                  {strategy.recommended_win_actions?.[0] || 'PROPOSE TAILORED SOC2 SECURITY PACK & DEDICATED ONBOARDING SLA'}
                 </p>
               </div>
 
@@ -266,21 +244,21 @@ export function WarRoomFeature() {
                 variant="primary"
                 size="sm"
                 onClick={() => setShowProposalModal(true)}
-                className="bg-rose-600 hover:bg-rose-500 font-bold text-xs shadow-lg shadow-rose-600/30 w-full h-9 rounded-xl"
+                className="font-bold text-xs uppercase w-full h-8 rounded-none"
               >
-                <span>Launch Pitch Proposal Studio</span>
-                <ArrowUpRight className="w-3.5 h-3.5 ml-1.5" />
+                <span>OPEN PROPOSAL STUDIO</span>
+                <ArrowUpRight className="w-3.5 h-3.5 ml-1 text-[#0B0C10]" />
               </Button>
             </Card>
           </div>
 
           {/* ── Sub-Navigation Tabs ── */}
-          <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1.5 border-b border-[#3A4552] pb-2 overflow-x-auto scrollbar-none">
             {[
-              { id: 'overview', label: 'Cross-Agent Perspectives', icon: Bot },
-              { id: 'swot', label: 'SWOT Matrix & Battle-Cards', icon: Shield },
-              { id: 'stakeholders', label: 'Buying Committee Map', icon: Users },
-              { id: 'actions', label: 'Win Action Checklist', icon: Target },
+              { id: 'overview', label: 'CROSS-AGENT PERSPECTIVES', icon: Bot },
+              { id: 'swot', label: 'SWOT MATRIX & BATTLE-CARDS', icon: Shield },
+              { id: 'stakeholders', label: 'BUYING COMMITTEE MAP', icon: Users },
+              { id: 'actions', label: 'WIN ACTION CHECKLIST', icon: Target },
             ]?.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -289,10 +267,11 @@ export function WarRoomFeature() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 flex items-center gap-2 whitespace-nowrap ${isActive
-                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-lg shadow-rose-500/10'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-                    }`}
+                  className={`px-3.5 py-1.5 rounded-none text-xs font-bold transition-none flex items-center gap-1.5 whitespace-nowrap uppercase font-mono ${
+                    isActive
+                      ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                      : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#39FF14] hover:text-white'
+                  }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span>{tab.label}</span>
@@ -303,37 +282,37 @@ export function WarRoomFeature() {
 
           {/* ── Tab 1: Cross-Agent Perspectives Grid ── */}
           {activeTab === 'overview' && (
-            <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <Bot className="w-4 h-4 text-purple-400" />
-                  <span>Specialized Agent Strategic Audits</span>
+                  <Bot className="w-4 h-4 text-[#39FF14]" />
+                  <span>SPECIALIZED AGENT STRATEGIC AUDITS</span>
                 </h2>
-                <span className="text-[10px] text-emerald-400 font-mono">
-                  4 AI Agents Jointly Analyzing {activeDeal.company}
+                <span className="text-[10px] text-[#39FF14] font-mono uppercase">
+                  4 AI AGENTS JOINTLY ANALYZING {activeDeal.company}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 {strategy.agent_perspectives.map((agent, i) => (
                   <div
                     key={i}
-                    className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-purple-500/40 transition-all duration-300 space-y-3 group hover:shadow-xl hover:shadow-purple-500/5"
+                    className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none space-y-2.5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-white group-hover:text-purple-300 transition-colors truncate">
+                      <span className="text-xs font-black text-white uppercase truncate">
                         {agent.agent_name}
                       </span>
-                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/20">
+                      <span className="text-xs font-mono font-bold text-[#39FF14] bg-[#0B0C10] px-2 py-0.5 rounded-none border border-[#3A4552]">
                         {agent.rating}%
                       </span>
                     </div>
 
-                    <span className="text-[10px] text-purple-400 font-mono block">
-                      {agent.role}
+                    <span className="text-[10px] text-purple-400 font-mono block uppercase">
+                      ROLE: {agent.role}
                     </span>
 
-                    <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/80 p-3 rounded-2xl border border-slate-800/80">
+                    <p className="text-xs text-slate-300 leading-relaxed bg-[#0B0C10] p-3 rounded-none border border-[#3A4552] uppercase">
                       {agent.insight}
                     </p>
                   </div>
@@ -344,25 +323,25 @@ export function WarRoomFeature() {
 
           {/* ── Tab 2: SWOT Matrix & Competitor Battle-Cards ── */}
           {activeTab === 'swot' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-200">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* SWOT Matrix */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-emerald-400" />
-                  <span>Account SWOT Analysis</span>
+                  <Shield className="w-4 h-4 text-[#39FF14]" />
+                  <span>ACCOUNT SWOT MATRIX</span>
                 </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Strengths */}
-                  <div className="p-4.5 rounded-3xl bg-emerald-950/30 border border-emerald-500/30 space-y-2.5 shadow-lg">
-                    <span className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      Strengths
+                  <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#39FF14]/50 space-y-2">
+                    <span className="text-[11px] font-bold text-[#39FF14] uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-none bg-[#39FF14]" />
+                      STRENGTHS
                     </span>
-                    <ul className="space-y-2 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-slate-300 uppercase">
                       {strategy.swot_analysis.strengths.map((s, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-emerald-400 font-bold shrink-0">✓</span>
+                          <span className="text-[#39FF14] font-bold shrink-0">✓</span>
                           <span>{s}</span>
                         </li>
                       ))}
@@ -370,15 +349,15 @@ export function WarRoomFeature() {
                   </div>
 
                   {/* Weaknesses */}
-                  <div className="p-4.5 rounded-3xl bg-amber-950/30 border border-amber-500/30 space-y-2.5 shadow-lg">
-                    <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-400" />
-                      Vulnerabilities
+                  <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#FFB800]/50 space-y-2">
+                    <span className="text-[11px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-none bg-[#FFB800]" />
+                      VULNERABILITIES
                     </span>
-                    <ul className="space-y-2 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-slate-300 uppercase">
                       {strategy.swot_analysis.weaknesses.map((w, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-amber-400 font-bold shrink-0">•</span>
+                          <span className="text-[#FFB800] font-bold shrink-0">•</span>
                           <span>{w}</span>
                         </li>
                       ))}
@@ -386,15 +365,15 @@ export function WarRoomFeature() {
                   </div>
 
                   {/* Opportunities */}
-                  <div className="p-4.5 rounded-3xl bg-blue-950/30 border border-blue-500/30 space-y-2.5 shadow-lg">
-                    <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-blue-400" />
-                      Expansion Opportunities
+                  <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#00E5FF]/50 space-y-2">
+                    <span className="text-[11px] font-bold text-[#00E5FF] uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-none bg-[#00E5FF]" />
+                      OPPORTUNITIES
                     </span>
-                    <ul className="space-y-2 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-slate-300 uppercase">
                       {strategy.swot_analysis.opportunities.map((o, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-blue-400 font-bold shrink-0">↗</span>
+                          <span className="text-[#00E5FF] font-bold shrink-0">↗</span>
                           <span>{o}</span>
                         </li>
                       ))}
@@ -402,15 +381,15 @@ export function WarRoomFeature() {
                   </div>
 
                   {/* Threats */}
-                  <div className="p-4.5 rounded-3xl bg-rose-950/30 border border-rose-500/30 space-y-2.5 shadow-lg">
-                    <span className="text-[11px] font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-rose-400" />
-                      Incumbent Threats
+                  <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#FF2A54]/50 space-y-2">
+                    <span className="text-[11px] font-bold text-[#FF2A54] uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-none bg-[#FF2A54]" />
+                      INCUMBENT THREATS
                     </span>
-                    <ul className="space-y-2 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-slate-300 uppercase">
                       {strategy.swot_analysis.threats.map((t, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-rose-400 font-bold shrink-0">×</span>
+                          <span className="text-[#FF2A54] font-bold shrink-0">×</span>
                           <span>{t}</span>
                         </li>
                       ))}
@@ -420,23 +399,23 @@ export function WarRoomFeature() {
               </div>
 
               {/* Competitor Battle-Cards */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <Target className="w-4 h-4 text-rose-400" />
-                  <span>Live Competitor Battle-Cards</span>
+                  <Target className="w-4 h-4 text-[#FF2A54]" />
+                  <span>LIVE COMPETITOR BATTLE-CARDS</span>
                 </h2>
 
-                <div className="space-y-3.5">
+                <div className="space-y-3">
                   {strategy.competitor_battle_cards.map((card, idx) => {
                     const isCopied = copiedCard === card.competitor;
                     return (
                       <div
                         key={idx}
-                        className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 space-y-3 shadow-xl hover:border-slate-700 transition-all"
+                        className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-2.5 hover:border-[#39FF14] transition-none"
                       >
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-                          <span className="text-xs font-black text-rose-400 uppercase tracking-wider">
-                            vs. {card.competitor}
+                        <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+                          <span className="text-xs font-black text-[#FF2A54] uppercase tracking-wider">
+                            VS. {card.competitor}
                           </span>
                           <div className="flex items-center gap-2">
                             <button
@@ -447,39 +426,39 @@ export function WarRoomFeature() {
                                   `Competitor: ${card.competitor}\nVulnerabilities: ${card.vulnerabilities}\nCounter: ${card.counter_objection}\nKill-Shot: ${card.kill_shot}`
                                 )
                               }
-                              className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                              className="p-1.5 rounded-none bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552] transition-none"
                               title="Copy battle-card"
                             >
                               {isCopied ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                <Check className="w-3.5 h-3.5 text-[#39FF14]" />
                               ) : (
                                 <Copy className="w-3.5 h-3.5" />
                               )}
                             </button>
-                            <Badge variant="danger" className="text-[9px] bg-rose-500/20 text-rose-300">
-                              Displacement Play
+                            <Badge variant="danger" className="text-[9px] uppercase font-mono">
+                              DISPLACEMENT PLAY
                             </Badge>
                           </div>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           <span className="text-[10px] font-bold text-slate-400 uppercase">
-                            Vulnerabilities:
+                            VULNERABILITIES:
                           </span>
-                          <p className="text-xs text-slate-300">{card.vulnerabilities}</p>
+                          <p className="text-xs text-slate-300 uppercase">{card.vulnerabilities}</p>
                         </div>
 
-                        <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-emerald-400 uppercase">
-                            Counter-Objection Playbook:
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] font-bold text-[#39FF14] uppercase">
+                            COUNTER-OBJECTION PLAYBOOK:
                           </span>
-                          <p className="text-xs text-emerald-200/90 leading-relaxed">
+                          <p className="text-xs text-slate-300 leading-relaxed uppercase">
                             {card.counter_objection}
                           </p>
                         </div>
 
-                        <div className="p-3 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-xs text-rose-200 flex items-start gap-2 shadow-inner">
-                          <span className="font-bold shrink-0 text-rose-400">🎯 Kill-Shot:</span>
+                        <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#FF2A54]/40 text-xs text-slate-200 flex items-start gap-2 uppercase">
+                          <span className="font-bold shrink-0 text-[#FF2A54]">🎯 KILL-SHOT:</span>
                           <span>{card.kill_shot}</span>
                         </div>
                       </div>
@@ -492,25 +471,25 @@ export function WarRoomFeature() {
 
           {/* ── Tab 3: Stakeholder Influence & Buying Committee ── */}
           {activeTab === 'stakeholders' && (
-            <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-400" />
-                  <span>Buying Committee & Stakeholder Alignment</span>
+                  <Users className="w-4 h-4 text-[#00E5FF]" />
+                  <span>BUYING COMMITTEE &amp; STAKEHOLDER ALIGNMENT</span>
                 </h2>
-                <span className="text-[10px] text-purple-300 font-mono">
-                  {strategy.stakeholder_influence_map.length} Decision Makers Profiled
+                <span className="text-[10px] text-[#39FF14] font-mono uppercase">
+                  {strategy.stakeholder_influence_map.length} DECISION MAKERS PROFILED
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
                 {strategy.stakeholder_influence_map.map((stakeholder, idx) => (
                   <div
                     key={idx}
-                    className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-blue-500/40 transition-all duration-300 space-y-3 shadow-xl"
+                    className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none space-y-2.5"
                   >
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold text-white truncate">{stakeholder.name}</h4>
+                      <h4 className="text-xs font-bold text-white uppercase truncate">{stakeholder.name}</h4>
                       <Badge
                         variant={
                           stakeholder.stance === 'Champion'
@@ -519,19 +498,19 @@ export function WarRoomFeature() {
                               ? 'default'
                               : 'warning'
                         }
-                        className="text-[9px]"
+                        className="text-[9px] uppercase font-mono"
                       >
                         {stakeholder.stance}
                       </Badge>
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono uppercase">
                       <span>{stakeholder.role}</span>
-                      <span className="text-purple-300 font-bold">Influence: {stakeholder.influence}</span>
+                      <span className="text-[#39FF14] font-bold">INFLUENCE: {stakeholder.influence}</span>
                     </div>
 
-                    <p className="text-xs text-slate-300 bg-slate-950/80 p-3 rounded-2xl border border-slate-800/80 leading-relaxed">
-                      <strong className="text-slate-400 font-bold">Targeted Strategy: </strong>
+                    <p className="text-xs text-slate-300 bg-[#0B0C10] p-2.5 rounded-none border border-[#3A4552] leading-relaxed uppercase">
+                      <strong className="text-slate-400 font-bold">TARGET STRATEGY: </strong>
                       {stakeholder.strategy}
                     </p>
                   </div>
@@ -542,44 +521,46 @@ export function WarRoomFeature() {
 
           {/* ── Tab 4: Interactive Win Action Checklist ── */}
           {activeTab === 'actions' && (
-            <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <Target className="w-4 h-4 text-emerald-400" />
-                  <span>Executive Win Plays & Action Items</span>
+                  <Target className="w-4 h-4 text-[#39FF14]" />
+                  <span>EXECUTIVE WIN PLAYS &amp; ACTION ITEMS</span>
                 </h2>
-                <span className="text-[10px] text-slate-400 font-mono">
+                <span className="text-[10px] text-slate-400 font-mono uppercase">
                   {Object.values(completedActions).filter(Boolean).length} /{' '}
-                  {(strategy.recommended_win_actions || []).length} Completed
+                  {(strategy.recommended_win_actions || []).length} COMPLETED
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {(strategy.recommended_win_actions || []).map((act, idx) => {
                   const isDone = Boolean(completedActions[act]);
                   return (
                     <div
                       key={idx}
                       onClick={() => toggleActionItem(act)}
-                      className={`p-4.5 rounded-2xl border cursor-pointer transition-all duration-200 flex items-center justify-between gap-4 ${isDone
-                        ? 'bg-emerald-950/20 border-emerald-500/40 text-slate-400 line-through'
-                        : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 text-white shadow-lg'
-                        }`}
+                      className={`p-3.5 rounded-none border cursor-pointer transition-none flex items-center justify-between gap-3 ${
+                        isDone
+                          ? 'bg-[#0B0C10] border-[#39FF14]/40 text-slate-500 line-through'
+                          : 'bg-[#1F2833] border-[#3A4552] hover:border-[#39FF14] text-white'
+                      }`}
                     >
                       <div className="flex items-center gap-3">
                         <button
                           type="button"
-                          className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-colors ${isDone
-                            ? 'bg-emerald-500 border-emerald-400 text-white'
-                            : 'border-slate-700 bg-slate-950 text-transparent'
-                            }`}
+                          className={`w-5 h-5 rounded-none border flex items-center justify-center transition-none ${
+                            isDone
+                              ? 'bg-[#39FF14] border-[#39FF14] text-[#0B0C10]'
+                              : 'border-[#3A4552] bg-[#0B0C10] text-transparent'
+                          }`}
                         >
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </button>
-                        <span className="text-xs sm:text-sm font-medium">{act}</span>
+                        <span className="text-xs uppercase font-medium">{act}</span>
                       </div>
 
-                      <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
                     </div>
                   );
                 })}
@@ -588,8 +569,8 @@ export function WarRoomFeature() {
           )}
         </div>
       ) : isLoadingStrategy ? (
-        <div className="py-24 text-center text-slate-500 text-xs">
-          Loading war room consensus strategy...
+        <div className="py-24 text-center text-slate-500 text-xs uppercase font-mono">
+          LOADING WAR ROOM CONSENSUS STRATEGY...
         </div>
       ) : null}
 
@@ -603,3 +584,4 @@ export function WarRoomFeature() {
     </div>
   );
 }
+

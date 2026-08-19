@@ -95,58 +95,58 @@ export function CustomFieldsTab() {
   const getFieldTypeIcon = (type: string) => {
     switch (type) {
       case 'number':
-        return <Hash className="w-3.5 h-3.5 text-blue-400" />;
+        return <Hash className="w-3.5 h-3.5 text-cyan-400" />;
       case 'select':
         return <ListFilter className="w-3.5 h-3.5 text-purple-400" />;
       case 'boolean':
-        return <ToggleLeft className="w-3.5 h-3.5 text-emerald-400" />;
+        return <ToggleLeft className="w-3.5 h-3.5 text-[#39FF14]" />;
       case 'date':
-        return <Calendar className="w-3.5 h-3.5 text-amber-400" />;
+        return <Calendar className="w-3.5 h-3.5 text-[#FFB800]" />;
       case 'currency':
-        return <DollarSign className="w-3.5 h-3.5 text-emerald-400" />;
+        return <DollarSign className="w-3.5 h-3.5 text-[#39FF14]" />;
       default:
-        return <Type className="w-3.5 h-3.5 text-brand-400" />;
+        return <Type className="w-3.5 h-3.5 text-[#39FF14]" />;
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-5 h-5 text-brand-400" />
-            <h2 className="text-lg font-bold text-white">Dynamic Custom Fields &amp; Metadata Schema</h2>
-            <Badge variant="purple" className="text-[10px]">
-              No-Code ETL
+            <SlidersHorizontal className="w-4 h-4 text-[#39FF14]" />
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">DYNAMIC CUSTOM FIELDS &amp; METADATA SCHEMA</h2>
+            <Badge variant="purple" className="text-[9px] uppercase font-mono">
+              NO-CODE ETL
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Extend Contacts, Deals, Customers, and Companies with custom attributes without manual PostgreSQL migrations.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            EXTEND CONTACTS, DEALS, CUSTOMERS, AND COMPANIES WITH CUSTOM ATTRIBUTES WITHOUT DOWNTIME.
           </p>
         </div>
 
-        <Button size="sm" variant="orange" onClick={() => setIsModalOpen(true)} className="flex items-center gap-1.5">
-          <Plus className="w-4 h-4" />
-          <span>Add Custom Field</span>
+        <Button size="sm" variant="primary" onClick={() => setIsModalOpen(true)} className="text-xs h-7 uppercase flex items-center gap-1.5 font-bold">
+          <Plus className="w-3.5 h-3.5 text-[#0B0C10]" />
+          <span>ADD CUSTOM FIELD</span>
         </Button>
       </div>
 
       {/* Entity Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800/80 pb-2">
+      <div className="flex items-center gap-1.5 border-b border-[#3A4552] pb-2 font-mono">
         {[
-          { id: 'contact', label: 'Contacts & Leads' },
-          { id: 'deal', label: 'Deals & Opportunities' },
-          { id: 'customer', label: 'Customers' },
-          { id: 'company', label: 'Companies' },
+          { id: 'contact', label: 'CONTACTS & LEADS' },
+          { id: 'deal', label: 'DEALS & PIPELINE' },
+          { id: 'customer', label: 'CUSTOMERS' },
+          { id: 'company', label: 'COMPANIES' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveEntity(tab.id)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${
               activeEntity === tab.id
-                ? 'bg-slate-800 text-white border border-brand-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                : 'bg-[#1F2833] text-slate-400 border border-[#3A4552] hover:text-white'
             }`}
           >
             {tab.label}
@@ -160,35 +160,35 @@ export function CustomFieldsTab() {
           <LoadingSpinner />
         </div>
       ) : fields && fields.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 font-mono">
           {fields.map((f: CustomFieldDefinition) => (
             <div
               key={f.id}
-              className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+              className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-300">
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono text-slate-300 uppercase">
                     {getFieldTypeIcon(f.field_type)}
-                    <span className="capitalize">{f.field_type}</span>
+                    <span>{f.field_type}</span>
                   </div>
 
                   {f.is_required && (
-                    <Badge variant="danger" className="text-[9px] font-mono py-0">
-                      Required
+                    <Badge variant="danger" className="text-[8px] font-mono py-0 uppercase">
+                      REQUIRED
                     </Badge>
                   )}
                 </div>
 
-                <h3 className="text-sm font-bold text-white">{f.name}</h3>
-                <p className="text-[11px] font-mono text-brand-400/80 mt-0.5">key: {f.field_key}</p>
+                <h3 className="text-xs font-bold text-white uppercase">{f.name}</h3>
+                <p className="text-[10px] font-mono text-[#39FF14] mt-0.5">KEY: {f.field_key}</p>
 
                 {f.options && f.options.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1">
+                  <div className="mt-2.5 flex flex-wrap gap-1">
                     {f.options.map((opt, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-0.5 rounded-md bg-slate-950 text-[10px] text-slate-400 border border-slate-800"
+                        className="px-1.5 py-0.5 rounded-none bg-[#0B0C10] text-[9px] text-slate-300 border border-[#3A4552] uppercase font-mono"
                       >
                         {opt}
                       </span>
@@ -197,14 +197,14 @@ export function CustomFieldsTab() {
                 )}
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                <span className="text-[10px] text-slate-500 font-mono">Entity: {f.entity_type}</span>
+              <div className="mt-3 pt-2.5 border-t border-[#3A4552] flex items-center justify-between">
+                <span className="text-[9px] text-slate-500 font-mono uppercase">ENTITY: {f.entity_type}</span>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => deleteMutation.mutate(f.id)}
                   disabled={deleteMutation.isPending}
-                  className="h-7 px-2 text-slate-400 hover:text-rose-400 hover:bg-rose-950/30"
+                  className="h-6 px-1.5 text-slate-400 hover:text-[#FF2A54]"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </Button>
@@ -213,96 +213,96 @@ export function CustomFieldsTab() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 rounded-2xl bg-slate-900/40 border border-slate-800/60 p-6 space-y-2">
+        <div className="text-center py-12 rounded-none bg-[#1F2833]/50 border border-[#3A4552] p-6 space-y-2 font-mono">
           <Tag className="w-8 h-8 mx-auto text-slate-600 mb-1" />
-          <p className="text-sm font-semibold text-slate-300">No custom fields for {activeEntity}s yet</p>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            Click &quot;Add Custom Field&quot; to define custom properties and start capturing dynamic attributes.
+          <p className="text-xs font-bold text-slate-300 uppercase">NO CUSTOM FIELDS FOR {activeEntity.toUpperCase()}S YET</p>
+          <p className="text-[10px] text-slate-500 max-w-sm mx-auto uppercase">
+            CLICK &quot;ADD CUSTOM FIELD&quot; TO DEFINE CUSTOM PROPERTIES AND START CAPTURING DYNAMIC ATTRIBUTES.
           </p>
         </div>
       )}
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <SlidersHorizontal className="w-5 h-5 text-brand-400" />
-                Add Dynamic Custom Field
+        <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <SlidersHorizontal className="w-4 h-4 text-[#39FF14]" />
+                ADD DYNAMIC CUSTOM FIELD
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white text-xs">
                 ✕
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-xl">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs rounded-none uppercase font-mono">
                 {formError}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Target Entity</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">TARGET ENTITY</label>
                 <select
                   value={activeEntity}
                   onChange={(e) => setActiveEntity(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 capitalize"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 >
-                  <option value="contact">Contacts &amp; Leads</option>
-                  <option value="deal">Deals &amp; Opportunities</option>
-                  <option value="customer">Customers</option>
-                  <option value="company">Companies</option>
+                  <option value="contact">CONTACTS &amp; LEADS</option>
+                  <option value="deal">DEALS &amp; OPPORTUNITIES</option>
+                  <option value="customer">CUSTOMERS</option>
+                  <option value="company">COMPANIES</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Field Label *</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">FIELD LABEL *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Security Clearance Tier"
+                  placeholder="E.G. SECURITY CLEARANCE TIER"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Field Key (Optional snake_case)</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">FIELD KEY (OPTIONAL SNAKE_CASE)</label>
                 <input
                   type="text"
-                  placeholder="e.g. security_clearance_tier"
+                  placeholder="E.G. SECURITY_CLEARANCE_TIER"
                   value={fieldKey}
                   onChange={(e) => setFieldKey(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Data Type</label>
+                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">DATA TYPE</label>
                 <select
                   value={fieldType}
                   onChange={(e) => setFieldType(e.target.value as any)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                 >
-                  <option value="text">Text (String)</option>
-                  <option value="number">Number (Integer / Decimal)</option>
-                  <option value="select">Dropdown Select (Predefined Options)</option>
-                  <option value="boolean">Boolean (Yes / No Toggle)</option>
-                  <option value="date">Date Picker</option>
-                  <option value="currency">Currency ($ USD)</option>
+                  <option value="text">TEXT (STRING)</option>
+                  <option value="number">NUMBER (INTEGER / DECIMAL)</option>
+                  <option value="select">DROPDOWN SELECT (OPTIONS)</option>
+                  <option value="boolean">BOOLEAN (YES / NO TOGGLE)</option>
+                  <option value="date">DATE PICKER</option>
+                  <option value="currency">CURRENCY ($ USD)</option>
                 </select>
               </div>
 
               {fieldType === 'select' && (
-                <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-slate-300">Dropdown Options *</label>
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider">DROPDOWN OPTIONS *</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      placeholder="Add an option (e.g. SOC-2 Type II)"
+                      placeholder="ADD AN OPTION (E.G. SOC-2 TYPE II)"
                       value={optionInput}
                       onChange={(e) => setOptionInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -311,24 +311,24 @@ export function CustomFieldsTab() {
                           handleAddOption();
                         }
                       }}
-                      className="flex-1 px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none"
+                      className="flex-1 px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                     />
-                    <Button type="button" size="sm" variant="secondary" onClick={handleAddOption}>
-                      Add
+                    <Button type="button" size="sm" variant="secondary" onClick={handleAddOption} className="text-xs uppercase">
+                      ADD
                     </Button>
                   </div>
 
-                  <div className="flex flex-wrap gap-1.5 pt-1">
+                  <div className="flex flex-wrap gap-1 pt-1">
                     {options.map((opt) => (
                       <span
                         key={opt}
-                        className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-1.5"
+                        className="px-2 py-0.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 flex items-center gap-1.5 uppercase font-mono"
                       >
                         <span>{opt}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveOption(opt)}
-                          className="text-slate-500 hover:text-rose-400 text-xs"
+                          className="text-slate-500 hover:text-[#FF2A54] text-xs"
                         >
                           ✕
                         </button>
@@ -344,19 +344,19 @@ export function CustomFieldsTab() {
                   id="is_required"
                   checked={isRequired}
                   onChange={(e) => setIsRequired(e.target.checked)}
-                  className="rounded bg-slate-950 border-slate-800 text-brand-500 focus:ring-0"
+                  className="rounded-none bg-[#0B0C10] border-[#3A4552] text-[#39FF14] accent-[#39FF14]"
                 />
-                <label htmlFor="is_required" className="text-xs text-slate-300 cursor-pointer">
-                  Mandatory Required Field
+                <label htmlFor="is_required" className="text-xs font-bold text-slate-300 cursor-pointer uppercase">
+                  MANDATORY REQUIRED FIELD
                 </label>
               </div>
 
-              <div className="pt-3 flex justify-end gap-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
-                  Cancel
+              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+                <Button type="button" variant="outline" size="sm" onClick={() => setIsModalOpen(false)} className="text-xs uppercase">
+                  CANCEL
                 </Button>
-                <Button type="submit" variant="orange" size="sm" disabled={createMutation.isPending}>
-                  {createMutation.isPending ? 'Saving...' : 'Save Field'}
+                <Button type="submit" variant="primary" size="sm" disabled={createMutation.isPending} className="text-xs uppercase font-bold">
+                  {createMutation.isPending ? 'SAVING...' : 'SAVE FIELD'}
                 </Button>
               </div>
             </form>

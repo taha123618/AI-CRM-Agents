@@ -10,10 +10,8 @@ import {
   Sparkles,
   Check,
   ShieldCheck,
-  DollarSign,
   Copy,
   ExternalLink,
-  Layers,
   Send,
   Mail,
   CheckCircle2,
@@ -98,282 +96,266 @@ ${proposal.modules_included.map((m) => `- ${m}`).join('\n')}
 ${proposal.sla_terms}
 
 ## Special Commercial Terms
-${proposal.custom_notes}
+${proposal.custom_notes || 'Standard terms apply.'}
 
-Sign electronically at: ${proposal.esign_url}
-    `.trim();
-
-    navigator.clipboard.writeText(text);
+E-Signature Link: ${proposal.esign_url}
+`;
+    navigator.clipboard.writeText(text.trim());
     setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
+      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-6 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              <FileText className="w-6 h-6" />
+            <div className="p-2 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+              <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-white flex items-center gap-2">
-                <span>AI Smart Proposal & Pitch Studio</span>
-                <Badge variant="success" className="text-[10px] bg-emerald-500/20 text-emerald-300">
-                  DocuSign Ready
+              <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <span>1-CLICK SMART PROPOSAL STUDIO</span>
+                <Badge variant="purple" className="text-[9px] uppercase font-mono">
+                  {deal.company}
                 </Badge>
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Auto-generate customized executive proposal decks and e-signature contracts for{' '}
-                <strong className="text-white">{deal.company}</strong>.
+              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                OPPORTUNITY: {deal.title} • PIPELINE VALUE: ${deal.value?.toLocaleString()} USD
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
           {/* Controls Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 bg-[#0B0C10] p-3.5 rounded-none border border-[#3A4552]">
             <div>
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
-                Pricing Tier Strategy
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+                TIER PACKAGING
               </label>
-              <div className="grid grid-cols-3 gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
-                {(['starter', 'growth', 'enterprise'] as const).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTier(t)}
-                    className={`py-1.5 text-xs font-semibold rounded-lg capitalize transition-all ${
-                      tier === t
-                        ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={tier}
+                onChange={(e) => setTier(e.target.value as any)}
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+              >
+                <option value="starter">STARTER DECK</option>
+                <option value="growth">GROWTH FLEET</option>
+                <option value="enterprise">ENTERPRISE COMMAND</option>
+              </select>
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                  Discretionary Discount
-                </label>
-                <span className="text-xs font-mono font-bold text-emerald-400">{discountPct}%</span>
-              </div>
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+                DISCOUNT (%)
+              </label>
               <input
-                type="range"
+                type="number"
                 min="0"
-                max="30"
-                step="5"
+                max="50"
                 value={discountPct}
                 onChange={(e) => setDiscountPct(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
               />
             </div>
 
-            <div className="flex items-end">
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900 p-3 rounded-xl border border-slate-800 w-full hover:border-slate-700 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={includeSla}
-                  onChange={(e) => setIncludeSla(e.target.checked)}
-                  className="rounded border-slate-700 text-emerald-600 focus:ring-emerald-500 bg-slate-800"
-                />
-                <span className="font-medium">99.95% Emergency SLA</span>
+            <div>
+              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+                SLA GUARANTEE
               </label>
+              <div className="flex items-center h-8">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-slate-300 uppercase text-[10px]">
+                  <input
+                    type="checkbox"
+                    checked={includeSla}
+                    onChange={(e) => setIncludeSla(e.target.checked)}
+                    className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#39FF14] focus:ring-0"
+                  />
+                  <span>99.99% ENTERPRISE SLA</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex items-end">
+              <Button
+                type="button"
+                variant="primary"
+                onClick={() => generateMutation.mutate()}
+                isLoading={generateMutation.isPending}
+                className="w-full h-8 text-xs font-bold uppercase"
+              >
+                <Sparkles className="w-3.5 h-3.5 mr-1" />
+                <span>GENERATE PROPOSAL</span>
+              </Button>
             </div>
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
-              Custom Commercial Clauses & Onboarding Terms
+          {/* Custom Terms Input */}
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+              SPECIAL COMMERCIAL TERMS &amp; CLAUSES
             </label>
             <textarea
+              rows={2}
               value={customTerms}
               onChange={(e) => setCustomTerms(e.target.value)}
-              rows={2}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors"
-              placeholder="Add tailored implementation scopes or legal addendums..."
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
             />
           </div>
 
-          {/* Action Trigger */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="text-xs text-slate-500">
-              Deal Value Baseline:{' '}
-              <strong className="text-slate-300 font-mono">${(deal.value || 60000).toLocaleString()}</strong>
-            </div>
-            <Button
-              onClick={() => generateMutation.mutate()}
-              isLoading={generateMutation.isPending}
-              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold px-6 shadow-lg shadow-emerald-600/20"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              <span>{proposal ? 'Re-Generate Pitch Deck' : 'Auto-Generate AI Proposal'}</span>
-            </Button>
-          </div>
-
-          {/* Render Generated Proposal */}
+          {/* Generated Proposal Preview */}
           {proposal && (
-            <div className="space-y-6 pt-4 border-t border-slate-800 animate-in fade-in slide-in-from-bottom-2 duration-300">
-              {/* Proposal Header Banner */}
-              <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-slate-900 to-teal-500/10 border border-emerald-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="space-y-4 animate-in fade-in border-t border-[#3A4552] pt-4 font-mono">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0B0C10] p-4 rounded-none border border-[#3A4552]">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="purple" className="font-mono text-xs">
-                      {proposal.proposal_id}
+                  <span className="text-[10px] font-mono text-slate-400 block uppercase">FINAL PRICING</span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-black text-[#39FF14] font-mono">
+                      ${proposal.pricing.final_arr.toLocaleString()} USD
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono line-through">
+                      ${proposal.pricing.base_arr.toLocaleString()}
+                    </span>
+                    <Badge variant="success" className="text-[9px] uppercase font-mono">
+                      {proposal.pricing.discount_pct}% SAVINGS
                     </Badge>
-                    <Badge variant="success">{proposal.tier} Tier</Badge>
                   </div>
-                  <h3 className="text-lg font-black text-white mt-1.5">{proposal.company} Commercial Agreement</h3>
-                  <p className="text-xs text-slate-400">Target Deal: {proposal.deal_title}</p>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-[10px] text-slate-500 uppercase font-bold block">
-                    Annual Contract Value (ARR)
-                  </span>
-                  <div className="text-2xl font-black font-mono text-emerald-400">
-                    ${proposal.pricing.final_arr.toLocaleString()}
-                  </div>
-                  {proposal.pricing.discount_pct > 0 && (
-                    <span className="text-[10px] text-rose-400 font-mono">
-                      Includes {proposal.pricing.discount_pct}% discount (-$
-                      {proposal.pricing.discount_amount.toLocaleString()})
-                    </span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyProposal}
+                    className="text-xs h-7 uppercase"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 mr-1 text-[#39FF14]" />
+                        <span>COPIED!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5 mr-1" />
+                        <span>COPY PROPOSAL</span>
+                      </>
+                    )}
+                  </Button>
+                  <a
+                    href={proposal.esign_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1 bg-[#1F2833] hover:bg-[#26313F] text-slate-200 border border-[#3A4552] hover:border-[#39FF14] uppercase transition-none h-7"
+                  >
+                    <span>E-SIGN LINK</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </div>
 
-              {/* Email Dispatch Card */}
-              <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/20 space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <Mail className="w-4 h-4 text-emerald-400" />
-                    Dispatch Proposal & E-Signature URL to Buying Committee
-                  </h4>
+              {/* Proposal Document Body */}
+              <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">
+                    EXECUTIVE SUMMARY
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed uppercase">
+                    {proposal.executive_summary}
+                  </p>
                 </div>
 
-                {emailErrorMsg && (
-                  <div className="p-3 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                    <span>{emailErrorMsg}</span>
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">
+                    INCLUDED AI AGENT MODULES
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {proposal.modules_included.map((mod, i) => (
+                      <div
+                        key={i}
+                        className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552] flex items-center gap-2 text-xs text-slate-200 font-bold uppercase"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#39FF14] shrink-0" />
+                        <span>{mod}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                  <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      SLA &amp; UPTIME TERMS
+                    </span>
+                    <p className="text-[11px] text-slate-300 uppercase leading-relaxed">{proposal.sla_terms}</p>
+                  </div>
+
+                  <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      COMMERCIAL TERMS
+                    </span>
+                    <p className="text-[11px] text-slate-300 uppercase leading-relaxed">{proposal.custom_notes || 'Standard agreement.'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Direct SMTP Email Dispatch Studio */}
+              <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3 font-mono">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-[#39FF14]" />
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                      DISPATCH PROPOSAL VIA SECURE TASK QUEUE
+                    </h3>
+                  </div>
+                  <span className="text-[10px] text-slate-400 uppercase">
+                    SMTP ENVELOPE DELIVERY
+                  </span>
+                </div>
 
                 {emailSuccessMsg && (
-                  <div className="p-3 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-2.5 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-center gap-2 uppercase">
+                    <CheckCircle2 className="w-4 h-4 shrink-0" />
                     <span>{emailSuccessMsg}</span>
                   </div>
                 )}
 
-                <div className="flex items-center gap-2">
+                {emailErrorMsg && (
+                  <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-center gap-2 uppercase">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{emailErrorMsg}</span>
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row items-center gap-2">
                   <input
                     type="email"
-                    placeholder="prospect-cfo@enterprise.com"
+                    required
                     value={recipientEmail}
                     onChange={(e) => setRecipientEmail(e.target.value)}
-                    className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-emerald-500"
+                    placeholder="recipient@company.com"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   />
                   <Button
+                    type="button"
+                    variant="primary"
                     onClick={() => sendEmailMutation.mutate()}
                     isLoading={sendEmailMutation.isPending}
-                    className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold shrink-0 text-xs flex items-center gap-1.5"
+                    className="w-full sm:w-auto shrink-0 text-xs uppercase h-8"
                   >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Email Proposal</span>
+                    <Send className="w-3.5 h-3.5 mr-1" />
+                    <span>SEND PROPOSAL EMAIL</span>
                   </Button>
                 </div>
-              </div>
-
-              {/* Executive Summary */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Executive Strategic Summary</span>
-                </h4>
-                <p className="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-2xl border border-slate-800/80">
-                  {proposal.executive_summary}
-                </p>
-              </div>
-
-              {/* Modules Included */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Architectural Capabilities & Multi-Agent Modules</span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {proposal.modules_included.map((mod, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/50 border border-slate-800 text-xs text-slate-200"
-                    >
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>{mod}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SLA & Terms */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-1.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-                    SLA Guarantee
-                  </span>
-                  <p className="text-xs text-slate-300">{proposal.sla_terms}</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-1.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                    <DollarSign className="w-3.5 h-3.5 text-amber-400" />
-                    Billing & Addendum
-                  </span>
-                  <p className="text-xs text-slate-300">
-                    {proposal.pricing.billing_cadence}. {proposal.custom_notes}
-                  </p>
-                </div>
-              </div>
-
-              {/* Bottom Actions */}
-              <div className="flex items-center justify-between pt-2">
-                <Button variant="outline" size="sm" onClick={handleCopyProposal}>
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-400 mr-1.5" />
-                      <span>Copied to Clipboard!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4 mr-1.5" />
-                      <span>Copy Proposal Text</span>
-                    </>
-                  )}
-                </Button>
-
-                <a
-                  href={proposal.esign_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
-                >
-                  <span>Open E-Signature Portal</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
               </div>
             </div>
           )}

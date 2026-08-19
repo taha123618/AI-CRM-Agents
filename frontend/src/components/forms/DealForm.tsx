@@ -11,12 +11,12 @@ interface DealFormProps {
 }
 
 const STAGE_OPTIONS = [
-  { value: 'prospecting', label: 'Prospecting' },
-  { value: 'qualification', label: 'Qualification' },
-  { value: 'proposal', label: 'Proposal Sent' },
-  { value: 'negotiation', label: 'Negotiation' },
-  { value: 'closed_won', label: 'Closed Won' },
-  { value: 'closed_lost', label: 'Closed Lost' },
+  { value: 'prospecting', label: 'PROSPECTING' },
+  { value: 'qualification', label: 'QUALIFICATION' },
+  { value: 'proposal', label: 'PROPOSAL SENT' },
+  { value: 'negotiation', label: 'NEGOTIATION' },
+  { value: 'closed_won', label: 'CLOSED WON' },
+  { value: 'closed_lost', label: 'CLOSED LOST' },
 ];
 
 export function DealForm({ onSuccess, onCancel }: DealFormProps) {
@@ -46,18 +46,18 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 font-mono">
       <Input
-        label="Deal / Opportunity Name"
-        placeholder="Enterprise License Renewal"
+        label="DEAL / OPPORTUNITY NAME"
+        placeholder="ENTERPRISE LICENSE EXPANSION"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <Input
-          label="Value ($ USD)"
+          label="VALUE ($ USD)"
           type="number"
           placeholder="50000"
           value={value}
@@ -65,16 +65,16 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
           required
         />
         <Select
-          label="Pipeline Stage"
+          label="PIPELINE STAGE"
           options={STAGE_OPTIONS}
           value={stage}
           onChange={(e) => setStage(e.target.value as DealStage)}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <Input
-          label="Win Probability (%)"
+          label="WIN PROBABILITY (%)"
           type="number"
           min="0"
           max="100"
@@ -82,21 +82,21 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
           onChange={(e) => setProbability(e.target.value)}
         />
         <Input
-          label="Contact ID (Optional)"
-          placeholder="UUID or leave empty"
+          label="CONTACT ID (OPTIONAL)"
+          placeholder="UUID OR LEAVE EMPTY"
           value={contactId}
           onChange={(e) => setContactId(e.target.value)}
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+          <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
+            CANCEL
           </Button>
         )}
-        <Button type="submit" isLoading={createDealMutation.isPending}>
-          Create Opportunity
+        <Button type="submit" variant="primary" isLoading={createDealMutation.isPending} className="text-xs uppercase">
+          CREATE OPPORTUNITY
         </Button>
       </div>
     </form>

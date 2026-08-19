@@ -42,28 +42,28 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
   };
 
   return (
-    <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
+    <div className={`relative inline-block text-left font-mono ${className}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-200 hover:text-white hover:bg-slate-800/80 hover:border-brand-500/40 transition-all shadow-sm group"
+        className="flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 hover:text-white hover:border-[#39FF14] transition-none group font-mono uppercase"
         title="Switch Application Language"
       >
-        <span className="text-sm leading-none">{activeLang.flag_emoji || <Globe className="w-3.5 h-3.5 text-brand-400" />}</span>
-        <span className="font-semibold">{activeLang.name}</span>
+        <span className="text-xs leading-none">{activeLang.flag_emoji || <Globe className="w-3.5 h-3.5 text-[#39FF14]" />}</span>
+        <span className="font-bold text-[11px]">{activeLang.name}</span>
         {activeLang.direction === 'rtl' && (
-          <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 font-bold border border-brand-500/30">
+          <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded-none bg-[#0B0C10] text-[#39FF14] font-bold border border-[#39FF14]">
             RTL
           </span>
         )}
-        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-none ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl z-50 py-1.5 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-          <div className="px-3 py-2 border-b border-slate-800/80 flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Select Language</span>
-            <Globe className="w-3.5 h-3.5 text-brand-400" />
+        <div className="absolute right-0 mt-1 w-56 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl z-50 py-1 overflow-hidden font-mono">
+          <div className="px-3 py-1.5 border-b border-[#3A4552] flex items-center justify-between">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">SELECT LOCALE</span>
+            <Globe className="w-3.5 h-3.5 text-[#39FF14]" />
           </div>
 
           <div className="max-h-60 overflow-y-auto py-1">
@@ -76,45 +76,37 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
                     key={lang.code}
                     type="button"
                     onClick={() => handleSelectLanguage(lang)}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs transition-colors ${
+                    className={`w-full flex items-center justify-between px-3 py-1.5 text-xs uppercase transition-none ${
                       isSelected
-                        ? 'bg-brand-600/15 text-brand-300 font-bold'
-                        : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                        ? 'bg-[#0B0C10] text-[#39FF14] font-bold border-l-2 border-[#39FF14]'
+                        : 'text-slate-300 hover:bg-[#0B0C10] hover:text-white'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <span className="text-base">{lang.flag_emoji || '🌐'}</span>
-                      <div className="text-left">
-                        <div className="font-medium text-white">{lang.name}</div>
-                        <div className="text-[10px] text-slate-400">{lang.english_name}</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-1.5">
-                      {lang.direction === 'rtl' && (
-                        <span className="text-[9px] font-mono uppercase px-1 py-0.5 rounded bg-slate-800 text-slate-400">
-                          RTL
-                        </span>
+                    <div className="flex items-center gap-2">
+                      <span>{lang.flag_emoji}</span>
+                      <span>{lang.name}</span>
+                      {lang.code !== lang.english_name.toLowerCase() && (
+                        <span className="text-[10px] text-slate-500 font-mono">({lang.english_name})</span>
                       )}
-                      {isSelected && <Check className="w-4 h-4 text-brand-400" />}
                     </div>
+                    {isSelected && <Check className="w-3.5 h-3.5 text-[#39FF14]" />}
                   </button>
                 );
               })}
           </div>
 
           {onOpenSettings && (
-            <div className="pt-1 border-t border-slate-800/80">
+            <div className="pt-1 mt-1 border-t border-[#3A4552] px-2">
               <button
                 type="button"
                 onClick={() => {
                   setIsOpen(false);
                   onOpenSettings();
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-400 hover:text-brand-300 hover:bg-slate-900 font-medium transition-colors"
+                className="w-full flex items-center gap-2 px-2 py-1.5 text-[10px] text-slate-400 hover:text-white hover:bg-[#0B0C10] rounded-none uppercase transition-none font-mono"
               >
-                <Settings className="w-3.5 h-3.5" />
-                <span>Manage Languages & Translations</span>
+                <Settings className="w-3.5 h-3.5 text-slate-400" />
+                <span>MANAGE ALL LANGUAGES</span>
               </button>
             </div>
           )}

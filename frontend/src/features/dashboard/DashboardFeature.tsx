@@ -38,12 +38,12 @@ export function DashboardFeature() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Leads */}
-        <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
+        <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-brand">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {t('dashboard.total_leads', 'Total Monitored Leads')}
             </span>
-            <div className="p-2.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
+            <div className="p-2.5 rounded-none bg-brand-500/10 text-brand-400 border border-brand-500/20">
               <Users className="w-5 h-5" />
             </div>
           </div>
@@ -62,12 +62,12 @@ export function DashboardFeature() {
         </Card>
 
         {/* Pipeline Value */}
-        <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-brand">
+        <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-brand">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {t('dashboard.active_pipeline', 'Active Pipeline Value')}
             </span>
-            <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <div className="p-2.5 rounded-none bg-blue-500/10 text-blue-400 border border-blue-500/20">
               <Briefcase className="w-5 h-5" />
             </div>
           </div>
@@ -86,12 +86,12 @@ export function DashboardFeature() {
         </Card>
 
         {/* Total Customers */}
-        <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-emerald">
+        <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-emerald">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {t('dashboard.active_customers', 'Active Accounts')}
             </span>
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="p-2.5 rounded-none bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <Building2 className="w-5 h-5" />
             </div>
           </div>
@@ -111,12 +111,12 @@ export function DashboardFeature() {
         </Card>
 
         {/* Monthly Recurring Revenue */}
-        <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40 glow-card-purple">
+        <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-purple">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {t('dashboard.monthly_revenue', 'Monthly Recurring Revenue (MRR)')}
             </span>
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <div className="p-2.5 rounded-none bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <DollarSign className="w-5 h-5" />
             </div>
           </div>
@@ -174,7 +174,7 @@ export function DashboardFeature() {
                 events.map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-1 hover:border-slate-700 transition-colors"
+                    className="p-3 rounded-none bg-slate-900/80 border border-slate-800 text-xs space-y-1 hover:border-slate-700 transition-none"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-brand-400 font-mono">{evt.agent}</span>
@@ -196,7 +196,7 @@ export function DashboardFeature() {
       <Card className="bg-gradient-to-r from-slate-900 via-brand-950/40 to-slate-900 border-brand-500/30">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-2">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-brand-600/20 border border-brand-500/40 flex items-center justify-center text-brand-400 shrink-0">
+            <div className="w-12 h-12 rounded-none bg-brand-600/20 border border-brand-500/40 flex items-center justify-center text-brand-400 shrink-0">
               <Bot className="w-6 h-6" />
             </div>
             <div>

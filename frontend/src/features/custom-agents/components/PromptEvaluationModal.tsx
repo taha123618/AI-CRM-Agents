@@ -62,222 +62,175 @@ export function PromptEvaluationModal({
   const metricsB = benchmarkData?.metrics?.variant_b;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto font-mono">
+      <div className="w-full max-w-5xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="p-5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/90">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] flex items-center justify-between bg-[#1F2833]">
           <div>
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-brand-400" />
-              <h2 className="text-lg font-bold text-white">LLM Prompt Evaluation &amp; Benchmarking Studio</h2>
-              <Badge variant="purple" className="text-[10px]">
-                A/B Benchmark
+              <Sparkles className="w-4 h-4 text-[#39FF14]" />
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider">LLM PROMPT EVALUATION &amp; BENCHMARKING STUDIO</h2>
+              <Badge variant="purple" className="text-[9px] uppercase font-mono">
+                A/B BENCHMARK
               </Badge>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Testing candidate instructions against {agentName} benchmark test suites.
+            <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              TESTING CANDIDATE INSTRUCTIONS AGAINST {agentName.toUpperCase()} BENCHMARK TEST SUITES.
             </p>
           </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="orange"
-              onClick={handleRun}
-              disabled={isRunning}
-              className="flex items-center gap-1.5"
-            >
-              {isRunning ? <LoadingSpinner size="sm" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-              <span>{isRunning ? 'Benchmarking...' : 'Run Benchmark'}</span>
-            </Button>
-
-            <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        {/* Modal Content */}
+        <div className="p-4 sm:p-5 overflow-y-auto space-y-4 font-mono">
           {error && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-xl">
+            <div className="p-3 rounded-none bg-[#0B0C10] border border-[#FF2A54] text-xs text-[#FF2A54] font-mono uppercase">
               {error}
             </div>
           )}
 
-          {/* Prompt Editors Side-by-Side */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="space-y-2 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+          {/* Side-by-Side Prompt Editors */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* Variant A */}
+            <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-300 font-mono flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                  Prompt Variant A (Baseline)
+                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                  VARIANT A (BASELINE PROMPT)
                 </span>
-                <span className="text-[10px] text-slate-500 font-mono">{promptA.split(' ').length} words</span>
+                <span className="text-[10px] text-slate-500 font-mono">Control</span>
               </div>
               <textarea
-                rows={5}
+                rows={6}
                 value={promptA}
                 onChange={(e) => setPromptA(e.target.value)}
-                className="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-200 focus:outline-none focus:border-brand-500 leading-relaxed resize-none"
+                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+                placeholder="Baseline system prompt..."
               />
             </div>
 
-            <div className="space-y-2 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+            {/* Variant B */}
+            <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-300 font-mono flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-                  Prompt Variant B (Candidate)
+                <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">
+                  VARIANT B (CANDIDATE REFINEMENT)
                 </span>
-                <span className="text-[10px] text-slate-500 font-mono">{promptB.split(' ').length} words</span>
+                <span className="text-[10px] text-slate-500 font-mono">Challenger</span>
               </div>
               <textarea
-                rows={5}
+                rows={6}
                 value={promptB}
                 onChange={(e) => setPromptB(e.target.value)}
-                className="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-200 focus:outline-none focus:border-purple-500 leading-relaxed resize-none"
+                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+                placeholder="Candidate system prompt..."
               />
             </div>
           </div>
 
-          {/* Benchmark Results */}
+          {/* Action Trigger */}
+          <div className="flex items-center justify-between p-3 rounded-none bg-[#0B0C10] border border-[#3A4552]">
+            <div className="text-[10px] text-slate-400 uppercase font-mono">
+              EVALUATES AGENT OUTPUT ACCURACY, SCHEMA COMPLIANCE, AND LATENCY OVER {datasetSize} TEST CASES
+            </div>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleRun}
+              disabled={isRunning}
+              className="text-xs uppercase"
+            >
+              {isRunning ? <LoadingSpinner size="sm" /> : <Play className="w-3.5 h-3.5 mr-1" />}
+              <span>{isRunning ? 'EVALUATING...' : 'RUN BENCHMARK'}</span>
+            </Button>
+          </div>
+
+          {/* Results Display */}
           {benchmarkData && (
-            <div className="space-y-5 animate-in fade-in duration-200">
+            <div className="space-y-3 pt-2 font-mono">
               {/* Winner Banner */}
-              <div
-                className={`p-4 rounded-2xl border flex items-center justify-between ${
-                  benchmarkData.winner === 'B'
-                    ? 'bg-purple-950/40 border-purple-500/40 text-purple-200'
-                    : benchmarkData.winner === 'A'
-                    ? 'bg-blue-950/40 border-blue-500/40 text-blue-200'
-                    : 'bg-slate-900 border-slate-800 text-slate-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
-                    <Trophy className="w-5 h-5" />
+              <div className="p-3 rounded-none bg-[#0B0C10] border border-[#39FF14] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-none bg-[#1F2833] text-[#39FF14] border border-[#3A4552]">
+                    <Trophy className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">
-                      {benchmarkData.winner === 'Tie'
-                        ? 'Benchmark Tied (Both variants performed equally)'
-                        : `Variant ${benchmarkData.winner} Emerged as the Winner!`}
+                    <h3 className="text-xs font-bold text-white uppercase">
+                      RECOMMENDED WINNER: {benchmarkData.winner === 'variant_b' ? 'VARIANT B (CHALLENGER)' : 'VARIANT A (BASELINE)'}
                     </h3>
-                    <p className="text-xs text-slate-400">
-                      Evaluated on {benchmarkData.dataset_size || datasetSize} test scenarios with automated Groundedness &amp; BANT accuracy scoring.
+                    <p className="text-[10px] text-slate-400 uppercase mt-0.5">
+                      {benchmarkData.rationale}
                     </p>
                   </div>
                 </div>
 
-                {onApplyWinner && benchmarkData.winner !== 'Tie' && (
+                {onApplyWinner && (
                   <Button
                     size="sm"
-                    variant="orange"
+                    variant="primary"
                     onClick={() => {
-                      const winnerText = benchmarkData.winner === 'B' ? promptB : promptA;
-                      onApplyWinner(winnerText);
+                      onApplyWinner(benchmarkData.winner === 'variant_b' ? promptB : promptA);
                       onClose();
                     }}
+                    className="text-xs uppercase shrink-0"
                   >
-                    Apply Winner Prompt
+                    <span>APPLY WINNING PROMPT</span>
                   </Button>
                 )}
               </div>
 
-              {/* Side-by-Side Metric Radar Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Variant A Cards */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/90 space-y-3">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                    <span className="text-xs font-bold text-blue-400">Variant A Metrics</span>
-                    <span className="text-lg font-bold font-mono text-white">{metricsA?.accuracy_score}%</span>
+              {/* Metrics Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Variant A Score Card */}
+                <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
+                  <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+                    <span className="text-xs font-bold text-cyan-400 uppercase">VARIANT A SCORECARD</span>
+                    <Badge variant="default" className="text-[9px] uppercase font-mono">
+                      {metricsA?.composite_score ?? 0}% COMPOSITE
+                    </Badge>
                   </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Groundedness</span>
-                      <span className="font-mono text-emerald-400 font-bold">
-                        {Math.round((metricsA?.groundedness || 0) * 100)}%
-                      </span>
+                  <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">SCHEMA COMPLIANCE</span>
+                      <span className="text-xs font-bold text-white">{metricsA?.schema_compliance ?? 0}%</span>
                     </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Hallucination Rate</span>
-                      <span className="font-mono text-amber-400 font-bold">
-                        {Math.round((metricsA?.hallucination_rate || 0) * 100)}%
-                      </span>
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">AVG LATENCY</span>
+                      <span className="text-xs font-bold text-white">{metricsA?.avg_latency_ms ?? 0}MS</span>
                     </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Latency</span>
-                      <span className="font-mono text-slate-200">{metricsA?.avg_latency_ms} ms</span>
-                    </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Token Cost</span>
-                      <span className="font-mono text-slate-200">${metricsA?.cost_estimate_usd}</span>
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">QUALITY RATING</span>
+                      <span className="text-xs font-bold text-[#39FF14]">{metricsA?.quality_score ?? 0}%</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Variant B Cards */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-purple-900/40 space-y-3">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                    <span className="text-xs font-bold text-purple-400">Variant B Metrics</span>
-                    <span className="text-lg font-bold font-mono text-white">{metricsB?.accuracy_score}%</span>
+                {/* Variant B Score Card */}
+                <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
+                  <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+                    <span className="text-xs font-bold text-purple-400 uppercase">VARIANT B SCORECARD</span>
+                    <Badge variant="purple" className="text-[9px] uppercase font-mono">
+                      {metricsB?.composite_score ?? 0}% COMPOSITE
+                    </Badge>
                   </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Groundedness</span>
-                      <span className="font-mono text-emerald-400 font-bold">
-                        {Math.round((metricsB?.groundedness || 0) * 100)}%
-                      </span>
+                  <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">SCHEMA COMPLIANCE</span>
+                      <span className="text-xs font-bold text-white">{metricsB?.schema_compliance ?? 0}%</span>
                     </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Hallucination Rate</span>
-                      <span className="font-mono text-amber-400 font-bold">
-                        {Math.round((metricsB?.hallucination_rate || 0) * 100)}%
-                      </span>
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">AVG LATENCY</span>
+                      <span className="text-xs font-bold text-white">{metricsB?.avg_latency_ms ?? 0}MS</span>
                     </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Latency</span>
-                      <span className="font-mono text-slate-200">{metricsB?.avg_latency_ms} ms</span>
-                    </div>
-
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                      <span className="text-[10px] text-slate-500 block">Token Cost</span>
-                      <span className="font-mono text-slate-200">${metricsB?.cost_estimate_usd}</span>
+                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                      <span className="text-slate-500 block">QUALITY RATING</span>
+                      <span className="text-xs font-bold text-[#39FF14]">{metricsB?.quality_score ?? 0}%</span>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Case-by-Case Breakdown */}
-              <div className="space-y-3">
-                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                  Test Case Execution Inspector ({benchmarkData.metrics?.cases?.length || 0})
-                </h4>
-
-                <div className="space-y-2">
-                  {benchmarkData.metrics?.cases?.map((tc: any) => (
-                    <div
-                      key={tc.test_case_id}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2 text-xs"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">{tc.scenario}</span>
-                        <Badge variant="success" className="text-[9px]">
-                          Matched Criteria
-                        </Badge>
-                      </div>
-                      <p className="text-slate-400 font-mono text-[11px] bg-slate-900 p-2 rounded-lg">
-                        Input: {tc.input}
-                      </p>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>

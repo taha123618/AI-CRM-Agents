@@ -57,28 +57,28 @@ export function LoginPage() {
 
   return (
     <AuthLayout
-      title="Welcome back"
-      subtitle="Sign in to your AI-Powered CRM account"
+      title="OPERATOR AUTHENTICATION"
+      subtitle="SIGN IN TO ENTERPRISE COMMAND"
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-          <div>{errorMessage}</div>
+        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+          <div className="uppercase">{errorMessage}</div>
         </div>
       )}
 
       {/* Social SSO Buttons */}
-      <div className="space-y-2.5">
+      <div className="space-y-2 font-mono">
         <Button
           type="button"
           variant="outline"
           onClick={() => handleSsoClick('google')}
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2 text-xs py-2 h-9"
         >
-          <Building className="w-4 h-4 text-orange-400" />
-          Continue with Google Workspace
+          <Building className="w-3.5 h-3.5 text-amber-400" />
+          <span>CONTINUE WITH GOOGLE WORKSPACE</span>
         </Button>
 
         <Button
@@ -86,30 +86,30 @@ export function LoginPage() {
           variant="outline"
           onClick={() => handleSsoClick('microsoft')}
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2 text-xs py-2 h-9"
         >
-          <Building className="w-4 h-4 text-cyan-400" />
-          Continue with Microsoft Entra ID
+          <Building className="w-3.5 h-3.5 text-cyan-400" />
+          <span>CONTINUE WITH MICROSOFT ENTRA ID</span>
         </Button>
       </div>
 
-      <div className="relative my-4">
+      <div className="relative my-3 font-mono">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-[#3A4552]" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-slate-900 px-2 text-slate-500">Or continue with email</span>
+        <div className="relative flex justify-center text-[10px] uppercase">
+          <span className="bg-[#1F2833] px-2 text-slate-500">OR DIRECT CREDENTIALS</span>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3 font-mono">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-            Email Address
+          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            EMAIL ADDRESS
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
@@ -117,25 +117,25 @@ export function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@enterprise.com"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono uppercase"
             />
           </div>
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300">
-              Password
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-[10px] font-bold text-slate-300 uppercase">
+              PASSWORD
             </label>
             <Link
               to="/forgot-password"
-              className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
+              className="text-[10px] text-[#39FF14] hover:underline uppercase"
             >
-              Forgot password?
+              FORGOT PASSWORD?
             </Link>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="password"
               required
@@ -143,37 +143,38 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-1">
-          <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+        <div className="flex items-center justify-between pt-0.5">
+          <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer uppercase text-[10px]">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="rounded border-slate-700 bg-slate-900 text-brand-500 focus:ring-0"
+              className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#39FF14] focus:ring-0"
             />
-            <span>Remember this device</span>
+            <span>REMEMBER THIS DEVICE</span>
           </label>
         </div>
 
         <Button
           type="submit"
+          variant="primary"
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-2.5 shadow-lg shadow-brand-500/20 text-sm font-semibold mt-2"
+          className="w-full flex items-center justify-center gap-2 text-xs font-bold py-2 h-9 mt-2 uppercase"
         >
-          <LogIn className="w-4 h-4" />
-          {isLoggingIn ? 'Signing in...' : 'Sign In'}
+          <LogIn className="w-3.5 h-3.5" />
+          <span>{isLoggingIn ? 'SIGNING IN...' : 'SIGN IN'}</span>
         </Button>
       </form>
 
-      <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/60">
-        Don't have an enterprise account?{' '}
-        <Link to="/register" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
-          Create Account
+      <div className="text-center text-[10px] text-slate-400 pt-2 border-t border-[#3A4552] font-mono uppercase">
+        NO OPERATOR ACCOUNT?{' '}
+        <Link to="/register" className="text-[#39FF14] font-bold hover:underline">
+          REGISTER ACCOUNT
         </Link>
       </div>
     </AuthLayout>

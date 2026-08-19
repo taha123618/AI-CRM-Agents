@@ -11,11 +11,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, icon, required, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1 font-mono">
         {label && (
-          <label className="block text-xs font-medium text-slate-300">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">
             {label}
-            {required && <span className="text-rose-400 ml-0.5">*</span>}
+            {required && <span className="text-[#FF2A54] ml-0.5">*</span>}
           </label>
         )}
         <div className="relative flex items-center">
@@ -23,15 +23,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={cn(
-              'w-full bg-slate-900/90 text-slate-100 placeholder:text-slate-500 border border-slate-700/80 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all duration-200',
+              'w-full bg-[#0B0C10] text-slate-100 placeholder:text-slate-600 border border-[#3A4552] rounded-none px-3 py-1.5 text-xs font-mono focus:outline-none focus:border-[#39FF14] transition-none',
               icon && 'pl-9',
-              error && 'border-rose-500/80 focus:ring-rose-500/50',
+              error && 'border-[#FF2A54] focus:border-[#FF2A54]',
               className
             )}
             {...props}
           />
         </div>
-        {error && <p className="text-xs text-rose-400">{error}</p>}
+        {error && <p className="text-[10px] font-mono text-[#FF2A54] uppercase">{error}</p>}
       </div>
     );
   }

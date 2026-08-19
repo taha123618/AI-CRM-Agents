@@ -78,23 +78,17 @@ const PERMISSION_TAXONOMY: PermissionCategory[] = [
       { id: 'war_room:read', label: 'View Deal War Room', description: 'Inspect competitor battle-cards & SWOT' },
       { id: 'war_room:write', label: 'Generate Smart Proposals', description: 'Build e-sign proposals & automation rules' },
       { id: 'custom_agents:read', label: 'View Custom Agents', description: 'Inspect visual prompt toolkits' },
-      { id: 'custom_agents:write', label: 'Build & Execute Agents', description: 'Create and test custom agent instances' },
+      { id: 'custom_agents:write', label: 'Deploy Custom Agents', description: 'Publish custom AI agent bots' },
     ],
   },
   {
-    category: 'Analytics, Governance & System',
-    icon: '🛡️',
+    category: 'Administration & System Forensics',
+    icon: '⚙️',
     items: [
-      { id: 'analytics:read', label: 'View Revenue & Agent Analytics', description: 'Access executive dashboards and charts' },
-      { id: 'analytics:export', label: 'Export Data CSV Reports', description: 'Execute 1-click bulk CSV extractions' },
-      { id: 'forecasting:read', label: 'View Monte Carlo Simulations', description: 'Inspect P10/P50/P90 ARR projections' },
-      { id: 'forecasting:write', label: 'Execute Forecast Runs', description: 'Run stochastic Monte Carlo simulations' },
-      { id: 'webhooks:read', label: 'View Webhook Endpoints', description: 'Inspect webhook delivery logs' },
-      { id: 'webhooks:write', label: 'Manage Webhook Endpoints', description: 'Create, test, and delete webhooks' },
-      { id: 'tasks:read', label: 'View Background Task Monitor', description: 'Inspect task queue workers and states' },
-      { id: 'tasks:write', label: 'Manage & Cancel Tasks', description: 'Trigger long-running queue jobs' },
-      { id: 'audits:read', label: 'View Compliance Audit Trail', description: 'Inspect SOC2 / GDPR forensic access logs' },
-      { id: 'settings:manage', label: 'Manage RBAC & System Settings', description: 'Full administrative governance control' },
+      { id: 'settings:read', label: 'View System Settings', description: 'Access system health and custom fields' },
+      { id: 'settings:write', label: 'Modify Infrastructure', description: 'Update webhooks, ETL, and integrations' },
+      { id: 'users:manage', label: 'User & RBAC Management', description: 'Provision accounts and assign permissions' },
+      { id: 'audit_logs:read', label: 'View Compliance Logs', description: 'Inspect forensic audit trails and security' },
     ],
   },
 ];
@@ -104,10 +98,18 @@ export function UserManagementTab() {
   const { user: currentUser } = useAuth();
   const isAdmin = currentUser?.role === 'admin';
 
+  // Search & Filter State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
   // Modal States
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<SystemUser | null>(null);
   const [deletingUser, setDeletingUser] = useState<SystemUser | null>(null);
+  const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Create Form State
   const [createName, setCreateName] = useState('');
@@ -120,28 +122,17 @@ export function UserManagementTab() {
   // Edit Form State
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
-  const [editPassword, setEditPassword] = useState('');
   const [editRole, setEditRole] = useState<'admin' | 'sales' | 'support' | 'auditor'>('sales');
   const [editActive, setEditActive] = useState(true);
   const [editPermissions, setEditPermissions] = useState<string[]>([]);
-
-  // Search & Filter State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [roleFilter, setRoleFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-
-  // Pagination State
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-
-  // Feedback State
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [editPassword, setEditPassword] = useState('');
 
   const showNotification = (message: string, type: 'success' | 'error' = 'success') => {
-    setFeedback({ type, message });
+    setFeedback({ message, type });
     setTimeout(() => setFeedback(null), 4000);
   };
 
+  // Queries
   const { data: users = [], isLoading } = useQuery<SystemUser[]>({
     queryKey: ['system-users'],
     queryFn: settingsApi.getUsers,
@@ -348,40 +339,43 @@ export function UserManagementTab() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 font-mono">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Shield className="w-5 h-5 text-brand-400" />
-            Enterprise Role-Based Access Control (RBAC) & Permissions
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <Shield className="w-4 h-4 text-[#39FF14]" />
+            ROLE-BASED ACCESS CONTROL (RBAC) &amp; USER PERMISSIONS
           </h2>
-          <p className="text-sm text-slate-400">
-            Define fine-grained operational permissions, administrative delegations, and security policies across departments.
+          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            DEFINE FINE-GRAINED OPERATIONAL PERMISSIONS, ADMINISTRATIVE DELEGATIONS, AND SECURITY POLICIES.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
+            size="sm"
             onClick={() => logoutMutation.mutate()}
-            className="text-xs border-slate-700 hover:bg-slate-800"
+            className="text-xs h-7 uppercase"
           >
-            <LogOut className="w-3.5 h-3.5 mr-1 text-slate-400" />
-            Clear Session
+            <LogOut className="w-3 h-3 mr-1 text-slate-400" />
+            CLEAR SESSION
           </Button>
 
           {isAdmin ? (
             <Button
               onClick={() => setIsCreateOpen(true)}
-              className="bg-brand-500 hover:bg-brand-600 text-white text-xs shadow-lg shadow-brand-500/20"
+              variant="primary"
+              size="sm"
+              className="text-xs h-7 uppercase font-bold"
             >
-              <UserPlus className="w-3.5 h-3.5 mr-1" />
-              Provision New User
+              <UserPlus className="w-3.5 h-3.5 mr-1 text-[#0B0C10]" />
+              PROVISION USER
             </Button>
           ) : (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 text-xs">
-              <Lock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Read-Only Mode</span>
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-slate-400 text-[10px] uppercase font-mono">
+              <Lock className="w-3 h-3 text-[#FFB800]" />
+              <span>READ-ONLY MODE</span>
             </div>
           )}
         </div>
@@ -389,15 +383,15 @@ export function UserManagementTab() {
 
       {/* RBAC Role Notice for Non-Admins */}
       {!isAdmin && (
-        <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3 rounded-none bg-[#0B0C10] border border-amber-500/40 text-amber-300 text-xs flex items-center justify-between gap-3 font-mono uppercase">
+          <div className="flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 text-[#FFB800] shrink-0" />
             <span>
-              Signed in as <strong className="uppercase font-mono text-amber-300">{(currentUser?.role || 'User')}</strong>. Full user CRUD & permission delegation is restricted exclusively to <strong>Super Admin</strong>.
+              SIGNED IN AS <strong className="font-mono text-[#FFB800]">{(currentUser?.role || 'User').toUpperCase()}</strong>. FULL USER CRUD &amp; PERMISSION DELEGATION IS RESTRICTED TO <strong>SUPER ADMIN</strong>.
             </span>
           </div>
-          <Badge variant="warning" className="text-[10px] uppercase font-mono">
-            Auditing Access
+          <Badge variant="warning" className="text-[9px] uppercase font-mono">
+            AUDITING ACCESS
           </Badge>
         </div>
       )}
@@ -405,17 +399,17 @@ export function UserManagementTab() {
       {/* Notifications */}
       {feedback && (
         <div
-          className={`p-3.5 rounded-xl border text-xs flex items-center justify-between gap-2 animate-in fade-in ${
+          className={`p-3 rounded-none border text-xs flex items-center justify-between gap-2 uppercase font-mono animate-in fade-in ${
             feedback.type === 'error'
-              ? 'bg-rose-950/70 border-rose-500/40 text-rose-300'
-              : 'bg-emerald-950/60 border-emerald-500/30 text-emerald-300'
+              ? 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
+              : 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
           }`}
         >
           <div className="flex items-center gap-2">
             {feedback.type === 'error' ? (
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#39FF14] shrink-0" />
             )}
             <span>{feedback.message}</span>
           </div>
@@ -426,11 +420,11 @@ export function UserManagementTab() {
       )}
 
       {/* Search, Filter & Quick Stats Toolbar */}
-      <Card className="p-4 border-slate-800 bg-slate-900/60">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <Card className="p-3 border-[#3A4552] bg-[#1F2833] font-mono">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
@@ -438,43 +432,43 @@ export function UserManagementTab() {
                 setSearchQuery(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search by full name or email address..."
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-brand-500 transition-colors"
+              placeholder="SEARCH BY FULL NAME OR EMAIL..."
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
             />
           </div>
 
           {/* Filters */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+          <div className="flex items-center gap-2 flex-wrap font-mono">
+            <div className="flex items-center gap-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1">
+              <Filter className="w-3 h-3 text-slate-500" />
               <select
                 value={roleFilter}
                 onChange={(e) => {
                   setRoleFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer uppercase font-mono"
               >
-                <option value="all">All Roles ({users.length})</option>
-                <option value="admin">Admin ({users.filter((u) => u.role === 'admin').length})</option>
-                <option value="sales">Sales ({users.filter((u) => u.role === 'sales').length})</option>
-                <option value="support">Support ({users.filter((u) => u.role === 'support').length})</option>
-                <option value="auditor">Auditor ({users.filter((u) => u.role === 'auditor').length})</option>
+                <option value="all" className="bg-[#0B0C10]">ALL ROLES ({users.length})</option>
+                <option value="admin" className="bg-[#0B0C10]">ADMIN ({users.filter((u) => u.role === 'admin').length})</option>
+                <option value="sales" className="bg-[#0B0C10]">SALES ({users.filter((u) => u.role === 'sales').length})</option>
+                <option value="support" className="bg-[#0B0C10]">SUPPORT ({users.filter((u) => u.role === 'support').length})</option>
+                <option value="auditor" className="bg-[#0B0C10]">AUDITOR ({users.filter((u) => u.role === 'auditor').length})</option>
               </select>
             </div>
 
-            <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5">
+            <div className="flex items-center gap-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1">
               <select
                 value={statusFilter}
                 onChange={(e) => {
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer uppercase font-mono"
               >
-                <option value="all">All Statuses</option>
-                <option value="active">Active Only ({users.filter((u) => u.is_active).length})</option>
-                <option value="suspended">Suspended Only ({users.filter((u) => !u.is_active).length})</option>
+                <option value="all" className="bg-[#0B0C10]">ALL STATUSES</option>
+                <option value="active" className="bg-[#0B0C10]">ACTIVE ({users.filter((u) => u.is_active).length})</option>
+                <option value="suspended" className="bg-[#0B0C10]">SUSPENDED ({users.filter((u) => !u.is_active).length})</option>
               </select>
             </div>
 
@@ -483,11 +477,11 @@ export function UserManagementTab() {
                 variant="ghost"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-slate-400 hover:text-white h-8 px-2"
+                className="text-xs text-slate-400 hover:text-white h-7 px-2 uppercase"
                 title="Reset Filters"
               >
-                <RotateCcw className="w-3.5 h-3.5 mr-1" />
-                Reset
+                <RotateCcw className="w-3 h-3 mr-1" />
+                RESET
               </Button>
             )}
           </div>
@@ -495,51 +489,51 @@ export function UserManagementTab() {
       </Card>
 
       {/* Users & RBAC Permissions Table */}
-      <Card className="border-slate-800 overflow-hidden bg-slate-900/40">
+      <Card className="border-[#3A4552] overflow-hidden bg-[#1F2833]">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse font-mono">
             <thead>
-              <tr className="border-b border-slate-800/80 bg-slate-900/90 text-slate-400 font-semibold uppercase tracking-wider">
-                <th className="py-3.5 px-4">User</th>
-                <th className="py-3.5 px-4">Email</th>
-                <th className="py-3.5 px-4">Department Role</th>
-                <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4">Granted Permissions</th>
-                <th className="py-3.5 px-4">Created Date</th>
-                <th className="py-3.5 px-4 text-right">Actions</th>
+              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-2.5 px-3">USER</th>
+                <th className="py-2.5 px-3">EMAIL</th>
+                <th className="py-2.5 px-3">ROLE</th>
+                <th className="py-2.5 px-3">STATUS</th>
+                <th className="py-2.5 px-3">SCOPES</th>
+                <th className="py-2.5 px-3">CREATED</th>
+                <th className="py-2.5 px-3 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/50">
+            <tbody className="divide-y divide-[#3A4552]">
               {paginatedUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-10 text-center text-slate-500">
-                    <User className="w-8 h-8 mx-auto mb-2 text-slate-600" />
-                    No users matching the active search or filter criteria.
+                  <td colSpan={7} className="py-8 text-center text-slate-500 uppercase">
+                    <User className="w-6 h-6 mx-auto mb-1 text-slate-600" />
+                    NO USERS MATCHING THE ACTIVE SEARCH OR FILTER CRITERIA.
                   </td>
                 </tr>
               ) : (
                 paginatedUsers.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-800/40 transition-colors group">
+                  <tr key={u.id} className="hover:bg-[#0B0C10] transition-none group">
                     {/* Full Name & Avatar */}
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 font-bold text-xs shrink-0">
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs shrink-0 font-mono">
                           {u.full_name?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <div>
-                          <span className="font-semibold text-slate-200 block">{u.full_name}</span>
+                          <span className="font-bold text-white block uppercase text-[11px]">{u.full_name}</span>
                           {currentUser?.id === u.id && (
-                            <span className="text-[10px] text-brand-400 font-mono">(Your Session)</span>
+                            <span className="text-[9px] text-[#39FF14] font-mono">(YOUR SESSION)</span>
                           )}
                         </div>
                       </div>
                     </td>
 
                     {/* Email */}
-                    <td className="py-3.5 px-4 text-slate-400 font-mono">{u.email}</td>
+                    <td className="py-2 px-3 text-slate-400 font-mono text-[11px]">{u.email}</td>
 
                     {/* Role Dropdown / Badge */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-2 px-3">
                       {isAdmin ? (
                         <select
                           value={u.role}
@@ -547,94 +541,80 @@ export function UserManagementTab() {
                             updateRoleMutation.mutate({ userId: u.id, newRole: e.target.value })
                           }
                           disabled={updateRoleMutation.isPending}
-                          className="bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-brand-500 cursor-pointer"
+                          className="bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-0.5 text-xs text-slate-200 focus:outline-none focus:border-[#39FF14] cursor-pointer font-mono uppercase"
                         >
-                          <option value="admin">Admin (Superuser)</option>
-                          <option value="sales">Sales (Pipeline & SDR)</option>
-                          <option value="support">Support (Success & CS)</option>
-                          <option value="auditor">Auditor (Compliance)</option>
+                          <option value="admin">ADMIN (SUPERUSER)</option>
+                          <option value="sales">SALES (PIPELINE &amp; SDR)</option>
+                          <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
+                          <option value="auditor">AUDITOR (COMPLIANCE)</option>
                         </select>
                       ) : (
-                        <Badge variant={getRoleBadgeVariant(u.role)} className="uppercase text-[10px] font-mono">
+                        <Badge variant={getRoleBadgeVariant(u.role)} className="uppercase text-[9px] font-mono">
                           {u.role}
                         </Badge>
                       )}
                     </td>
 
                     {/* Status Toggle / Badge */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-2 px-3">
                       {isAdmin ? (
                         <button
                           onClick={() => toggleStatusMutation.mutate({ userId: u.id, isActive: !u.is_active })}
                           disabled={currentUser?.id === u.id || toggleStatusMutation.isPending}
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border transition-none font-mono ${
                             u.is_active
-                              ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300 hover:bg-rose-950/40 hover:border-rose-500/40 hover:text-rose-300'
-                              : 'bg-rose-950/60 border-rose-500/40 text-rose-300 hover:bg-emerald-950/40 hover:border-emerald-500/40 hover:text-emerald-300'
+                              ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14] hover:border-[#FF2A54] hover:text-[#FF2A54]'
+                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54] hover:border-[#39FF14] hover:text-[#39FF14]'
                           } ${currentUser?.id === u.id ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                           title={currentUser?.id === u.id ? 'Cannot suspend self' : 'Click to toggle status'}
                         >
-                          {u.is_active ? (
-                            <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                              Active
-                            </>
-                          ) : (
-                            <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
-                              Suspended
-                            </>
-                          )}
+                          {u.is_active ? 'ACTIVE' : 'SUSPENDED'}
                         </button>
                       ) : (
                         <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border font-mono ${
                             u.is_active
-                              ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
-                              : 'bg-rose-950/60 border-rose-500/40 text-rose-300'
+                              ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
+                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
                           }`}
                         >
-                          <span className={`w-1.5 h-1.5 rounded-full ${u.is_active ? 'bg-emerald-400' : 'bg-rose-400'}`} />
-                          {u.is_active ? 'Active' : 'Suspended'}
+                          {u.is_active ? 'ACTIVE' : 'SUSPENDED'}
                         </span>
                       )}
                     </td>
 
                     {/* Permissions summary badge */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-2 px-3">
                       {u.role === 'admin' ? (
-                        <Badge variant="purple" className="text-[10px] font-mono">
+                        <Badge variant="purple" className="text-[9px] font-mono uppercase">
                           * ALL (SUPERADMIN)
                         </Badge>
                       ) : (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[11px] font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-slate-300">
-                            {(u.permissions && u.permissions.length > 0 ? u.permissions.length : (ROLE_DEFAULT_PERMISSIONS[u.role] || []).length)} Scopes
-                          </span>
-                          <span className="text-[10px] text-slate-500 truncate max-w-[140px]" title={(u.permissions || ROLE_DEFAULT_PERMISSIONS[u.role] || []).join(', ')}>
-                            {(u.permissions || ROLE_DEFAULT_PERMISSIONS[u.role] || []).slice(0, 2).join(', ')}...
+                          <span className="text-[10px] font-mono bg-[#0B0C10] px-1.5 py-0.5 rounded-none border border-[#3A4552] text-[#39FF14]">
+                            {(u.permissions && u.permissions.length > 0 ? u.permissions.length : (ROLE_DEFAULT_PERMISSIONS[u.role] || []).length)} SCOPES
                           </span>
                         </div>
                       )}
                     </td>
 
                     {/* Created Date */}
-                    <td className="py-3.5 px-4 text-slate-500">
+                    <td className="py-2 px-3 text-slate-500 text-[10px]">
                       {new Date(u.created_at).toLocaleDateString()}
                     </td>
 
                     {/* Actions Column */}
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-2 px-3 text-right">
                       {isAdmin ? (
-                        <div className="flex items-center justify-end gap-1.5">
+                        <div className="flex items-center justify-end gap-1">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleOpenEdit(u)}
-                            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800"
+                            className="p-1 text-slate-400 hover:text-white h-6 w-6"
                             title="Edit Permissions & User Profile"
                           >
-                            <Edit2 className="w-3.5 h-3.5 text-brand-400" />
+                            <Edit2 className="w-3 h-3 text-[#39FF14]" />
                           </Button>
 
                           <Button
@@ -642,18 +622,18 @@ export function UserManagementTab() {
                             size="sm"
                             onClick={() => setDeletingUser(u)}
                             disabled={currentUser?.id === u.id}
-                            className={`p-1.5 ${
+                            className={`p-1 h-6 w-6 ${
                               currentUser?.id === u.id
                                 ? 'text-slate-600 cursor-not-allowed'
-                                : 'text-slate-400 hover:text-rose-400 hover:bg-rose-950/40'
+                                : 'text-slate-400 hover:text-[#FF2A54]'
                             }`}
                             title={currentUser?.id === u.id ? 'Cannot delete self' : 'Delete User'}
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-3 h-3" />
                           </Button>
                         </div>
                       ) : (
-                        <span className="text-slate-500 text-[11px] italic">Read-Only</span>
+                        <span className="text-slate-500 text-[10px] uppercase">READ-ONLY</span>
                       )}
                     </td>
                   </tr>
@@ -678,33 +658,33 @@ export function UserManagementTab() {
       </Card>
 
       {/* Enterprise SSO Identity Providers Section */}
-      <Card className="p-6 border-slate-800 bg-slate-900/60 space-y-4">
+      <Card className="p-4 border-[#3A4552] bg-[#1F2833] space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Building className="w-4 h-4 text-brand-400" />
-              Enterprise Single Sign-On (SSO / SAML 2.0 / OIDC)
+            <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <Building className="w-3.5 h-3.5 text-[#39FF14]" />
+              ENTERPRISE SINGLE SIGN-ON (SSO / SAML 2.0 / OIDC)
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
-              Active identity federation directory integrations configured for workspace domain authentication.
+            <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              ACTIVE IDENTITY FEDERATION DIRECTORY INTEGRATIONS CONFIGURED FOR WORKSPACE DOMAIN AUTHENTICATION.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
           {(ssoData?.providers || []).map((provider) => (
             <div
               key={provider.id}
-              className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between"
+              className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between"
             >
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-sm text-slate-200">{provider.name}</span>
-                  <Badge variant="success" className="text-[10px]">
-                    Enabled
+                  <span className="font-bold text-xs text-white uppercase">{provider.name}</span>
+                  <Badge variant="success" className="text-[8px] uppercase">
+                    ENABLED
                   </Badge>
                 </div>
-                <div className="text-xs text-slate-500">{provider.protocol}</div>
+                <div className="text-[10px] text-slate-500 uppercase">{provider.protocol}</div>
               </div>
 
               {isAdmin && (
@@ -722,9 +702,9 @@ export function UserManagementTab() {
                     })
                   }
                   disabled={ssoLoginMutation.isPending}
-                  className="text-xs border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300"
+                  className="text-xs h-7 uppercase border-[#3A4552]"
                 >
-                  Test Handshake
+                  TEST HANDSHAKE
                 </Button>
               )}
             </div>
@@ -734,122 +714,122 @@ export function UserManagementTab() {
 
       {/* Modal: Provision New User (Admin Only) */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="glass-card border border-slate-800 rounded-2xl w-full max-w-2xl p-6 bg-slate-900/95 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-brand-400" />
-                Provision New CRM User & Assign RBAC Scopes
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <UserPlus className="w-4 h-4 text-[#39FF14]" />
+                PROVISION NEW CRM USER &amp; ASSIGN RBAC SCOPES
               </h3>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-white transition-none"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <form onSubmit={handleCreateSubmit} className="space-y-3 font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Full Name
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    FULL NAME
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <User className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
                     <input
                       type="text"
                       required
                       value={createName}
                       onChange={(e) => setCreateName(e.target.value)}
-                      placeholder="Morgan Lee"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                      placeholder="MORGAN LEE"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Work Email Address
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    WORK EMAIL ADDRESS
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
                     <input
                       type="email"
                       required
                       value={createEmail}
                       onChange={(e) => setCreateEmail(e.target.value)}
-                      placeholder="morgan.lee@company.com"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                      placeholder="MORGAN.LEE@COMPANY.COM"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Initial Password
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    INITIAL PASSWORD
                   </label>
                   <div className="relative">
-                    <Key className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Key className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
                     <input
                       type="password"
                       required
                       value={createPassword}
                       onChange={(e) => setCreatePassword(e.target.value)}
-                      placeholder="Min 6 chars"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                      placeholder="MIN 6 CHARS"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Department Role
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    DEPARTMENT ROLE
                   </label>
                   <select
                     value={createRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, false)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
                   >
-                    <option value="sales">Sales (Pipeline & SDR)</option>
-                    <option value="support">Support (Success & CS)</option>
-                    <option value="auditor">Auditor (Compliance)</option>
-                    <option value="admin">Admin (Full System)</option>
+                    <option value="sales">SALES (PIPELINE &amp; SDR)</option>
+                    <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
+                    <option value="auditor">AUDITOR (COMPLIANCE)</option>
+                    <option value="admin">ADMIN (FULL SYSTEM)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Initial Status
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    INITIAL STATUS
                   </label>
                   <select
                     value={createActive ? 'active' : 'suspended'}
                     onChange={(e) => setCreateActive(e.target.value === 'active')}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
                   >
-                    <option value="active">Active & Verified</option>
-                    <option value="suspended">Suspended</option>
+                    <option value="active">ACTIVE &amp; VERIFIED</option>
+                    <option value="suspended">SUSPENDED</option>
                   </select>
                 </div>
               </div>
 
               {/* Fine-grained Permissions Grid */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-brand-400" />
-                    Granular Permission Scopes ({createPermissions.length} selected)
+                  <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
+                    <Layers className="w-3.5 h-3.5 text-[#39FF14]" />
+                    GRANULAR PERMISSION SCOPES ({createPermissions.length} SELECTED)
                   </label>
-                  <div className="flex items-center gap-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(createRole, false)}
-                      className="text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1"
+                      className="text-[#39FF14] font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
-                      Apply Role Preset
+                      ROLE PRESET
                     </button>
                     <span className="text-slate-600">|</span>
                     <button
@@ -857,7 +837,7 @@ export function UserManagementTab() {
                       onClick={() => setCreatePermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
                       className="text-slate-400 hover:text-white"
                     >
-                      All
+                      ALL
                     </button>
                     <span className="text-slate-600">|</span>
                     <button
@@ -865,21 +845,21 @@ export function UserManagementTab() {
                       onClick={() => setCreatePermissions([])}
                       className="text-slate-400 hover:text-white"
                     >
-                      None
+                      NONE
                     </button>
                   </div>
                 </div>
 
-                <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
-                    <div key={group.category} className="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 space-y-2">
-                      <div className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+                    <div key={group.category} className="bg-[#0B0C10] p-2.5 rounded-none border border-[#3A4552] space-y-1.5">
+                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-[#3A4552] pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-2 text-xs text-slate-300 cursor-pointer group/item">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-slate-300 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={createPermissions.includes(item.id) || createPermissions.includes('*')}
@@ -891,11 +871,11 @@ export function UserManagementTab() {
                                   setCreatePermissions(createPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded border-slate-700 bg-slate-900 text-brand-500 mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#39FF14] accent-[#39FF14] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
-                              <span className="font-semibold text-slate-200 group-hover/item:text-brand-300 transition-colors block">{item.label}</span>
-                              <span className="text-[10px] text-slate-500 font-mono">{item.id}</span>
+                              <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
+                              <span className="text-[8px] text-slate-500 font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}
@@ -905,21 +885,24 @@ export function UserManagementTab() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
                 <Button
                   type="button"
                   variant="outline"
+                  size="sm"
                   onClick={() => setIsCreateOpen(false)}
-                  className="text-xs border-slate-700 hover:bg-slate-800"
+                  className="text-xs uppercase"
                 >
-                  Cancel
+                  CANCEL
                 </Button>
                 <Button
                   type="submit"
+                  variant="primary"
+                  size="sm"
                   disabled={createMutation.isPending}
-                  className="bg-brand-500 hover:bg-brand-600 text-white text-xs shadow-lg shadow-brand-500/20"
+                  className="text-xs uppercase font-bold"
                 >
-                  {createMutation.isPending ? 'Provisioning...' : 'Provision User & Scopes'}
+                  {createMutation.isPending ? 'PROVISIONING...' : 'PROVISION USER & SCOPES'}
                 </Button>
               </div>
             </form>
@@ -929,111 +912,111 @@ export function UserManagementTab() {
 
       {/* Modal: Edit User & RBAC Permissions (Admin Only) */}
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="glass-card border border-slate-800 rounded-2xl w-full max-w-2xl p-6 bg-slate-900/95 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Edit2 className="w-5 h-5 text-brand-400" />
-                Edit RBAC Scopes: {editingUser.email}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                <Edit2 className="w-4 h-4 text-[#39FF14]" />
+                EDIT RBAC SCOPES: {editingUser.email}
               </h3>
               <button
                 onClick={() => setEditingUser(null)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-white transition-none"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <form onSubmit={handleSaveEdit} className="space-y-3 font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Full Name
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    FULL NAME
                   </label>
                   <input
                     type="text"
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Email Address
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    EMAIL ADDRESS
                   </label>
                   <input
                     type="email"
                     required
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Reset Password
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    RESET PASSWORD
                   </label>
                   <input
                     type="password"
                     value={editPassword}
                     onChange={(e) => setEditPassword(e.target.value)}
-                    placeholder="Optional new password"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500"
+                    placeholder="OPTIONAL NEW PASSWORD"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Department Role
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    DEPARTMENT ROLE
                   </label>
                   <select
                     value={editRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, true)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
                   >
-                    <option value="admin">Admin (Superuser)</option>
-                    <option value="sales">Sales (Pipeline & SDR)</option>
-                    <option value="support">Support (Success & CS)</option>
-                    <option value="auditor">Auditor (Compliance)</option>
+                    <option value="admin">ADMIN (SUPERUSER)</option>
+                    <option value="sales">SALES (PIPELINE &amp; SDR)</option>
+                    <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
+                    <option value="auditor">AUDITOR (COMPLIANCE)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Status
+                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                    STATUS
                   </label>
                   <select
                     value={editActive ? 'active' : 'suspended'}
                     onChange={(e) => setEditActive(e.target.value === 'active')}
                     disabled={currentUser?.id === editingUser.id}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer disabled:opacity-60"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono disabled:opacity-60"
                   >
-                    <option value="active">Active</option>
-                    <option value="suspended">Suspended</option>
+                    <option value="active">ACTIVE</option>
+                    <option value="suspended">SUSPENDED</option>
                   </select>
                 </div>
               </div>
 
               {/* Fine-grained Permissions Grid */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-brand-400" />
-                    Granular Permission Scopes ({editPermissions.length} selected)
+                  <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
+                    <Layers className="w-3.5 h-3.5 text-[#39FF14]" />
+                    GRANULAR PERMISSION SCOPES ({editPermissions.length} SELECTED)
                   </label>
-                  <div className="flex items-center gap-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(editRole, true)}
-                      className="text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1"
+                      className="text-[#39FF14] font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
-                      Apply Role Preset
+                      ROLE PRESET
                     </button>
                     <span className="text-slate-600">|</span>
                     <button
@@ -1041,7 +1024,7 @@ export function UserManagementTab() {
                       onClick={() => setEditPermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
                       className="text-slate-400 hover:text-white"
                     >
-                      All
+                      ALL
                     </button>
                     <span className="text-slate-600">|</span>
                     <button
@@ -1049,21 +1032,21 @@ export function UserManagementTab() {
                       onClick={() => setEditPermissions([])}
                       className="text-slate-400 hover:text-white"
                     >
-                      None
+                      NONE
                     </button>
                   </div>
                 </div>
 
-                <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
-                    <div key={group.category} className="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 space-y-2">
-                      <div className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+                    <div key={group.category} className="bg-[#0B0C10] p-2.5 rounded-none border border-[#3A4552] space-y-1.5">
+                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-[#3A4552] pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-2 text-xs text-slate-300 cursor-pointer group/item">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-slate-300 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={editPermissions.includes(item.id) || editPermissions.includes('*')}
@@ -1075,11 +1058,11 @@ export function UserManagementTab() {
                                   setEditPermissions(editPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded border-slate-700 bg-slate-900 text-brand-500 mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#39FF14] accent-[#39FF14] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
-                              <span className="font-semibold text-slate-200 group-hover/item:text-brand-300 transition-colors block">{item.label}</span>
-                              <span className="text-[10px] text-slate-500 font-mono">{item.id}</span>
+                              <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
+                              <span className="text-[8px] text-slate-500 font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}
@@ -1089,21 +1072,24 @@ export function UserManagementTab() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
                 <Button
                   type="button"
                   variant="outline"
+                  size="sm"
                   onClick={() => setEditingUser(null)}
-                  className="text-xs border-slate-700 hover:bg-slate-800"
+                  className="text-xs uppercase"
                 >
-                  Cancel
+                  CANCEL
                 </Button>
                 <Button
                   type="submit"
+                  variant="primary"
+                  size="sm"
                   disabled={updateMutation.isPending}
-                  className="bg-brand-500 hover:bg-brand-600 text-white text-xs shadow-lg shadow-brand-500/20"
+                  className="text-xs uppercase font-bold"
                 >
-                  {updateMutation.isPending ? 'Saving...' : 'Save Changes & Scopes'}
+                  {updateMutation.isPending ? 'SAVING...' : 'SAVE CHANGES & SCOPES'}
                 </Button>
               </div>
             </form>
@@ -1113,33 +1099,36 @@ export function UserManagementTab() {
 
       {/* Modal: Delete Confirmation (Admin Only) */}
       {deletingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="glass-card border border-rose-500/40 rounded-2xl w-full max-w-md p-6 bg-slate-900/95 shadow-2xl space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400">
-              <Trash2 className="w-6 h-6" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-[#FF2A54] rounded-none w-full max-w-md p-5 bg-[#1F2833] shadow-2xl space-y-3">
+            <div className="w-10 h-10 rounded-none bg-[#0B0C10] border border-[#FF2A54] flex items-center justify-center text-[#FF2A54]">
+              <Trash2 className="w-5 h-5" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-base font-bold text-white">Permanently Delete User?</h3>
-              <p className="text-xs text-slate-400">
-                Are you sure you want to remove <strong className="text-slate-200">{deletingUser.email}</strong>? This will revoke all session tokens and remove role assignments. This action cannot be undone.
+              <h3 className="text-xs font-bold text-white uppercase tracking-wider">PERMANENTLY DELETE USER?</h3>
+              <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+                ARE YOU SURE YOU WANT TO REMOVE <strong className="text-white">{deletingUser.email}</strong>? THIS WILL REVOKE ALL SESSION TOKENS AND REMOVE ROLE ASSIGNMENTS. THIS ACTION CANNOT BE UNDONE.
               </p>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() => setDeletingUser(null)}
-                className="text-xs border-slate-700 hover:bg-slate-800"
+                className="text-xs uppercase"
               >
-                Cancel
+                CANCEL
               </Button>
               <Button
+                variant="danger"
+                size="sm"
                 onClick={() => deleteMutation.mutate(deletingUser.id)}
                 disabled={deleteMutation.isPending}
-                className="bg-rose-600 hover:bg-rose-700 text-white text-xs"
+                className="text-xs uppercase font-bold"
               >
-                {deleteMutation.isPending ? 'Deleting...' : 'Confirm Delete'}
+                {deleteMutation.isPending ? 'DELETING...' : 'CONFIRM DELETE'}
               </Button>
             </div>
           </div>

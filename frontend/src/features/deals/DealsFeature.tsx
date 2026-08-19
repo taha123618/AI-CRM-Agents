@@ -212,7 +212,7 @@ export function DealsFeature() {
 
       {/* Mutation Error Notification Banner */}
       {updateStageMutation.isError && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between">
+        <div className="p-4 rounded-none bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>Failed to update deal stage. Reverted changes to original state.</span>
@@ -268,7 +268,7 @@ export function DealsFeature() {
                 onDragOver={(e) => handleDragOver(e, col.id)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, col.id)}
-                className={`flex flex-col w-[280px] shrink-0 rounded-2xl p-3 transition-all duration-250 border h-full ${
+                className={`flex flex-col w-[280px] shrink-0 rounded-none p-3 transition-none  border h-full ${
                   isTargetColumn
                     ? 'bg-brand-500/10 ring-2 ring-brand-500/40 border-brand-500/30 scale-[1.01]'
                     : 'bg-slate-900/30 border-slate-900'
@@ -276,13 +276,13 @@ export function DealsFeature() {
               >
                 {/* Kanban Column Header with Colored Stripe */}
                 <div
-                  className={`p-3 rounded-xl bg-slate-950/80 border-t-2 ${topStripeClass} border-x border-b border-slate-800/80 flex flex-col gap-1 shadow-md shrink-0`}
+                  className={`p-3 rounded-none bg-slate-950/80 border-t-2 ${topStripeClass} border-x border-b border-slate-800/80 flex flex-col gap-1 shadow-md shrink-0`}
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
                       {t(col.titleKey, col.defaultTitle)}
                     </h3>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${col.badgeColor}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-none ${col.badgeColor}`}>
                       {formatNumber(colDeals.length)}
                     </span>
                   </div>
@@ -295,7 +295,7 @@ export function DealsFeature() {
                 <div className="flex-1 overflow-y-auto mt-4 space-y-3.5 pr-1 max-h-full">
                   {colDeals.length === 0 ? (
                     <div
-                      className={`h-28 border border-dashed rounded-xl flex flex-col items-center justify-center text-xs transition-colors ${
+                      className={`h-28 border border-dashed rounded-none flex flex-col items-center justify-center text-xs transition-none ${
                         isTargetColumn
                           ? 'border-brand-500/60 bg-brand-500/10 text-brand-300 font-bold'
                           : 'border-slate-800/60 text-slate-650'
@@ -312,7 +312,7 @@ export function DealsFeature() {
                           draggable
                           onDragStart={(e) => handleDragStart(e, deal)}
                           onDragEnd={handleDragEnd}
-                          className={`p-3.5 space-y-2.5 transition-all shadow-md group cursor-grab active:cursor-grabbing border ${
+                          className={`p-3.5 space-y-2.5 transition-none shadow-md group cursor-grab active:cursor-grabbing border ${
                             isBeingDragged
                               ? 'opacity-40 border-brand-500/80 ring-2 ring-brand-500/40 scale-95'
                               : 'hover:border-slate-700/90 border-slate-800'
@@ -325,7 +325,7 @@ export function DealsFeature() {
                               <div>
                                 <h4 className="font-semibold text-xs text-white line-clamp-2">{deal.name}</h4>
                                 {Boolean(deal.next_actions?.length) && (
-                                  <span className="mt-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-wider inline-flex items-center gap-0.5">
+                                  <span className="mt-1 px-1.5 py-0.5 rounded-none text-[9px] font-extrabold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-wider inline-flex items-center gap-0.5">
                                     <Sparkles className="w-2.5 h-2.5" />
                                     NEW AI ANALYZED
                                   </span>
@@ -336,7 +336,7 @@ export function DealsFeature() {
                             <div className="flex items-center gap-1 shrink-0">
                               {deal.is_stalled && (
                                 <span
-                                  className="p-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                  className="p-1 rounded-none bg-amber-500/10 text-amber-400 border border-amber-500/20"
                                   title="Stalled Deal - Sales Pipeline Warning"
                                 >
                                   <AlertTriangle className="w-3.5 h-3.5" />
@@ -344,7 +344,7 @@ export function DealsFeature() {
                               )}
                               <button
                                 onClick={() => handleOpenEdit(deal)}
-                                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                                className="p-1 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition-none"
                                 title="Edit Deal Details"
                               >
                                 <Pencil className="w-3.5 h-3.5" />
@@ -352,7 +352,7 @@ export function DealsFeature() {
                               <button
                                 onClick={() => handleDeleteDeal(deal.id)}
                                 disabled={deletingId === deal.id}
-                                className="p-1 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                                className="p-1 rounded-none text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-none"
                                 title="Delete Deal"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -391,9 +391,9 @@ export function DealsFeature() {
                               {deal.close_probability != null && (
                                 <div className="flex items-center gap-2">
                                   <span className="text-[9px] uppercase font-bold text-emerald-400">Win %</span>
-                                  <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                  <div className="flex-1 h-1.5 bg-slate-800 rounded-none overflow-hidden">
                                     <div
-                                      className={`h-full rounded-full transition-all ${
+                                      className={`h-full rounded-none transition-none ${
                                         deal.close_probability >= 70 ? 'bg-emerald-500' : deal.close_probability >= 40 ? 'bg-amber-500' : 'bg-rose-500'
                                       }`}
                                       style={{ width: `${deal.close_probability}%` }}
@@ -449,7 +449,7 @@ export function DealsFeature() {
                                     handleStageMove(deal, STAGES[currentIndex + 1].id);
                                   }
                                 }}
-                                className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+                                className="p-1.5 rounded-none text-slate-400 hover:bg-slate-800 hover:text-white transition-none"
                                 title="Move to Next Stage"
                               >
                                 <ArrowRight className="w-3.5 h-3.5" />
@@ -504,7 +504,7 @@ export function DealsFeature() {
                 <select
                   value={editStage}
                   onChange={(e) => setEditStage(e.target.value as DealStage)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-none px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-brand-500"
                 >
                   {STAGES.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -531,12 +531,12 @@ export function DealsFeature() {
               </div>
 
               <div className="flex flex-col justify-end">
-                <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
+                <label className="flex items-center gap-2 p-2 rounded-none bg-slate-900 border border-slate-800 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editIsStalled}
                     onChange={(e) => setEditIsStalled(e.target.checked)}
-                    className="w-4 h-4 rounded text-brand-500 focus:ring-brand-500 bg-slate-800 border-slate-700"
+                    className="w-4 h-4 rounded-none text-brand-500 focus:ring-brand-500 bg-slate-800 border-slate-700"
                   />
                   <span className="text-xs font-medium text-amber-400 flex items-center gap-1">
                     <AlertTriangle className="w-3.5 h-3.5" />
@@ -586,7 +586,7 @@ export function DealsFeature() {
                 value={editNextActions}
                 onChange={(e) => setEditNextActions(e.target.value)}
                 placeholder="e.g. Schedule technical review&#10;Send security questionnaire&#10;Loop in procurement"
-                className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-none p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
               />
             </div>
 
@@ -608,8 +608,8 @@ export function DealsFeature() {
 function STAGE_OPTIONS_SKELETON() {
   return [...Array(6)].map((_, i) => (
     <div key={i} className="flex flex-col w-[280px] shrink-0 space-y-3">
-      <Skeleton className="h-16 w-full rounded-xl" />
-      <Skeleton className="h-[450px] w-full rounded-2xl" />
+      <Skeleton className="h-16 w-full rounded-none" />
+      <Skeleton className="h-[450px] w-full rounded-none" />
     </div>
   ));
 }

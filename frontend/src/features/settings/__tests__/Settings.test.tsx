@@ -83,8 +83,8 @@ describe('Settings & Governance Studio Feature', () => {
     const { getByText, getByPlaceholderText, getByRole } = renderWithClient(<UserManagementTab />);
 
     expect(getByText(/Role-Based Access Control \(RBAC\)/i)).toBeInTheDocument();
-    expect(getByRole('button', { name: /Provision New User/i })).toBeInTheDocument();
-    expect(getByPlaceholderText(/Search by full name or email address.../i)).toBeInTheDocument();
+    expect(getByRole('button', { name: /PROVISION USER/i })).toBeInTheDocument();
+    expect(getByPlaceholderText(/Search/i)).toBeInTheDocument();
   });
 
   it('renders UserManagementTab in Read-Only mode for Auditor/Sales/Support', () => {
@@ -103,7 +103,7 @@ describe('Settings & Governance Studio Feature', () => {
 
     expect(getByText(/Read-Only Mode/i)).toBeInTheDocument();
     expect(getByText(/Auditing Access/i)).toBeInTheDocument();
-    expect(queryByRole('button', { name: /Provision New User/i })).not.toBeInTheDocument();
+    expect(queryByRole('button', { name: /PROVISION USER/i })).not.toBeInTheDocument();
   });
 
   it('switches to Bulk Import / Export tab when clicked', () => {
@@ -123,7 +123,7 @@ describe('Settings & Governance Studio Feature', () => {
     expect(getByText(/All Contacts & Leads/i)).toBeInTheDocument();
     expect(getByText(/Active Deals Pipeline/i)).toBeInTheDocument();
     expect(getAllByText(/Compliance Audit Trail/i).length).toBeGreaterThanOrEqual(1);
-    expect(getByRole('button', { name: /Run Bulk Import/i })).toBeInTheDocument();
+    expect(getByRole('button', { name: /RUN BULK INGESTION/i })).toBeInTheDocument();
   });
 
   it('renders TablePagination with page count and triggers navigation events', () => {

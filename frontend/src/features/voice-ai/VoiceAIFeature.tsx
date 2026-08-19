@@ -67,16 +67,16 @@ function StatCard({
   glowClass?: string;
 }) {
   return (
-    <Card className={`p-4 bg-slate-900/60 backdrop-blur-xl border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 flex items-start gap-3.5 group ${glowClass}`}>
-      <div className="p-2.5 rounded-2xl bg-slate-800/90 text-slate-300 border border-slate-700/50 group-hover:scale-105 transition-transform duration-300">
+    <Card className={`p-3.5 bg-[#1F2833] border border-[#3A4552] rounded-none hover:border-[#39FF14] transition-none flex items-start gap-3 group font-mono ${glowClass}`}>
+      <div className="p-2 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552] transition-none shrink-0">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block truncate">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block truncate">
           {label}
         </span>
-        <div className={`text-2xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
-        {sub && <span className="text-[10px] text-slate-500 block mt-0.5 truncate">{sub}</span>}
+        <div className={`text-xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
+        {sub && <span className="text-[9px] text-slate-500 block mt-0.5 truncate uppercase">{sub}</span>}
       </div>
     </Card>
   );
@@ -633,48 +633,48 @@ export function VoiceAIFeature() {
     `${Math.floor(secs / 60)}:${Math.floor(secs % 60).toString().padStart(2, '0')}`;
 
   return (
-    <div className="space-y-6">
-      {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-purple-950/40 via-slate-900/60 to-indigo-950/40 border border-purple-500/20 backdrop-blur-xl shadow-2xl">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-purple-500/20 border border-purple-500/30 text-purple-400 shadow-lg shadow-purple-500/10">
-              <PhoneCall className="w-6 h-6 animate-pulse" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2.5">
-                <span>Voice AI Intelligence Studio</span>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  v2.4 Live Engine
+    <div className="space-y-4 font-mono pb-12">
+      {/* ── Header Banner ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+        <div className="flex items-start sm:items-center gap-3.5 z-10">
+          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#39FF14] shadow-md shrink-0">
+            <PhoneCall className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
+                <span>VOICE AI INTELLIGENCE STUDIO</span>
+                <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 uppercase">
+                  V2.4 LIVE ENGINE
                 </span>
               </h1>
-              <p className="text-xs text-slate-400 mt-1">
-                Real-time Web Audio recognition, dynamic objection battle-cards, and synchronized CRM audio playback.
-              </p>
             </div>
+            <p className="text-xs text-slate-400 mt-1 uppercase">
+              REAL-TIME WEB AUDIO RECOGNITION, DYNAMIC OBJECTION BATTLE-CARDS, AND SYNCHRONIZED CRM AUDIO PLAYBACK.
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 z-10">
           <Button
             variant="outline"
             size="sm"
             onClick={() => refetch()}
             isLoading={isRefetching}
-            className="border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-300"
+            className="text-xs h-8 px-3 uppercase"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-            <span>Refresh</span>
+            <RefreshCw className="w-3.5 h-3.5 mr-1 text-slate-400" />
+            <span>REFRESH</span>
           </Button>
 
           <Button
             variant="outline"
             size="sm"
             onClick={() => setIsGatewayModalOpen(true)}
-            className="border-purple-500/30 text-purple-300 hover:bg-purple-950/40"
+            className="text-xs h-8 px-3 uppercase border-[#00E5FF]/40 text-[#00E5FF] hover:border-[#00E5FF]"
           >
-            <Radio className="w-3.5 h-3.5 mr-1.5 text-purple-400" />
-            <span>Twilio / WebRTC Gateway</span>
+            <Radio className="w-3.5 h-3.5 mr-1" />
+            <span>TWILIO / WEBRTC GATEWAY</span>
           </Button>
 
           {!isLiveCallActive ? (
@@ -682,45 +682,43 @@ export function VoiceAIFeature() {
               variant="primary"
               size="sm"
               onClick={handleStartCall}
-              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold shadow-lg shadow-emerald-600/25 px-4"
+              className="text-xs h-8 px-3.5 uppercase font-bold"
             >
-              <Mic className="w-4 h-4 mr-2" />
-              <span>Launch Live Call</span>
+              <Mic className="w-4 h-4 mr-1 text-[#0B0C10]" />
+              <span>LAUNCH LIVE CALL</span>
             </Button>
           ) : (
             <Button
               variant="danger"
               size="sm"
               onClick={handleEndCall}
-              className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold shadow-lg shadow-rose-600/25 animate-pulse px-4"
+              className="text-xs h-8 px-3.5 uppercase font-bold"
             >
-              <PhoneOff className="w-4 h-4 mr-2" />
-              <span>End & Save Call ({fmtDuration(callDuration)})</span>
+              <PhoneOff className="w-4 h-4 mr-1" />
+              <span>END CALL ({fmtDuration(callDuration)})</span>
             </Button>
           )}
         </div>
       </div>
 
       {/* ── KPI Stats Strip ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <StatCard
-          label="Total Recorded Calls"
+          label="TOTAL RECORDED CALLS"
           value={stats?.total_calls ?? 0}
-          sub={`${stats?.calls_this_week ?? 0} recorded this week`}
+          sub={`${stats?.calls_this_week ?? 0} RECORDED THIS WEEK`}
           color="text-white"
-          icon={<PhoneCall className="w-4 h-4 text-purple-400" />}
-          glowClass="hover:border-purple-500/40"
+          icon={<PhoneCall className="w-4 h-4 text-[#39FF14]" />}
         />
         <StatCard
-          label="Avg Buyer Intent"
+          label="AVG BUYER INTENT"
           value={`${stats?.avg_buyer_intent_score ?? 0}%`}
-          sub="Predictive closing probability"
-          color="text-purple-400"
-          icon={<TrendingUp className="w-4 h-4 text-emerald-400" />}
-          glowClass="hover:border-emerald-500/40"
+          sub="PREDICTIVE CLOSING PROBABILITY"
+          color="text-[#39FF14]"
+          icon={<TrendingUp className="w-4 h-4 text-[#39FF14]" />}
         />
         <StatCard
-          label="Positive Sentiment"
+          label="POSITIVE SENTIMENT"
           value={
             stats?.sentiment_distribution
               ? `${Math.round(
@@ -730,127 +728,122 @@ export function VoiceAIFeature() {
                 )}%`
               : '—'
           }
-          sub={`${stats?.sentiment_distribution.positive ?? 0} qualified calls`}
-          color="text-emerald-400"
-          icon={<BarChart2 className="w-4 h-4 text-blue-400" />}
-          glowClass="hover:border-blue-500/40"
+          sub={`${stats?.sentiment_distribution.positive ?? 0} QUALIFIED CALLS`}
+          color="text-[#00E5FF]"
+          icon={<BarChart2 className="w-4 h-4 text-[#00E5FF]" />}
         />
         <StatCard
-          label="Avg Call Duration"
+          label="AVG CALL DURATION"
           value={fmtDuration(stats?.avg_duration_seconds ?? 0)}
-          sub={`${stats?.direction_split.outbound ?? 0} outbound • ${stats?.direction_split.inbound ?? 0} inbound`}
-          color="text-amber-400"
-          icon={<Clock className="w-4 h-4 text-amber-400" />}
-          glowClass="hover:border-amber-500/40"
+          sub={`${stats?.direction_split.outbound ?? 0} OUTBOUND • ${stats?.direction_split.inbound ?? 0} INBOUND`}
+          color="text-[#FFB800]"
+          icon={<Clock className="w-4 h-4 text-[#FFB800]" />}
         />
       </div>
 
       {/* ── Modern Live Call Studio with Web Audio Frequency Visualizer ── */}
       {isLiveCallActive && (
-        <Card className="p-6 bg-slate-950/90 border-purple-500/40 shadow-2xl shadow-purple-500/10 space-y-5 rounded-3xl backdrop-blur-2xl animate-in fade-in duration-300">
+        <Card className="p-4 sm:p-5 bg-[#1F2833] border border-[#39FF14] shadow-2xl space-y-4 rounded-none">
           {/* Top In-Call Header */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
-            <div className="flex items-center gap-3.5">
-              <div className="relative flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 shadow-md shadow-emerald-500/50" />
-              </div>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-none bg-[#39FF14] shadow-md" />
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-base font-black text-white">
-                    Live Call: {contactName}
+                  <h3 className="text-sm font-black text-white uppercase">
+                    LIVE CALL: {contactName}
                   </h3>
-                  <Badge variant="success" className="text-[10px] bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
-                    Live Audio Connected
+                  <Badge variant="success" className="text-[9px] uppercase font-mono">
+                    LIVE AUDIO CONNECTED
                   </Badge>
                   {isMicListening ? (
-                    <Badge variant="default" className="text-[10px] bg-purple-500/20 text-purple-300 border-purple-500/30 flex items-center gap-1">
-                      <Radio className="w-3 h-3 text-purple-400 animate-pulse" />
-                      Mic Live
+                    <Badge variant="default" className="text-[9px] uppercase font-mono flex items-center gap-1">
+                      <Radio className="w-3 h-3 text-[#39FF14]" />
+                      MIC LIVE
                     </Badge>
                   ) : (
-                    <Badge variant="warning" className="text-[10px]">
-                      Mic Paused
+                    <Badge variant="warning" className="text-[9px] uppercase font-mono">
+                      MIC PAUSED
                     </Badge>
                   )}
                 </div>
-                <div className="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2">
+                <div className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center gap-2 uppercase">
                   <span>{phoneNumber}</span>
                   <span>•</span>
-                  <span>Duration: <strong className="text-white">{fmtDuration(callDuration)}</strong></span>
+                  <span>DURATION: <strong className="text-[#39FF14]">{fmtDuration(callDuration)}</strong></span>
                 </div>
               </div>
             </div>
 
             {/* Real Web Audio Amplitude Visualizer */}
-            <div className="flex items-center gap-3 bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800">
+            <div className="flex items-center gap-3 bg-[#0B0C10] p-2 rounded-none border border-[#3A4552]">
               <div className="flex items-center gap-1 h-7 px-2">
                 {audioFrequencies.map((h, i) => (
                   <div
                     key={i}
-                    className="w-1.5 rounded-full bg-gradient-to-t from-purple-500 to-indigo-400 transition-all duration-75"
+                    className="w-1.5 rounded-none bg-[#39FF14] transition-none"
                     style={{ height: `${h}%` }}
                   />
                 ))}
               </div>
-              <div className="border-l border-slate-800 pl-3 pr-1 text-right">
-                <span className="text-[9px] font-bold uppercase text-slate-500 block">Buyer Intent</span>
-                <span className="text-sm font-black font-mono text-emerald-400">{liveIntentScore}%</span>
+              <div className="border-l border-[#3A4552] pl-3 pr-1 text-right">
+                <span className="text-[8px] font-bold uppercase text-slate-500 block">BUYER INTENT</span>
+                <span className="text-sm font-black font-mono text-[#39FF14]">{liveIntentScore}%</span>
               </div>
             </div>
           </div>
 
           {/* Mic warning banner if denied */}
           {micPermissionDenied && (
-            <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between">
+            <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800] text-xs flex items-center justify-between uppercase">
               <div className="flex items-center gap-2">
                 <MicOff className="w-4 h-4 shrink-0" />
-                <span>Microphone access was denied. You can still use speech buttons or type dialogue turns below.</span>
+                <span>MICROPHONE ACCESS WAS DENIED. USE SPEECH BUTTONS OR TYPE TURNS BELOW.</span>
               </div>
-              <Button size="sm" variant="outline" className="text-xs h-7" onClick={startAudioRecording}>
-                Retry Mic
+              <Button size="sm" variant="outline" className="text-[10px] h-6 px-2 uppercase" onClick={startAudioRecording}>
+                RETRY MIC
               </Button>
             </div>
           )}
 
           {/* Real-time speech recognition feedback */}
           {speechRecognizedText && (
-            <div className="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-purple-200 text-xs flex items-center gap-2.5 animate-pulse">
-              <Mic className="w-4 h-4 text-purple-400 shrink-0" />
-              <span className="font-bold text-purple-300 uppercase tracking-wider text-[10px]">Listening:</span>
-              <span className="italic font-medium">"{speechRecognizedText}"</span>
+            <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14] text-xs flex items-center gap-2 uppercase">
+              <Mic className="w-4 h-4 text-[#39FF14] shrink-0" />
+              <span className="font-bold uppercase text-[9px]">LISTENING:</span>
+              <span className="font-mono">"{speechRecognizedText}"</span>
             </div>
           )}
 
           {/* Live Studio Workspace */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Live Dialogue Stream */}
-            <div className="lg:col-span-2 space-y-3 max-h-96 overflow-y-auto pr-1.5 scrollbar-thin">
+            <div className="lg:col-span-2 space-y-2.5 max-h-96 overflow-y-auto pr-1 scrollbar-thin">
               {liveTranscript.map((t, idx) => {
                 const isRep = t.speaker === 'rep';
                 return (
                   <div
                     key={idx}
-                    className={`p-3.5 rounded-2xl border text-xs space-y-2 transition-all ${
+                    className={`p-3 rounded-none border text-xs space-y-1.5 transition-none uppercase ${
                       isRep
-                        ? 'bg-slate-900/90 border-slate-800 text-slate-200'
-                        : 'bg-purple-950/40 border-purple-500/30 text-white'
+                        ? 'bg-[#0B0C10] border-[#3A4552] text-slate-200'
+                        : 'bg-[#0B0C10] border-[#39FF14]/50 text-white'
                     }`}
                   >
                     <div className="flex items-center justify-between text-[10px] text-slate-400">
-                      <span className={`font-bold uppercase tracking-wider flex items-center gap-1.5 ${isRep ? 'text-blue-400' : 'text-purple-400'}`}>
-                        {isRep ? <User className="w-3.5 h-3.5 text-blue-400" /> : <Mic className="w-3.5 h-3.5 text-purple-400" />}
-                        {isRep ? 'Sales Rep (You)' : `${contactName} (Prospect)`}
+                      <span className={`font-bold uppercase tracking-wider flex items-center gap-1.5 ${isRep ? 'text-[#00E5FF]' : 'text-[#39FF14]'}`}>
+                        {isRep ? <User className="w-3.5 h-3.5 text-[#00E5FF]" /> : <Mic className="w-3.5 h-3.5 text-[#39FF14]" />}
+                        {isRep ? 'SALES REP (YOU)' : `${contactName} (PROSPECT)`}
                       </span>
                       <span className="font-mono text-slate-500">{t.timestamp}</span>
                     </div>
 
-                    <p className="leading-relaxed">{t.text}</p>
+                    <p className="leading-relaxed font-mono">{t.text}</p>
 
                     {/* AI Battle-Card Prompt */}
                     {t.coaching_tip && (
-                      <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-[11px] flex items-start gap-2">
-                        <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                      <div className="p-2 rounded-none bg-[#1F2833] border border-[#FFB800]/40 text-[#FFB800] text-[10px] flex items-start gap-1.5 uppercase font-mono">
+                        <Sparkles className="w-3.5 h-3.5 text-[#FFB800] shrink-0 mt-0.5" />
                         <span className="leading-snug font-medium">{t.coaching_tip}</span>
                       </div>
                     )}
@@ -860,35 +853,35 @@ export function VoiceAIFeature() {
             </div>
 
             {/* Dynamic AI Battle-Card & Speech Injection Deck */}
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3.5 flex flex-col justify-between">
-              <div className="space-y-3">
+            <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Speaker Channel</span>
+                    <Activity className="w-3.5 h-3.5 text-[#39FF14]" />
+                    <span>SPEAKER CHANNEL</span>
                   </span>
-                  <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px]">
+                  <div className="flex items-center gap-1 bg-[#1F2833] p-1 rounded-none border border-[#3A4552] text-[10px]">
                     <button
                       type="button"
                       onClick={() => setActiveSpeaker('rep')}
-                      className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                      className={`px-2 py-0.5 rounded-none font-bold uppercase transition-none ${
                         activeSpeaker === 'rep'
-                          ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                          ? 'bg-[#39FF14] text-[#0B0C10]'
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
-                      Rep (You)
+                      REP
                     </button>
                     <button
                       type="button"
                       onClick={() => setActiveSpeaker('prospect')}
-                      className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                      className={`px-2 py-0.5 rounded-none font-bold uppercase transition-none ${
                         activeSpeaker === 'prospect'
-                          ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
+                          ? 'bg-[#39FF14] text-[#0B0C10]'
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
-                      Prospect
+                      PROSPECT
                     </button>
                   </div>
                 </div>
@@ -897,14 +890,14 @@ export function VoiceAIFeature() {
                   rows={2}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder={`Speak via mic or type as ${activeSpeaker === 'rep' ? 'Sales Rep' : contactName}...`}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-purple-500 resize-none transition-colors"
+                  placeholder={`SPEAK OR TYPE AS ${activeSpeaker === 'rep' ? 'SALES REP' : contactName}...`}
+                  className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none p-2 text-xs text-white focus:outline-none focus:border-[#39FF14] resize-none uppercase font-mono"
                 />
 
                 {/* 1-Click Objection Triggers */}
                 <div className="space-y-1.5">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                    Trigger Objection Battle-Card:
+                    TRIGGER OBJECTION BATTLE-CARD:
                   </span>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
@@ -915,13 +908,13 @@ export function VoiceAIFeature() {
                           'Your pricing seems 30% higher than Salesforce. Can you justify the ROI?'
                         )
                       }
-                      className="p-2 text-left rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/40 text-[10px] text-slate-300 transition-all group"
+                      className="p-2 text-left rounded-none bg-[#1F2833] hover:border-[#39FF14] border border-[#3A4552] text-[10px] text-slate-300 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1.5 font-semibold text-white group-hover:text-purple-300">
-                        <DollarSign className="w-3 h-3 text-amber-400" />
-                        Pricing
+                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-[#39FF14]">
+                        <DollarSign className="w-3 h-3 text-[#FFB800]" />
+                        PRICING
                       </span>
-                      <span className="text-[9px] text-slate-500 block truncate">Salesforce comparison</span>
+                      <span className="text-[8px] text-slate-500 block truncate">SALESFORCE VS ROI</span>
                     </button>
 
                     <button
@@ -932,13 +925,13 @@ export function VoiceAIFeature() {
                           'We require SOC2 Type II compliance and custom enterprise SLAs before approval.'
                         )
                       }
-                      className="p-2 text-left rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/40 text-[10px] text-slate-300 transition-all group"
+                      className="p-2 text-left rounded-none bg-[#1F2833] hover:border-[#39FF14] border border-[#3A4552] text-[10px] text-slate-300 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1.5 font-semibold text-white group-hover:text-purple-300">
-                        <Shield className="w-3 h-3 text-blue-400" />
-                        Security
+                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-[#39FF14]">
+                        <Shield className="w-3 h-3 text-[#00E5FF]" />
+                        SECURITY
                       </span>
-                      <span className="text-[9px] text-slate-500 block truncate">SOC2 & Enterprise SLA</span>
+                      <span className="text-[8px] text-slate-500 block truncate">SOC2 &amp; ENTERPRISE SLA</span>
                     </button>
 
                     <button
@@ -949,13 +942,13 @@ export function VoiceAIFeature() {
                           'Our VP of Sales is evaluating Gong. How does your multi-agent architecture compare?'
                         )
                       }
-                      className="p-2 text-left rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/40 text-[10px] text-slate-300 transition-all group"
+                      className="p-2 text-left rounded-none bg-[#1F2833] hover:border-[#39FF14] border border-[#3A4552] text-[10px] text-slate-300 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1.5 font-semibold text-white group-hover:text-purple-300">
+                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-[#39FF14]">
                         <Zap className="w-3 h-3 text-purple-400" />
-                        Gong Stack
+                        GONG STACK
                       </span>
-                      <span className="text-[9px] text-slate-500 block truncate">Multi-agent fleet</span>
+                      <span className="text-[8px] text-slate-500 block truncate">MULTI-AGENT FLEET</span>
                     </button>
 
                     <button
@@ -966,34 +959,34 @@ export function VoiceAIFeature() {
                           'We deliver 3.4x faster qualification times with autonomous multi-agent fleet routing.'
                         )
                       }
-                      className="p-2 text-left rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-emerald-500/40 text-[10px] text-slate-300 transition-all group"
+                      className="p-2 text-left rounded-none bg-[#1F2833] hover:border-[#39FF14] border border-[#3A4552] text-[10px] text-slate-300 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1.5 font-semibold text-emerald-400">
-                        <Sparkles className="w-3 h-3 text-emerald-400" />
-                        Value Pitch
+                      <span className="flex items-center gap-1 font-bold text-[#39FF14]">
+                        <Sparkles className="w-3 h-3 text-[#39FF14]" />
+                        VALUE PITCH
                       </span>
-                      <span className="text-[9px] text-slate-500 block truncate">ROI & Velocity</span>
+                      <span className="text-[8px] text-slate-500 block truncate">ROI &amp; VELOCITY</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+              <div className="flex items-center gap-2 pt-2 border-t border-[#3A4552]">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 text-xs border-slate-800 bg-slate-950 hover:bg-slate-800"
+                  className="flex-1 text-xs h-7 uppercase"
                   onClick={() => handleSendSpeechTurn('rep')}
                 >
-                  Send Rep Turn
+                  SEND REP TURN
                 </Button>
                 <Button
                   variant="primary"
                   size="sm"
-                  className="flex-1 text-xs bg-purple-600 hover:bg-purple-500 shadow-md shadow-purple-600/20"
+                  className="flex-1 text-xs h-7 uppercase font-bold"
                   onClick={() => handleSendSpeechTurn('prospect')}
                 >
-                  Send Prospect Turn
+                  SEND PROSPECT TURN
                 </Button>
               </div>
             </div>
@@ -1002,20 +995,20 @@ export function VoiceAIFeature() {
       )}
 
       {/* ── Filter Tabs & Search Bar ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
-        <div className="flex items-center gap-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-2">
+        <div className="flex items-center gap-1.5">
           {(['overview', 'analytics'] as const).map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-bold uppercase rounded-none transition-none ${
                 activeTab === tab
-                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/25'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                  : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#39FF14] hover:text-white'
               }`}
             >
-              {tab === 'overview' ? 'Call Records & Audio' : 'Intelligence Analytics'}
+              {tab === 'overview' ? 'CALL RECORDS & AUDIO' : 'INTELLIGENCE ANALYTICS'}
             </button>
           ))}
         </div>
@@ -1025,10 +1018,10 @@ export function VoiceAIFeature() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
             <input
               type="text"
-              placeholder="Search contacts, phones, summaries..."
+              placeholder="SEARCH CONTACTS, PHONES..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-slate-900/80 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500 w-56 transition-colors"
+              className="bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-[#39FF14] w-56 uppercase font-mono"
             />
           </div>
 
@@ -1037,21 +1030,21 @@ export function VoiceAIFeature() {
             <select
               value={filterSentiment}
               onChange={(e) => setFilterSentiment(e.target.value)}
-              className="bg-slate-900/80 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-purple-500"
+              className="bg-[#1F2833] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
             >
-              <option value="">All Sentiments</option>
-              <option value="positive">Positive</option>
-              <option value="neutral">Neutral</option>
-              <option value="negative">Negative</option>
+              <option value="">ALL SENTIMENTS</option>
+              <option value="positive">POSITIVE</option>
+              <option value="neutral">NEUTRAL</option>
+              <option value="negative">NEGATIVE</option>
             </select>
             <select
               value={filterDirection}
               onChange={(e) => setFilterDirection(e.target.value)}
-              className="bg-slate-900/80 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-purple-500"
+              className="bg-[#1F2833] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
             >
-              <option value="">All Directions</option>
-              <option value="outbound">Outbound</option>
-              <option value="inbound">Inbound</option>
+              <option value="">ALL DIRECTIONS</option>
+              <option value="outbound">OUTBOUND</option>
+              <option value="inbound">INBOUND</option>
             </select>
           </div>
         </div>
@@ -1059,25 +1052,25 @@ export function VoiceAIFeature() {
 
       {/* ── TAB: OVERVIEW (Records & Audio Player) ── */}
       {activeTab === 'overview' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Call Records List */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-purple-400" />
-                <span>Recorded Calls ({calls?.length ?? 0})</span>
+                <Clock className="w-3.5 h-3.5 text-[#39FF14]" />
+                <span>RECORDED CALLS ({calls?.length ?? 0})</span>
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">Sorted by date</span>
+              <span className="text-[10px] text-slate-500 font-mono uppercase">SORTED BY DATE</span>
             </h3>
 
             {isLoading ? (
-              <div className="py-16 text-center text-slate-500 text-xs">Loading recorded calls...</div>
+              <div className="py-16 text-center text-slate-500 text-xs uppercase font-mono">LOADING RECORDED CALLS...</div>
             ) : !calls?.length ? (
-              <div className="py-16 text-center text-slate-500 text-xs rounded-3xl bg-slate-900/30 border border-slate-800 p-6">
-                No calls match your query or filters.
+              <div className="py-16 text-center text-slate-500 text-xs rounded-none bg-[#1F2833] border border-[#3A4552] p-6 uppercase font-mono">
+                NO CALLS MATCH YOUR QUERY OR FILTERS.
               </div>
             ) : (
-              <div className="space-y-2.5 max-h-[700px] overflow-y-auto pr-1 scrollbar-thin">
+              <div className="space-y-2 max-h-[700px] overflow-y-auto pr-1 scrollbar-thin">
                 {calls.map((c) => {
                   const isSelected = activeCallRecord?.id === c.id;
                   const hasCustomAudio = !!(callAudioMap[c.id] || c.recording_url);
@@ -1091,24 +1084,24 @@ export function VoiceAIFeature() {
                         setPhoneNumber(c.phone_number);
                         setCallDirection(c.direction);
                       }}
-                      className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 space-y-2.5 ${
+                      className={`p-3.5 rounded-none border cursor-pointer transition-none space-y-2 ${
                         isSelected
-                          ? 'bg-purple-950/30 border-purple-500/60 text-white shadow-xl shadow-purple-500/10'
-                          : 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700 text-slate-300'
+                          ? 'bg-[#1F2833] border-[#39FF14] text-white shadow-xl'
+                          : 'bg-[#1F2833] border-[#3A4552] hover:border-[#39FF14] text-slate-300'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className={`p-1.5 rounded-lg ${c.direction === 'outbound' ? 'bg-blue-500/10 text-blue-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
+                        <div className="flex items-center gap-1.5">
+                          <div className={`p-1 rounded-none ${c.direction === 'outbound' ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-[#39FF14]/10 text-[#39FF14]'}`}>
                             {c.direction === 'outbound' ? (
                               <PhoneOutgoing className="w-3.5 h-3.5" />
                             ) : (
                               <PhoneIncoming className="w-3.5 h-3.5" />
                             )}
                           </div>
-                          <span className="text-xs font-bold text-white">{c.contact_name}</span>
+                          <span className="text-xs font-bold text-white uppercase">{c.contact_name}</span>
                           {hasCustomAudio && (
-                            <span className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9px] font-mono font-bold">
+                            <span className="px-1.5 py-0.2 rounded-none bg-[#0B0C10] text-[#39FF14] text-[8px] font-mono font-bold border border-[#3A4552]">
                               AUDIO
                             </span>
                           )}
@@ -1121,17 +1114,17 @@ export function VoiceAIFeature() {
                               ? 'danger'
                               : 'default'
                           }
-                          className="text-[10px]"
+                          className="text-[9px] uppercase font-mono"
                         >
                           {c.sentiment}
                         </Badge>
                       </div>
 
-                      <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">{c.summary}</p>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed uppercase">{c.summary}</p>
 
-                      <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono pt-1 border-t border-slate-800/50">
-                        <span>{fmtDuration(c.duration_seconds)} duration</span>
-                        <span className="text-purple-400 font-bold">Intent: {c.buyer_intent_score}%</span>
+                      <div className="flex items-center justify-between text-[9px] text-slate-500 font-mono pt-1 border-t border-[#3A4552] uppercase">
+                        <span>{fmtDuration(c.duration_seconds)} DURATION</span>
+                        <span className="text-[#39FF14] font-bold">INTENT: {c.buyer_intent_score}%</span>
                       </div>
                     </div>
                   );
@@ -1141,16 +1134,16 @@ export function VoiceAIFeature() {
           </div>
 
           {/* Call Intelligence & Audio Player Panel */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-3.5">
             {activeCallRecord ? (
-              <Card className="p-6 bg-slate-900/80 border-slate-800/80 rounded-3xl backdrop-blur-xl shadow-2xl space-y-5">
+              <Card className="p-4 sm:p-5 bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl space-y-4">
                 {/* Call Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-800 pb-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#3A4552] pb-3.5">
                   <div>
-                    <div className="flex items-center gap-2.5">
-                      <h2 className="text-lg font-black text-white">{activeCallRecord.contact_name}</h2>
-                      <Badge variant="default" className="text-[10px]">
-                        {activeCallRecord.direction === 'outbound' ? 'Outbound' : 'Inbound'}
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-base font-black text-white uppercase">{activeCallRecord.contact_name}</h2>
+                      <Badge variant="default" className="text-[9px] uppercase font-mono">
+                        {activeCallRecord.direction}
                       </Badge>
                       <Badge
                         variant={
@@ -1160,22 +1153,22 @@ export function VoiceAIFeature() {
                             ? 'danger'
                             : 'default'
                         }
-                        className="text-[10px]"
+                        className="text-[9px] uppercase font-mono"
                       >
                         {activeCallRecord.sentiment}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1 font-mono">
-                      {activeCallRecord.phone_number} • Total Duration: {fmtDuration(activeCallRecord.duration_seconds)}
+                    <p className="text-xs text-slate-400 mt-0.5 font-mono uppercase">
+                      {activeCallRecord.phone_number} • TOTAL DURATION: {fmtDuration(activeCallRecord.duration_seconds)}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-500 uppercase font-bold block tracking-wider">
-                        Buyer Intent Score
+                      <span className="text-[9px] text-slate-500 uppercase font-bold block tracking-wider">
+                        BUYER INTENT SCORE
                       </span>
-                      <span className="text-lg font-mono font-black text-purple-400">
+                      <span className="text-base font-mono font-black text-[#39FF14]">
                         {activeCallRecord.buyer_intent_score} / 100
                       </span>
                     </div>
@@ -1184,7 +1177,7 @@ export function VoiceAIFeature() {
                       type="button"
                       title="Delete Call Record"
                       onClick={() => deleteMutation.mutate(activeCallRecord.id)}
-                      className="p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      className="p-1.5 rounded-none text-slate-500 hover:text-[#FF2A54] hover:bg-[#FF2A54]/10 transition-none"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -1192,16 +1185,16 @@ export function VoiceAIFeature() {
                 </div>
 
                 {/* Score breakdown metrics */}
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2.5">
                   {[
-                    { label: 'Intent Probability', value: activeCallRecord.buyer_intent_score, color: 'bg-purple-500' },
+                    { label: 'INTENT PROBABILITY', value: activeCallRecord.buyer_intent_score, color: 'bg-[#39FF14]' },
                     {
-                      label: 'Objections Handled',
+                      label: 'OBJECTIONS HANDLED',
                       value: Math.min(activeCallRecord.objections_handled.length * 30, 100),
-                      color: 'bg-amber-500',
+                      color: 'bg-[#FFB800]',
                     },
                     {
-                      label: 'Call Health',
+                      label: 'CALL HEALTH',
                       value:
                         activeCallRecord.sentiment === 'positive'
                           ? 92
@@ -1210,20 +1203,20 @@ export function VoiceAIFeature() {
                           : 28,
                       color:
                         activeCallRecord.sentiment === 'positive'
-                          ? 'bg-emerald-500'
+                          ? 'bg-[#39FF14]'
                           : activeCallRecord.sentiment === 'negative'
-                          ? 'bg-rose-500'
+                          ? 'bg-[#FF2A54]'
                           : 'bg-slate-500',
                     },
                   ].map((item) => (
-                    <div key={item.label} className="p-3 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2">
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400 font-semibold">{item.label}</span>
+                    <div key={item.label} className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-slate-400 font-bold uppercase">{item.label}</span>
                         <span className="text-white font-mono font-bold">{item.value}%</span>
                       </div>
-                      <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                      <div className="h-1.5 rounded-none bg-[#1F2833] overflow-hidden">
                         <div
-                          className={`h-full rounded-full ${item.color} transition-all duration-500`}
+                          className={`h-full rounded-none ${item.color} transition-none`}
                           style={{ width: `${item.value}%` }}
                         />
                       </div>
@@ -1232,44 +1225,41 @@ export function VoiceAIFeature() {
                 </div>
 
                 {/* ── Modern Interactive Audio Player ── */}
-                <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-purple-950/20 to-slate-950 border border-purple-500/30 space-y-4 shadow-xl shadow-purple-500/5">
+                <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3 shadow-xl">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex items-center gap-3.5">
+                    <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={handleTogglePlayAudio}
-                        className="p-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-500 hover:to-indigo-500 shadow-xl shadow-purple-600/30 transition-all flex items-center justify-center hover:scale-105 active:scale-95"
+                        className="p-2.5 rounded-none bg-[#39FF14] text-[#0B0C10] font-bold shadow-lg transition-none flex items-center justify-center"
                         title={isPlayingAudio ? 'Pause Playback' : 'Play Audio Recording'}
                       >
                         {isPlayingAudio ? (
-                          <Pause className="w-5 h-5 fill-current" />
+                          <Pause className="w-4 h-4 fill-current" />
                         ) : (
-                          <Play className="w-5 h-5 fill-current ml-0.5" />
+                          <Play className="w-4 h-4 fill-current ml-0.5" />
                         )}
                       </button>
 
                       <div>
-                        <div className="text-xs font-bold text-white flex items-center gap-2">
-                          <span>Speech Intelligence Audio Player</span>
+                        <div className="text-xs font-bold text-white uppercase flex items-center gap-2">
+                          <span>SPEECH INTELLIGENCE AUDIO PLAYER</span>
                           {isPlayingAudio && (
-                            <span className="flex h-2 w-2 relative">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
-                              <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500" />
-                            </span>
+                            <span className="w-2 h-2 rounded-none bg-[#39FF14]" />
                           )}
                         </div>
-                        <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                        <div className="text-[10px] text-slate-400 font-mono mt-0.5 uppercase">
                           {isPlayingAudio
-                            ? `Playing: ${fmtDuration(playbackCurrentTime)} / ${fmtDuration(playbackDuration || activeCallRecord.duration_seconds)}`
-                            : `Duration: ${fmtDuration(activeCallRecord.duration_seconds)} • 44.1 kHz Crystal Stream`}
+                            ? `PLAYING: ${fmtDuration(playbackCurrentTime)} / ${fmtDuration(playbackDuration || activeCallRecord.duration_seconds)}`
+                            : `DURATION: ${fmtDuration(activeCallRecord.duration_seconds)} • 44.1 KHZ RAW STREAM`}
                         </div>
                       </div>
                     </div>
 
                     {/* Speed & Volume Controls */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
                       {/* Playback speed selector */}
-                      <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-[10px] font-mono font-bold">
+                      <div className="flex items-center gap-1 bg-[#1F2833] p-1 rounded-none border border-[#3A4552] text-[9px] font-mono font-bold">
                         {[1.0, 1.25, 1.5, 2.0].map((rate) => (
                           <button
                             key={rate}
@@ -1278,8 +1268,8 @@ export function VoiceAIFeature() {
                               setPlaybackRate(rate);
                               if (audioElementRef.current) audioElementRef.current.playbackRate = rate;
                             }}
-                            className={`px-1.5 py-0.5 rounded-lg transition-colors ${
-                              playbackRate === rate ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                            className={`px-1.5 py-0.5 rounded-none transition-none ${
+                              playbackRate === rate ? 'bg-[#39FF14] text-[#0B0C10]' : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
                             {rate}x
@@ -1288,14 +1278,14 @@ export function VoiceAIFeature() {
                       </div>
 
                       {/* Mute & Volume Slider */}
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1">
                         <button
                           type="button"
                           onClick={handleToggleMute}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                          className="p-1 rounded-none text-slate-400 hover:text-white transition-none"
                           title={isMuted ? 'Unmute' : 'Mute'}
                         >
-                          {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4" />}
+                          {isMuted ? <VolumeX className="w-3.5 h-3.5 text-[#FF2A54]" /> : <Volume2 className="w-3.5 h-3.5" />}
                         </button>
                         <input
                           type="range"
@@ -1310,7 +1300,7 @@ export function VoiceAIFeature() {
                             if (audioElementRef.current) audioElementRef.current.volume = val;
                             if (speechUtteranceRef.current) speechUtteranceRef.current.volume = val;
                           }}
-                          className="w-14 h-1 bg-slate-800 accent-purple-500 rounded-lg cursor-pointer"
+                          className="w-12 h-1 bg-[#1F2833] accent-[#39FF14] rounded-none cursor-pointer"
                           title={`Volume: ${Math.round(audioVolume * 100)}%`}
                         />
                       </div>
@@ -1320,37 +1310,36 @@ export function VoiceAIFeature() {
                         <a
                           href={callAudioMap[activeCallRecord.id] || activeCallRecord.recording_url || '#'}
                           download={`call-${activeCallRecord.contact_name.replace(/\s+/g, '-').toLowerCase()}.webm`}
-                          className="p-2 rounded-xl text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition-colors"
+                          className="p-1.5 rounded-none text-[#39FF14] bg-[#0B0C10] hover:bg-[#39FF14] hover:text-[#0B0C10] border border-[#3A4552] transition-none"
                           title="Download Audio Recording"
                         >
-                          <Download className="w-4 h-4" />
+                          <Download className="w-3.5 h-3.5" />
                         </a>
                       )}
                     </div>
                   </div>
 
                   {/* Audio Progress Scrubber */}
-                  <div className="space-y-2 cursor-pointer pt-1" onClick={handleSeekAudio}>
-                    <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/80 relative">
+                  <div className="space-y-1.5 cursor-pointer pt-0.5" onClick={handleSeekAudio}>
+                    <div className="w-full h-2 bg-[#1F2833] rounded-none overflow-hidden border border-[#3A4552] relative">
                       <div
-                        className="h-full bg-gradient-to-r from-purple-500 via-indigo-500 to-teal-400 transition-all duration-150"
+                        className="h-full bg-[#39FF14] transition-none"
                         style={{ width: `${playbackProgress}%` }}
                       />
                     </div>
 
                     {/* Dynamic Waveform Bars */}
-                    <div className="flex items-center justify-between gap-1 h-6 pt-1">
+                    <div className="flex items-center justify-between gap-1 h-5 pt-0.5">
                       {[30, 60, 95, 40, 75, 100, 55, 85, 45, 95, 65, 30, 80, 95, 50, 75, 45, 90, 60, 35, 75, 90, 40, 65].map(
                         (h, i) => (
                           <div
                             key={i}
-                            className={`flex-1 rounded-full transition-all duration-300 ${
-                              isPlayingAudio ? 'bg-purple-400 animate-pulse' : 'bg-slate-800'
+                            className={`flex-1 rounded-none transition-none ${
+                              isPlayingAudio ? 'bg-[#39FF14]' : 'bg-[#3A4552]'
                             }`}
                             style={{
                               height: `${h}%`,
-                              animationDelay: `${i * 40}ms`,
-                              opacity: playbackProgress > (i / 24) * 100 ? 1 : 0.35,
+                              opacity: playbackProgress > (i / 24) * 100 ? 1 : 0.3,
                             }}
                           />
                         )
@@ -1360,48 +1349,48 @@ export function VoiceAIFeature() {
                 </div>
 
                 {/* Summary Box with Quick Copy & Email Generator */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                      <span>Executive Call Synthesis</span>
+                      <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+                      <span>EXECUTIVE CALL SYNTHESIS</span>
                     </span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={handleCopySummary}
-                        className="text-[11px] text-slate-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+                        className="text-[10px] text-slate-400 hover:text-[#39FF14] flex items-center gap-1 uppercase transition-none"
                       >
-                        {isCopiedSummary ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        <span>{isCopiedSummary ? 'Copied!' : 'Copy Summary'}</span>
+                        {isCopiedSummary ? <Check className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                        <span>{isCopiedSummary ? 'COPIED!' : 'COPY SUMMARY'}</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowEmailDraftModal(true)}
-                        className="text-[11px] text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+                        className="text-[10px] text-[#00E5FF] hover:text-[#39FF14] flex items-center gap-1 uppercase transition-none"
                       >
-                        <Mail className="w-3.5 h-3.5" />
-                        <span>Draft Follow-up Email</span>
+                        <Mail className="w-3 h-3" />
+                        <span>DRAFT FOLLOW-UP EMAIL</span>
                       </button>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-300 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 leading-relaxed font-sans">
+                  <p className="text-xs text-slate-300 bg-[#0B0C10] p-3 rounded-none border border-[#3A4552] leading-relaxed uppercase">
                     {activeCallRecord.summary}
                   </p>
                 </div>
 
                 {/* Objections Handled Badges */}
                 {activeCallRecord.objections_handled.length > 0 && (
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                      Objections Handled ({activeCallRecord.objections_handled.length})
+                      OBJECTIONS HANDLED ({activeCallRecord.objections_handled.length})
                     </span>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {activeCallRecord.objections_handled.map((obj) => (
                         <Badge
                           key={obj}
                           variant="warning"
-                          className="text-[11px] bg-amber-500/10 text-amber-300 border-amber-500/30 px-2.5 py-1"
+                          className="text-[10px] px-2 py-0.5 uppercase font-mono"
                         >
                           🛡️ {obj}
                         </Badge>
@@ -1411,18 +1400,18 @@ export function VoiceAIFeature() {
                 )}
 
                 {/* Action Items List */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Next Action Items ({activeCallRecord.action_items?.length ?? 0})</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#39FF14]" />
+                    <span>NEXT ACTION ITEMS ({activeCallRecord.action_items?.length ?? 0})</span>
                   </span>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {(activeCallRecord.action_items || []).map((item, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-xs text-slate-200 flex items-center gap-2.5 hover:bg-emerald-500/10 transition-colors"
+                        className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 flex items-center gap-2 hover:border-[#39FF14] transition-none uppercase"
                       >
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                        <span className="w-2 h-2 rounded-none bg-[#39FF14] shrink-0" />
                         <span className="font-medium">{item}</span>
                       </div>
                     ))}
@@ -1433,16 +1422,16 @@ export function VoiceAIFeature() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full border-slate-700 text-slate-300 hover:border-purple-500 hover:text-purple-300 py-2.5 rounded-xl"
+                  className="w-full text-xs h-8 uppercase"
                   onClick={() => setTranscriptModalCall(activeCallRecord)}
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  <span>Inspect Full Dialogue Transcript & Timestamped Moments</span>
+                  <span>INSPECT FULL DIALOGUE TRANSCRIPT</span>
                 </Button>
               </Card>
             ) : (
-              <div className="py-28 text-center rounded-3xl bg-slate-900/30 border border-slate-800 text-slate-500 text-xs p-6">
-                Select a call record to inspect audio intelligence, battle-cards, and action items.
+              <div className="py-28 text-center rounded-none bg-[#1F2833] border border-[#3A4552] text-slate-500 text-xs p-6 uppercase font-mono">
+                SELECT A CALL RECORD TO INSPECT AUDIO INTELLIGENCE AND ACTION ITEMS.
               </div>
             )}
           </div>
@@ -1451,75 +1440,80 @@ export function VoiceAIFeature() {
 
       {/* ── TAB: ANALYTICS ── */}
       {activeTab === 'analytics' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Objections Breakdown */}
-          <Card className="p-6 bg-slate-900/80 border-slate-800/80 rounded-3xl backdrop-blur-xl space-y-4">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none space-y-3 font-mono">
             <div>
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Shield className="w-4 h-4 text-purple-400" />
-                <span>Top Objection Types</span>
+                <Shield className="w-4 h-4 text-[#39FF14]" />
+                <span>TOP OBJECTION TYPES</span>
               </h3>
-              <p className="text-[11px] text-slate-400 mt-1">
-                Frequency of objection battle-cards triggered across all voice calls
+              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                FREQUENCY OF OBJECTION BATTLE-CARDS TRIGGERED ACROSS ALL VOICE CALLS
               </p>
             </div>
             <div className="h-60">
               {objectionChartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={objectionChartData} layout="vertical" margin={{ left: 15, right: 15 }}>
-                    <XAxis type="number" stroke="#475569" fontSize={10} tickLine={false} />
+                    <XAxis type="number" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
                     <YAxis
                       type="category"
                       dataKey="name"
-                      stroke="#475569"
-                      fontSize={11}
+                      stroke="#94a3b8"
+                      fontSize={10}
                       tickLine={false}
                       width={100}
+                      fontFamily="monospace"
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#0f172a',
-                        borderColor: '#334155',
-                        borderRadius: '0.75rem',
+                        backgroundColor: '#0B0C10',
+                        borderColor: '#3A4552',
+                        borderRadius: '0px',
                         fontSize: '11px',
+                        fontFamily: 'monospace',
+                        color: '#F1F5F9',
                       }}
                     />
-                    <Bar dataKey="count" radius={[0, 6, 6, 0]} fill="#a855f7" />
+                    <Bar dataKey="count" radius={[0, 0, 0, 0]} fill="#39FF14" />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex items-center justify-center h-full text-slate-500 text-xs">
-                  No objection data recorded yet.
+                <div className="flex items-center justify-center h-full text-slate-500 text-xs font-mono uppercase">
+                  NO OBJECTION DATA RECORDED YET.
                 </div>
               )}
             </div>
           </Card>
 
           {/* Sentiment Distribution */}
-          <Card className="p-6 bg-slate-900/80 border-slate-800/80 rounded-3xl backdrop-blur-xl space-y-4">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none space-y-3 font-mono">
             <div>
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-emerald-400" />
-                <span>Sentiment Classification</span>
+                <Sliders className="w-4 h-4 text-[#39FF14]" />
+                <span>SENTIMENT CLASSIFICATION</span>
               </h3>
-              <p className="text-[11px] text-slate-400 mt-1">
-                Call outcome distribution across positive, neutral, and negative sentiment
+              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                CALL OUTCOME DISTRIBUTION ACROSS POSITIVE, NEUTRAL, AND NEGATIVE SENTIMENT
               </p>
             </div>
             <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={sentimentData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                  <XAxis dataKey="name" stroke="#475569" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#475569" fontSize={10} tickLine={false} />
+                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
+                  <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0f172a',
-                      borderColor: '#334155',
-                      borderRadius: '0.75rem',
+                      backgroundColor: '#0B0C10',
+                      borderColor: '#3A4552',
+                      borderRadius: '0px',
                       fontSize: '11px',
+                      fontFamily: 'monospace',
+                      color: '#F1F5F9',
                     }}
                   />
-                  <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                  <Bar dataKey="value" radius={[0, 0, 0, 0]}>
                     {sentimentData.map((entry, index) => (
                       <Cell key={index} fill={entry.color} />
                     ))}
@@ -1533,15 +1527,15 @@ export function VoiceAIFeature() {
 
       {/* ── Follow-up Email Draft Modal ── */}
       {showEmailDraftModal && activeCallRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
-          <div className="w-full max-w-lg bg-slate-950 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+          <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none p-5 space-y-3.5 shadow-2xl font-mono">
+            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-purple-500/20 text-purple-400">
+                <div className="p-1.5 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
                   <Mail className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-bold text-white">
-                  Auto-Generated Follow-up Email
+                <h3 className="text-xs font-bold text-white uppercase">
+                  AUTO-GENERATED FOLLOW-UP EMAIL
                 </h3>
               </div>
               <button
@@ -1553,22 +1547,22 @@ export function VoiceAIFeature() {
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-2.5 text-xs">
               <div>
-                <label className="text-slate-400 font-semibold block mb-1">To:</label>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white font-mono">
+                <label className="text-slate-400 font-bold uppercase block mb-1">TO:</label>
+                <div className="p-2 rounded-none bg-[#0B0C10] border border-[#3A4552] text-white font-mono uppercase">
                   {activeCallRecord.contact_name} &lt;{activeCallRecord.contact_name.toLowerCase().replace(/\s+/g, '.')}@enterprise.com&gt;
                 </div>
               </div>
               <div>
-                <label className="text-slate-400 font-semibold block mb-1">Subject:</label>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white font-semibold">
-                  Follow-up: Next steps for AI CRM automation & pricing review
+                <label className="text-slate-400 font-bold uppercase block mb-1">SUBJECT:</label>
+                <div className="p-2 rounded-none bg-[#0B0C10] border border-[#3A4552] text-white font-bold uppercase">
+                  FOLLOW-UP: NEXT STEPS FOR AI CRM AUTOMATION &amp; PRICING REVIEW
                 </div>
               </div>
               <div>
-                <label className="text-slate-400 font-semibold block mb-1">Email Body:</label>
-                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 leading-relaxed max-h-48 overflow-y-auto">
+                <label className="text-slate-400 font-bold uppercase block mb-1">EMAIL BODY:</label>
+                <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-slate-300 leading-relaxed max-h-48 overflow-y-auto font-mono uppercase text-[11px]">
                   Hi {activeCallRecord.contact_name.split(' ')[0]},<br /><br />
                   Great speaking with you today! As discussed, here is a summary of our conversation and key next steps:<br /><br />
                   <strong>Action Items:</strong><br />
@@ -1582,24 +1576,25 @@ export function VoiceAIFeature() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
               <Button
                 variant="outline"
                 size="sm"
+                className="text-xs h-7 uppercase"
                 onClick={() => setShowEmailDraftModal(false)}
               >
-                Close
+                CLOSE
               </Button>
               <Button
                 variant="primary"
                 size="sm"
-                className="bg-purple-600 hover:bg-purple-500"
+                className="text-xs h-7 uppercase font-bold"
                 onClick={() => {
                   navigator.clipboard.writeText(`Hi ${activeCallRecord.contact_name.split(' ')[0]},\n\nGreat speaking with you today! As discussed, here are the next steps:\n${(activeCallRecord.action_items || []).map((a) => `• ${a}`).join('\n')}\n\nBest regards,\nSales Team`);
                   setShowEmailDraftModal(false);
                 }}
               >
-                Copy & Send to Email Client
+                COPY &amp; SEND TO EMAIL CLIENT
               </Button>
             </div>
           </div>
@@ -1624,3 +1619,4 @@ export function VoiceAIFeature() {
     </div>
   );
 }
+
