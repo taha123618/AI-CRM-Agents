@@ -86,7 +86,7 @@ export function JourneyFeature() {
   return (
     <div className="space-y-4 font-mono pb-12">
       {/* ── Header Banner ── */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
           <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
             <Milestone className="w-6 h-6" />
@@ -123,7 +123,7 @@ export function JourneyFeature() {
       {/* Summary KPI Ribbon */}
       {journeyData?.summary && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
               TOTAL MONITORED ARR
             </span>
@@ -135,7 +135,7 @@ export function JourneyFeature() {
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#1F2833] border-[#FF2A54]/50 rounded-none hover:border-[#FF2A54] transition-none">
+          <Card className="p-4 bg-[#121212] border-[#FF2A54]/50 rounded-none hover:border-[#FF2A54] transition-none">
             <span className="text-[10px] font-bold text-[#FF2A54] uppercase tracking-wider block flex items-center gap-1.5">
               <ShieldAlert className="w-3.5 h-3.5 text-[#FF2A54]" />
               REVENUE AT RISK
@@ -148,7 +148,7 @@ export function JourneyFeature() {
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-[#00E5FF] uppercase tracking-wider block flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
               EXPANSION POTENTIAL ARR
@@ -161,7 +161,7 @@ export function JourneyFeature() {
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider block flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 text-purple-400" />
               AUTONOMOUS RESCUE FLEET
@@ -178,7 +178,7 @@ export function JourneyFeature() {
 
       {/* Lifecycle Stage Progression Track */}
       {journeyData?.stages && journeyData?.distribution && (
-        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3.5 shadow-xl">
+        <div className="p-4 rounded-none bg-[#121212] border border-[#3A4552] space-y-3.5 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <Milestone className="w-4 h-4 text-[#FFB800]" />
@@ -267,7 +267,7 @@ export function JourneyFeature() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH ACCOUNTS BY NAME..."
-              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
+              className="w-full bg-[#121212] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
             />
           </div>
 
@@ -280,8 +280,8 @@ export function JourneyFeature() {
                   key={customer.id}
                   onClick={() => setSelectedCustomer(customer)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
-                      ? 'bg-[#1F2833] border-[#FFB800] text-white shadow-xl'
-                      : 'bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                      ? 'bg-[#121212] border-[#FFB800] text-white shadow-xl'
+                      : 'bg-[#121212] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
                     }`}
                 >
                   <div className="flex items-center justify-between">
@@ -332,7 +332,7 @@ export function JourneyFeature() {
         {/* Right: Detailed Account Journey & Interventions */}
         <div className="lg:col-span-7 space-y-4">
           {activeCust && customerDetails ? (
-            <div className="p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-4 shadow-xl">
+            <div className="p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] space-y-4 shadow-xl">
               {/* Account Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
                 <div>

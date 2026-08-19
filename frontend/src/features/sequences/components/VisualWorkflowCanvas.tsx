@@ -180,7 +180,7 @@ export function VisualWorkflowCanvas() {
   return (
     <div className="space-y-4 font-mono">
       {/* Canvas Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <Workflow className="w-4 h-4 text-[#FFB800]" />
@@ -239,7 +239,7 @@ export function VisualWorkflowCanvas() {
             >
               <Zap className="w-3 h-3" />
               <span>{wf.name}</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-[#1F2833] text-slate-300 font-mono border border-[#3A4552]">
+              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-[#121212] text-slate-300 font-mono border border-[#3A4552]">
                 {wf.execution_count} RUNS
               </span>
             </button>
@@ -283,14 +283,14 @@ export function VisualWorkflowCanvas() {
           {/* Visual Interactive Graph Stage */}
           <div className="relative min-h-[300px] rounded-none bg-[#0B0C10] border border-[#3A4552] p-6 overflow-x-auto flex items-center justify-between gap-6">
             {/* Background Grid Accent */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F2833_1px,transparent_1px),linear-gradient(to_bottom,#1F2833_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#121212_1px,transparent_1px),linear-gradient(to_bottom,#121212_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
 
             {/* Nodes Pipeline */}
             <div className="relative z-10 flex items-center gap-4 mx-auto font-mono">
               {activeWf.nodes?.map((node, index) => (
                 <div key={node.id} className="flex items-center gap-4">
                   {/* Node Card */}
-                  <div className="w-56 p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 group relative">
+                  <div className="w-56 p-3.5 rounded-none bg-[#121212] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 group relative">
                     <button
                       onClick={() => handleRemoveNode(node.id)}
                       className="absolute top-2.5 right-2.5 text-slate-500 hover:text-[#FF2A54] opacity-0 group-hover:opacity-100 transition-none"
@@ -331,7 +331,7 @@ export function VisualWorkflowCanvas() {
 
           {/* Real-time Simulation Trace */}
           {simulationTrace && (
-            <div className="p-4 rounded-none bg-[#1F2833] border border-[#FFB800] space-y-3 font-mono">
+            <div className="p-4 rounded-none bg-[#121212] border border-[#FFB800] space-y-3 font-mono">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
@@ -353,7 +353,7 @@ export function VisualWorkflowCanvas() {
                     className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs font-mono"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
+                      <span className="w-4 h-4 rounded-none bg-[#121212] text-[#FFB800] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
                         ✓
                       </span>
                       <span className="text-slate-200 font-bold text-[11px] uppercase">{step.node}</span>
@@ -370,7 +370,7 @@ export function VisualWorkflowCanvas() {
       {/* Add Step Node Modal */}
       {isAddNodeOpen && (
         <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+          <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <Plus className="w-4 h-4 text-[#FFB800]" />
@@ -447,7 +447,7 @@ export function VisualWorkflowCanvas() {
       {/* Create New Pipeline Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+          <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <Workflow className="w-4 h-4 text-[#FFB800]" />

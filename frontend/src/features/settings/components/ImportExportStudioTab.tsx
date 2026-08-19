@@ -53,7 +53,7 @@ export function ImportExportStudioTab() {
     <div className="space-y-4 font-mono">
       {/* 1-Click Exporters */}
       <div className="space-y-3">
-        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+        <div className="p-4 rounded-none bg-[#121212] border border-[#3A4552]">
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
             <Download className="w-4 h-4 text-[#FFB800]" />
             1-CLICK DATA EXPORTERS
@@ -64,7 +64,7 @@ export function ImportExportStudioTab() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
+          <Card className="bg-[#121212] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
@@ -85,7 +85,7 @@ export function ImportExportStudioTab() {
             </Button>
           </Card>
 
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
+          <Card className="bg-[#121212] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
@@ -106,7 +106,7 @@ export function ImportExportStudioTab() {
             </Button>
           </Card>
 
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
+          <Card className="bg-[#121212] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-purple-400" />
@@ -131,7 +131,7 @@ export function ImportExportStudioTab() {
 
       {/* CSV Importer */}
       <div className="space-y-3 pt-3 border-t border-[#3A4552]">
-        <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+        <div className="p-4 rounded-none bg-[#121212] border border-[#3A4552]">
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
             <Upload className="w-4 h-4 text-[#FFB800]" />
             BULK CSV INGESTION STUDIO
@@ -141,7 +141,7 @@ export function ImportExportStudioTab() {
           </p>
         </div>
 
-        <form onSubmit={handleImport} className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3">
+        <form onSubmit={handleImport} className="p-4 rounded-none bg-[#121212] border border-[#3A4552] space-y-3">
           <div className="flex items-center gap-3">
             <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">TARGET ENTITY:</label>
             <div className="flex items-center gap-1.5 font-mono">

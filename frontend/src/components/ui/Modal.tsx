@@ -39,7 +39,7 @@ export function Modal({ isOpen, onClose, title, description, children, className
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full max-w-lg bg-[#1F2833] rounded-none p-5 shadow-2xl border border-[#3A4552] z-10 max-h-[90vh] overflow-y-auto overflow-x-hidden',
+          'relative w-full max-w-lg bg-[#121212] rounded-none p-5 shadow-2xl border border-[#3A4552] z-10 max-h-[90vh] overflow-y-auto overflow-x-hidden',
           className
         )}
       >

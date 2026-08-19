@@ -71,7 +71,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm font-mono">
-      <div className="w-full max-w-2xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-2xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[#3A4552]">
           <div>
@@ -150,7 +150,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1 rounded-none text-xs font-bold uppercase bg-[#0B0C10] text-slate-300 hover:bg-[#1F2833] border border-[#3A4552] transition-none"
+            className="px-3 py-1 rounded-none text-xs font-bold uppercase bg-[#0B0C10] text-slate-300 hover:bg-[#121212] border border-[#3A4552] transition-none"
           >
             CLOSE
           </button>

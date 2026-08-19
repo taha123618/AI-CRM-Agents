@@ -89,7 +89,7 @@ export function CustomAgentsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black tracking-wider text-white uppercase flex items-center gap-2">
             <Bot className="w-5 h-5 text-[#FFB800]" />
@@ -131,7 +131,7 @@ export function CustomAgentsFeature() {
 
       {/* KPI Highlights Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
             <span>{t('custom_agents.total_agents') || 'TOTAL AGENTS'}</span>
             <Bot className="w-4 h-4 text-[#FFB800]" />
@@ -139,7 +139,7 @@ export function CustomAgentsFeature() {
           <div className="text-2xl font-black text-white mt-1 font-mono">{agents?.length || 0}</div>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase">
             <span>{t('custom_agents.active_deployments') || 'ACTIVE FLEET'}</span>
             <Activity className="w-4 h-4 text-[#FFB800]" />
@@ -147,7 +147,7 @@ export function CustomAgentsFeature() {
           <div className="text-2xl font-black text-[#FFB800] mt-1 font-mono">{activeCount}</div>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400 uppercase">
             <span>{t('custom_agents.total_executions') || 'EXECUTIONS'}</span>
             <Zap className="w-4 h-4 text-cyan-400" />
@@ -155,7 +155,7 @@ export function CustomAgentsFeature() {
           <div className="text-2xl font-black text-cyan-400 mt-1 font-mono">{totalExecutions}</div>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase">
             <span>{t('custom_agents.runtime_engine') || 'RUNTIME ENGINE'}</span>
             <Cpu className="w-4 h-4 text-[#FFB800]" />
@@ -211,7 +211,7 @@ export function CustomAgentsFeature() {
           {filteredAgents.map((agent) => (
             <Card
               key={agent.id}
-              className="p-4 bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between group space-y-3 font-mono"
+              className="p-4 bg-[#121212] border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between group space-y-3 font-mono"
             >
               <div className="space-y-2">
                 <div className="flex items-start justify-between gap-2">

@@ -87,7 +87,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
-      <div className="w-full max-w-5xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="w-full max-w-5xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
@@ -154,7 +154,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                       variant="ghost"
                       onClick={() => syncAccountMutation.mutate(acc.id)}
                       disabled={syncAccountMutation.isPending}
-                      className="h-6 px-2 text-xs text-[#FFB800] hover:bg-[#1F2833]"
+                      className="h-6 px-2 text-xs text-[#FFB800] hover:bg-[#121212]"
                       title="Sync Now"
                     >
                       <RefreshCw className={`w-3 h-3 ${syncAccountMutation.isPending ? 'animate-spin' : ''}`} />
@@ -220,7 +220,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                       <div
                         key={idx}
                         className={`p-2.5 border text-xs space-y-1 ${msg.direction === 'inbound'
-                            ? 'bg-[#1F2833] border-[#3A4552] text-slate-200'
+                            ? 'bg-[#121212] border-[#3A4552] text-slate-200'
                             : 'bg-[#0B0C10] border-[#FFB800]/40 text-[#FFB800]'
                           }`}
                       >
@@ -245,7 +245,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
         {/* Connect Modal */}
         {isConnectOpen && (
           <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
-            <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
+            <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">CONNECT EMAIL MAILBOX</h4>
 
               <div className="space-y-2 text-xs">

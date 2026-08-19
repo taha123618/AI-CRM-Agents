@@ -17,10 +17,10 @@ Apply these values directly inside your global CSS file (`app/globals.css` or `s
     --background: 220 22% 5%;       /* #0B0C10 */
     --foreground: 0 0% 100%;        /* #FFFFFF */
     
-    --card: 214 24% 16%;            /* #1F2833 */
+    --card: 214 24% 16%;            /* #121212 */
     --card-foreground: 0 0% 100%;   /* #FFFFFF */
     
-    --popover: 215 24% 20%;         /* #26313F */
+    --popover: 215 24% 20%;         /* #1C1C1C */
     --popover-foreground: 0 0% 100%;/* #FFFFFF */
     
     --primary: 43 100% 50%;         /* #FFB800 (Tactical Amber Primary) */
@@ -54,4 +54,4 @@ Apply these values directly inside your global CSS file (`app/globals.css` or `s
 
 ## 4. Specific CRM Component Layout Instructions
 - **Kanban Pipeline**: Columns use standard shadcn `<Card />` layouts but must feature a 2px vertical neon highlight boundary (`border-l-2 border-l-primary`) at the left edge of headers.
-- **Data Tables**: High data density using shadcn `<Table />`. Alternate row background fills using utility class `odd:bg-[#161D26] even:bg-[#1F2833]`. Active selection or hover must trigger an explicit neon border outline (`outline outline-1 outline-primary`).
+- **Data Tables**: High data density using shadcn `<Table />`. Alternate row background fills using utility class `odd:bg-[#0E0E0E] even:bg-[#121212]`. Active selection or hover must trigger an explicit neon border outline (`outline outline-1 outline-primary`).

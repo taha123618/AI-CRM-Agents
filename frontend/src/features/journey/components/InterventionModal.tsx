@@ -41,9 +41,9 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FF2A54] border border-[#FF2A54]">
               <ShieldAlert className="w-5 h-5" />
@@ -104,7 +104,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                   AI RETENTION PLAYBOOK DISPATCHED
                 </h3>
               </div>
-              <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-xs text-[#FFB800] whitespace-pre-wrap leading-relaxed">
+              <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] font-mono text-xs text-[#FFB800] whitespace-pre-wrap leading-relaxed">
                 {resultPlaybook}
               </div>
               <div className="flex justify-end pt-2">

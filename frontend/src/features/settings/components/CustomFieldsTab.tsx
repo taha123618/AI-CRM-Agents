@@ -112,7 +112,7 @@ export function CustomFieldsTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="w-4 h-4 text-[#FFB800]" />
@@ -145,7 +145,7 @@ export function CustomFieldsTab() {
             onClick={() => setActiveEntity(tab.id)}
             className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeEntity === tab.id
                 ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                : 'bg-[#1F2833] text-slate-400 border border-[#3A4552] hover:text-white'
+                : 'bg-[#121212] text-slate-400 border border-[#3A4552] hover:text-white'
               }`}
           >
             {tab.label}
@@ -163,7 +163,7 @@ export function CustomFieldsTab() {
           {fields.map((f: CustomFieldDefinition) => (
             <div
               key={f.id}
-              className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
+              className="p-3.5 rounded-none bg-[#121212] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -212,7 +212,7 @@ export function CustomFieldsTab() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 rounded-none bg-[#1F2833]/50 border border-[#3A4552] p-6 space-y-2 font-mono">
+        <div className="text-center py-12 rounded-none bg-[#121212]/50 border border-[#3A4552] p-6 space-y-2 font-mono">
           <Tag className="w-8 h-8 mx-auto text-slate-600 mb-1" />
           <p className="text-xs font-bold text-slate-300 uppercase">NO CUSTOM FIELDS FOR {activeEntity.toUpperCase()}S YET</p>
           <p className="text-[10px] text-slate-500 max-w-sm mx-auto uppercase">
@@ -224,7 +224,7 @@ export function CustomFieldsTab() {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
+          <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <SlidersHorizontal className="w-4 h-4 text-[#FFB800]" />

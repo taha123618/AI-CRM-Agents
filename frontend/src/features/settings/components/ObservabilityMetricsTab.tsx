@@ -50,7 +50,7 @@ export function ObservabilityMetricsTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header & Quick Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-[#FFB800]" />
@@ -91,7 +91,7 @@ export function ObservabilityMetricsTab() {
 
       {/* Metric Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+        <div className="p-3.5 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[10px] font-bold uppercase">ACTIVE WEBSOCKETS</span>
             <Network className="w-3.5 h-3.5 text-cyan-400" />
@@ -100,7 +100,7 @@ export function ObservabilityMetricsTab() {
           <span className="text-[9px] text-[#FFB800] uppercase">REAL-TIME BROADCAST CHANNELS</span>
         </div>
 
-        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+        <div className="p-3.5 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[10px] font-bold uppercase">TOTAL API CALLS</span>
             <Database className="w-3.5 h-3.5 text-[#FFB800]" />
@@ -109,7 +109,7 @@ export function ObservabilityMetricsTab() {
           <span className="text-[9px] text-slate-400 uppercase">SERVER-SIDE TELEMETRY</span>
         </div>
 
-        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+        <div className="p-3.5 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[10px] font-bold uppercase">AGENT EXECUTIONS</span>
             <Cpu className="w-3.5 h-3.5 text-[#FFB800]" />
@@ -118,7 +118,7 @@ export function ObservabilityMetricsTab() {
           <span className="text-[9px] text-[#FFB800] uppercase">AUTONOMOUS ORCHESTRATIONS</span>
         </div>
 
-        <div className="p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-1">
+        <div className="p-3.5 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[10px] font-bold uppercase">TASK QUEUE JOBS</span>
             <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
@@ -130,7 +130,7 @@ export function ObservabilityMetricsTab() {
 
       {/* Terminal View */}
       <div className="rounded-none bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
-        <div className="p-3 bg-[#1F2833] border-b border-[#3A4552] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-3 bg-[#121212] border-b border-[#3A4552] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-[#FFB800]" />
             <span className="text-xs font-bold text-white uppercase">/API/METRICS EXPOSITION STREAM</span>
@@ -185,7 +185,7 @@ export function ObservabilityMetricsTab() {
               const value = parts.slice(1).join(' ');
 
               return (
-                <div key={idx} className="flex items-baseline justify-between hover:bg-[#1F2833] px-1 py-0.5 transition-none">
+                <div key={idx} className="flex items-baseline justify-between hover:bg-[#121212] px-1 py-0.5 transition-none">
                   <span className="text-cyan-400">{metricName}</span>
                   <span className="text-[#FFB800] font-bold">{value}</span>
                 </div>

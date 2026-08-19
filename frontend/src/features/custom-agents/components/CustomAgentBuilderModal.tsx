@@ -360,7 +360,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                         : 'border-[#3A4552] bg-[#0B0C10] text-slate-400 hover:border-slate-500'
                       }`}
                   >
-                    <div className="p-1.5 rounded-none bg-[#1F2833] border border-[#3A4552] shrink-0">
+                    <div className="p-1.5 rounded-none bg-[#121212] border border-[#3A4552] shrink-0">
                       {getToolIcon(tool.id)}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -421,7 +421,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                   {selectedTools.map((tItem) => (
                     <span
                       key={tItem}
-                      className="px-1.5 py-0.5 rounded-none text-[9px] font-bold bg-[#1F2833] text-[#FFB800] border border-[#3A4552] uppercase"
+                      className="px-1.5 py-0.5 rounded-none text-[9px] font-bold bg-[#121212] text-[#FFB800] border border-[#3A4552] uppercase"
                     >
                       {tItem}
                     </span>

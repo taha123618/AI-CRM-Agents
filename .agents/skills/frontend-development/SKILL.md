@@ -13,7 +13,7 @@ The frontend strictly adheres to the **Tactical Command** design system:
 
 ### 1. Color Palette & Tokens
 * **Void Black (`#0B0C10`)**: Deep black background for main canvas, input fields, terminal displays, and active chips (`hsl(220 22% 5%)`).
-* **Dark Titanium (`#1F2833`)**: High-contrast dark gray surface for cards, modal dialogs, drawer panels, and secondary containers (`hsl(214 24% 16%)`).
+* **Matte Black (`#121212`)**: High-contrast dark gray surface for cards, modal dialogs, drawer panels, and secondary containers (`hsl(214 24% 16%)`).
 * **Steel Border (`#3A4552`)**: Clean tactical border for frames, dividers, and container outlines (`hsl(215 19% 28%)`).
 * **Tactical Amber / Gold Accent (`#FFB800`)**: High-visibility primary accent for primary buttons (`bg-[#FFB800] text-[#0B0C10] font-bold`), active tab indicators, focus rings, hover outlines, and key telemetry indicators (`hsl(43 100% 50%)`).
 * **Signal Semantic Colors**:

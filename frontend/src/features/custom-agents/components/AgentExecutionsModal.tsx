@@ -74,14 +74,14 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
 
                 {/* Output recommendation */}
                 {exec.output_payload?.recommendation && (
-                  <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 leading-relaxed font-mono uppercase">
+                  <div className="p-2.5 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 leading-relaxed font-mono uppercase">
                     {exec.output_payload.recommendation}
                   </div>
                 )}
 
                 {/* Input Payload details */}
                 {exec.input_payload && (
-                  <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552] text-[10px] font-mono text-slate-400 overflow-x-auto">
+                  <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552] text-[10px] font-mono text-slate-400 overflow-x-auto">
                     <span className="text-slate-500 block mb-1 uppercase font-bold">INPUT PAYLOAD:</span>
                     <pre>{JSON.stringify(exec.input_payload, null, 2)}</pre>
                   </div>

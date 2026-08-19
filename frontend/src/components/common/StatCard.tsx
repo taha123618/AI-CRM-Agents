@@ -29,7 +29,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        'bg-[#1F2833] border border-[#3A4552] rounded-none p-4 hover:border-[#FFB800] transition-none font-mono',
+        'bg-[#121212] border border-[#3A4552] rounded-none p-4 hover:border-[#FFB800] transition-none font-mono',
         glowClass,
         className
       )}

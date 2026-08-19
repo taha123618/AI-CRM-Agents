@@ -51,7 +51,7 @@ export function MultiLanguageFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
             <Globe className="w-5 h-5 text-[#FFB800]" />
@@ -77,7 +77,7 @@ export function MultiLanguageFeature() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             {t('languages.active_language', 'ACTIVE LOCALE')}
           </span>
@@ -90,7 +90,7 @@ export function MultiLanguageFeature() {
           </div>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             {t('languages.direction', 'TEXT DIRECTION')}
           </span>
@@ -102,7 +102,7 @@ export function MultiLanguageFeature() {
           </div>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             INSTALLED LOCALES
           </span>
@@ -114,7 +114,7 @@ export function MultiLanguageFeature() {
           </span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552] space-y-1">
+        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             FALLBACK RESOLUTION
           </span>
@@ -141,7 +141,7 @@ export function MultiLanguageFeature() {
             return (
               <Card
                 key={lang.code}
-                className={`p-4 bg-[#1F2833] border-[#3A4552] space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between ${isCurrent ? 'border-[#FFB800]' : ''
+                className={`p-4 bg-[#121212] border-[#3A4552] space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between ${isCurrent ? 'border-[#FFB800]' : ''
                   }`}
               >
                 <div className="space-y-2">
@@ -205,7 +205,7 @@ export function MultiLanguageFeature() {
       </div>
 
       {/* Locale Format Preview Card */}
-      <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3 font-mono">
+      <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3 font-mono">
         <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
           LOCALE-AWARE FORMATTING SANDBOX ({activeLang.name.toUpperCase()})

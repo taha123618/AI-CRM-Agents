@@ -9,7 +9,7 @@ export function AgentStatusPanel({ onRefresh }: { onRefresh?: () => void }) {
   const agentsList = Object.values(agentStatuses);
 
   return (
-    <div className="bg-[#1F2833] rounded-none p-4 border border-[#3A4552] mb-6 relative overflow-hidden font-mono">
+    <div className="bg-[#121212] rounded-none p-4 border border-[#3A4552] mb-6 relative overflow-hidden font-mono">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-[#3A4552] mb-3 relative z-10 gap-3">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
@@ -47,7 +47,7 @@ export function AgentStatusPanel({ onRefresh }: { onRefresh?: () => void }) {
               <span className="relative flex h-2 w-2">
                 <span className="relative inline-flex rounded-none h-2 w-2 bg-[#FFB800]"></span>
               </span>
-              <span className="text-[8px] font-bold font-mono px-1.5 py-0.5 rounded-none bg-[#1F2833] text-slate-300 border border-[#3A4552] uppercase">
+              <span className="text-[8px] font-bold font-mono px-1.5 py-0.5 rounded-none bg-[#121212] text-slate-300 border border-[#3A4552] uppercase">
                 {agent.model}
               </span>
             </div>

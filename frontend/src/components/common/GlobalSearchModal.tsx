@@ -145,10 +145,10 @@ export function GlobalSearchModal() {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 flex items-start justify-center pt-16 sm:pt-20 p-4 font-mono">
-      <div className="w-full max-w-2xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
+      <div className="w-full max-w-2xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
         {/* Header & Mode Switcher */}
         <div className="p-3 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10] gap-3">
-          <div className="flex items-center gap-1 p-1 bg-[#1F2833] rounded-none border border-[#3A4552]">
+          <div className="flex items-center gap-1 p-1 bg-[#121212] rounded-none border border-[#3A4552]">
             <button
               onClick={() => setMode('search')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${mode === 'search'
@@ -233,7 +233,7 @@ export function GlobalSearchModal() {
                 key={f.id}
                 onClick={() => setEntityFilter(f.id)}
                 className={`px-2 py-0.5 rounded-none text-[9px] font-mono font-bold uppercase transition-none ${entityFilter === f.id
-                    ? 'bg-[#1F2833] text-[#FFB800] border border-[#FFB800]'
+                    ? 'bg-[#121212] text-[#FFB800] border border-[#FFB800]'
                     : 'text-slate-400 hover:text-slate-200 border border-transparent'
                   }`}
               >
@@ -261,7 +261,7 @@ export function GlobalSearchModal() {
                     <div
                       key={res.id}
                       onClick={() => handleNavigate(res.entity_type)}
-                      className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] hover:bg-[#161D26] transition-none cursor-pointer group"
+                      className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] hover:bg-[#0E0E0E] transition-none cursor-pointer group"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <div className="flex items-center gap-2">
@@ -343,7 +343,7 @@ export function GlobalSearchModal() {
                           className="p-2 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] transition-none cursor-pointer flex items-center justify-between"
                         >
                           <div className="flex items-center gap-2 overflow-hidden">
-                            <span className="w-4 h-4 rounded-none bg-[#1F2833] flex items-center justify-center text-[9px] font-mono text-[#FFB800] shrink-0">
+                            <span className="w-4 h-4 rounded-none bg-[#121212] flex items-center justify-center text-[9px] font-mono text-[#FFB800] shrink-0">
                               {src.source_index}
                             </span>
                             <span className="text-xs text-slate-300 truncate font-mono uppercase">{src.title}</span>

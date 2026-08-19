@@ -68,7 +68,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-0 left-0 z-40 h-screen bg-[#1F2833] border-r border-[#3A4552] transition-none flex flex-col font-mono',
+        'fixed top-0 left-0 z-40 h-screen bg-[#121212] border-r border-[#3A4552] transition-none flex flex-col font-mono',
         sidebarOpen ? 'w-64' : 'w-16'
       )}
     >
@@ -87,7 +87,7 @@ export function Sidebar() {
         </div>
         <button
           onClick={toggleSidebar}
-          className="p-1 rounded-none text-slate-400 hover:bg-[#1F2833] hover:text-white transition-none"
+          className="p-1 rounded-none text-slate-400 hover:bg-[#121212] hover:text-white transition-none"
         >
           {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>

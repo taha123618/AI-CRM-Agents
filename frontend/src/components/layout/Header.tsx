@@ -62,7 +62,7 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-14 bg-[#1F2833] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
+        className={`sticky top-0 z-30 h-14 bg-[#121212] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
           }`}
       >
         {/* Search & AI Spotlight Bar */}
@@ -80,7 +80,7 @@ export function Header() {
               placeholder="SEARCH OR EXECUTE COMMAND (⌘K)..."
               className="w-full bg-[#0B0C10] text-slate-200 placeholder:text-slate-500 text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-[#3A4552] group-hover:border-[#FFB800] cursor-pointer transition-none uppercase"
             />
-            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#FFB800] bg-[#1F2833] border border-[#3A4552] rounded-none pointer-events-none">
+            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#FFB800] bg-[#121212] border border-[#3A4552] rounded-none pointer-events-none">
               ⌘K
             </kbd>
           </div>

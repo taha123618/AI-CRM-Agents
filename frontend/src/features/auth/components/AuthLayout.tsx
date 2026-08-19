@@ -14,7 +14,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
       {/* Brand Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10 space-y-1 font-mono">
         <Link to="/" className="inline-flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-none bg-[#1F2833] border border-[#FFB800] flex items-center justify-center text-[#FFB800]">
+          <div className="w-8 h-8 rounded-none bg-[#121212] border border-[#FFB800] flex items-center justify-center text-[#FFB800]">
             <ShieldAlert className="w-4 h-4" />
           </div>
           <span className="text-base font-black tracking-wider text-white uppercase group-hover:text-[#FFB800] transition-none">
@@ -28,7 +28,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
 
       {/* Card Container */}
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4 sm:px-0 font-mono">
-        <div className="border border-[#3A4552] rounded-none shadow-2xl p-6 space-y-4 bg-[#1F2833]">
+        <div className="border border-[#3A4552] rounded-none shadow-2xl p-6 space-y-4 bg-[#121212]">
           {children}
         </div>
 

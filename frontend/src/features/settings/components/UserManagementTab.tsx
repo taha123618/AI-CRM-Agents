@@ -341,7 +341,7 @@ export function UserManagementTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
             <Shield className="w-4 h-4 text-[#FFB800]" />
@@ -419,7 +419,7 @@ export function UserManagementTab() {
       )}
 
       {/* Search, Filter & Quick Stats Toolbar */}
-      <Card className="p-3 border-[#3A4552] bg-[#1F2833] font-mono">
+      <Card className="p-3 border-[#3A4552] bg-[#121212] font-mono">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
           {/* Search Input */}
           <div className="relative flex-1">
@@ -488,7 +488,7 @@ export function UserManagementTab() {
       </Card>
 
       {/* Users & RBAC Permissions Table */}
-      <Card className="border-[#3A4552] overflow-hidden bg-[#1F2833]">
+      <Card className="border-[#3A4552] overflow-hidden bg-[#121212]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse font-mono">
             <thead>
@@ -654,7 +654,7 @@ export function UserManagementTab() {
       </Card>
 
       {/* Enterprise SSO Identity Providers Section */}
-      <Card className="p-4 border-[#3A4552] bg-[#1F2833] space-y-3 font-mono">
+      <Card className="p-4 border-[#3A4552] bg-[#121212] space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
@@ -711,7 +711,7 @@ export function UserManagementTab() {
       {/* Modal: Provision New User (Admin Only) */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#121212] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <UserPlus className="w-4 h-4 text-[#FFB800]" />
@@ -867,7 +867,7 @@ export function UserManagementTab() {
                                   setCreatePermissions(createPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#121212] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
@@ -909,7 +909,7 @@ export function UserManagementTab() {
       {/* Modal: Edit User & RBAC Permissions (Admin Only) */}
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#121212] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <Edit2 className="w-4 h-4 text-[#FFB800]" />
@@ -1054,7 +1054,7 @@ export function UserManagementTab() {
                                   setEditPermissions(editPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#121212] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
@@ -1096,7 +1096,7 @@ export function UserManagementTab() {
       {/* Modal: Delete Confirmation (Admin Only) */}
       {deletingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#FF2A54] rounded-none w-full max-w-md p-5 bg-[#1F2833] shadow-2xl space-y-3">
+          <div className="border border-[#FF2A54] rounded-none w-full max-w-md p-5 bg-[#121212] shadow-2xl space-y-3">
             <div className="w-10 h-10 rounded-none bg-[#0B0C10] border border-[#FF2A54] flex items-center justify-center text-[#FF2A54]">
               <Trash2 className="w-5 h-5" />
             </div>

@@ -67,7 +67,7 @@ export function WhatsAppTemplatesModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
-      <div className="w-full max-w-4xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-4xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
@@ -193,7 +193,7 @@ export function WhatsAppTemplatesModal({
                     <select
                       value={mediaType}
                       onChange={(e) => setMediaType(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-[#1F2833] border border-[#3A4552] text-white text-xs font-mono"
+                      className="w-full px-3 py-1.5 rounded-none bg-[#121212] border border-[#3A4552] text-white text-xs font-mono"
                     >
                       <option value="document">PDF DOCUMENT</option>
                       <option value="image">PNG / JPEG IMAGE</option>
@@ -208,7 +208,7 @@ export function WhatsAppTemplatesModal({
                       type="text"
                       value={filename}
                       onChange={(e) => setFilename(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-[#1F2833] border border-[#3A4552] text-white text-xs font-mono uppercase"
+                      className="w-full px-3 py-1.5 rounded-none bg-[#121212] border border-[#3A4552] text-white text-xs font-mono uppercase"
                     />
                   </div>
 

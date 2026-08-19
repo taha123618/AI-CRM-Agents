@@ -40,7 +40,7 @@ export function TablePagination({
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="bg-[#1F2833] border border-[#3A4552] text-slate-300 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#FFB800] font-mono"
+              className="bg-[#121212] border border-[#3A4552] text-slate-300 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#FFB800] font-mono"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt} className="bg-[#0B0C10]">

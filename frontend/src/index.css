@@ -8,10 +8,10 @@
     /* #0B0C10 - Void Black */
     --foreground: 210 20% 98%;
     --card: 214 24% 16%;
-    /* #1F2833 - Dark Titanium */
+    /* #121212 - Matte Black */
     --card-foreground: 210 20% 98%;
     --popover: 215 24% 20%;
-    /* #26313F - Overlay Surface */
+    /* #1C1C1C - Overlay Surface */
     --popover-foreground: 210 20% 98%;
     --primary: 104 100% 54%;
     /* #FFB800 - Radioactive Lime */
@@ -105,16 +105,16 @@ table {
 }
 
 table tbody tr:nth-child(even) {
-  background-color: #1F2833;
+  background-color: #121212;
 }
 
 table tbody tr:nth-child(odd) {
-  background-color: #161D26;
+  background-color: #0E0E0E;
 }
 
 table tbody tr:hover {
   outline: 1px solid #FFB800;
-  background-color: #26313F !important;
+  background-color: #1C1C1C !important;
 }
 
 /* RTL Layout Utilities */

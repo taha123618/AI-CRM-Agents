@@ -113,7 +113,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
             {showPromptPreview ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
           {showPromptPreview && (
-            <div className="p-3 border-t border-[#3A4552] bg-[#1F2833] text-xs text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
+            <div className="p-3 border-t border-[#3A4552] bg-[#121212] text-xs text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
               {agent.system_prompt}
             </div>
           )}
@@ -184,7 +184,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
                 {/* Raw JSON Payload */}
                 <div className="space-y-1">
                   <span className="text-[9px] text-slate-500 uppercase font-bold block">STRUCTURED DATA</span>
-                  <pre className="p-2 bg-[#1F2833] border border-[#3A4552] rounded-none text-[10px] text-slate-300 overflow-x-auto">
+                  <pre className="p-2 bg-[#121212] border border-[#3A4552] rounded-none text-[10px] text-slate-300 overflow-x-auto">
                     {JSON.stringify(executionResult.output, null, 2)}
                   </pre>
                 </div>

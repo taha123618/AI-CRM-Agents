@@ -191,7 +191,7 @@ export function TranslationEditorModal({
                 placeholder="SEARCH TRANSLATION KEYS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-[#121212] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -201,7 +201,7 @@ export function TranslationEditorModal({
               <select
                 value={activeNamespace}
                 onChange={(e) => setActiveNamespace(e.target.value)}
-                className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="bg-[#121212] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 {namespaces.map((ns) => (
                   <option key={ns} value={ns} className="bg-[#0B0C10]">
@@ -213,7 +213,7 @@ export function TranslationEditorModal({
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold uppercase rounded-none bg-[#1F2833] hover:bg-[#26313F] text-slate-200 border border-[#3A4552] transition-none h-7">
+            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold uppercase rounded-none bg-[#121212] hover:bg-[#1C1C1C] text-slate-200 border border-[#3A4552] transition-none h-7">
               <Upload className="w-3 h-3 text-cyan-400" />
               <span>IMPORT JSON</span>
               <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
@@ -297,7 +297,7 @@ export function TranslationEditorModal({
                           onClick={() => handleSaveRow(row.namespace, row.key)}
                           className={`p-1 rounded-none border transition-none ${isSaved
                               ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
-                              : 'bg-[#1F2833] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#FFB800]'
+                              : 'bg-[#121212] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#FFB800]'
                             }`}
                           title="Save Key"
                         >

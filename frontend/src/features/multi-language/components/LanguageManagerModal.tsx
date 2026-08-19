@@ -262,7 +262,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => setLanguage(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-slate-300 hover:text-white border border-[#3A4552] hover:border-[#FFB800] transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#121212] text-slate-300 hover:text-white border border-[#3A4552] hover:border-[#FFB800] transition-none"
                         >
                           SWITCH
                         </button>
@@ -272,7 +272,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => onOpenTranslationEditor(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-cyan-400 hover:text-cyan-300 border border-[#3A4552] hover:border-cyan-400 transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#121212] text-cyan-400 hover:text-cyan-300 border border-[#3A4552] hover:border-cyan-400 transition-none"
                         >
                           DICTIONARY
                         </button>
@@ -282,7 +282,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => handleSetDefault(lang)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] hover:border-[#FFB800] transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#121212] text-[#FFB800] border border-[#3A4552] hover:border-[#FFB800] transition-none"
                           title="Set as System Default"
                         >
                           DEFAULT

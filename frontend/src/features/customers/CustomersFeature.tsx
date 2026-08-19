@@ -119,7 +119,7 @@ export function CustomersFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
             <Building2 className="w-5 h-5 text-[#FFB800]" />
@@ -149,7 +149,7 @@ export function CustomersFeature() {
               { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-[#FFB800]' },
               { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-white' },
             ].map(({ label, value, icon: Icon, color, warn }) => (
-              <div key={label} className={`p-3 border font-mono ${warn ? 'bg-[#0B0C10] border-[#FF2A54]' : 'bg-[#1F2833] border-[#3A4552]'}`}>
+              <div key={label} className={`p-3 border font-mono ${warn ? 'bg-[#0B0C10] border-[#FF2A54]' : 'bg-[#121212] border-[#3A4552]'}`}>
                 <div className="flex items-center gap-1.5 mb-1">
                   <Icon className={`w-3.5 h-3.5 ${color}`} />
                   <span className="text-[10px] text-slate-400 font-bold uppercase">{label}</span>

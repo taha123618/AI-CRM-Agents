@@ -140,7 +140,7 @@ export function WebhooksStudioTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
             <Globe className="w-4 h-4 text-[#FFB800]" />
@@ -173,7 +173,7 @@ export function WebhooksStudioTab() {
         <h3 className="text-xs font-bold text-white uppercase tracking-wider">REGISTERED DESTINATION ENDPOINTS</h3>
 
         {webhooks.map((ep) => (
-          <Card key={ep.id} className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 font-mono">
+          <Card key={ep.id} className="bg-[#121212] border-[#3A4552] p-4 space-y-3 font-mono">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
@@ -236,7 +236,7 @@ export function WebhooksStudioTab() {
         ))}
 
         {webhooks.length === 0 && (
-          <Card className="p-8 text-center bg-[#1F2833]/50 border border-[#3A4552] text-slate-500 text-xs uppercase">
+          <Card className="p-8 text-center bg-[#121212]/50 border border-[#3A4552] text-slate-500 text-xs uppercase">
             NO OUTBOUND WEBHOOKS CONFIGURED YET. REGISTER A DESTINATION ENDPOINT ABOVE.
           </Card>
         )}
@@ -303,7 +303,7 @@ export function WebhooksStudioTab() {
           </div>
         </div>
 
-        <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
+        <Card className="bg-[#121212] border-[#3A4552] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300 font-mono">
               <thead className="bg-[#0B0C10] text-slate-400 uppercase font-bold text-[10px] border-b border-[#3A4552]">
@@ -369,7 +369,7 @@ export function WebhooksStudioTab() {
       {/* Create Modal */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm font-mono">
-          <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl p-5 space-y-4">
+          <div className="w-full max-w-lg bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <Globe className="w-4 h-4 text-[#FFB800]" />
@@ -416,7 +416,7 @@ export function WebhooksStudioTab() {
                   EVENT SUBSCRIPTIONS
                 </label>
                 <div className="grid grid-cols-2 gap-1.5 max-h-44 overflow-y-auto p-2 bg-[#0B0C10] rounded-none border border-[#3A4552]">
-                  <label className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#1F2833] cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#121212] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={selectedEvents.includes('*')}
@@ -428,7 +428,7 @@ export function WebhooksStudioTab() {
                   {AVAILABLE_EVENTS.map((ev) => (
                     <label
                       key={ev}
-                      className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#1F2833] cursor-pointer"
+                      className="flex items-center gap-2 text-xs text-slate-300 p-1.5 rounded-none hover:bg-[#121212] cursor-pointer"
                     >
                       <input
                         type="checkbox"

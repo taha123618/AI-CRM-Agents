@@ -82,7 +82,7 @@ export function AgentsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
             <Bot className="w-5 h-5 text-[#FFB800]" />
@@ -157,7 +157,7 @@ export function AgentsFeature() {
               <p className="text-slate-600 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
             ) : (
               events.map((evt) => (
-                <div key={evt.id} className="p-2 bg-[#1F2833] border border-[#3A4552] space-y-1">
+                <div key={evt.id} className="p-2 bg-[#121212] border border-[#3A4552] space-y-1">
                   <div className="flex items-center justify-between text-[10px]">
                     <span className="text-[#FFB800] font-bold">[{evt.agent}]</span>
                     <span className="text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
@@ -190,7 +190,7 @@ export function AgentsFeature() {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>EXECUTION RESPONSE PAYLOAD</span>
               </div>
-              <pre className="p-2.5 bg-[#1F2833] border border-[#3A4552] text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
+              <pre className="p-2.5 bg-[#121212] border border-[#3A4552] text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
                 {JSON.stringify(lastRunOutput.result, null, 2)}
               </pre>
             </div>

@@ -46,7 +46,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 hover:text-white hover:border-[#FFB800] transition-none group font-mono uppercase"
+        className="flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 hover:text-white hover:border-[#FFB800] transition-none group font-mono uppercase"
         title="Switch Application Language"
       >
         <span className="text-xs leading-none">{activeLang.flag_emoji || <Globe className="w-3.5 h-3.5 text-[#FFB800]" />}</span>
@@ -60,7 +60,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1 w-56 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl z-50 py-1 overflow-hidden font-mono">
+        <div className="absolute right-0 mt-1 w-56 rounded-none bg-[#121212] border border-[#3A4552] shadow-2xl z-50 py-1 overflow-hidden font-mono">
           <div className="px-3 py-1.5 border-b border-[#3A4552] flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">SELECT LOCALE</span>
             <Globe className="w-3.5 h-3.5 text-[#FFB800]" />

@@ -60,7 +60,7 @@ export function OrganizationsTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Tab Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-[#FFB800]" />
@@ -90,7 +90,7 @@ export function OrganizationsTab() {
           {orgs?.map((org: Organization) => (
             <div
               key={org.id}
-              className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
+              className="p-4 rounded-none bg-[#121212] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -137,7 +137,7 @@ export function OrganizationsTab() {
       {/* Create Workspace Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
+          <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
                 <Building2 className="w-4 h-4 text-[#FFB800]" />

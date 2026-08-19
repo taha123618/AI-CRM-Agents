@@ -87,9 +87,9 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Send className="w-5 h-5" />
@@ -129,7 +129,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="E.G. ENTERPRISE REVOPS HIGH-CONVERSION SEQUENCE"
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -140,7 +140,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 <option value="multichannel">OMNICHANNEL FLEET</option>
                 <option value="email">EMAIL INTELLIGENCE</option>
@@ -159,7 +159,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={targetPersona}
                 onChange={(e) => setTargetPersona(e.target.value)}
                 placeholder="E.G. VP OF SALES / CRO"
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
           </div>
@@ -196,7 +196,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       <select
                         value={step.channel}
                         onChange={(e) => updateStep(idx, 'channel', e.target.value)}
-                        className="bg-[#1F2833] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none uppercase"
+                        className="bg-[#121212] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none uppercase"
                       >
                         <option value="email">EMAIL</option>
                         <option value="whatsapp">WHATSAPP</option>
@@ -212,7 +212,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                           max="30"
                           value={step.delay_days}
                           onChange={(e) => updateStep(idx, 'delay_days', Number(e.target.value))}
-                          className="w-12 bg-[#1F2833] border border-[#3A4552] rounded-none px-1.5 py-0.5 text-xs text-white text-center focus:outline-none"
+                          className="w-12 bg-[#121212] border border-[#3A4552] rounded-none px-1.5 py-0.5 text-xs text-white text-center focus:outline-none"
                         />
                         <span>DAYS</span>
                       </div>
@@ -236,7 +236,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.subject}
                       onChange={(e) => updateStep(idx, 'subject', e.target.value)}
                       placeholder="SUBJECT LINE"
-                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-bold"
+                      className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-bold"
                     />
                     <textarea
                       rows={3}
@@ -244,7 +244,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.template}
                       onChange={(e) => updateStep(idx, 'template', e.target.value)}
                       placeholder="Template copy with {{first_name}}, {{company_name}} tags..."
-                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] leading-relaxed font-mono"
+                      className="w-full bg-[#121212] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] leading-relaxed font-mono"
                     />
                   </div>
                 </div>

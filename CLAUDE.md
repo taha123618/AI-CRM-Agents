@@ -117,7 +117,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 ### 5. Frontend Development & Tactical Command Design System
 * **Tactical Command Design Rules**: Strict adherence to `design.md`:
   - **Zero Border Radius**: Global `rounded-none`, `--radius: 0rem;`, `* { border-radius: 0 !important; }`. Never use rounded pill or card corners.
-  - **Color Palette**: Void Black (`#0B0C10`), Dark Titanium (`#1F2833`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Purple (`#A855F7`).
+  - **Color Palette**: Void Black (`#0B0C10`), Matte Black (`#121212`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Purple (`#A855F7`).
   - **Primary Buttons**: `bg-[#FFB800] text-[#0B0C10] font-bold rounded-none uppercase`.
   - **Typography**: `font-mono` applied to telemetry, tables, timestamps, IDs, financial metrics, currency notations, and charts.
   - **Transitions**: `transition-none` with 0ms easing globally.

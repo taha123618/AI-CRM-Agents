@@ -66,9 +66,9 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Users className="w-5 h-5" />
@@ -98,7 +98,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 font-mono">
           {enrolledSuccess ? (
             <div className="p-6 rounded-none bg-[#0B0C10] border border-[#FFB800] text-center space-y-2">
-              <div className="w-10 h-10 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] flex items-center justify-center mx-auto">
+              <div className="w-10 h-10 rounded-none bg-[#121212] text-[#FFB800] border border-[#3A4552] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <h3 className="text-xs font-bold text-white uppercase">ENROLLMENT DISPATCHED</h3>
@@ -148,7 +148,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                         key={p.id}
                         onClick={() => toggleSelect(p.id)}
                         className={`p-2.5 rounded-none border cursor-pointer flex items-center justify-between transition-none ${isSelected
-                            ? 'bg-[#1F2833] border-[#FFB800] text-white'
+                            ? 'bg-[#121212] border-[#FFB800] text-white'
                             : 'bg-[#0B0C10] border-[#3A4552] hover:border-slate-500 text-slate-300'
                           }`}
                       >

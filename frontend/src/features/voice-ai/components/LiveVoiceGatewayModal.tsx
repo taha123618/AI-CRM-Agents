@@ -107,7 +107,7 @@ export function LiveVoiceGatewayModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
-      <div className="w-full max-w-2xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col">
+      <div className="w-full max-w-2xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
@@ -141,7 +141,7 @@ export function LiveVoiceGatewayModal({
               <span>{formatDuration(durationSeconds)}</span>
             </div>
 
-            <div className="w-12 h-12 rounded-none bg-[#1F2833] border border-[#FFB800]/50 flex items-center justify-center text-[#FFB800] mb-2">
+            <div className="w-12 h-12 rounded-none bg-[#121212] border border-[#FFB800]/50 flex items-center justify-center text-[#FFB800] mb-2">
               <PhoneCall className="w-5 h-5" />
             </div>
 
@@ -186,7 +186,7 @@ export function LiveVoiceGatewayModal({
                   </div>
 
                   {turn.battleCard && (
-                    <div className="p-2 bg-[#1F2833] border border-[#FFB800]/40 text-[#FFB800] flex items-start gap-1.5 text-[10px]">
+                    <div className="p-2 bg-[#121212] border border-[#FFB800]/40 text-[#FFB800] flex items-start gap-1.5 text-[10px]">
                       <Sparkles className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold block uppercase">LIVE BATTLE-CARD:</span>

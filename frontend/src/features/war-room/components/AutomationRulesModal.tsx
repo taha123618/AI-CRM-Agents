@@ -132,9 +132,9 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Zap className="w-5 h-5" />
@@ -204,7 +204,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={ruleName}
                     onChange={(e) => setRuleName(e.target.value)}
                     placeholder="E.G. HIGH-INTENT LEAD WHATSAPP AUTO-DISPATCH"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -215,7 +215,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={triggerEvent}
                     onChange={(e) => setTriggerEvent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   >
                     <option value="lead_score_above">LEAD SCORE &gt; THRESHOLD</option>
                     <option value="deal_stage_changed">DEAL STAGE CHANGED</option>
@@ -234,7 +234,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={triggerThreshold}
                     onChange={(e) => setTriggerThreshold(e.target.value)}
                     placeholder="E.G. 80 OR 'PROPOSAL_SENT'"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -245,7 +245,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={actionAgent}
                     onChange={(e) => setActionAgent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   >
                     <option value="whatsapp_agent">WHATSAPP AUTO-PILOT AGENT</option>
                     <option value="email_intelligence">EMAIL INTELLIGENCE AGENT</option>
@@ -265,7 +265,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={actionType}
                     onChange={(e) => setActionType(e.target.value)}
                     placeholder="E.G. SEND_WELCOME_TEMPLATE"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
               </div>
@@ -325,7 +325,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
               <p className="text-xs text-slate-300 uppercase">{executionResult.message}</p>
 
               {executionResult.ai_generated_payload && (
-                <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-[11px] text-[#FFB800] whitespace-pre-wrap">
+                <div className="p-2.5 rounded-none bg-[#121212] border border-[#3A4552] font-mono text-[11px] text-[#FFB800] whitespace-pre-wrap">
                   {executionResult.ai_generated_payload}
                 </div>
               )}

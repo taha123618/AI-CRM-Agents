@@ -132,7 +132,7 @@ export function ForecastingFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
@@ -175,7 +175,7 @@ export function ForecastingFeature() {
 
       {/* ── KPI Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             <span>PIPELINE TOTAL</span>
             <Badge variant="purple" className="text-[8px]">ACTIVE</Badge>
@@ -186,7 +186,7 @@ export function ForecastingFeature() {
           <span className="text-[9px] text-slate-500 mt-0.5 block uppercase">SUM OF OPEN DEAL VALUE</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
             <span>P10 CONSERVATIVE</span>
             <Badge variant="purple" className="text-[8px]">FLOOR</Badge>
@@ -197,7 +197,7 @@ export function ForecastingFeature() {
           <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">90% PROBABILITY FLOOR</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">
             <span>P50 EXPECTED</span>
             <Badge variant="warning" className="text-[8px]">BASE CASE</Badge>
@@ -208,7 +208,7 @@ export function ForecastingFeature() {
           <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">STATISTICAL EXPECTATION</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#FFB800]">
+        <Card className="p-3 bg-[#121212] border-[#FFB800]">
           <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">
             <span>P90 OPTIMISTIC</span>
             <Badge variant="success" className="text-[8px]">CEILING</Badge>
@@ -222,7 +222,7 @@ export function ForecastingFeature() {
 
       {/* ── Q3 Target Progress Bar ── */}
       {simulation && (
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-[#121212] border-[#3A4552]">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
               <Target className="w-3.5 h-3.5 text-[#FFB800]" />
@@ -300,7 +300,7 @@ export function ForecastingFeature() {
       {activeTab === 'monte-carlo' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           {/* Controls */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-4">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
                 <Sliders className="w-3.5 h-3.5 text-[#FFB800]" />
@@ -382,7 +382,7 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Distribution Chart */}
-          <Card className="lg:col-span-2 p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+          <Card className="lg:col-span-2 p-4 bg-[#121212] border-[#3A4552] space-y-3">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
               <div>
                 <h3 className="text-xs font-bold text-white uppercase tracking-wider">
@@ -438,7 +438,7 @@ export function ForecastingFeature() {
 
       {/* ── TAB: ARR TREND ── */}
       {activeTab === 'arr-trend' && (
-        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
             <div>
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -532,7 +532,7 @@ export function ForecastingFeature() {
       {activeTab === 'pipeline' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Stage Bar Chart */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
             <div>
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                 REVENUE BY PIPELINE STAGE
@@ -579,7 +579,7 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Stage Table */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-2.5">
+          <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-2.5">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
               STAGE BREAKDOWN DETAIL
             </h3>
@@ -630,7 +630,7 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Stage Velocity Table */}
-          <Card className="lg:col-span-2 p-4 bg-[#1F2833] border-[#3A4552] space-y-2.5">
+          <Card className="lg:col-span-2 p-4 bg-[#121212] border-[#3A4552] space-y-2.5">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
               <Activity className="w-4 h-4 text-[#FFB800]" />
               PIPELINE STAGE VELOCITY &amp; CONVERSION MATRIX
@@ -647,7 +647,7 @@ export function ForecastingFeature() {
                 </thead>
                 <tbody className="divide-y divide-[#3A4552]">
                   {(velocity?.stages || []).map((s, idx) => (
-                    <tr key={idx} className="odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] transition-none">
+                    <tr key={idx} className="odd:bg-[#0E0E0E] even:bg-[#121212] hover:bg-[#1C1C1C] transition-none">
                       <td className="py-2 px-2.5 text-white font-bold uppercase">{s.stage}</td>
                       <td className="py-2 px-2.5 font-mono text-slate-300">{s.avg_days_in_stage} DAYS</td>
                       <td className="py-2 px-2.5 font-mono text-[#FFB800]">{s.conversion_rate}%</td>
@@ -683,7 +683,7 @@ export function ForecastingFeature() {
           ) : (
             <>
               {/* Scenario Table */}
-              <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+              <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
                 <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                     PERSISTED MONTE CARLO SIMULATIONS
@@ -709,7 +709,7 @@ export function ForecastingFeature() {
                     </thead>
                     <tbody className="divide-y divide-[#3A4552]">
                       {(savedSimulations || []).map((s: ForecastSimulationRecord) => (
-                        <tr key={s.id} className="odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] transition-none">
+                        <tr key={s.id} className="odd:bg-[#0E0E0E] even:bg-[#121212] hover:bg-[#1C1C1C] transition-none">
                           <td className="py-2 px-2.5 text-white font-bold uppercase max-w-[200px] truncate">
                             {s.name}
                           </td>
@@ -747,7 +747,7 @@ export function ForecastingFeature() {
 
               {/* Scenario Comparison Bar Chart */}
               {savedSimulations.length >= 2 && (
-                <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+                <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
                   <div>
                     <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                       SCENARIO P50 COMPARISON

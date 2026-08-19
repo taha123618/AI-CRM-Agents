@@ -59,7 +59,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 font-mono">
-      <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-lg bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10] shrink-0">
           <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">

@@ -63,9 +63,9 @@ export function PromptEvaluationModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto font-mono">
-      <div className="w-full max-w-5xl bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="w-full max-w-5xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] flex items-center justify-between bg-[#1F2833]">
+        <div className="p-4 sm:p-5 border-b border-[#3A4552] flex items-center justify-between bg-[#121212]">
           <div>
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#FFB800]" />
@@ -109,7 +109,7 @@ export function PromptEvaluationModal({
                 rows={6}
                 value={promptA}
                 onChange={(e) => setPromptA(e.target.value)}
-                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full rounded-none bg-[#121212] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
                 placeholder="Baseline system prompt..."
               />
             </div>
@@ -126,7 +126,7 @@ export function PromptEvaluationModal({
                 rows={6}
                 value={promptB}
                 onChange={(e) => setPromptB(e.target.value)}
-                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full rounded-none bg-[#121212] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
                 placeholder="Candidate system prompt..."
               />
             </div>
@@ -155,7 +155,7 @@ export function PromptEvaluationModal({
               {/* Winner Banner */}
               <div className="p-3 rounded-none bg-[#0B0C10] border border-[#FFB800] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552]">
+                  <div className="p-2 rounded-none bg-[#121212] text-[#FFB800] border border-[#3A4552]">
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
@@ -194,15 +194,15 @@ export function PromptEvaluationModal({
                     </Badge>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">SCHEMA COMPLIANCE</span>
                       <span className="text-xs font-bold text-white">{metricsA?.schema_compliance ?? 0}%</span>
                     </div>
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">AVG LATENCY</span>
                       <span className="text-xs font-bold text-white">{metricsA?.avg_latency_ms ?? 0}MS</span>
                     </div>
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">QUALITY RATING</span>
                       <span className="text-xs font-bold text-[#FFB800]">{metricsA?.quality_score ?? 0}%</span>
                     </div>
@@ -218,15 +218,15 @@ export function PromptEvaluationModal({
                     </Badge>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">SCHEMA COMPLIANCE</span>
                       <span className="text-xs font-bold text-white">{metricsB?.schema_compliance ?? 0}%</span>
                     </div>
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">AVG LATENCY</span>
                       <span className="text-xs font-bold text-white">{metricsB?.avg_latency_ms ?? 0}MS</span>
                     </div>
-                    <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
+                    <div className="p-2 rounded-none bg-[#121212] border border-[#3A4552]">
                       <span className="text-slate-500 block">QUALITY RATING</span>
                       <span className="text-xs font-bold text-[#FFB800]">{metricsB?.quality_score ?? 0}%</span>
                     </div>

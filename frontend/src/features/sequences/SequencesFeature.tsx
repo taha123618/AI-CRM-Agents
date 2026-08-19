@@ -115,7 +115,7 @@ export function SequencesFeature() {
   return (
     <div className="space-y-4 font-mono pb-12">
       {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
           <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
             <Send className="w-6 h-6" />
@@ -165,7 +165,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('cadence')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'cadence'
               ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+              : 'bg-[#121212] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
             }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('workflow_canvas')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'workflow_canvas'
               ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+              : 'bg-[#121212] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
             }`}
         >
           <Workflow className="w-3.5 h-3.5" />
@@ -207,8 +207,8 @@ export function SequencesFeature() {
                     key={seq.id}
                     onClick={() => setSelectedSequence(seq)}
                     className={`p-4 rounded-none border cursor-pointer transition-none ${isSelected
-                        ? 'bg-[#1F2833] border-[#FFB800] text-white shadow-xl'
-                        : 'bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                        ? 'bg-[#121212] border-[#FFB800] text-white shadow-xl'
+                        : 'bg-[#121212] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -249,7 +249,7 @@ export function SequencesFeature() {
           {/* Right Column: Cadence Steps Timeline & AI Copy Tester */}
           <div className="lg:col-span-7 space-y-4">
             {activeSeq ? (
-              <div className="p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-4 shadow-xl">
+              <div className="p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] space-y-4 shadow-xl">
                 {/* Cadence Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
                   <div>
@@ -320,7 +320,7 @@ export function SequencesFeature() {
                     value={testPainPoint}
                     onChange={(e) => setTestPainPoint(e.target.value)}
                     placeholder="ENTER PROSPECT PAIN POINT TO INJECT..."
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -342,7 +342,7 @@ export function SequencesFeature() {
                         <span className="ml-1">{copySuccess ? 'COPIED!' : 'COPY'}</span>
                       </Button>
                     </div>
-                    <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 leading-relaxed whitespace-pre-wrap font-mono uppercase">
+                    <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 leading-relaxed whitespace-pre-wrap font-mono uppercase">
                       {generatedCopy}
                     </div>
                   </div>
@@ -360,7 +360,7 @@ export function SequencesFeature() {
                         {stepExecResult.status}
                       </Badge>
                     </div>
-                    <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 font-mono uppercase">
+                    <div className="p-2.5 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 font-mono uppercase">
                       {stepExecResult.result}
                     </div>
                   </div>

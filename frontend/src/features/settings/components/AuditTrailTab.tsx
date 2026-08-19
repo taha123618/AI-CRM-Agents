@@ -76,7 +76,7 @@ export function AuditTrailTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
             <History className="w-4 h-4 text-[#FFB800]" />
@@ -89,7 +89,7 @@ export function AuditTrailTab() {
       </div>
 
       {/* Filter Toolbar */}
-      <Card className="bg-[#1F2833] border-[#3A4552] p-3 font-mono">
+      <Card className="bg-[#121212] border-[#3A4552] p-3 font-mono">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Search */}
@@ -167,7 +167,7 @@ export function AuditTrailTab() {
       </Card>
 
       {/* Audit Logs Table */}
-      <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
+      <Card className="bg-[#121212] border-[#3A4552] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300 font-mono">
             <thead className="bg-[#0B0C10] text-slate-400 uppercase font-bold text-[10px] border-b border-[#3A4552]">

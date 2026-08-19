@@ -23,9 +23,9 @@ export function Toast({ toast, onDismiss }: ToastProps) {
     <div
       className={cn(
         'flex items-start gap-3 p-3.5 rounded-none border shadow-2xl transition-none max-w-sm w-full pointer-events-auto font-mono',
-        isSuccess && 'bg-[#1F2833] border-[#FFB800] text-slate-100',
-        isError && 'bg-[#1F2833] border-[#FF2A54] text-slate-100',
-        !isSuccess && !isError && 'bg-[#1F2833] border-[#3A4552] text-slate-100'
+        isSuccess && 'bg-[#121212] border-[#FFB800] text-slate-100',
+        isError && 'bg-[#121212] border-[#FF2A54] text-slate-100',
+        !isSuccess && !isError && 'bg-[#121212] border-[#3A4552] text-slate-100'
       )}
     >
       <div className="shrink-0 mt-0.5">

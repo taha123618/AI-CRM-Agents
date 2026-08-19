@@ -98,7 +98,7 @@ export function LoginPage() {
           <div className="w-full border-t border-[#3A4552]" />
         </div>
         <div className="relative flex justify-center text-[10px] uppercase">
-          <span className="bg-[#1F2833] px-2 text-slate-500">OR DIRECT CREDENTIALS</span>
+          <span className="bg-[#121212] px-2 text-slate-500">OR DIRECT CREDENTIALS</span>
         </div>
       </div>
 

@@ -129,7 +129,7 @@ export function TaskQueueMonitorTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header Panel */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-[#FFB800]" />
@@ -176,7 +176,7 @@ export function TaskQueueMonitorTab() {
 
       {/* Trigger Quick-Action Launchpad */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-cyan-400" />
@@ -209,7 +209,7 @@ export function TaskQueueMonitorTab() {
           </div>
         </Card>
 
-        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-[#FFB800]" />
@@ -231,7 +231,7 @@ export function TaskQueueMonitorTab() {
           </Button>
         </Card>
 
-        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
               <Mic className="w-4 h-4 text-[#FFB800]" />
@@ -255,7 +255,7 @@ export function TaskQueueMonitorTab() {
       </div>
 
       {/* Task Queue Table Container */}
-      <Card className="bg-[#1F2833] border-[#3A4552] overflow-hidden">
+      <Card className="bg-[#121212] border-[#3A4552] overflow-hidden">
         {/* Search and Filters Bar */}
         <div className="p-3 bg-[#0B0C10] border-b border-[#3A4552] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-72">
@@ -268,7 +268,7 @@ export function TaskQueueMonitorTab() {
                 setTaskSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="w-full bg-[#121212] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             />
           </div>
 
@@ -280,7 +280,7 @@ export function TaskQueueMonitorTab() {
                 setTaskStatusFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="bg-[#121212] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             >
               <option value="all">ALL STATUSES</option>
               <option value="completed">COMPLETED</option>

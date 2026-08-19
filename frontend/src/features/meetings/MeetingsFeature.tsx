@@ -200,7 +200,7 @@ export function MeetingsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-[#FFB800]" />
@@ -438,7 +438,7 @@ export function MeetingsFeature() {
                     ? selectedMeeting.attendees
                     : Object.values(selectedMeeting.attendees || {})
                   ).map((a: any, i: number) => (
-                    <span key={i} className="px-1.5 py-0.2 text-[9px] font-mono uppercase bg-[#1F2833] text-slate-200 border border-[#3A4552] break-all">
+                    <span key={i} className="px-1.5 py-0.2 text-[9px] font-mono uppercase bg-[#121212] text-slate-200 border border-[#3A4552] break-all">
                       {typeof a === 'string' ? a : a?.name || a?.email || JSON.stringify(a)}
                     </span>
                   ))}

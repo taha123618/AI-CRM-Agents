@@ -37,7 +37,7 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 font-mono">
-      <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl">
+      <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10]">
           <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
