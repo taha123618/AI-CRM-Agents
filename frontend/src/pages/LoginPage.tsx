@@ -62,8 +62,8 @@ export function LoginPage() {
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-rose-950/40 border border-rose-500/30 rounded-none text-rose-300 text-xs flex items-start gap-2.5 font-mono">
+          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
           <div>{errorMessage}</div>
         </div>
       )}
@@ -75,9 +75,9 @@ export function LoginPage() {
           variant="outline"
           onClick={() => handleSsoClick('google')}
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2.5 border-[#252b36] bg-[#0D0D0D] hover:bg-[#1A1F26] text-slate-200 text-xs py-2.5 rounded-none font-mono"
         >
-          <Building className="w-4 h-4 text-orange-400" />
+          <Building className="w-4 h-4 text-[#FF2A54]" />
           Continue with Google Workspace
         </Button>
 
@@ -86,7 +86,7 @@ export function LoginPage() {
           variant="outline"
           onClick={() => handleSsoClick('microsoft')}
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2.5 border-[#252b36] bg-[#0D0D0D] hover:bg-[#1A1F26] text-slate-200 text-xs py-2.5 rounded-none font-mono"
         >
           <Building className="w-4 h-4 text-cyan-400" />
           Continue with Microsoft Entra ID
@@ -95,17 +95,17 @@ export function LoginPage() {
 
       <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-[#252b36]" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-slate-900 px-2 text-slate-500">Or continue with email</span>
+        <div className="relative flex justify-center text-xs uppercase font-mono">
+          <span className="bg-[#1A1F26] px-2 text-slate-500 text-[10px]">Or continue with email</span>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase">
             Email Address
           </label>
           <div className="relative">
@@ -117,19 +117,19 @@ export function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@enterprise.com"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
             />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-semibold text-slate-300 uppercase">
               Password
             </label>
             <Link
               to="/forgot-password"
-              className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
+              className="text-xs text-[#FF2A54] hover:text-[#e11d48] transition-none"
             >
               Forgot password?
             </Link>
@@ -143,7 +143,7 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export function LoginPage() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="rounded border-slate-700 bg-slate-900 text-brand-500 focus:ring-0"
+              className="rounded-none border-[#252b36] bg-[#0D0D0D] text-[#FF2A54] focus:ring-0"
             />
             <span>Remember this device</span>
           </label>
@@ -162,20 +162,22 @@ export function LoginPage() {
 
         <Button
           type="submit"
+          variant="primary"
           disabled={isLoggingIn || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-2.5 shadow-lg shadow-brand-500/20 text-sm font-semibold mt-2"
+          className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold mt-2 rounded-none font-mono uppercase tracking-wider"
         >
           <LogIn className="w-4 h-4" />
           {isLoggingIn ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
 
-      <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/60">
+      <div className="text-center text-xs text-slate-400 pt-2 border-t border-[#252b36] font-mono">
         Don't have an enterprise account?{' '}
-        <Link to="/register" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
+        <Link to="/register" className="text-[#FF2A54] hover:text-[#e11d48] font-semibold transition-none">
           Create Account
         </Link>
       </div>
     </AuthLayout>
   );
 }
+

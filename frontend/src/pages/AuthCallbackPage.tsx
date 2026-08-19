@@ -51,22 +51,23 @@ export function AuthCallbackPage() {
       subtitle="Finalizing enterprise identity verification with provider"
     >
       {errorMessage ? (
-        <div className="space-y-4">
-          <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+        <div className="space-y-4 font-mono text-xs">
+          <div className="p-3.5 bg-rose-950/40 border border-rose-500/30 rounded-none text-rose-300 text-xs flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
             <div>{errorMessage}</div>
           </div>
           <Button
             onClick={() => navigate('/login')}
-            className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white text-xs"
+            variant="primary"
+            className="w-full py-2 text-xs uppercase"
           >
             Return to Login
           </Button>
         </div>
       ) : (
-        <div className="py-8 flex flex-col items-center justify-center space-y-4">
+        <div className="py-8 flex flex-col items-center justify-center space-y-4 font-mono">
           <LoadingSpinner size="lg" />
-          <p className="text-xs text-slate-400 animate-pulse">
+          <p className="text-xs text-slate-400">
             Validating credentials and issuing secure HTTP-only session cookies...
           </p>
         </div>
@@ -74,3 +75,4 @@ export function AuthCallbackPage() {
     </AuthLayout>
   );
 }
+

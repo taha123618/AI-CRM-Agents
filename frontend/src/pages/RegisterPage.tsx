@@ -79,8 +79,8 @@ export function RegisterPage() {
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-rose-950/40 border border-rose-500/30 rounded-none text-rose-300 text-xs flex items-start gap-2.5 font-mono">
+          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
           <div>{errorMessage}</div>
         </div>
       )}
@@ -92,9 +92,9 @@ export function RegisterPage() {
           variant="outline"
           onClick={() => handleSsoClick('google')}
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2.5 border-[#252b36] bg-[#0D0D0D] hover:bg-[#1A1F26] text-slate-200 text-xs py-2.5 rounded-none font-mono"
         >
-          <Building className="w-4 h-4 text-orange-400" />
+          <Building className="w-4 h-4 text-[#FF2A54]" />
           Sign up with Google Workspace
         </Button>
 
@@ -103,7 +103,7 @@ export function RegisterPage() {
           variant="outline"
           onClick={() => handleSsoClick('microsoft')}
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2.5 border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 text-xs py-2.5"
+          className="w-full flex items-center justify-center gap-2.5 border-[#252b36] bg-[#0D0D0D] hover:bg-[#1A1F26] text-slate-200 text-xs py-2.5 rounded-none font-mono"
         >
           <Building className="w-4 h-4 text-cyan-400" />
           Sign up with Microsoft Entra ID
@@ -112,17 +112,17 @@ export function RegisterPage() {
 
       <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-[#252b36]" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-slate-900 px-2 text-slate-500">Or register with email</span>
+        <div className="relative flex justify-center text-xs uppercase font-mono">
+          <span className="bg-[#1A1F26] px-2 text-slate-500 text-[10px]">Or register with email</span>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase">
             Full Name
           </label>
           <div className="relative">
@@ -133,13 +133,13 @@ export function RegisterPage() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Jordan Vance"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase">
             Work Email Address
           </label>
           <div className="relative">
@@ -150,14 +150,14 @@ export function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jordan.vance@company.com"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+              className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase">
               Password
             </label>
             <div className="relative">
@@ -168,12 +168,12 @@ export function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-none"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -183,7 +183,7 @@ export function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase">
               Confirm Password
             </label>
             <div className="relative">
@@ -194,12 +194,12 @@ export function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-10 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-none"
                 tabIndex={-1}
               >
                 {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -210,7 +210,7 @@ export function RegisterPage() {
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-semibold text-slate-300 uppercase">
               Department Role
             </label>
             <span className="text-[10px] text-amber-400/90 font-mono">
@@ -222,34 +222,36 @@ export function RegisterPage() {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500 cursor-pointer"
+              className="w-full bg-[#0D0D0D] border border-[#252b36] rounded-none pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-[#FF2A54] focus:ring-1 focus:ring-[#FF2A54] transition-none cursor-pointer font-mono"
             >
               <option value="sales">Sales (Pipeline, SDR & Deals)</option>
               <option value="support">Support (Customer Success & Journey)</option>
               <option value="auditor">Auditor (Read-Only Compliance)</option>
             </select>
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">
+          <p className="text-[11px] text-slate-500 mt-1 font-sans">
             Super Admin accounts (<code className="text-slate-400">admin@gmail.com</code>) manage system permissions and user provisioning in Settings & Governance.
           </p>
         </div>
 
         <Button
           type="submit"
+          variant="primary"
           disabled={isRegistering || isSsoLoggingIn}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-2.5 shadow-lg shadow-brand-500/20 text-sm font-semibold mt-2"
+          className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold mt-2 rounded-none font-mono uppercase tracking-wider"
         >
           <UserPlus className="w-4 h-4" />
           {isRegistering ? 'Creating account...' : 'Create Account'}
         </Button>
       </form>
 
-      <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/60">
+      <div className="text-center text-xs text-slate-400 pt-2 border-t border-[#252b36] font-mono">
         Already have an account?{' '}
-        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
+        <Link to="/login" className="text-[#FF2A54] hover:text-[#e11d48] font-semibold transition-none">
           Sign In
         </Link>
       </div>
     </AuthLayout>
   );
 }
+

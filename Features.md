@@ -128,7 +128,9 @@ This document serves as the **definitive feature checklist and product roadmap**
 
 ### 12. 💻 Frontend Architecture & UI/UX
 - [x] **React 19 + TypeScript SPA**: Strict type-safety with zero `any` leaks and modular feature architecture (`src/features/*`).
-- [x] **Tailwind CSS Glassmorphism Design**: Custom dark-mode aesthetic with gradients, subtle micro-animations, and backdrop blur.
+- [x] **Cyberpunk Stealth Luxury Design System**: Custom dark-mode aesthetic featuring Void Black (`#0D0D0D`), Dark Slate (`#1A1F26`), Neon Crimson (`#FF2A54`), and Muted Border (`#252b36`).
+- [x] **Strict Sharp Industrial Geometry**: Precision right angles with 0 border radius (`rounded-none`), zero-latency hover toggles (`transition-none`), and glowing crimson drop-shadows on focus.
+- [x] **High-Density Monospaced Typography**: Injected `JetBrains Mono` across financial metrics, pipeline win-rates, lead scoring telemetry, and system charts.
 - [x] **TanStack Query v5**: Optimized server state caching, background refetching, and cache invalidation.
 - [x] **Zustand UI Store**: Global client state for navigation, active modals, and notification banners.
 - [x] **Platform Governance & Integrations Studio (`src/features/settings`)**: Unified control center with 5 tabs: User RBAC Management, Universal Webhooks Studio, Bulk CSV Import & Export Studio, Async Background Task Queue Monitor, and Compliance Audit Trail.
@@ -138,7 +140,7 @@ This document serves as the **definitive feature checklist and product roadmap**
 
 ### 13. 🧪 Testing & Quality Assurance
 - [x] **Backend Pytest Suite**: 108 unit, integration, edge-case, security, webhook, and auth tests with mock LLM fixtures (`tests/`).
-- [x] **Frontend Vitest Suite**: 37 unit, integration, and component tests verifying UI rendering, modals, and store updates (`src/features/**/__tests__`).
+- [x] **Frontend Vitest Suite**: 49 unit, integration, and component tests verifying UI rendering, modals, design tokens, and store updates (`src/features/**/__tests__`).
 - [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, and validation schema constraints (`tests/test_security_validation.py`, `tests/test_must_have_security.py`, `tests/test_must_have_deep_security.py`).
 - [x] **Static Type Checking**: `mypy` for Python backend and `tsc --noEmit` for TypeScript frontend.
 

@@ -99,10 +99,15 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
 * **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
 
-### 5. Frontend Development
+### 5. Frontend Development & Design System
 * **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/`.
+* **Cyberpunk Stealth Luxury Design System**:
+  - **Color Tokens**: Void Black (`#0D0D0D`, `--background: 0 0% 5%`), Dark Slate (`#1A1F26`, `--card: 215 19% 13%`), Neon Crimson (`#FF2A54`, `--primary: 348 100% 58%`), Muted Border (`#252b36`, `--border: 215 14% 19%`).
+  - **Sharp Industrial Geometry**: Strict right angles with 0 border radius (`rounded-none`, `--radius: 0rem`, `* { border-radius: 0 !important; }`).
+  - **Typography**: Monospaced font family (`JetBrains Mono`, `font-mono`) for ARR/MRR figures, deal values, lead scores, win rates, and telemetry timestamps; `Inter` for structural copy.
+  - **Interaction Model**: Zero-latency instant hover states (`transition-none`); subtle glowing outer drop-shadow on primary focus (`shadow-[0_0_15px_rgba(255,42,84,0.4)]`).
 * **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
-* **Strict Type Safety**: Run `npm run type-check` and `npm run build` after changes to verify zero errors.
+* **Strict Type Safety**: Run `npm run type-check` and `npm run test` after changes to verify zero errors.
 
 ### 6. Testing Guidelines
 * **Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio`.

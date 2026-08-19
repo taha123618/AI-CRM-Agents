@@ -7,6 +7,31 @@ description: Guide for developing React 19 + TypeScript frontend features, compo
 
 Use this skill when developing, refactoring, or extending the React + TypeScript frontend application.
 
+## 🎨 Cyberpunk Stealth Luxury Design System
+
+The frontend implements a dark-mode **"Cyberpunk Stealth Luxury"** design system engineered for maximum data density, instant interaction feedback, and sharp industrial aesthetics.
+
+### 1. Color Palette & Semantic Tokens
+- **Void Black (`#0D0D0D`)**: Matte obsidian background (`--background: 0 0% 5%`).
+- **Dark Slate (`#1A1F26`)**: High-contrast card and panel fill (`--card: 215 19% 13%`).
+- **Neon Crimson (`#FF2A54`)**: High-visibility primary brand and interactive accent (`--primary: 348 100% 58%`).
+- **Muted Architectural Borders (`#252b36`)**: Ultra-thin, low-contrast 1px divisions (`--border: 215 14% 19%`).
+- **Focus Glows**: Primary interactive elements trigger an outer glowing drop shadow (`shadow-[0_0_15px_rgba(255,42,84,0.4)]` / `.glow-primary`).
+
+### 2. Geometry & Border Radius
+- **Strict Right Angles**: No rounded pill shapes or soft corners (`rounded-none`, `--radius: 0rem`).
+- Enforced globally across all components via Tailwind configuration and CSS resets (`* { border-radius: 0 !important; }`).
+
+### 3. Typography & Data Density
+- **Monospaced Data**: Monospaced font family (`JetBrains Mono`, `font-mono`) for all financial figures (ARR, MRR, deal values), pipeline win-rates, lead scoring numbers, telemetry timestamps, and chart tooltips.
+- **Body & Headings**: `Inter` for clean structural readability.
+
+### 4. Zero-Latency Interaction Model
+- **Instant Toggles (`transition-none`)**: Disabled slow animations and soft transitions on interactive controls (`button, input, select, textarea, a { transition: none !important; }`).
+- **Sharp Industrial Scrollbars**: 4px rectangular scrollbar tracks with instant `#FF2A54` thumb state.
+
+---
+
 ## 🏗️ Architectural Standards (Feature-Sliced Design)
 
 The frontend uses a modern, scalable, feature-sliced architecture with 16 domain features:
@@ -75,4 +100,5 @@ frontend/src/
    - Visual tags (`NEW AI GENERATED`, `NEW AI DATA`, `NEW AI QUALIFIED`, `NEW AI ANALYZED`) clearly indicate newly computed AI data.
 
 5. **Type Safety & Build Verification**:
-   - Always run `npm run type-check` and `npm run build` after editing frontend components to ensure 0 TypeScript or bundler errors.
+   - Always run `npm run type-check` and `npm run test` after editing frontend components to ensure 0 TypeScript or bundler errors.
+

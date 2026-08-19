@@ -3,76 +3,114 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  :root,
+  .dark {
+    --background: 0 0% 5%;          /* #0D0D0D (Matte Obsidian) */
+    --foreground: 0 0% 100%;        /* #FFFFFF */
+    --card: 215 19% 13%;            /* #1A1F26 (Dark Slate) */
+    --card-foreground: 0 0% 100%;
+    --primary: 348 100% 58%;        /* #FF2A54 (Neon Crimson) */
+    --primary-foreground: 0 0% 100%;
+    --border: 215 14% 19%;          /* Muted Accent Border */
+    --radius: 0rem;                 /* Sharp industrial edges */
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
   }
 
   body {
-    @apply bg-slate-950 text-slate-100 antialiased font-sans;
+    background-color: #0D0D0D;
+    color: #FFFFFF;
+    @apply antialiased font-sans selection:bg-[#FF2A54] selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    background-image: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 600px),
-                      radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.05), transparent 600px);
+    background-image:
+      radial-gradient(circle at 100% 0%, rgba(255, 42, 84, 0.04), transparent 500px),
+      radial-gradient(circle at 0% 100%, rgba(26, 31, 38, 0.6), transparent 500px);
   }
 }
 
-/* Custom Scrollbars */
+/* Sharp Industrial Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: #0D0D0D;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.6);
-  border-radius: 9999px;
+  background: #252b36;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(71, 85, 105, 0.8);
+  background: #FF2A54;
 }
 
-/* Glassmorphism premium styles */
+/* Cyberpunk Stealth Luxury Glass & Panels */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #1A1F26;
+  border: 1px solid #252b36;
+  border-radius: 0;
 }
 
 .glass-panel-premium {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+  background: #1A1F26;
+  border: 1px solid #252b36;
+  border-radius: 0;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.85);
 }
 
 .glass-card {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: #1A1F26;
+  border: 1px solid #252b36;
+  border-radius: 0;
 }
 
-/* Glow effects and modern animations */
-.glow-card-brand {
-  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.15);
+/* Glow effects & Neon Crimson highlights */
+.glow-card-brand,
+.glow-primary {
+  box-shadow: 0 0 15px -3px rgba(255, 42, 84, 0.3);
+}
+
+.glow-card-crimson {
+  box-shadow: 0 0 20px -5px rgba(255, 42, 84, 0.45);
 }
 
 .glow-card-emerald {
-  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 15px -4px rgba(16, 185, 129, 0.2);
 }
 
 .glow-card-purple {
-  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 15px -4px rgba(168, 85, 247, 0.2);
 }
 
-.glow-text-brand {
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+.glow-text-brand,
+.glow-text-crimson {
+  text-shadow: 0 0 10px rgba(255, 42, 84, 0.6);
+}
+
+/* High-end Neon Crimson Focus Ring */
+.crimson-focus:focus-visible,
+.crimson-focus:focus {
+  outline: none !important;
+  border-color: #FF2A54 !important;
+  box-shadow: 0 0 15px rgba(255, 42, 84, 0.45) !important;
+}
+
+/* Instant Transition Toggle for Precision Stealth UI */
+button,
+input,
+select,
+textarea,
+a,
+[role="button"],
+.interactive-toggle {
+  transition: none !important;
 }
 
 .animate-pulse-slow {

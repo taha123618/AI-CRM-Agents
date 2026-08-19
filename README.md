@@ -237,12 +237,8 @@ graph TD
 - **Fine-Grained Role-Based Access Control**: Pre-defined role permissions (`admin`, `sales`, `support`, `auditor`) and custom user permission override matrix.
 - **Super Admin Protection & Governance**: Public registration restrictions (only sales/support/auditor allowed) with seeded default super admin (`admin@gmail.com`) and full user management CRUD in `/settings`.
 - **Gmail SMTP & Background Delivery Queue**: Asynchronous, non-blocking transactional email delivery on port 587 with STARTTLS, RFC-5321 envelope sender parsing, responsive dark-mode HTML templates, and exponential backoff retry daemon (`worker.py`).
-- **Zero-Enumeration Password Recovery**: Single-use DB-hashed recovery tokens with clean expiration tracking and non-revealing endpoints.
-
----
-
 ## 🎨 UI Components & Feature Modules
-
+ 
 | Module | Route / Feature | Primary Functionality |
 |---|---|---|
 | 🔐 **Authentication** | `features/auth` | Login, registration, password recovery, SSO callbacks, and PermissionGuard |
@@ -262,7 +258,13 @@ graph TD
 | 🌐 **Multi-Language** | `features/multi-language` | Translation key manager, RTL/LTR layout synchronization |
 | ⚙️ **Settings & Users** | `features/settings` | Super Admin user management CRUD, role presets, LLM provider settings |
 
----
+### 💎 Cyberpunk Stealth Luxury Design System
+
+The application features a dark-mode **"Cyberpunk Stealth Luxury"** design system engineered for high data density, zero-latency feedback, and sharp industrial precision:
+- **Palette**: Void Black (`#0D0D0D`) matte base, Dark Slate (`#1A1F26`) card containers, Neon Crimson (`#FF2A54`) active accent, and Muted Architectural Borders (`#252b36`).
+- **Sharp Industrial Geometry**: Strict right angles with 0 border radius (`rounded-none`, `--radius: 0rem`), eliminating soft pill corners for a clean structural look.
+- **High-Density Typography**: `JetBrains Mono` monospaced figures for financial ARR/MRR metrics, deal sizes, win rates, lead scoring, and chart tooltips.
+- **Zero-Latency Interaction Model**: Instant hover toggles (`transition-none`) and glowing outer Neon Crimson drop-shadows on interactive focus (`shadow-[0_0_15px_rgba(255,42,84,0.4)]`).
 
 ## 📊 Key Metrics & Performance KPIs
 

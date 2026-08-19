@@ -20,37 +20,38 @@ export function StatCard({
   value,
   subtitle,
   icon,
-  iconBgColor = 'bg-brand-500/10 border-brand-500/20',
-  iconColor = 'text-brand-400',
-  glowClass = 'glow-card-brand',
+  iconBgColor = 'bg-[#FF2A54]/10 border-[#FF2A54]/20',
+  iconColor = 'text-[#FF2A54]',
+  glowClass = 'glow-card-crimson',
   loading,
   className,
 }: StatCardProps) {
   return (
     <Card
       className={cn(
-        'hover:border-slate-700 hover:scale-[1.02] transition-all duration-300 bg-slate-900/40',
+        'bg-[#1A1F26] border border-[#252b36] rounded-none hover:border-[#333b4d] transition-none p-5',
         glowClass,
         className
       )}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">{title}</span>
-        <div className={cn('p-2.5 rounded-xl border', iconBgColor, iconColor)}>
+        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">{title}</span>
+        <div className={cn('p-2 rounded-none border transition-none', iconBgColor, iconColor)}>
           {icon}
         </div>
       </div>
 
       {loading ? (
-        <Skeleton className="h-8 w-28 mt-3" />
+        <Skeleton className="h-8 w-28 mt-3 rounded-none" />
       ) : (
         <div className="mt-3">
-          <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+          <div className="text-2xl font-bold text-white tracking-tight font-mono">
             {value}
           </div>
-          {subtitle && <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">{subtitle}</p>}
+          {subtitle && <p className="text-xs font-mono text-slate-400 mt-1.5 flex items-center gap-1">{subtitle}</p>}
         </div>
       )}
     </Card>
   );
 }
+

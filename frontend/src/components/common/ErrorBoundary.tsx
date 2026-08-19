@@ -39,28 +39,28 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-[400px] flex items-center justify-center p-6">
-          <Card className="max-w-md w-full p-6 text-center space-y-4 border-rose-500/30 bg-rose-950/20">
-            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center mx-auto">
+        <div className="min-h-[400px] flex items-center justify-center p-6 bg-[#0D0D0D]">
+          <Card className="max-w-md w-full p-6 text-center space-y-4 border-[#FF2A54]/40 bg-[#1A1F26] rounded-none">
+            <div className="w-12 h-12 rounded-none bg-[#FF2A54]/10 text-[#FF2A54] border border-[#FF2A54]/30 flex items-center justify-center mx-auto">
               <AlertTriangle className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-base font-bold text-white">Something went wrong</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <h3 className="text-base font-bold text-white font-mono uppercase">System Exception Detected</h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
                 An unexpected error occurred in this view. You can reload the application or return to the dashboard.
               </p>
             </div>
 
             {this.state.error && (
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-mono text-rose-300 text-left overflow-x-auto">
+              <div className="p-3 rounded-none bg-[#0D0D0D] border border-[#252b36] text-[11px] font-mono text-rose-300 text-left overflow-x-auto">
                 {this.state.error.message}
               </div>
             )}
 
-            <Button onClick={this.handleReset} className="w-full">
+            <Button onClick={this.handleReset} variant="primary" className="w-full">
               <RefreshCw className="w-4 h-4" />
-              <span>Reload Application</span>
+              <span className="font-mono">Reload Application</span>
             </Button>
           </Card>
         </div>
@@ -72,4 +72,5 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
+
 

@@ -131,9 +131,9 @@ export function GlobalSearchModal() {
       case 'voice_call':
         return <PhoneCall className="w-4 h-4 text-emerald-400" />;
       case 'meeting':
-        return <Calendar className="w-4 h-4 text-brand-400" />;
+        return <Calendar className="w-4 h-4 text-[#FF2A54]" />;
       case 'email':
-        return <Mail className="w-4 h-4 text-indigo-400" />;
+        return <Mail className="w-4 h-4 text-purple-400" />;
       case 'deal':
         return <Briefcase className="w-4 h-4 text-amber-400" />;
       default:
@@ -144,16 +144,16 @@ export function GlobalSearchModal() {
   if (!isGlobalSearchOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-start justify-center pt-16 sm:pt-24 p-4 animate-in fade-in duration-150">
-      <div className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
+    <div className="fixed inset-0 z-50 bg-[#0D0D0D]/90 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 p-4">
+      <div className="w-full max-w-2xl bg-[#1A1F26] border border-[#252b36] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
         {/* Header & Mode Switcher */}
-        <div className="p-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/90 gap-3">
-          <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
+        <div className="p-4 border-b border-[#252b36] flex items-center justify-between bg-[#1A1F26] gap-3">
+          <div className="flex items-center gap-1 p-1 bg-[#0D0D0D] rounded-none border border-[#252b36]">
             <button
               onClick={() => setMode('search')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-mono font-semibold transition-none cursor-pointer ${
                 mode === 'search'
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
+                  ? 'bg-[#FF2A54] text-white shadow-[0_0_12px_rgba(255,42,84,0.35)]'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -163,24 +163,24 @@ export function GlobalSearchModal() {
 
             <button
               onClick={() => setMode('rag')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-mono font-semibold transition-none cursor-pointer ${
                 mode === 'rag'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                  ? 'bg-[#FF2A54] text-white shadow-[0_0_12px_rgba(255,42,84,0.35)]'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
+              <Sparkles className="w-3.5 h-3.5" />
               <span>Ask CRM AI (RAG)</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2">
-            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-950 border border-slate-800 rounded-md">
+            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-[#0D0D0D] border border-[#252b36] rounded-none">
               ESC to close
             </kbd>
             <button
               onClick={() => setGlobalSearchOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+              className="p-1 rounded-none text-slate-400 hover:text-white hover:bg-[#252b36] transition-none"
             >
               <X className="w-4 h-4" />
             </button>
@@ -190,12 +190,12 @@ export function GlobalSearchModal() {
         {/* Input Bar */}
         <form
           onSubmit={mode === 'rag' ? handleRagAsk : (e) => e.preventDefault()}
-          className="relative flex items-center px-4 py-3 border-b border-slate-800/80 bg-slate-950/60"
+          className="relative flex items-center px-4 py-3 border-b border-[#252b36] bg-[#0D0D0D]"
         >
           {mode === 'search' ? (
             <Search className="w-5 h-5 text-slate-400 shrink-0 mr-3" />
           ) : (
-            <Bot className="w-5 h-5 text-indigo-400 shrink-0 mr-3 animate-pulse" />
+            <Bot className="w-5 h-5 text-[#FF2A54] shrink-0 mr-3 animate-pulse" />
           )}
 
           <input
@@ -208,13 +208,13 @@ export function GlobalSearchModal() {
                 ? 'Search transcripts, meetings, emails, deals by keyword or meaning...'
                 : 'Ask CRM AI any question (e.g. "What objections were raised on recent calls?")...'
             }
-            className="w-full bg-transparent text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-sm text-white placeholder:text-slate-500 focus:outline-none font-mono text-xs"
           />
 
           {isLoading && <LoadingSpinner size="sm" className="ml-2" />}
 
           {mode === 'rag' && query.trim() && !isLoading && (
-            <Button type="submit" size="sm" variant="orange" className="ml-2 text-xs h-7 px-3 shrink-0">
+            <Button type="submit" size="sm" variant="primary" className="ml-2 text-xs h-7 px-3 shrink-0 rounded-none font-mono">
               Ask AI
             </Button>
           )}
@@ -222,8 +222,8 @@ export function GlobalSearchModal() {
 
         {/* Entity Filter Chips (Semantic Search Mode) */}
         {mode === 'search' && (
-          <div className="px-4 py-2 border-b border-slate-800/60 bg-slate-900/40 flex items-center gap-1.5 overflow-x-auto text-xs">
-            <span className="text-[11px] text-slate-500 font-mono mr-1">Filter:</span>
+          <div className="px-4 py-2 border-b border-[#252b36] bg-[#1A1F26] flex items-center gap-1.5 overflow-x-auto text-xs font-mono">
+            <span className="text-[11px] text-slate-500 mr-1 uppercase">Filter:</span>
             {[
               { id: 'all', label: 'All Sources' },
               { id: 'voice_call', label: 'Voice Calls' },
@@ -234,10 +234,10 @@ export function GlobalSearchModal() {
               <button
                 key={f.id}
                 onClick={() => setEntityFilter(f.id)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all ${
+                className={`px-2.5 py-1 rounded-none text-[11px] font-mono transition-none cursor-pointer ${
                   entityFilter === f.id
-                    ? 'bg-slate-800 text-brand-400 border border-brand-500/30'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850'
+                    ? 'bg-[#0D0D0D] text-[#FF2A54] border border-[#FF2A54]/50'
+                    : 'text-slate-400 hover:text-white hover:bg-[#0D0D0D]'
                 }`}
               >
                 {f.label}
@@ -249,7 +249,7 @@ export function GlobalSearchModal() {
         {/* Results Area */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[220px]">
           {error && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+            <div className="p-3 rounded-none bg-rose-950/40 border border-rose-500/30 text-rose-400 text-xs font-mono">
               {error}
             </div>
           )}
@@ -264,12 +264,12 @@ export function GlobalSearchModal() {
                     <div
                       key={res.id}
                       onClick={() => handleNavigate(res.entity_type)}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-brand-500/40 hover:bg-slate-850/80 transition-all cursor-pointer group"
+                      className="p-3.5 rounded-none bg-[#0D0D0D] border border-[#252b36] hover:border-[#FF2A54]/50 transition-none cursor-pointer group"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1.5">
                         <div className="flex items-center gap-2">
                           {getEntityIcon(res.entity_type)}
-                          <span className="text-xs font-bold text-white group-hover:text-brand-400 transition-colors">
+                          <span className="text-xs font-bold text-white group-hover:text-[#FF2A54] transition-none font-mono">
                             {res.title}
                           </span>
                         </div>
@@ -288,7 +288,7 @@ export function GlobalSearchModal() {
                         {res.snippet}
                       </p>
 
-                      <div className="mt-2 flex items-center justify-end text-[11px] text-brand-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="mt-2 flex items-center justify-end text-[11px] text-[#FF2A54] font-mono font-medium opacity-0 group-hover:opacity-100 transition-none">
                         <span>Open Record</span>
                         <ArrowRight className="w-3 h-3 ml-1" />
                       </div>
@@ -296,13 +296,13 @@ export function GlobalSearchModal() {
                   );
                 })
               ) : query.trim().length >= 2 && !isLoading ? (
-                <div className="text-center py-12 text-slate-500 text-xs">
+                <div className="text-center py-12 text-slate-500 text-xs font-mono">
                   No semantic knowledge matched &quot;{query}&quot;. Try broadening your terms.
                 </div>
               ) : (
                 <div className="text-center py-10 text-slate-500 text-xs space-y-1">
                   <Layers className="w-8 h-8 mx-auto text-slate-600 mb-2" />
-                  <p>Type a search query to activate dense vector similarity search.</p>
+                  <p className="font-mono">Type a search query to activate dense vector similarity search.</p>
                   <p className="text-[11px] text-slate-600 font-mono">
                     Scans sales transcripts, meeting notes, email threads, and pipeline deals.
                   </p>
@@ -315,11 +315,11 @@ export function GlobalSearchModal() {
           {mode === 'rag' && (
             <>
               {ragResult ? (
-                <div className="space-y-4 animate-in fade-in duration-200">
-                  <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 space-y-2">
+                <div className="space-y-4">
+                  <div className="p-4 rounded-none bg-[#0D0D0D] border border-[#252b36] space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-indigo-400" />
+                      <span className="text-xs font-bold text-[#FF2A54] flex items-center gap-1.5 font-mono uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4 text-[#FF2A54]" />
                         AI Synthesized CRM Answer
                       </span>
                       <Badge variant="purple" className="text-[10px] font-mono">
@@ -334,7 +334,7 @@ export function GlobalSearchModal() {
 
                   {/* Sources & Citations */}
                   <div className="space-y-2">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block font-mono">
                       Retrieved Grounding Sources ({ragResult.sources.length})
                     </span>
 
@@ -343,13 +343,13 @@ export function GlobalSearchModal() {
                         <div
                           key={src.id}
                           onClick={() => handleNavigate(src.entity_type)}
-                          className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 transition-all cursor-pointer flex items-center justify-between"
+                          className="p-2.5 rounded-none bg-[#0D0D0D] border border-[#252b36] hover:border-[#FF2A54]/50 transition-none cursor-pointer flex items-center justify-between"
                         >
                           <div className="flex items-center gap-2 overflow-hidden">
-                            <span className="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px] font-mono text-indigo-400 shrink-0">
+                            <span className="w-5 h-5 rounded-none bg-[#1A1F26] border border-[#252b36] flex items-center justify-center text-[10px] font-mono text-[#FF2A54] shrink-0">
                               {src.source_index}
                             </span>
-                            <span className="text-xs text-slate-300 truncate font-medium">{src.title}</span>
+                            <span className="text-xs text-slate-300 truncate font-mono">{src.title}</span>
                           </div>
                           <Badge variant="info" className="text-[9px] uppercase font-mono py-0 shrink-0">
                             {src.entity_type.replace('_', ' ')}
@@ -361,9 +361,9 @@ export function GlobalSearchModal() {
                 </div>
               ) : (
                 <div className="text-center py-10 text-slate-500 text-xs space-y-2">
-                  <Bot className="w-8 h-8 mx-auto text-indigo-400 mb-2" />
-                  <p className="text-slate-300 font-semibold">Ask any natural language question across your CRM</p>
-                  <p className="text-[11px] text-slate-500 max-w-sm mx-auto">
+                  <Bot className="w-8 h-8 mx-auto text-[#FF2A54] mb-2" />
+                  <p className="text-slate-300 font-semibold font-mono uppercase">Ask any natural language question across your CRM</p>
+                  <p className="text-[11px] text-slate-500 max-w-sm mx-auto font-sans">
                     The RAG engine retrieves relevant vector embeddings and synthesizes a grounded answer with citations.
                   </p>
                 </div>
@@ -373,7 +373,7 @@ export function GlobalSearchModal() {
         </div>
 
         {/* Footer Shortcut Bar */}
-        <div className="px-4 py-2.5 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+        <div className="px-4 py-2.5 bg-[#0D0D0D] border-t border-[#252b36] flex items-center justify-between text-[11px] text-slate-500 font-mono">
           <div className="flex items-center gap-2">
             <span>Powered by Dense Vector &amp; RAG Engine</span>
           </div>
@@ -385,3 +385,4 @@ export function GlobalSearchModal() {
     </div>
   );
 }
+

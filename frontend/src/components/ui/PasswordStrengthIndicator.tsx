@@ -8,7 +8,7 @@ interface PasswordStrengthIndicatorProps {
 }
 
 const STRENGTH_CONFIG = {
-  weak: { color: 'bg-rose-500', width: '33%', label: 'Weak', textColor: 'text-rose-400' },
+  weak: { color: 'bg-[#FF2A54]', width: '33%', label: 'Weak', textColor: 'text-[#FF2A54]' },
   fair: { color: 'bg-amber-500', width: '66%', label: 'Fair', textColor: 'text-amber-400' },
   strong: { color: 'bg-emerald-500', width: '100%', label: 'Strong', textColor: 'text-emerald-400' },
 };
@@ -28,20 +28,20 @@ export function PasswordStrengthIndicator({
     <div className={`space-y-2 ${className}`}>
       {/* Strength bar */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="flex-1 h-1 bg-[#252b36] rounded-none overflow-hidden">
           <div
-            className={`h-full rounded-full transition-all duration-300 ${config.color}`}
+            className={`h-full rounded-none transition-none ${config.color}`}
             style={{ width: config.width }}
           />
         </div>
-        <span className={`text-[10px] font-mono font-semibold ${config.textColor} w-12 text-right`}>
+        <span className={`text-[10px] font-mono font-semibold ${config.textColor} w-12 text-right uppercase`}>
           {config.label}
         </span>
       </div>
 
       {/* Requirements checklist */}
       {showRequirements && (
-        <div className="grid grid-cols-1 gap-0.5">
+        <div className="grid grid-cols-1 gap-0.5 font-mono">
           {requirements.map((req) => {
             const isMet = !result.errors.includes(req);
             return (
@@ -66,3 +66,4 @@ export function PasswordStrengthIndicator({
     </div>
   );
 }
+

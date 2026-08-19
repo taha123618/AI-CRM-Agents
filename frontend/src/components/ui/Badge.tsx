@@ -7,26 +7,26 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Badge({ className, variant, statusValue, children, ...props }: BadgeProps) {
-  let styleClass = 'bg-slate-800 text-slate-300 border-slate-700';
+  let styleClass = 'bg-[#1A1F26] text-slate-300 border-[#252b36]';
 
   if (statusValue) {
     styleClass = getStatusBadgeClass(statusValue);
   } else if (variant === 'success') {
-    styleClass = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+    styleClass = 'bg-emerald-950/40 text-emerald-400 border-emerald-500/30';
   } else if (variant === 'warning') {
-    styleClass = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+    styleClass = 'bg-amber-950/40 text-amber-400 border-amber-500/30';
   } else if (variant === 'danger') {
-    styleClass = 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+    styleClass = 'bg-[#FF2A54]/15 text-[#FF2A54] border-[#FF2A54]/30';
   } else if (variant === 'info') {
-    styleClass = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+    styleClass = 'bg-blue-950/40 text-blue-400 border-blue-500/30';
   } else if (variant === 'purple') {
-    styleClass = 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+    styleClass = 'bg-purple-950/40 text-purple-400 border-purple-500/30';
   }
 
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border transition-colors',
+        'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-mono font-medium border transition-none uppercase tracking-wider',
         styleClass,
         className
       )}
@@ -36,3 +36,4 @@ export function Badge({ className, variant, statusValue, children, ...props }: B
     </span>
   );
 }
+
