@@ -4,23 +4,30 @@
 
 @layer base {
   :root {
-    --background: 220 22% 5%;       /* #0B0C10 - Void Black */
+    --background: 220 22% 5%;
+    /* #0B0C10 - Void Black */
     --foreground: 210 20% 98%;
-    --card: 214 24% 16%;             /* #1F2833 - Dark Titanium */
+    --card: 214 24% 16%;
+    /* #1F2833 - Dark Titanium */
     --card-foreground: 210 20% 98%;
-    --popover: 215 24% 20%;          /* #26313F - Overlay Surface */
+    --popover: 215 24% 20%;
+    /* #26313F - Overlay Surface */
     --popover-foreground: 210 20% 98%;
-    --primary: 104 100% 54%;         /* #39FF14 - Radioactive Lime */
-    --primary-foreground: 220 22% 5%; /* #0B0C10 - Void Black text on primary */
+    --primary: 104 100% 54%;
+    /* #FFB800 - Radioactive Lime */
+    --primary-foreground: 220 22% 5%;
+    /* #0B0C10 - Void Black text on primary */
     --secondary: 214 24% 16%;
     --secondary-foreground: 210 20% 98%;
     --muted: 215 24% 20%;
     --muted-foreground: 215 16% 65%;
     --accent: 214 24% 16%;
     --accent-foreground: 104 100% 54%;
-    --destructive: 348 100% 58%;     /* #FF2A54 - High-contrast Alert */
+    --destructive: 348 100% 58%;
+    /* #FF2A54 - High-contrast Alert */
     --destructive-foreground: 0 0% 100%;
-    --border: 215 19% 28%;           /* #3A4552 - Steel Border */
+    --border: 215 19% 28%;
+    /* #3A4552 - Steel Border */
     --input: 215 19% 28%;
     --ring: 104 100% 54%;
     --radius: 0rem;
@@ -88,7 +95,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #39FF14;
+  background: #FFB800;
 }
 
 /* High-Density Alternating Striped Tables */
@@ -106,7 +113,7 @@ table tbody tr:nth-child(odd) {
 }
 
 table tbody tr:hover {
-  outline: 1px solid #39FF14;
+  outline: 1px solid #FFB800;
   background-color: #26313F !important;
 }
 

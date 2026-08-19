@@ -12,7 +12,7 @@ export function Badge({ className, variant, statusValue, children, ...props }: B
   if (statusValue) {
     styleClass = getStatusBadgeClass(statusValue);
   } else if (variant === 'success') {
-    styleClass = 'bg-[#0B0C10] text-[#39FF14] border-[#39FF14]/50';
+    styleClass = 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]/50';
   } else if (variant === 'warning') {
     styleClass = 'bg-[#0B0C10] text-amber-400 border-amber-400/50';
   } else if (variant === 'danger') {

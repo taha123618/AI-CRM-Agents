@@ -136,7 +136,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+            <div className="p-2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Zap className="w-5 h-5" />
             </div>
             <div>
@@ -204,7 +204,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={ruleName}
                     onChange={(e) => setRuleName(e.target.value)}
                     placeholder="E.G. HIGH-INTENT LEAD WHATSAPP AUTO-DISPATCH"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -215,7 +215,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={triggerEvent}
                     onChange={(e) => setTriggerEvent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   >
                     <option value="lead_score_above">LEAD SCORE &gt; THRESHOLD</option>
                     <option value="deal_stage_changed">DEAL STAGE CHANGED</option>
@@ -234,7 +234,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={triggerThreshold}
                     onChange={(e) => setTriggerThreshold(e.target.value)}
                     placeholder="E.G. 80 OR 'PROPOSAL_SENT'"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -245,7 +245,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={actionAgent}
                     onChange={(e) => setActionAgent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   >
                     <option value="whatsapp_agent">WHATSAPP AUTO-PILOT AGENT</option>
                     <option value="email_intelligence">EMAIL INTELLIGENCE AGENT</option>
@@ -265,7 +265,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={actionType}
                     onChange={(e) => setActionType(e.target.value)}
                     placeholder="E.G. SEND_WELCOME_TEMPLATE"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
               </div>
@@ -291,10 +291,10 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
 
           {/* Test Execution Result Banner */}
           {executionResult && (
-            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#39FF14] space-y-2.5 animate-in fade-in">
+            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-2.5 animate-in fade-in">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#39FF14]" />
+                  <CheckCircle className="w-4 h-4 text-[#FFB800]" />
                   <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                     SIMULATED LIVE AGENT EXECUTION
                   </h4>
@@ -313,7 +313,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                       onClick={handleCopyPayload}
                       className="text-xs h-6 px-2 uppercase"
                     >
-                      {copiedResult ? <Check className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                      {copiedResult ? <Check className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
                     </Button>
                   )}
                   <button onClick={() => setExecutionResult(null)} className="text-slate-400 hover:text-white text-xs">
@@ -325,7 +325,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
               <p className="text-xs text-slate-300 uppercase">{executionResult.message}</p>
 
               {executionResult.ai_generated_payload && (
-                <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-[11px] text-[#39FF14] whitespace-pre-wrap">
+                <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-[11px] text-[#FFB800] whitespace-pre-wrap">
                   {executionResult.ai_generated_payload}
                 </div>
               )}
@@ -344,9 +344,8 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 return (
                   <div
                     key={r.id}
-                    className={`p-3.5 rounded-none border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-none ${
-                      isActive ? 'bg-[#0B0C10] border-[#3A4552]' : 'bg-[#0B0C10]/50 border-[#3A4552]/40 opacity-70'
-                    }`}
+                    className={`p-3.5 rounded-none border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-none ${isActive ? 'bg-[#0B0C10] border-[#3A4552]' : 'bg-[#0B0C10]/50 border-[#3A4552]/40 opacity-70'
+                      }`}
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -359,7 +358,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                       <div className="flex items-center gap-2 text-[10px] text-slate-400 uppercase">
                         <span>TRIGGER: <strong className="text-slate-200">{r.trigger_event}</strong> ({r.trigger_threshold})</span>
                         <span>→</span>
-                        <span className="flex items-center gap-1 text-[#39FF14]">
+                        <span className="flex items-center gap-1 text-[#FFB800]">
                           <Bot className="w-3 h-3" />
                           {r.action_agent}: {r.action_type}
                         </span>
@@ -379,7 +378,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         isLoading={testExecutionMutation.isPending}
                         className="text-xs h-7 uppercase"
                       >
-                        <Play className="w-3 h-3 mr-1 text-[#39FF14]" />
+                        <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
                         <span>TEST RUN</span>
                       </Button>
 
@@ -390,7 +389,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         onClick={() => toggleMutation.mutate(r.id)}
                         className="h-7 px-2 text-slate-400 hover:text-white"
                       >
-                        {isActive ? <Pause className="w-3.5 h-3.5 text-[#FFB800]" /> : <Play className="w-3.5 h-3.5 text-[#39FF14]" />}
+                        {isActive ? <Pause className="w-3.5 h-3.5 text-[#FFB800]" /> : <Play className="w-3.5 h-3.5 text-[#FFB800]" />}
                       </Button>
 
                       <Button

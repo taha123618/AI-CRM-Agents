@@ -29,7 +29,7 @@ export function TableBody({ className, children, ...props }: React.HTMLAttribute
 
 export function TableRow({ className, children, ...props }: React.HTMLAttributes<HTMLTableRowElement>) {
   return (
-    <tr className={cn('odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] hover:outline hover:outline-1 hover:outline-[#39FF14] transition-none', className)} {...props}>
+    <tr className={cn('odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] hover:outline hover:outline-1 hover:outline-[#FFB800] transition-none', className)} {...props}>
       {children}
     </tr>
   );

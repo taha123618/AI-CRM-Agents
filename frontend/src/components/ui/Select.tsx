@@ -26,7 +26,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           className={cn(
-            'w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none px-3 py-1.5 text-xs focus:outline-none focus:border-[#39FF14] transition-none cursor-pointer font-mono uppercase',
+            'w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none px-3 py-1.5 text-xs focus:outline-none focus:border-[#FFB800] transition-none cursor-pointer font-mono uppercase',
             error && 'border-[#FF2A54]',
             className
           )}

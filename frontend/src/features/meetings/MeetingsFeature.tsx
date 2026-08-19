@@ -203,7 +203,7 @@ export function MeetingsFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-[#39FF14]" />
+            <CalendarIcon className="w-5 h-5 text-[#FFB800]" />
             <span>{t('meetings.title', 'MEETING SCHEDULER & BRIEFING STUDIO')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -213,7 +213,7 @@ export function MeetingsFeature() {
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleBulkSchedule} isLoading={isBulkScheduling} className="text-xs">
-            <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
             <span>{t('meetings.prep_materials', 'AUDIT ALL MEETINGS')}</span>
           </Button>
           <Button onClick={() => setMeetingModalOpen(true)} variant="primary" className="text-xs">
@@ -235,13 +235,13 @@ export function MeetingsFeature() {
           filteredMeetings.map((meeting) => (
             <Card
               key={meeting.id}
-              className="p-4 space-y-2.5 hover:border-[#39FF14] transition-none cursor-pointer group font-mono"
+              className="p-4 space-y-2.5 hover:border-[#FFB800] transition-none cursor-pointer group font-mono"
               onClick={() => handleOpenMeeting(meeting)}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <Badge variant="purple" className="text-[8px] uppercase">{meeting.meeting_type}</Badge>
-                  <h3 className="font-bold text-xs text-white mt-1 group-hover:text-[#39FF14] transition-none uppercase">
+                  <h3 className="font-bold text-xs text-white mt-1 group-hover:text-[#FFB800] transition-none uppercase">
                     {meeting.title}
                   </h3>
                 </div>
@@ -270,10 +270,10 @@ export function MeetingsFeature() {
 
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 pt-2 border-t border-[#3A4552]">
                 <div className="flex items-center gap-1 font-mono text-[10px]">
-                  <Clock className="w-3 h-3 text-[#39FF14]" />
+                  <Clock className="w-3 h-3 text-[#FFB800]" />
                   <span>{formatDate(meeting.scheduled_at)}</span>
                 </div>
-                <div className="flex items-center gap-1 text-[#39FF14] font-bold text-[10px] uppercase">
+                <div className="flex items-center gap-1 text-[#FFB800] font-bold text-[10px] uppercase">
                   <UserCheck className="w-3 h-3" />
                   <span>AI PREP READY</span>
                 </div>
@@ -305,8 +305,8 @@ export function MeetingsFeature() {
             )}
 
             {inviteSuccessMsg && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#39FF14] shrink-0 mt-0.5" />
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0 mt-0.5" />
                 <div className="uppercase">{inviteSuccessMsg}</div>
               </div>
             )}
@@ -320,7 +320,7 @@ export function MeetingsFeature() {
               </div>
               <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] min-w-0">
                 <span className="text-[9px] text-slate-400 uppercase font-bold block">LOCATION / LINK</span>
-                <div className="text-xs font-mono text-[#39FF14] mt-0.5 flex items-center gap-1 min-w-0">
+                <div className="text-xs font-mono text-[#FFB800] mt-0.5 flex items-center gap-1 min-w-0">
                   <MapPin className="w-3 h-3 shrink-0" />
                   <span className="truncate block" title={selectedMeeting.location || 'Google Meet (auto-generated)'}>
                     {selectedMeeting.location || 'Google Meet (auto-generated)'}
@@ -331,8 +331,8 @@ export function MeetingsFeature() {
 
             {/* Email Dispatch Action Card */}
             <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-              <h4 className="text-[10px] font-bold text-[#39FF14] uppercase tracking-wider flex items-center gap-1">
-                <Mail className="w-3 h-3 text-[#39FF14]" />
+              <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
+                <Mail className="w-3 h-3 text-[#FFB800]" />
                 DISPATCH EMAIL BRIEFING TO ATTENDEES
               </h4>
               <div className="flex items-center gap-2">
@@ -361,14 +361,14 @@ export function MeetingsFeature() {
             {/* Agenda section */}
             <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5 min-w-0">
               <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                <FileText className="w-3 h-3 text-[#39FF14] shrink-0" />
+                <FileText className="w-3 h-3 text-[#FFB800] shrink-0" />
                 PROPOSED MEETING AGENDA
               </h4>
               <ul className="text-xs text-slate-300 space-y-1 pl-1 min-w-0 font-mono">
                 {Array.isArray(selectedMeeting.agenda) && selectedMeeting.agenda.length > 0 ? (
                   selectedMeeting.agenda.map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5 min-w-0">
-                      <span className="text-[#39FF14] font-bold shrink-0">•</span>
+                      <span className="text-[#FFB800] font-bold shrink-0">•</span>
                       <span className="break-words flex-1 uppercase">{item}</span>
                     </li>
                   ))
@@ -394,13 +394,13 @@ export function MeetingsFeature() {
             {selectedMeeting.prep_materials && typeof selectedMeeting.prep_materials === 'object' && (
               <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5 min-w-0 font-mono">
                 <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                  <Bot className="w-3 h-3 text-[#39FF14] shrink-0" />
+                  <Bot className="w-3 h-3 text-[#FFB800] shrink-0" />
                   MEETINGSCHEDULERAGENT — PREP MATERIALS
                 </h4>
                 <ul className="space-y-1 min-w-0">
                   {Object.entries(selectedMeeting.prep_materials).map(([k, v]) => (
                     <li key={k} className="flex items-start gap-1.5 text-xs text-slate-300 min-w-0 font-mono uppercase">
-                      <ChevronRight className="w-3 h-3 text-[#39FF14] mt-0.5 shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
                       <span className="break-all flex-1"><span className="font-bold text-slate-400">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
                     </li>
                   ))}
@@ -410,15 +410,15 @@ export function MeetingsFeature() {
 
             {/* Follow-up Tasks Checklist */}
             {selectedMeeting.followup_tasks?.length ? (
-              <div className="p-3 bg-[#0B0C10] border border-[#39FF14]/40 space-y-1.5 min-w-0 font-mono">
-                <h4 className="text-[10px] font-bold text-[#39FF14] uppercase tracking-wider flex items-center gap-1">
+              <div className="p-3 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1.5 min-w-0 font-mono">
+                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
                   <CheckSquare className="w-3 h-3 shrink-0" />
                   POST-MEETING FOLLOW-UP TASKS
                 </h4>
                 <ul className="space-y-1 min-w-0">
                   {selectedMeeting.followup_tasks.map((task: string, i: number) => (
                     <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 min-w-0 font-mono uppercase">
-                      <CheckSquare className="w-3 h-3 text-[#39FF14] mt-0.5 shrink-0" />
+                      <CheckSquare className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{task}</span>
                     </li>
                   ))}
@@ -430,7 +430,7 @@ export function MeetingsFeature() {
             {selectedMeeting.attendees && (
               <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1 min-w-0 font-mono">
                 <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                  <Users className="w-3 h-3 text-[#39FF14] shrink-0" />
+                  <Users className="w-3 h-3 text-[#FFB800] shrink-0" />
                   ATTENDEES
                 </h4>
                 <div className="flex flex-wrap gap-1 pt-0.5 min-w-0">
@@ -455,7 +455,7 @@ export function MeetingsFeature() {
                   isLoading={triggerMeetingMutation.isPending}
                   className="text-xs h-7"
                 >
-                  <Sparkles className="w-3 h-3 text-[#39FF14]" />
+                  <Sparkles className="w-3 h-3 text-[#FFB800]" />
                   <span>AI RE-PREP</span>
                 </Button>
                 <Button
@@ -532,7 +532,7 @@ export function MeetingsFeature() {
                 rows={3}
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
-                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#39FF14]"
+                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
               />
             </div>
 

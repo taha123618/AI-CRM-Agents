@@ -45,7 +45,7 @@ export function ForgotPasswordPage() {
 
       {isSubmitted ? (
         <div className="space-y-3 text-center font-mono">
-          <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#39FF14] flex items-center justify-center mx-auto text-[#39FF14]">
+          <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#FFB800] flex items-center justify-center mx-auto text-[#FFB800]">
             <CheckCircle2 className="w-6 h-6" />
           </div>
 
@@ -57,7 +57,7 @@ export function ForgotPasswordPage() {
           </div>
 
           <div className="p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none space-y-1 text-left text-xs uppercase">
-            <div className="flex items-center gap-1.5 text-[#39FF14] font-bold text-[10px]">
+            <div className="flex items-center gap-1.5 text-[#FFB800] font-bold text-[10px]">
               <Inbox className="w-3.5 h-3.5" />
               <span>NEXT STEPS:</span>
             </div>
@@ -79,7 +79,7 @@ export function ForgotPasswordPage() {
                 setIsSubmitted(false);
                 setEmail('');
               }}
-              className="text-[#39FF14] hover:underline"
+              className="text-[#FFB800] hover:underline"
             >
               ← TRY ANOTHER EMAIL
             </button>
@@ -106,7 +106,7 @@ export function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@enterprise.com"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono uppercase"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono uppercase"
               />
             </div>
             <p className="text-[9px] text-slate-500 mt-1 uppercase">

@@ -13,7 +13,7 @@ import { Customer } from '@/types/crm.types';
 
 function ChurnGauge({ probability }: { probability: number }) {
   const pct = Math.min(100, Math.max(0, probability));
-  const color = pct >= 70 ? '#FF2A54' : pct >= 40 ? '#FFB800' : '#39FF14';
+  const color = pct >= 70 ? '#FF2A54' : pct >= 40 ? '#FFB800' : '#FFB800';
   const radius = 32;
   const circ = 2 * Math.PI * radius;
   const offset = circ - (pct / 100) * circ;
@@ -37,7 +37,7 @@ function ChurnGauge({ probability }: { probability: number }) {
 
 function EngagementBar({ label, value, max = 100, unit = '' }: { label: string; value: number; max?: number; unit?: string }) {
   const pct = Math.min(100, (value / max) * 100);
-  const color = pct >= 60 ? 'bg-[#39FF14]' : pct >= 30 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
+  const color = pct >= 60 ? 'bg-[#FFB800]' : pct >= 30 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
   return (
     <div className="space-y-1 font-mono">
       <div className="flex justify-between text-xs font-mono">
@@ -106,7 +106,7 @@ export function CustomersFeature() {
   const getRiskClass = (risk: string) => {
     if (risk === 'high') return 'text-[#FF2A54] bg-[#0B0C10] border-[#FF2A54]';
     if (risk === 'medium') return 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]';
-    return 'text-[#39FF14] bg-[#0B0C10] border-[#39FF14]';
+    return 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]';
   };
 
   const activeAgentData = monitorResult?.result || monitorResult;
@@ -122,7 +122,7 @@ export function CustomersFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-[#39FF14]" />
+            <Building2 className="w-5 h-5 text-[#FFB800]" />
             <span>{t('customers.title', 'ACCOUNT HEALTH & CHURN RISK INTELLIGENCE')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -146,7 +146,7 @@ export function CustomersFeature() {
             {[
               { label: t('customers.all_accounts', 'TOTAL ACCOUNTS'), value: formatNumber(customers.length), icon: Users, color: 'text-white' },
               { label: t('customers.churn_risk', 'HIGH CHURN RISK'), value: formatNumber(highRisk), icon: AlertTriangle, color: 'text-[#FF2A54]', warn: highRisk > 0 },
-              { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-[#39FF14]' },
+              { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-[#FFB800]' },
               { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-white' },
             ].map(({ label, value, icon: Icon, color, warn }) => (
               <div key={label} className={`p-3 border font-mono ${warn ? 'bg-[#0B0C10] border-[#FF2A54]' : 'bg-[#1F2833] border-[#3A4552]'}`}>
@@ -194,23 +194,23 @@ export function CustomersFeature() {
                     <TableCell className="font-bold text-white uppercase">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono">
-                          <Zap className="w-3 h-3 text-[#39FF14]" />
+                          <Zap className="w-3 h-3 text-[#FFB800]" />
                           {cust.plan}
                         </span>
                         {(Boolean(cust.recommended_actions?.length) || (selectedCustomer?.id === cust.id && Boolean(monitorResult))) && (
-                          <span className="px-1.5 py-0.2 text-[8px] font-black bg-[#0B0C10] text-[#39FF14] border border-[#39FF14] uppercase flex items-center gap-0.5">
+                          <span className="px-1.5 py-0.2 text-[8px] font-black bg-[#0B0C10] text-[#FFB800] border border-[#FFB800] uppercase flex items-center gap-0.5">
                             <Sparkles className="w-2.5 h-2.5" />
                             AI DATA
                           </span>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="font-mono font-bold text-[#39FF14]">{formatCurrency(cust.mrr)}</TableCell>
+                    <TableCell className="font-mono font-bold text-[#FFB800]">{formatCurrency(cust.mrr)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="w-16 h-1.5 bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
                           <div
-                            className={`h-full ${cust.health_score >= 70 ? 'bg-[#39FF14]' : cust.health_score >= 40 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]'}`}
+                            className={`h-full ${cust.health_score >= 70 ? 'bg-[#FFB800]' : cust.health_score >= 40 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]'}`}
                             style={{ width: `${cust.health_score}%` }}
                           />
                         </div>
@@ -227,7 +227,7 @@ export function CustomersFeature() {
                     </TableCell>
                     <TableCell>
                       {cust.churn_probability != null ? (
-                        <span className={`text-xs font-black font-mono ${cust.churn_probability >= 70 ? 'text-[#FF2A54]' : cust.churn_probability >= 40 ? 'text-[#FFB800]' : 'text-[#39FF14]'}`}>
+                        <span className={`text-xs font-black font-mono ${cust.churn_probability >= 70 ? 'text-[#FF2A54]' : cust.churn_probability >= 40 ? 'text-[#FFB800]' : 'text-[#FFB800]'}`}>
                           {cust.churn_probability}%
                         </span>
                       ) : (
@@ -249,7 +249,7 @@ export function CustomersFeature() {
                         onClick={() => handleMonitor(cust)}
                         className="text-xs h-7 px-2"
                       >
-                        <Bot className="w-3 h-3 text-[#39FF14]" />
+                        <Bot className="w-3 h-3 text-[#FFB800]" />
                         <span>MONITOR</span>
                       </Button>
                     </TableCell>
@@ -294,7 +294,7 @@ export function CustomersFeature() {
             ) : (healthData || activeAgentData?.engagement) ? (
               <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-2 font-mono">
                 <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                  <Activity className="w-3 h-3 text-[#39FF14]" />
+                  <Activity className="w-3 h-3 text-[#FFB800]" />
                   ENGAGEMENT TELEMETRY
                 </h4>
                 <EngagementBar
@@ -317,15 +317,15 @@ export function CustomersFeature() {
 
             {/* AI Recommended Actions from CustomerSuccessAgent */}
             {currentActions.length > 0 && (
-              <div className="p-3 bg-[#0B0C10] border border-[#39FF14]/40 space-y-1.5">
-                <h4 className="text-[10px] font-bold text-[#39FF14] uppercase tracking-wider flex items-center gap-1">
-                  <Bot className="w-3 h-3 text-[#39FF14]" />
+              <div className="p-3 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1.5">
+                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
+                  <Bot className="w-3 h-3 text-[#FFB800]" />
                   RECOMMENDED ACTIONS
                 </h4>
                 <ul className="space-y-1">
                   {currentActions.map((action: string, i: number) => (
                     <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 font-mono uppercase">
-                      <CheckCircle2 className="w-3 h-3 text-[#39FF14] mt-0.5 shrink-0" />
+                      <CheckCircle2 className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{action}</span>
                     </li>
                   ))}

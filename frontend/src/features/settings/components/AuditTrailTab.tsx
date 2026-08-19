@@ -79,7 +79,7 @@ export function AuditTrailTab() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <History className="w-4 h-4 text-[#39FF14]" />
+            <History className="w-4 h-4 text-[#FFB800]" />
             COMPLIANCE AUDIT TRAIL &amp; FORENSIC LEDGER
           </h2>
           <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -103,7 +103,7 @@ export function AuditTrailTab() {
                   setPage(1);
                 }}
                 placeholder="SEARCH ENTITY, ACTOR, ACTION, IP..."
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -116,7 +116,7 @@ export function AuditTrailTab() {
                   setEntityFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 <option value="all">ALL ENTITIES</option>
                 {availableEntityTypes.map((et) => (
@@ -134,7 +134,7 @@ export function AuditTrailTab() {
                 setActionFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+              className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             >
               <option value="all">ALL ACTIONS</option>
               <option value="write">MUTATIONS &amp; WRITES</option>
@@ -187,7 +187,7 @@ export function AuditTrailTab() {
                     {new Date(log.created_at).toLocaleTimeString()}
                   </td>
                   <td className="px-3 py-2">
-                    <span className="font-mono text-[#39FF14] uppercase font-bold text-[11px]">
+                    <span className="font-mono text-[#FFB800] uppercase font-bold text-[11px]">
                       {log.entity_type}
                     </span>
                   </td>

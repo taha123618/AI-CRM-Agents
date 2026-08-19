@@ -91,7 +91,7 @@ export function MeetingSchedulerModal() {
           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">CONTEXT / NOTES</label>
           <textarea
             rows={3}
-            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#39FF14]"
+            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
             {...register('notes')}
           />
         </div>

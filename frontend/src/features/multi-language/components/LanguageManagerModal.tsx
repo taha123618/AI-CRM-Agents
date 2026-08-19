@@ -116,7 +116,7 @@ export function LanguageManagerModal({
         {/* Action Bar */}
         <div className="flex items-center justify-between p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none">
           <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-[#39FF14]" />
+            <Globe className="w-4 h-4 text-[#FFB800]" />
             <span className="text-xs font-bold text-white uppercase tracking-wider">
               CONFIGURED LOCALES ({availableLanguages.length})
             </span>
@@ -248,11 +248,10 @@ export function LanguageManagerModal({
                       <button
                         type="button"
                         onClick={() => handleToggleEnable(lang)}
-                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-none border transition-none ${
-                          lang.is_enabled
-                            ? 'bg-[#0B0C10] text-[#39FF14] border-[#39FF14]'
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-none border transition-none ${lang.is_enabled
+                            ? 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]'
                             : 'bg-[#0B0C10] text-slate-500 border-[#3A4552]'
-                        }`}
+                          }`}
                       >
                         {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
                       </button>
@@ -263,7 +262,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => setLanguage(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-slate-300 hover:text-white border border-[#3A4552] hover:border-[#39FF14] transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-slate-300 hover:text-white border border-[#3A4552] hover:border-[#FFB800] transition-none"
                         >
                           SWITCH
                         </button>

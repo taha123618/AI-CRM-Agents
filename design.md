@@ -23,8 +23,8 @@ Apply these values directly inside your global CSS file (`app/globals.css` or `s
     --popover: 215 24% 20%;         /* #26313F */
     --popover-foreground: 0 0% 100%;/* #FFFFFF */
     
-    --primary: 104 100% 54%;        /* #39FF14 (Radioactive Lime) */
-    --primary-foreground: 220 22% 5%;/* #0B0C10 (Dark text on neon) */
+    --primary: 43 100% 50%;         /* #FFB800 (Tactical Amber Primary) */
+    --primary-foreground: 220 22% 5%;/* #0B0C10 (Dark text on primary) */
     
     --secondary: 216 17% 21%;      /* #2D3540 */
     --secondary-foreground: 0 0% 100%;
@@ -40,7 +40,7 @@ Apply these values directly inside your global CSS file (`app/globals.css` or `s
     
     --border: 215 19% 28%;          /* #3A4552 */
     --input: 215 19% 28%;           /* #3A4552 */
-    --ring: 104 100% 54%;           /* #39FF14 */
+    --ring: 104 100% 54%;           /* #FFB800 */
     
     --radius: 0rem;                 /* Sharp industrial edges */
   }

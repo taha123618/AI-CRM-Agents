@@ -97,7 +97,7 @@ export function TaskQueueMonitorTab() {
       case 'monte_carlo_simulation':
         return <Layers className="w-3.5 h-3.5 text-cyan-400" />;
       case 'bulk_lead_enrichment':
-        return <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />;
+        return <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />;
       case 'voice_call_audio_synthesis':
         return <Mic className="w-3.5 h-3.5 text-[#FFB800]" />;
       default:
@@ -132,7 +132,7 @@ export function TaskQueueMonitorTab() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-[#39FF14]" />
+            <Cpu className="w-4 h-4 text-[#FFB800]" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">ASYNC TASK QUEUE &amp; WORKER MONITOR</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               WORKER.PY ACTIVE
@@ -161,14 +161,14 @@ export function TaskQueueMonitorTab() {
             onClick={() => queryClient.invalidateQueries({ queryKey: ['background-tasks'] })}
             className="text-xs h-7 uppercase"
           >
-            <RefreshCw className="w-3 h-3 mr-1 text-[#39FF14]" />
+            <RefreshCw className="w-3 h-3 mr-1 text-[#FFB800]" />
             <span>REFRESH</span>
           </Button>
         </div>
       </div>
 
       {feedback && (
-        <div className="p-3 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
+        <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{feedback}</span>
         </div>
@@ -212,7 +212,7 @@ export function TaskQueueMonitorTab() {
         <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-[#39FF14]" />
+              <Sparkles className="w-4 h-4 text-[#FFB800]" />
               BULK LEAD ENRICHMENT
             </span>
           </div>
@@ -226,7 +226,7 @@ export function TaskQueueMonitorTab() {
             disabled={launchEnrichMutation.isPending}
             className="w-full text-xs uppercase h-7"
           >
-            <Play className="w-3 h-3 mr-1 text-[#39FF14]" />
+            <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
             <span>TRIGGER ENRICHMENT</span>
           </Button>
         </Card>
@@ -268,7 +268,7 @@ export function TaskQueueMonitorTab() {
                 setTaskSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             />
           </div>
 
@@ -280,7 +280,7 @@ export function TaskQueueMonitorTab() {
                 setTaskStatusFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+              className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             >
               <option value="all">ALL STATUSES</option>
               <option value="completed">COMPLETED</option>
@@ -356,7 +356,7 @@ export function TaskQueueMonitorTab() {
                         </div>
                         <div className="w-32 h-1 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
                           <div
-                            className="h-full bg-[#39FF14] transition-none"
+                            className="h-full bg-[#FFB800] transition-none"
                             style={{ width: `${task.progress}%` }}
                           />
                         </div>

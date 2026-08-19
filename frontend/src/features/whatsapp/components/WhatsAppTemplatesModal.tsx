@@ -71,7 +71,7 @@ export function WhatsAppTemplatesModal({
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
               <MessageSquare className="w-4 h-4" />
             </div>
             <div>
@@ -109,21 +109,19 @@ export function WhatsAppTemplatesModal({
         <div className="flex border-b border-[#3A4552] bg-[#0B0C10] px-4 font-mono">
           <button
             onClick={() => setActiveTab('templates')}
-            className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${
-              activeTab === 'templates'
-                ? 'border-[#39FF14] text-[#39FF14]'
+            className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'templates'
+                ? 'border-[#FFB800] text-[#FFB800]'
                 : 'border-transparent text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             APPROVED TEMPLATES ({templates?.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('media')}
-            className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${
-              activeTab === 'media'
-                ? 'border-[#39FF14] text-[#39FF14]'
+            className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'media'
+                ? 'border-[#FFB800] text-[#FFB800]'
                 : 'border-transparent text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             MEDIA UPLOAD &amp; ASSETS
           </button>
@@ -142,7 +140,7 @@ export function WhatsAppTemplatesModal({
                   {templates?.map((tpl: any) => (
                     <div
                       key={tpl.id}
-                      className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#39FF14] transition-none space-y-2 flex flex-col justify-between"
+                      className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 flex flex-col justify-between"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
@@ -185,7 +183,7 @@ export function WhatsAppTemplatesModal({
             <div className="max-w-lg mx-auto space-y-4 py-4 font-mono">
               <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
-                  <Upload className="w-4 h-4 text-[#39FF14]" />
+                  <Upload className="w-4 h-4 text-[#FFB800]" />
                   <span>UPLOAD OUTBOUND MEDIA ATTACHMENT</span>
                 </div>
 
@@ -228,8 +226,8 @@ export function WhatsAppTemplatesModal({
               </div>
 
               {uploadedMediaId && (
-                <div className="p-3 bg-[#0B0C10] border border-[#39FF14] text-xs font-mono space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#39FF14] font-bold uppercase">
+                <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-xs font-mono space-y-1">
+                  <div className="flex items-center gap-1.5 text-[#FFB800] font-bold uppercase">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>MEDIA ATTACHMENT READY</span>
                   </div>

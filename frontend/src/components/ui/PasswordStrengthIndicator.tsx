@@ -10,7 +10,7 @@ interface PasswordStrengthIndicatorProps {
 const STRENGTH_CONFIG = {
   weak: { color: 'bg-[#FF2A54]', width: '33%', label: 'WEAK', textColor: 'text-[#FF2A54]' },
   fair: { color: 'bg-[#FFB800]', width: '66%', label: 'FAIR', textColor: 'text-[#FFB800]' },
-  strong: { color: 'bg-[#39FF14]', width: '100%', label: 'STRONG', textColor: 'text-[#39FF14]' },
+  strong: { color: 'bg-[#FFB800]', width: '100%', label: 'STRONG', textColor: 'text-[#FFB800]' },
 };
 
 export function PasswordStrengthIndicator({
@@ -47,14 +47,13 @@ export function PasswordStrengthIndicator({
             return (
               <div key={req} className="flex items-center gap-1.5">
                 {isMet ? (
-                  <Check className="w-3 h-3 text-[#39FF14] shrink-0" />
+                  <Check className="w-3 h-3 text-[#FFB800] shrink-0" />
                 ) : (
                   <X className="w-3 h-3 text-slate-500 shrink-0" />
                 )}
                 <span
-                  className={`text-[9px] font-mono uppercase ${
-                    isMet ? 'text-[#39FF14]' : 'text-slate-500'
-                  }`}
+                  className={`text-[9px] font-mono uppercase ${isMet ? 'text-[#FFB800]' : 'text-slate-500'
+                    }`}
                 >
                   {req}
                 </span>

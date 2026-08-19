@@ -63,7 +63,7 @@ export function OrganizationsTab() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-[#39FF14]" />
+            <Building2 className="w-4 h-4 text-[#FFB800]" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">MULTI-TENANT WORKSPACES &amp; ORGANIZATIONS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               MULTI-TENANCY
@@ -90,11 +90,11 @@ export function OrganizationsTab() {
           {orgs?.map((org: Organization) => (
             <div
               key={org.id}
-              className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none flex flex-col justify-between"
+              className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2.5">
-                  <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs font-mono">
+                  <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs font-mono">
                     {org.name.slice(0, 2).toUpperCase()}
                   </div>
                   <Badge variant={org.plan_tier === 'enterprise' ? 'purple' : 'info'} className="text-[9px] uppercase font-mono">
@@ -103,7 +103,7 @@ export function OrganizationsTab() {
                 </div>
 
                 <h3 className="text-xs font-bold text-white uppercase tracking-wide">{org.name}</h3>
-                <p className="text-[10px] font-mono text-[#39FF14] mt-0.5">SLUG: {org.slug}</p>
+                <p className="text-[10px] font-mono text-[#FFB800] mt-0.5">SLUG: {org.slug}</p>
 
                 <div className="mt-3 space-y-1.5 text-xs text-slate-300">
                   <div className="flex items-center gap-2 text-[10px] uppercase">
@@ -111,7 +111,7 @@ export function OrganizationsTab() {
                     <span>{org.domain || 'INTERNAL WORKSPACE'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-[10px] uppercase">
-                    <CheckCircle2 className="w-3 h-3 text-[#39FF14]" />
+                    <CheckCircle2 className="w-3 h-3 text-[#FFB800]" />
                     <span>STATUS: {org.is_active ? 'ACTIVE' : 'SUSPENDED'}</span>
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export function OrganizationsTab() {
                   onClick={() => handleCopy(org.id)}
                   className="h-6 px-1.5 text-[10px] text-slate-400 hover:text-white uppercase"
                 >
-                  {copiedId === org.id ? <Check className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                  {copiedId === org.id ? <Check className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
                   <span className="ml-1">{copiedId === org.id ? 'COPIED' : 'COPY ID'}</span>
                 </Button>
               </div>
@@ -140,7 +140,7 @@ export function OrganizationsTab() {
           <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Building2 className="w-4 h-4 text-[#39FF14]" />
+                <Building2 className="w-4 h-4 text-[#FFB800]" />
                 CREATE ORGANIZATION WORKSPACE
               </h3>
               <button
@@ -166,7 +166,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEX GLOBAL VENTURES"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 
@@ -177,7 +177,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEX-GLOBAL"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
                 />
               </div>
 
@@ -188,7 +188,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEXGLOBAL.COM"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
                 />
               </div>
 
@@ -197,7 +197,7 @@ export function OrganizationsTab() {
                 <select
                   value={planTier}
                   onChange={(e) => setPlanTier(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 >
                   <option value="starter">STARTER (SMALL BUSINESS)</option>
                   <option value="growth">GROWTH (SCALE-UP)</option>

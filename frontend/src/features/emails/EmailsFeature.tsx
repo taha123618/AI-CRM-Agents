@@ -16,7 +16,7 @@ import { EmailSyncAccountsModal } from './components/EmailSyncAccountsModal';
 const EMOTION_CONFIG: Record<string, { color: string; emoji: string }> = {
   anger: { color: 'text-[#FF2A54] bg-[#0B0C10] border-[#FF2A54]', emoji: '😠' },
   frustration: { color: 'text-amber-400 bg-[#0B0C10] border-amber-400', emoji: '😤' },
-  happiness: { color: 'text-[#39FF14] bg-[#0B0C10] border-[#39FF14]', emoji: '😊' },
+  happiness: { color: 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]', emoji: '😊' },
   excitement: { color: 'text-yellow-400 bg-[#0B0C10] border-yellow-400', emoji: '🎉' },
   neutral: { color: 'text-slate-400 bg-[#0B0C10] border-slate-500', emoji: '😐' },
 };
@@ -36,7 +36,7 @@ function EmotionBadge({ emotion }: { emotion: string | null | undefined }) {
 function SentimentBar({ score }: { score: number | null | undefined }) {
   if (score == null) return null;
   const pct = (score / 10) * 100;
-  const color = score >= 7 ? 'bg-[#39FF14]' : score >= 4 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
+  const color = score >= 7 ? 'bg-[#FFB800]' : score >= 4 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
   return (
     <div className="flex items-center gap-2 font-mono">
       <div className="flex-1 h-1.5 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
@@ -52,7 +52,7 @@ export function EmailsFeature() {
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const { data: emails, isLoading, refetch } = useEmails(0, 100, priorityFilter === 'all' ? undefined : priorityFilter);
   const { setEmailModalOpen, searchQuery } = useUIStore();
-  
+
   // Selected email for viewing & replying
   const [selectedEmail, setSelectedEmail] = useState<EmailMessage | null>(null);
   const [editedResponse, setEditedResponse] = useState<string>('');
@@ -81,7 +81,7 @@ export function EmailsFeature() {
     setRecipientEmail(targetRecipient);
     setEditedResponse(
       email.draft_response ||
-        'Hi, Thank you for reaching out! Our team has received your inquiry and will follow up with complete documentation and next steps shortly.'
+      'Hi, Thank you for reaching out! Our team has received your inquiry and will follow up with complete documentation and next steps shortly.'
     );
   };
 
@@ -103,14 +103,14 @@ export function EmailsFeature() {
       });
       setSendSuccessMsg(
         res.message ||
-          `Email response successfully dispatched to ${recipientEmail} via SMTP background queue!`
+        `Email response successfully dispatched to ${recipientEmail} via SMTP background queue!`
       );
       await refetch();
     } catch (err: any) {
       setSendErrorMsg(
         err?.response?.data?.detail ||
-          err?.message ||
-          'Failed to send email response. Check SMTP configuration.'
+        err?.message ||
+        'Failed to send email response. Check SMTP configuration.'
       );
     }
   };
@@ -146,8 +146,8 @@ export function EmailsFeature() {
     } catch (err: any) {
       setComposeError(
         err?.response?.data?.detail ||
-          err?.message ||
-          'Failed to queue outbound email transmission.'
+        err?.message ||
+        'Failed to queue outbound email transmission.'
       );
     }
   };
@@ -183,7 +183,7 @@ export function EmailsFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Mail className="w-5 h-5 text-[#39FF14]" />
+            <Mail className="w-5 h-5 text-[#FFB800]" />
             <span>{t('emails.title', 'AUTONOMOUS EMAIL INTELLIGENCE')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -198,12 +198,12 @@ export function EmailsFeature() {
           </Button>
 
           <Button variant="outline" onClick={handleBulkAnalyze} isLoading={isBulkAnalyzing} className="text-xs h-7">
-            <Sparkles className="w-3 h-3 text-[#39FF14]" />
+            <Sparkles className="w-3 h-3 text-[#FFB800]" />
             <span>AUDIT FLEET</span>
           </Button>
 
           <Button variant="outline" onClick={() => setEmailModalOpen(true)} className="text-xs h-7">
-            <Brain className="w-3 h-3 text-[#39FF14]" />
+            <Brain className="w-3 h-3 text-[#FFB800]" />
             <span>AI ANALYZE</span>
           </Button>
 
@@ -223,11 +223,10 @@ export function EmailsFeature() {
             <button
               key={p}
               onClick={() => setPriorityFilter(p)}
-              className={`px-2.5 py-0.5 text-[9px] font-bold uppercase transition-none ${
-                priorityFilter === p
-                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+              className={`px-2.5 py-0.5 text-[9px] font-bold uppercase transition-none ${priorityFilter === p
+                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                   : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
-              }`}
+                }`}
             >
               {p.toUpperCase()}
             </button>
@@ -247,18 +246,18 @@ export function EmailsFeature() {
           filteredEmails.map((email) => (
             <Card
               key={email.id}
-              className="p-3 hover:border-[#39FF14] transition-none cursor-pointer group font-mono"
+              className="p-3 hover:border-[#FFB800] transition-none cursor-pointer group font-mono"
               onClick={() => handleOpenEmail(email)}
             >
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <h3 className="font-bold text-xs text-white group-hover:text-[#39FF14] transition-none uppercase">
+                    <h3 className="font-bold text-xs text-white group-hover:text-[#FFB800] transition-none uppercase">
                       {email.subject}
                     </h3>
                     <Badge statusValue={email.priority}>{email.priority} PRIORITY</Badge>
                     {email.response_sent && (
-                      <span className="inline-flex items-center gap-1 text-[8px] text-[#39FF14] font-bold bg-[#0B0C10] px-1.5 py-0.2 border border-[#39FF14]/50 uppercase">
+                      <span className="inline-flex items-center gap-1 text-[8px] text-[#FFB800] font-bold bg-[#0B0C10] px-1.5 py-0.2 border border-[#FFB800]/50 uppercase">
                         <CheckCircle2 className="w-2.5 h-2.5" /> DELIVERED
                       </span>
                     )}
@@ -328,8 +327,8 @@ export function EmailsFeature() {
             )}
 
             {sendSuccessMsg && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#39FF14] shrink-0 mt-0.5" />
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0 mt-0.5" />
                 <div className="uppercase">{sendSuccessMsg}</div>
               </div>
             )}
@@ -337,7 +336,7 @@ export function EmailsFeature() {
             {/* Recipient Input & Confirmation */}
             <div className="space-y-1">
               <label className="block text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1">
-                <UserCheck className="w-3 h-3 text-[#39FF14]" />
+                <UserCheck className="w-3 h-3 text-[#FFB800]" />
                 RECIPIENT ADDRESS
               </label>
               <Input
@@ -361,7 +360,7 @@ export function EmailsFeature() {
               </div>
               {selectedEmail.sentiment_score != null && (
                 <div className="flex items-center gap-2">
-                  <Brain className="w-3 h-3 text-[#39FF14] shrink-0" />
+                  <Brain className="w-3 h-3 text-[#FFB800] shrink-0" />
                   <span className="text-[10px] text-slate-500 uppercase">SENTIMENT SCORE:</span>
                   <div className="flex-1">
                     <SentimentBar score={selectedEmail.sentiment_score} />
@@ -372,15 +371,15 @@ export function EmailsFeature() {
 
             {/* AI Follow-up Suggestions */}
             {selectedEmail.follow_up_suggestions?.length ? (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#39FF14]/40 space-y-1 font-mono">
-                <h4 className="text-[10px] font-bold text-[#39FF14] uppercase tracking-wider flex items-center gap-1">
+              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1 font-mono">
+                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
                   <Lightbulb className="w-3 h-3" />
                   FOLLOW-UP SUGGESTIONS
                 </h4>
                 <ul className="space-y-1">
                   {selectedEmail.follow_up_suggestions.map((s, i) => (
                     <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 font-mono uppercase">
-                      <ArrowRight className="w-3 h-3 text-[#39FF14] mt-0.5 shrink-0" />
+                      <ArrowRight className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
                       <span>{s}</span>
                     </li>
                   ))}
@@ -391,14 +390,14 @@ export function EmailsFeature() {
             {/* Editable draft */}
             <div className="space-y-1">
               <label className="block text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1">
-                <MessageSquare className="w-3 h-3 text-[#39FF14]" />
+                <MessageSquare className="w-3 h-3 text-[#FFB800]" />
                 RESPONSE CONTENT (EDITABLE BODY)
               </label>
               <textarea
                 rows={6}
                 value={editedResponse}
                 onChange={(e) => setEditedResponse(e.target.value)}
-                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#39FF14]"
+                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#FFB800]"
               />
             </div>
 
@@ -464,7 +463,7 @@ export function EmailsFeature() {
                 value={composeBody}
                 onChange={(e) => setComposeBody(e.target.value)}
                 placeholder="WRITE YOUR MESSAGE HERE..."
-                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#39FF14]"
+                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#FFB800]"
               />
             </div>
 

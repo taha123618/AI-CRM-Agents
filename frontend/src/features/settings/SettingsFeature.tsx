@@ -35,7 +35,7 @@ export function SettingsFeature() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-[#39FF14]" />
+            <Sliders className="w-5 h-5 text-[#FFB800]" />
             <span>PLATFORM GOVERNANCE, INTEGRATIONS &amp; SECURITY</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -45,7 +45,7 @@ export function SettingsFeature() {
 
         {currentUser && (
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs shrink-0 self-start md:self-auto font-mono">
-            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-[#39FF14]' : 'text-slate-400'}`} />
+            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-[#FFB800]' : 'text-slate-400'}`} />
             <div>
               <span className="text-slate-500 block text-[9px] uppercase">ACTIVE SESSION</span>
               <span className="font-mono text-slate-200 text-xs font-bold uppercase">{currentUser.email}</span>
@@ -66,19 +66,17 @@ export function SettingsFeature() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-mono font-bold uppercase transition-none ${
-                isActive
-                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-mono font-bold uppercase transition-none ${isActive
+                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                   : 'bg-[#1F2833] text-slate-400 hover:text-white border border-[#3A4552]'
-              }`}
+                }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
               {tab.badge && (
                 <span
-                  className={`text-[8px] px-1 py-0.2 rounded-none font-mono ${
-                    isActive ? 'bg-[#0B0C10] text-[#39FF14] font-bold' : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552]'
-                  }`}
+                  className={`text-[8px] px-1 py-0.2 rounded-none font-mono ${isActive ? 'bg-[#0B0C10] text-[#FFB800] font-bold' : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552]'
+                    }`}
                 >
                   {tab.badge}
                 </span>

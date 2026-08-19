@@ -117,7 +117,7 @@ export function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@enterprise.com"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono uppercase"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
             />
           </div>
         </div>
@@ -129,7 +129,7 @@ export function LoginPage() {
             </label>
             <Link
               to="/forgot-password"
-              className="text-[10px] text-[#39FF14] hover:underline uppercase"
+              className="text-[10px] text-[#FFB800] hover:underline uppercase"
             >
               FORGOT PASSWORD?
             </Link>
@@ -143,7 +143,7 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export function LoginPage() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#39FF14] focus:ring-0"
+              className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#FFB800] focus:ring-0"
             />
             <span>REMEMBER THIS DEVICE</span>
           </label>
@@ -173,7 +173,7 @@ export function LoginPage() {
 
       <div className="text-center text-[10px] text-slate-400 pt-2 border-t border-[#3A4552] font-mono uppercase">
         NO OPERATOR ACCOUNT?{' '}
-        <Link to="/register" className="text-[#39FF14] font-bold hover:underline">
+        <Link to="/register" className="text-[#FFB800] font-bold hover:underline">
           REGISTER ACCOUNT
         </Link>
       </div>

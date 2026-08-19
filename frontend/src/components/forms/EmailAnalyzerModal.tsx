@@ -75,7 +75,7 @@ export function EmailAnalyzerModal() {
           </label>
           <textarea
             rows={4}
-            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#39FF14]"
+            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
             {...register('body')}
           />
           {errors.body && <p className="text-xs text-[#FF2A54] font-mono">{errors.body.message}</p>}

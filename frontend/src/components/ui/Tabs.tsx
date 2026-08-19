@@ -70,7 +70,7 @@ export function TabsTrigger({
       className={cn(
         'inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-bold font-mono uppercase transition-none',
         isActive
-          ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+          ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
           : 'text-slate-400 hover:text-white hover:bg-[#1F2833] border border-transparent',
         className
       )}

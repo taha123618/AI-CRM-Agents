@@ -11,11 +11,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
     const variants = {
       primary:
-        'bg-[#39FF14] hover:bg-[#39FF14] text-[#0B0C10] font-mono font-bold uppercase tracking-wider border border-[#39FF14] hover:outline hover:outline-1 hover:outline-[#39FF14]',
+        'bg-[#FFB800] hover:bg-[#FFB800] text-[#0B0C10] font-mono font-bold uppercase tracking-wider border border-[#FFB800] hover:outline hover:outline-1 hover:outline-[#FFB800]',
       secondary:
-        'bg-[#1F2833] hover:bg-[#26313F] text-slate-100 font-mono font-bold uppercase border border-[#3A4552] hover:border-[#39FF14]',
+        'bg-[#1F2833] hover:bg-[#26313F] text-slate-100 font-mono font-bold uppercase border border-[#3A4552] hover:border-[#FFB800]',
       outline:
-        'bg-[#0B0C10] hover:bg-[#1F2833] text-slate-200 font-mono uppercase border border-[#3A4552] hover:border-[#39FF14]',
+        'bg-[#0B0C10] hover:bg-[#1F2833] text-slate-200 font-mono uppercase border border-[#3A4552] hover:border-[#FFB800]',
       ghost:
         'bg-transparent hover:bg-[#1F2833] text-slate-300 hover:text-white font-mono uppercase',
       danger:

@@ -92,7 +92,7 @@ export function CustomAgentsFeature() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black tracking-wider text-white uppercase flex items-center gap-2">
-            <Bot className="w-5 h-5 text-[#39FF14]" />
+            <Bot className="w-5 h-5 text-[#FFB800]" />
             <span>{t('custom_agents.title') || 'NO-CODE AGENT STUDIO'}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -107,7 +107,7 @@ export function CustomAgentsFeature() {
             onClick={() => setIsEvalOpen(true)}
             className="text-xs h-7"
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1 text-[#39FF14]" />
+            <Sparkles className="w-3.5 h-3.5 mr-1 text-[#FFB800]" />
             <span>PROMPT BENCHMARK</span>
           </Button>
 
@@ -134,17 +134,17 @@ export function CustomAgentsFeature() {
         <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
           <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
             <span>{t('custom_agents.total_agents') || 'TOTAL AGENTS'}</span>
-            <Bot className="w-4 h-4 text-[#39FF14]" />
+            <Bot className="w-4 h-4 text-[#FFB800]" />
           </div>
           <div className="text-2xl font-black text-white mt-1 font-mono">{agents?.length || 0}</div>
         </Card>
 
         <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#39FF14] uppercase">
+          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase">
             <span>{t('custom_agents.active_deployments') || 'ACTIVE FLEET'}</span>
-            <Activity className="w-4 h-4 text-[#39FF14]" />
+            <Activity className="w-4 h-4 text-[#FFB800]" />
           </div>
-          <div className="text-2xl font-black text-[#39FF14] mt-1 font-mono">{activeCount}</div>
+          <div className="text-2xl font-black text-[#FFB800] mt-1 font-mono">{activeCount}</div>
         </Card>
 
         <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
@@ -181,11 +181,10 @@ export function CustomAgentsFeature() {
             key={tab.id}
             type="button"
             onClick={() => setFilterType(tab.id)}
-            className={`px-3 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${
-              filterType === tab.id
-                ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+            className={`px-3 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${filterType === tab.id
+                ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                 : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
-            }`}
+              }`}
           >
             {t(tab.labelKey) || tab.defaultLabel}
           </button>
@@ -212,20 +211,20 @@ export function CustomAgentsFeature() {
           {filteredAgents.map((agent) => (
             <Card
               key={agent.id}
-              className="p-4 bg-[#1F2833] border-[#3A4552] hover:border-[#39FF14] transition-none flex flex-col justify-between group space-y-3 font-mono"
+              className="p-4 bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between group space-y-3 font-mono"
             >
               <div className="space-y-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+                    <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#39FF14] transition-none">
+                      <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#FFB800] transition-none">
                         {agent.name}
                       </h3>
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="px-1 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/40">
+                        <span className="px-1 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/40">
                           {agent.trigger_type}
                         </span>
                         <span className="text-[9px] text-slate-500 uppercase">
@@ -238,11 +237,10 @@ export function CustomAgentsFeature() {
                   <button
                     type="button"
                     onClick={(e) => handleToggleActive(e, agent)}
-                    className={`px-1.5 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold border transition-none ${
-                      agent.is_active
-                        ? 'bg-[#0B0C10] text-[#39FF14] border-[#39FF14]'
+                    className={`px-1.5 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold border transition-none ${agent.is_active
+                        ? 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]'
                         : 'bg-[#0B0C10] text-slate-500 border-[#3A4552]'
-                    }`}
+                      }`}
                     title="Toggle Active Status"
                   >
                     {agent.is_active ? 'ACTIVE' : 'PAUSED'}
@@ -291,7 +289,7 @@ export function CustomAgentsFeature() {
                       onClick={() => setSandboxAgent(agent)}
                       className="h-6 px-2 text-[10px]"
                     >
-                      <Play className="w-3 h-3 mr-1 fill-current text-[#39FF14]" />
+                      <Play className="w-3 h-3 mr-1 fill-current text-[#FFB800]" />
                       <span>{t('custom_agents.sandbox') || 'SANDBOX'}</span>
                     </Button>
 

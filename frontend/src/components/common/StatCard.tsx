@@ -21,7 +21,7 @@ export function StatCard({
   subtitle,
   icon,
   iconBgColor = 'bg-[#0B0C10] border-[#3A4552]',
-  iconColor = 'text-[#39FF14]',
+  iconColor = 'text-[#FFB800]',
   glowClass = '',
   loading,
   className,
@@ -29,7 +29,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        'bg-[#1F2833] border border-[#3A4552] rounded-none p-4 hover:border-[#39FF14] transition-none font-mono',
+        'bg-[#1F2833] border border-[#3A4552] rounded-none p-4 hover:border-[#FFB800] transition-none font-mono',
         glowClass,
         className
       )}

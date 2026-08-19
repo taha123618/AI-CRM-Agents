@@ -99,15 +99,22 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
 * **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
 
-### 5. Frontend Development
-* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/`.
+### 5. Frontend Development & Tactical Command Design System
+* **Tactical Command Design Rules**: Strict adherence to `design.md`:
+  - **Zero Border Radius**: Global `rounded-none`, `--radius: 0rem;`, `* { border-radius: 0 !important; }`. Never use rounded pill or card corners.
+  - **Color Palette**: Void Black (`#0B0C10`), Dark Titanium (`#1F2833`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Purple (`#A855F7`).
+  - **Primary Buttons**: `bg-[#FFB800] text-[#0B0C10] font-bold rounded-none uppercase`.
+  - **Typography**: `font-mono` applied to telemetry, tables, timestamps, IDs, financial metrics, currency notations, and charts.
+  - **Transitions**: `transition-none` with 0ms easing globally.
+* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 18 specialized modules.
 * **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
-* **Strict Type Safety**: Run `npm run type-check` and `npm run build` after changes to verify zero errors.
+* **Strict Type Safety**: Run `npm run type-check`, `npm run test`, and `npm run build` after changes to verify zero errors.
 
 ### 6. Testing Guidelines
-* **Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio`.
+* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (142 tests across 26 suites).
+* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (49 tests across 15 suites).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
-* **Directory**: Place tests in the `tests/` directory matching the structure of the application.
+* **Directory**: Place backend tests in `tests/` and frontend tests in `frontend/src/**/__tests__/`.
 
 ### 7. Cybersecurity & Transport Hardening
 * **HTTP Security Headers**: Enforce `SecurityHeadersMiddleware` on all responses (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Content-Security-Policy`, `Strict-Transport-Security`).
@@ -162,11 +169,11 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/database-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md)
 * **devops-infrastructure**: Standards, workflows, and best practices for Docker, CI/CD, PostgreSQL migrations, Redis pub/sub, production deployment, and observability.
   - File Path: [`.agents/skills/devops-infrastructure/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md)
-* **frontend-development**: Guide for developing React 19 + TypeScript frontend features, components, queries, and state.
+* **frontend-development**: Guide for developing React 19 + TypeScript frontend features, components, queries, state, and Tactical Command design system.
   - File Path: [`.agents/skills/frontend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md)
 * **git-workflow**: Repository branching, commit styling, and pull request conventions.
   - File Path: [`.agents/skills/git-workflow/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md)
-* **project-architecture**: Understand the layout, component design, multi-agent collaboration, and workflows of the CRM system.
+* **project-architecture**: Understand the layout, component design, multi-agent collaboration, services, and workflows of the CRM system.
   - File Path: [`.agents/skills/project-architecture/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md)
 * **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, mocks, Vitest, and SQA quality standards.
   - File Path: [`.agents/skills/testing/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md)

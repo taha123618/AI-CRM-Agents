@@ -85,7 +85,7 @@ export function AgentsFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Bot className="w-5 h-5 text-[#39FF14]" />
+            <Bot className="w-5 h-5 text-[#FFB800]" />
             <span>{t('agents.title', 'AUTONOMOUS AGENT FLEET CONTROL')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -102,10 +102,10 @@ export function AgentsFeature() {
       {/* Agents Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 font-mono">
         {agentsList.map((agent) => (
-          <Card key={agent.name} className="p-4 space-y-3 hover:border-[#39FF14] transition-none">
+          <Card key={agent.name} className="p-4 space-y-3 hover:border-[#FFB800] transition-none">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 flex items-center justify-center font-bold text-xs font-mono">
+                <div className="w-8 h-8 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 flex items-center justify-center font-bold text-xs font-mono">
                   {agent.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -121,7 +121,7 @@ export function AgentsFeature() {
             </p>
 
             <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between">
-              <span className="text-[9px] text-[#39FF14] font-bold flex items-center gap-1 uppercase">
+              <span className="text-[9px] text-[#FFB800] font-bold flex items-center gap-1 uppercase">
                 <CheckCircle2 className="w-3 h-3" /> {t('agents.ready', 'READY FOR TASKS')}
               </span>
               <Button
@@ -143,11 +143,11 @@ export function AgentsFeature() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-[#39FF14]" />
+            <Terminal className="w-4 h-4 text-[#FFB800]" />
             <span>LIVE EVENT BUS &amp; TELEMETRY CONSOLE</span>
           </CardTitle>
           <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
-            <Zap className="w-3.5 h-3.5 text-[#39FF14]" />
+            <Zap className="w-3.5 h-3.5 text-[#FFB800]" />
             <span>{events.length} EVENTS RECORDED</span>
           </div>
         </CardHeader>
@@ -159,7 +159,7 @@ export function AgentsFeature() {
               events.map((evt) => (
                 <div key={evt.id} className="p-2 bg-[#1F2833] border border-[#3A4552] space-y-1">
                   <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-[#39FF14] font-bold">[{evt.agent}]</span>
+                    <span className="text-[#FFB800] font-bold">[{evt.agent}]</span>
                     <span className="text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
                   <div className="text-slate-300 text-xs font-mono">
@@ -186,7 +186,7 @@ export function AgentsFeature() {
         >
           <div className="space-y-3">
             <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#39FF14] uppercase">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#FFB800] uppercase">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>EXECUTION RESPONSE PAYLOAD</span>
               </div>

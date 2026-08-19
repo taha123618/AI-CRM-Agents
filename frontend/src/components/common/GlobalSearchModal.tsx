@@ -129,7 +129,7 @@ export function GlobalSearchModal() {
   const getEntityIcon = (type: string) => {
     switch (type) {
       case 'voice_call':
-        return <PhoneCall className="w-3.5 h-3.5 text-[#39FF14]" />;
+        return <PhoneCall className="w-3.5 h-3.5 text-[#FFB800]" />;
       case 'meeting':
         return <Calendar className="w-3.5 h-3.5 text-cyan-400" />;
       case 'email':
@@ -151,11 +151,10 @@ export function GlobalSearchModal() {
           <div className="flex items-center gap-1 p-1 bg-[#1F2833] rounded-none border border-[#3A4552]">
             <button
               onClick={() => setMode('search')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${
-                mode === 'search'
-                  ? 'bg-[#39FF14] text-[#0B0C10]'
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${mode === 'search'
+                  ? 'bg-[#FFB800] text-[#0B0C10]'
                   : 'text-slate-400 hover:text-white'
-              }`}
+                }`}
             >
               <Search className="w-3 h-3" />
               <span>SEMANTIC SEARCH</span>
@@ -163,11 +162,10 @@ export function GlobalSearchModal() {
 
             <button
               onClick={() => setMode('rag')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${
-                mode === 'rag'
-                  ? 'bg-[#39FF14] text-[#0B0C10]'
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${mode === 'rag'
+                  ? 'bg-[#FFB800] text-[#0B0C10]'
                   : 'text-slate-400 hover:text-white'
-              }`}
+                }`}
             >
               <Sparkles className="w-3 h-3" />
               <span>ASK CRM AI (RAG)</span>
@@ -195,7 +193,7 @@ export function GlobalSearchModal() {
           {mode === 'search' ? (
             <Search className="w-4 h-4 text-slate-400 shrink-0 mr-2.5" />
           ) : (
-            <Bot className="w-4 h-4 text-[#39FF14] shrink-0 mr-2.5" />
+            <Bot className="w-4 h-4 text-[#FFB800] shrink-0 mr-2.5" />
           )}
 
           <input
@@ -234,11 +232,10 @@ export function GlobalSearchModal() {
               <button
                 key={f.id}
                 onClick={() => setEntityFilter(f.id)}
-                className={`px-2 py-0.5 rounded-none text-[9px] font-mono font-bold uppercase transition-none ${
-                  entityFilter === f.id
-                    ? 'bg-[#1F2833] text-[#39FF14] border border-[#39FF14]'
+                className={`px-2 py-0.5 rounded-none text-[9px] font-mono font-bold uppercase transition-none ${entityFilter === f.id
+                    ? 'bg-[#1F2833] text-[#FFB800] border border-[#FFB800]'
                     : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                }`}
+                  }`}
               >
                 {f.label}
               </button>
@@ -264,18 +261,18 @@ export function GlobalSearchModal() {
                     <div
                       key={res.id}
                       onClick={() => handleNavigate(res.entity_type)}
-                      className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#39FF14] hover:bg-[#161D26] transition-none cursor-pointer group"
+                      className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] hover:bg-[#161D26] transition-none cursor-pointer group"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <div className="flex items-center gap-2">
                           {getEntityIcon(res.entity_type)}
-                          <span className="text-xs font-bold font-mono text-white group-hover:text-[#39FF14] uppercase">
+                          <span className="text-xs font-bold font-mono text-white group-hover:text-[#FFB800] uppercase">
                             {res.title}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <span className="text-[9px] font-mono text-[#39FF14]">
+                          <span className="text-[9px] font-mono text-[#FFB800]">
                             {scorePercent}% MATCH
                           </span>
                           <Badge variant="default" className="text-[8px] uppercase font-mono py-0">
@@ -288,7 +285,7 @@ export function GlobalSearchModal() {
                         {res.snippet}
                       </p>
 
-                      <div className="mt-1.5 flex items-center justify-end text-[10px] text-[#39FF14] font-bold opacity-0 group-hover:opacity-100 transition-none uppercase">
+                      <div className="mt-1.5 flex items-center justify-end text-[10px] text-[#FFB800] font-bold opacity-0 group-hover:opacity-100 transition-none uppercase">
                         <span>OPEN RECORD</span>
                         <ArrowRight className="w-3 h-3 ml-1" />
                       </div>
@@ -316,9 +313,9 @@ export function GlobalSearchModal() {
             <>
               {ragResult ? (
                 <div className="space-y-3 font-mono">
-                  <div className="p-3 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 space-y-1.5">
+                  <div className="p-3 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#39FF14] flex items-center gap-1.5 uppercase">
+                      <span className="text-xs font-bold text-[#FFB800] flex items-center gap-1.5 uppercase">
                         <Sparkles className="w-3.5 h-3.5" />
                         AI SYNTHESIZED CRM ANSWER
                       </span>
@@ -343,10 +340,10 @@ export function GlobalSearchModal() {
                         <div
                           key={src.id}
                           onClick={() => handleNavigate(src.entity_type)}
-                          className="p-2 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#39FF14] transition-none cursor-pointer flex items-center justify-between"
+                          className="p-2 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] transition-none cursor-pointer flex items-center justify-between"
                         >
                           <div className="flex items-center gap-2 overflow-hidden">
-                            <span className="w-4 h-4 rounded-none bg-[#1F2833] flex items-center justify-center text-[9px] font-mono text-[#39FF14] shrink-0">
+                            <span className="w-4 h-4 rounded-none bg-[#1F2833] flex items-center justify-center text-[9px] font-mono text-[#FFB800] shrink-0">
                               {src.source_index}
                             </span>
                             <span className="text-xs text-slate-300 truncate font-mono uppercase">{src.title}</span>
@@ -361,7 +358,7 @@ export function GlobalSearchModal() {
                 </div>
               ) : (
                 <div className="text-center py-8 text-slate-500 text-xs space-y-1 font-mono uppercase">
-                  <Bot className="w-6 h-6 mx-auto text-[#39FF14] mb-1" />
+                  <Bot className="w-6 h-6 mx-auto text-[#FFB800] mb-1" />
                   <p className="text-slate-300 font-bold">ASK NATURAL LANGUAGE CRM QUESTIONS</p>
                   <p className="text-[9px] text-slate-500 max-w-sm mx-auto">
                     RETRIEVES VECTOR EMBEDDINGS AND SYNTHESIZES GROUNDED RESPONSES.

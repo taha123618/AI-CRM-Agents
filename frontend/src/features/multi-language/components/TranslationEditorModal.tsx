@@ -191,7 +191,7 @@ export function TranslationEditorModal({
                 placeholder="SEARCH TRANSLATION KEYS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -201,7 +201,7 @@ export function TranslationEditorModal({
               <select
                 value={activeNamespace}
                 onChange={(e) => setActiveNamespace(e.target.value)}
-                className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 {namespaces.map((ns) => (
                   <option key={ns} value={ns} className="bg-[#0B0C10]">
@@ -270,7 +270,7 @@ export function TranslationEditorModal({
                         <Badge variant="default" className="text-[8px] uppercase font-mono px-1 py-0.2">
                           {row.namespace}
                         </Badge>
-                        <span className="block text-[11px] text-[#39FF14] font-bold truncate" title={row.key}>
+                        <span className="block text-[11px] text-[#FFB800] font-bold truncate" title={row.key}>
                           {row.key}
                         </span>
                       </td>
@@ -287,7 +287,7 @@ export function TranslationEditorModal({
                           value={editingValues[row.namespace]?.[row.key] || ''}
                           onChange={(e) => handleValueChange(row.namespace, row.key, e.target.value)}
                           placeholder={row.englishFallback}
-                          className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
+                          className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
                         />
                       </td>
 
@@ -295,11 +295,10 @@ export function TranslationEditorModal({
                         <button
                           type="button"
                           onClick={() => handleSaveRow(row.namespace, row.key)}
-                          className={`p-1 rounded-none border transition-none ${
-                            isSaved
-                              ? 'bg-[#39FF14] text-[#0B0C10] border-[#39FF14]'
-                              : 'bg-[#1F2833] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#39FF14]'
-                          }`}
+                          className={`p-1 rounded-none border transition-none ${isSaved
+                              ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
+                              : 'bg-[#1F2833] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#FFB800]'
+                            }`}
                           title="Save Key"
                         >
                           <Check className="w-3.5 h-3.5" />

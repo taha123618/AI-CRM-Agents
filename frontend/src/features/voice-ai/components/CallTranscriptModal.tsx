@@ -58,7 +58,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
   const transcripts = call.transcripts?.length ? call.transcripts : MOCK_TRANSCRIPTS;
 
   const sentimentColor = (s?: string) => {
-    if (s === 'positive') return 'text-[#39FF14]';
+    if (s === 'positive') return 'text-[#FFB800]';
     if (s === 'negative') return 'text-[#FF2A54]';
     return 'text-slate-400';
   };
@@ -76,7 +76,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[#3A4552]">
           <div>
             <h2 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-              <div className="p-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#39FF14]">
+              <div className="p-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800]">
                 <Mic className="w-3.5 h-3.5" />
               </div>
               CALL TRANSCRIPT — {call.contact_name}
@@ -102,17 +102,16 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
             return (
               <div key={idx} className={`flex gap-2.5 ${isRep ? 'flex-row-reverse' : ''}`}>
                 <div
-                  className={`shrink-0 w-6 h-6 rounded-none flex items-center justify-center border ${
-                    isRep
-                      ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
+                  className={`shrink-0 w-6 h-6 rounded-none flex items-center justify-center border ${isRep
+                      ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
                       : 'bg-[#0B0C10] border-[#3A4552] text-slate-400'
-                  }`}
+                    }`}
                 >
                   {isRep ? <Mic className="w-3 h-3" /> : <User className="w-3 h-3" />}
                 </div>
                 <div className={`flex-1 space-y-1 ${isRep ? 'items-end' : 'items-start'} flex flex-col`}>
                   <div className="flex items-center gap-2 text-[9px] uppercase font-mono">
-                    <span className={`font-bold ${isRep ? 'text-[#39FF14]' : 'text-slate-400'}`}>
+                    <span className={`font-bold ${isRep ? 'text-[#FFB800]' : 'text-slate-400'}`}>
                       {isRep ? 'SALES REP' : call.contact_name}
                     </span>
                     <span className="text-slate-500 flex items-center gap-1 font-mono">
@@ -124,11 +123,10 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
                     </span>
                   </div>
                   <div
-                    className={`max-w-[90%] p-2.5 rounded-none text-xs leading-relaxed font-mono ${
-                      isRep
-                        ? 'bg-[#0B0C10] border border-[#39FF14] text-slate-100'
+                    className={`max-w-[90%] p-2.5 rounded-none text-xs leading-relaxed font-mono ${isRep
+                        ? 'bg-[#0B0C10] border border-[#FFB800] text-slate-100'
                         : 'bg-[#0B0C10] border border-[#3A4552] text-slate-200'
-                    }`}
+                      }`}
                   >
                     {t.text}
                   </div>

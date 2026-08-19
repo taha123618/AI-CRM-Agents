@@ -104,7 +104,7 @@ export function SequencesFeature() {
   const getChannelIcon = (channel: string) => {
     switch (channel) {
       case 'whatsapp':
-        return <MessageSquare className="w-3.5 h-3.5 text-[#39FF14]" />;
+        return <MessageSquare className="w-3.5 h-3.5 text-[#FFB800]" />;
       case 'voice':
         return <Phone className="w-3.5 h-3.5 text-purple-400" />;
       default:
@@ -117,7 +117,7 @@ export function SequencesFeature() {
       {/* Header Banner */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
-          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#39FF14] shadow-md shrink-0">
+          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
             <Send className="w-6 h-6" />
           </div>
           <div>
@@ -125,7 +125,7 @@ export function SequencesFeature() {
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
                 AI SDR OUTREACH CADENCE STUDIO
               </h1>
-              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 uppercase tracking-wider">
                 AUTONOMOUS SDR CADENCES
               </span>
             </div>
@@ -163,11 +163,10 @@ export function SequencesFeature() {
       <div className="flex items-center gap-1.5 border-b border-[#3A4552] pb-2">
         <button
           onClick={() => setActiveTab('cadence')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${
-            activeTab === 'cadence'
-              ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
-              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#39FF14] hover:text-white'
-          }`}
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'cadence'
+              ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+            }`}
         >
           <Layers className="w-3.5 h-3.5" />
           <span>CADENCE &amp; AI COPY STUDIO</span>
@@ -175,15 +174,14 @@ export function SequencesFeature() {
 
         <button
           onClick={() => setActiveTab('workflow_canvas')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${
-            activeTab === 'workflow_canvas'
-              ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
-              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#39FF14] hover:text-white'
-          }`}
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'workflow_canvas'
+              ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
+              : 'bg-[#1F2833] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+            }`}
         >
           <Workflow className="w-3.5 h-3.5" />
           <span>VISUAL WORKFLOW CANVAS</span>
-          <span className="text-[8px] px-1 py-0.2 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+          <span className="text-[8px] px-1 py-0.2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
             PIPELINE
           </span>
         </button>
@@ -208,11 +206,10 @@ export function SequencesFeature() {
                   <div
                     key={seq.id}
                     onClick={() => setSelectedSequence(seq)}
-                    className={`p-4 rounded-none border cursor-pointer transition-none ${
-                      isSelected
-                        ? 'bg-[#1F2833] border-[#39FF14] text-white shadow-xl'
-                        : 'bg-[#1F2833] border-[#3A4552] hover:border-[#39FF14] text-slate-300'
-                    }`}
+                    className={`p-4 rounded-none border cursor-pointer transition-none ${isSelected
+                        ? 'bg-[#1F2833] border-[#FFB800] text-white shadow-xl'
+                        : 'bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                      }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -236,11 +233,11 @@ export function SequencesFeature() {
                       </div>
                       <div className="bg-[#0B0C10] p-1.5 rounded-none border border-[#3A4552]">
                         <span className="text-[8px] text-slate-500 uppercase font-bold block">ENROLLED</span>
-                        <span className="text-xs font-bold font-mono text-[#39FF14]">{seq.enrolled_count}</span>
+                        <span className="text-xs font-bold font-mono text-[#FFB800]">{seq.enrolled_count}</span>
                       </div>
                       <div className="bg-[#0B0C10] p-1.5 rounded-none border border-[#3A4552]">
                         <span className="text-[8px] text-slate-500 uppercase font-bold block">CONVERSION</span>
-                        <span className="text-xs font-bold font-mono text-[#39FF14]">{seq.conversion_rate_pct}%</span>
+                        <span className="text-xs font-bold font-mono text-[#FFB800]">{seq.conversion_rate_pct}%</span>
                       </div>
                     </div>
                   </div>
@@ -282,7 +279,7 @@ export function SequencesFeature() {
                         </>
                       ) : (
                         <>
-                          <Play className="w-3 h-3 mr-1 text-[#39FF14]" />
+                          <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
                           <span>RESUME</span>
                         </>
                       )}
@@ -313,26 +310,26 @@ export function SequencesFeature() {
                 <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
                       <span>AI PROMPT &amp; COPY PERSONALIZATION INJECTION</span>
                     </span>
-                    <span className="text-[9px] text-[#39FF14] uppercase">LIVE AGENT INFERENCE</span>
+                    <span className="text-[9px] text-[#FFB800] uppercase">LIVE AGENT INFERENCE</span>
                   </div>
                   <input
                     type="text"
                     value={testPainPoint}
                     onChange={(e) => setTestPainPoint(e.target.value)}
                     placeholder="ENTER PROSPECT PAIN POINT TO INJECT..."
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
                 {/* Generated AI Copy Box */}
                 {generatedCopy && (
-                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 space-y-2">
+                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#39FF14] flex items-center gap-1.5 uppercase">
-                        <Bot className="w-4 h-4 text-[#39FF14]" />
+                      <span className="text-xs font-bold text-[#FFB800] flex items-center gap-1.5 uppercase">
+                        <Bot className="w-4 h-4 text-[#FFB800]" />
                         <span>AI SDR GENERATED OUTREACH COPY</span>
                       </span>
                       <Button
@@ -341,7 +338,7 @@ export function SequencesFeature() {
                         onClick={() => handleCopyClipboard(generatedCopy)}
                         className="text-xs h-6 px-2 uppercase"
                       >
-                        {copySuccess ? <CheckCircle2 className="w-3 h-3 text-[#39FF14]" /> : <Copy className="w-3 h-3" />}
+                        {copySuccess ? <CheckCircle2 className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
                         <span className="ml-1">{copySuccess ? 'COPIED!' : 'COPY'}</span>
                       </Button>
                     </div>
@@ -353,10 +350,10 @@ export function SequencesFeature() {
 
                 {/* Live Step Execution HUD */}
                 {stepExecResult && (
-                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#39FF14] space-y-2">
+                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#39FF14] flex items-center gap-1.5 uppercase">
-                        <Zap className="w-4 h-4 text-[#39FF14]" />
+                      <span className="text-xs font-bold text-[#FFB800] flex items-center gap-1.5 uppercase">
+                        <Zap className="w-4 h-4 text-[#FFB800]" />
                         <span>LIVE STEP EXECUTION: {stepExecResult.executed_by}</span>
                       </span>
                       <Badge variant="success" className="text-[9px] uppercase font-mono">
@@ -379,7 +376,7 @@ export function SequencesFeature() {
                     {activeSeq.steps.map((step) => (
                       <div
                         key={step.step_number}
-                        className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2 hover:border-[#39FF14] transition-none"
+                        className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2 hover:border-[#FFB800] transition-none"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -399,7 +396,7 @@ export function SequencesFeature() {
                               isLoading={generateCopyMutation.isPending}
                               className="text-[10px] h-6 px-2 uppercase"
                             >
-                              <Sparkles className="w-3 h-3 mr-1 text-[#39FF14]" />
+                              <Sparkles className="w-3 h-3 mr-1 text-[#FFB800]" />
                               <span>PERSONALIZE</span>
                             </Button>
                             <Button

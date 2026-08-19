@@ -32,7 +32,7 @@ export function UnauthorizedPage() {
           </div>
           <div className="flex justify-between text-slate-400 text-[10px]">
             <span>DEPARTMENT:</span>
-            <span className="text-[#39FF14] uppercase">{user?.role || 'NONE'}</span>
+            <span className="text-[#FFB800] uppercase">{user?.role || 'NONE'}</span>
           </div>
         </div>
 

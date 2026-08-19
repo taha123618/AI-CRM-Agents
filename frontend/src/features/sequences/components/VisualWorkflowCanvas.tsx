@@ -183,7 +183,7 @@ export function VisualWorkflowCanvas() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <div className="flex items-center gap-2">
-            <Workflow className="w-4 h-4 text-[#39FF14]" />
+            <Workflow className="w-4 h-4 text-[#FFB800]" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               NODE PIPELINE
@@ -232,11 +232,10 @@ export function VisualWorkflowCanvas() {
                 setSelectedWorkflowId(wf.id);
                 setSimulationTrace(null);
               }}
-              className={`px-3 py-1.5 rounded-none text-[11px] font-bold uppercase whitespace-nowrap transition-none flex items-center gap-2 ${
-                activeWf?.id === wf.id
-                  ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+              className={`px-3 py-1.5 rounded-none text-[11px] font-bold uppercase whitespace-nowrap transition-none flex items-center gap-2 ${activeWf?.id === wf.id
+                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                   : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
-              }`}
+                }`}
             >
               <Zap className="w-3 h-3" />
               <span>{wf.name}</span>
@@ -291,7 +290,7 @@ export function VisualWorkflowCanvas() {
               {activeWf.nodes?.map((node, index) => (
                 <div key={node.id} className="flex items-center gap-4">
                   {/* Node Card */}
-                  <div className="w-56 p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#39FF14] transition-none space-y-2 group relative">
+                  <div className="w-56 p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 group relative">
                     <button
                       onClick={() => handleRemoveNode(node.id)}
                       className="absolute top-2.5 right-2.5 text-slate-500 hover:text-[#FF2A54] opacity-0 group-hover:opacity-100 transition-none"
@@ -307,7 +306,7 @@ export function VisualWorkflowCanvas() {
                       <span className="text-[10px] font-mono text-slate-400">STEP #{index + 1}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-white group-hover:text-[#39FF14] transition-none uppercase">
+                    <h4 className="text-xs font-bold text-white group-hover:text-[#FFB800] transition-none uppercase">
                       {node.label}
                     </h4>
 
@@ -322,7 +321,7 @@ export function VisualWorkflowCanvas() {
                   {/* Flow Arrow */}
                   {index < activeWf.nodes.length - 1 && (
                     <div className="text-[#3A4552] flex items-center">
-                      <ArrowRight className="w-4 h-4 text-[#39FF14]" />
+                      <ArrowRight className="w-4 h-4 text-[#FFB800]" />
                     </div>
                   )}
                 </div>
@@ -332,10 +331,10 @@ export function VisualWorkflowCanvas() {
 
           {/* Real-time Simulation Trace */}
           {simulationTrace && (
-            <div className="p-4 rounded-none bg-[#1F2833] border border-[#39FF14] space-y-3 font-mono">
+            <div className="p-4 rounded-none bg-[#1F2833] border border-[#FFB800] space-y-3 font-mono">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#39FF14]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
                   <Badge variant="success" className="text-[9px] uppercase">
                     {simulationTrace.nodes_processed} NODES EXECUTED
@@ -354,12 +353,12 @@ export function VisualWorkflowCanvas() {
                     className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs font-mono"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-none bg-[#1F2833] text-[#39FF14] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
+                      <span className="w-4 h-4 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
                         ✓
                       </span>
                       <span className="text-slate-200 font-bold text-[11px] uppercase">{step.node}</span>
                     </div>
-                    <span className="font-mono text-[9px] text-[#39FF14]">{step.latency_ms}MS</span>
+                    <span className="font-mono text-[9px] text-[#FFB800]">{step.latency_ms}MS</span>
                   </div>
                 ))}
               </div>
@@ -374,7 +373,7 @@ export function VisualWorkflowCanvas() {
           <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Plus className="w-4 h-4 text-[#39FF14]" />
+                <Plus className="w-4 h-4 text-[#FFB800]" />
                 APPEND WORKFLOW STEP NODE
               </h3>
               <button onClick={() => setIsAddNodeOpen(false)} className="text-slate-400 hover:text-white">
@@ -388,7 +387,7 @@ export function VisualWorkflowCanvas() {
                 <select
                   value={nodeType}
                   onChange={(e) => setNodeType(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
                 >
                   <option value="agent">AUTONOMOUS AI AGENT</option>
                   <option value="action">OUTBOUND CRM ACTION</option>
@@ -404,7 +403,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="E.G. EMAIL INTELLIGENCE CADENCE STEP"
                   value={nodeLabel}
                   onChange={(e) => setNodeLabel(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 
@@ -414,7 +413,7 @@ export function VisualWorkflowCanvas() {
                   <select
                     value={nodeAgent}
                     onChange={(e) => setNodeAgent(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
+                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
                   >
                     {AVAILABLE_AGENTS.map((ag) => (
                       <option key={ag.id} value={ag.id}>
@@ -451,7 +450,7 @@ export function VisualWorkflowCanvas() {
           <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Workflow className="w-4 h-4 text-[#39FF14]" />
+                <Workflow className="w-4 h-4 text-[#FFB800]" />
                 CREATE NEW WORKFLOW PIPELINE
               </h3>
               <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-white">
@@ -468,7 +467,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="E.G. ENTERPRISE CHURN DEFENSE PIPELINE"
                   value={newWfName}
                   onChange={(e) => setNewWfName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 
@@ -479,7 +478,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="SUMMARIZE MULTI-AGENT CADENCE GOALS..."
                   value={newWfDesc}
                   onChange={(e) => setNewWfDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono resize-none"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono resize-none"
                 />
               </div>
 
@@ -488,7 +487,7 @@ export function VisualWorkflowCanvas() {
                 <select
                   value={newWfTrigger}
                   onChange={(e) => setNewWfTrigger(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
                 >
                   <option value="event">REAL-TIME CRM EVENT TRIGGER</option>
                   <option value="manual">MANUAL 1-CLICK TRIGGER</option>

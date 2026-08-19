@@ -344,7 +344,7 @@ export function UserManagementTab() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <Shield className="w-4 h-4 text-[#39FF14]" />
+            <Shield className="w-4 h-4 text-[#FFB800]" />
             ROLE-BASED ACCESS CONTROL (RBAC) &amp; USER PERMISSIONS
           </h2>
           <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -399,17 +399,16 @@ export function UserManagementTab() {
       {/* Notifications */}
       {feedback && (
         <div
-          className={`p-3 rounded-none border text-xs flex items-center justify-between gap-2 uppercase font-mono animate-in fade-in ${
-            feedback.type === 'error'
+          className={`p-3 rounded-none border text-xs flex items-center justify-between gap-2 uppercase font-mono animate-in fade-in ${feedback.type === 'error'
               ? 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
-              : 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
-          }`}
+              : 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
+            }`}
         >
           <div className="flex items-center gap-2">
             {feedback.type === 'error' ? (
               <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-[#39FF14] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0" />
             )}
             <span>{feedback.message}</span>
           </div>
@@ -433,7 +432,7 @@ export function UserManagementTab() {
                 setPage(1);
               }}
               placeholder="SEARCH BY FULL NAME OR EMAIL..."
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
             />
           </div>
 
@@ -517,13 +516,13 @@ export function UserManagementTab() {
                     {/* Full Name & Avatar */}
                     <td className="py-2 px-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs shrink-0 font-mono">
+                        <div className="w-6 h-6 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs shrink-0 font-mono">
                           {u.full_name?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <div>
                           <span className="font-bold text-white block uppercase text-[11px]">{u.full_name}</span>
                           {currentUser?.id === u.id && (
-                            <span className="text-[9px] text-[#39FF14] font-mono">(YOUR SESSION)</span>
+                            <span className="text-[9px] text-[#FFB800] font-mono">(YOUR SESSION)</span>
                           )}
                         </div>
                       </div>
@@ -541,7 +540,7 @@ export function UserManagementTab() {
                             updateRoleMutation.mutate({ userId: u.id, newRole: e.target.value })
                           }
                           disabled={updateRoleMutation.isPending}
-                          className="bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-0.5 text-xs text-slate-200 focus:outline-none focus:border-[#39FF14] cursor-pointer font-mono uppercase"
+                          className="bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-0.5 text-xs text-slate-200 focus:outline-none focus:border-[#FFB800] cursor-pointer font-mono uppercase"
                         >
                           <option value="admin">ADMIN (SUPERUSER)</option>
                           <option value="sales">SALES (PIPELINE &amp; SDR)</option>
@@ -561,22 +560,20 @@ export function UserManagementTab() {
                         <button
                           onClick={() => toggleStatusMutation.mutate({ userId: u.id, isActive: !u.is_active })}
                           disabled={currentUser?.id === u.id || toggleStatusMutation.isPending}
-                          className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border transition-none font-mono ${
-                            u.is_active
-                              ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14] hover:border-[#FF2A54] hover:text-[#FF2A54]'
-                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54] hover:border-[#39FF14] hover:text-[#39FF14]'
-                          } ${currentUser?.id === u.id ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                          className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border transition-none font-mono ${u.is_active
+                              ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800] hover:border-[#FF2A54] hover:text-[#FF2A54]'
+                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54] hover:border-[#FFB800] hover:text-[#FFB800]'
+                            } ${currentUser?.id === u.id ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                           title={currentUser?.id === u.id ? 'Cannot suspend self' : 'Click to toggle status'}
                         >
                           {u.is_active ? 'ACTIVE' : 'SUSPENDED'}
                         </button>
                       ) : (
                         <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border font-mono ${
-                            u.is_active
-                              ? 'bg-[#0B0C10] border-[#39FF14] text-[#39FF14]'
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border font-mono ${u.is_active
+                              ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
                               : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
-                          }`}
+                            }`}
                         >
                           {u.is_active ? 'ACTIVE' : 'SUSPENDED'}
                         </span>
@@ -591,7 +588,7 @@ export function UserManagementTab() {
                         </Badge>
                       ) : (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-mono bg-[#0B0C10] px-1.5 py-0.5 rounded-none border border-[#3A4552] text-[#39FF14]">
+                          <span className="text-[10px] font-mono bg-[#0B0C10] px-1.5 py-0.5 rounded-none border border-[#3A4552] text-[#FFB800]">
                             {(u.permissions && u.permissions.length > 0 ? u.permissions.length : (ROLE_DEFAULT_PERMISSIONS[u.role] || []).length)} SCOPES
                           </span>
                         </div>
@@ -614,7 +611,7 @@ export function UserManagementTab() {
                             className="p-1 text-slate-400 hover:text-white h-6 w-6"
                             title="Edit Permissions & User Profile"
                           >
-                            <Edit2 className="w-3 h-3 text-[#39FF14]" />
+                            <Edit2 className="w-3 h-3 text-[#FFB800]" />
                           </Button>
 
                           <Button
@@ -622,11 +619,10 @@ export function UserManagementTab() {
                             size="sm"
                             onClick={() => setDeletingUser(u)}
                             disabled={currentUser?.id === u.id}
-                            className={`p-1 h-6 w-6 ${
-                              currentUser?.id === u.id
+                            className={`p-1 h-6 w-6 ${currentUser?.id === u.id
                                 ? 'text-slate-600 cursor-not-allowed'
                                 : 'text-slate-400 hover:text-[#FF2A54]'
-                            }`}
+                              }`}
                             title={currentUser?.id === u.id ? 'Cannot delete self' : 'Delete User'}
                           >
                             <Trash2 className="w-3 h-3" />
@@ -662,7 +658,7 @@ export function UserManagementTab() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-              <Building className="w-3.5 h-3.5 text-[#39FF14]" />
+              <Building className="w-3.5 h-3.5 text-[#FFB800]" />
               ENTERPRISE SINGLE SIGN-ON (SSO / SAML 2.0 / OIDC)
             </h3>
             <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -718,7 +714,7 @@ export function UserManagementTab() {
           <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <UserPlus className="w-4 h-4 text-[#39FF14]" />
+                <UserPlus className="w-4 h-4 text-[#FFB800]" />
                 PROVISION NEW CRM USER &amp; ASSIGN RBAC SCOPES
               </h3>
               <button
@@ -743,7 +739,7 @@ export function UserManagementTab() {
                       value={createName}
                       onChange={(e) => setCreateName(e.target.value)}
                       placeholder="MORGAN LEE"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                     />
                   </div>
                 </div>
@@ -760,7 +756,7 @@ export function UserManagementTab() {
                       value={createEmail}
                       onChange={(e) => setCreateEmail(e.target.value)}
                       placeholder="MORGAN.LEE@COMPANY.COM"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                     />
                   </div>
                 </div>
@@ -779,7 +775,7 @@ export function UserManagementTab() {
                       value={createPassword}
                       onChange={(e) => setCreatePassword(e.target.value)}
                       placeholder="MIN 6 CHARS"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
                     />
                   </div>
                 </div>
@@ -791,7 +787,7 @@ export function UserManagementTab() {
                   <select
                     value={createRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, false)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
                   >
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
                     <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
@@ -807,7 +803,7 @@ export function UserManagementTab() {
                   <select
                     value={createActive ? 'active' : 'suspended'}
                     onChange={(e) => setCreateActive(e.target.value === 'active')}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
                   >
                     <option value="active">ACTIVE &amp; VERIFIED</option>
                     <option value="suspended">SUSPENDED</option>
@@ -819,14 +815,14 @@ export function UserManagementTab() {
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
-                    <Layers className="w-3.5 h-3.5 text-[#39FF14]" />
+                    <Layers className="w-3.5 h-3.5 text-[#FFB800]" />
                     GRANULAR PERMISSION SCOPES ({createPermissions.length} SELECTED)
                   </label>
                   <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(createRole, false)}
-                      className="text-[#39FF14] font-bold flex items-center gap-1"
+                      className="text-[#FFB800] font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
@@ -871,7 +867,7 @@ export function UserManagementTab() {
                                   setCreatePermissions(createPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#39FF14] accent-[#39FF14] mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
@@ -916,7 +912,7 @@ export function UserManagementTab() {
           <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#1F2833] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Edit2 className="w-4 h-4 text-[#39FF14]" />
+                <Edit2 className="w-4 h-4 text-[#FFB800]" />
                 EDIT RBAC SCOPES: {editingUser.email}
               </h3>
               <button
@@ -938,7 +934,7 @@ export function UserManagementTab() {
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
 
@@ -951,7 +947,7 @@ export function UserManagementTab() {
                     required
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
               </div>
@@ -966,7 +962,7 @@ export function UserManagementTab() {
                     value={editPassword}
                     onChange={(e) => setEditPassword(e.target.value)}
                     placeholder="OPTIONAL NEW PASSWORD"
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
                   />
                 </div>
 
@@ -977,7 +973,7 @@ export function UserManagementTab() {
                   <select
                     value={editRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, true)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
                   >
                     <option value="admin">ADMIN (SUPERUSER)</option>
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
@@ -994,7 +990,7 @@ export function UserManagementTab() {
                     value={editActive ? 'active' : 'suspended'}
                     onChange={(e) => setEditActive(e.target.value === 'active')}
                     disabled={currentUser?.id === editingUser.id}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] cursor-pointer uppercase font-mono disabled:opacity-60"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono disabled:opacity-60"
                   >
                     <option value="active">ACTIVE</option>
                     <option value="suspended">SUSPENDED</option>
@@ -1006,14 +1002,14 @@ export function UserManagementTab() {
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
-                    <Layers className="w-3.5 h-3.5 text-[#39FF14]" />
+                    <Layers className="w-3.5 h-3.5 text-[#FFB800]" />
                     GRANULAR PERMISSION SCOPES ({editPermissions.length} SELECTED)
                   </label>
                   <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(editRole, true)}
-                      className="text-[#39FF14] font-bold flex items-center gap-1"
+                      className="text-[#FFB800] font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
@@ -1058,7 +1054,7 @@ export function UserManagementTab() {
                                   setEditPermissions(editPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#39FF14] accent-[#39FF14] mt-0.5 shrink-0"
+                              className="rounded-none border-[#3A4552] bg-[#1F2833] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>

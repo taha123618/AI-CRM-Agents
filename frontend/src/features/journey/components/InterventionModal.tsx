@@ -76,9 +76,8 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
             <div>
               <span className="text-[9px] text-slate-400 uppercase font-bold block">HEALTH SCORE</span>
               <span
-                className={`text-sm font-bold font-mono ${
-                  customer.health_score >= 70 ? 'text-[#39FF14]' : 'text-[#FF2A54]'
-                }`}
+                className={`text-sm font-bold font-mono ${customer.health_score >= 70 ? 'text-[#FFB800]' : 'text-[#FF2A54]'
+                  }`}
               >
                 {customer.health_score}%
               </span>
@@ -98,14 +97,14 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
           </div>
 
           {resultPlaybook ? (
-            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#39FF14] space-y-3 animate-in fade-in font-mono">
+            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-3 animate-in fade-in font-mono">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#39FF14]" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
                 <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                   AI RETENTION PLAYBOOK DISPATCHED
                 </h3>
               </div>
-              <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-xs text-[#39FF14] whitespace-pre-wrap leading-relaxed">
+              <div className="p-3 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-xs text-[#FFB800] whitespace-pre-wrap leading-relaxed">
                 {resultPlaybook}
               </div>
               <div className="flex justify-end pt-2">
@@ -129,7 +128,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                 <select
                   value={interventionType}
                   onChange={(e) => setInterventionType(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 >
                   <option value="executive_check_in">EXECUTIVE SPONSOR HEALTH CHECK-IN</option>
                   <option value="technical_audit">TECHNICAL AUDIT &amp; OPTIMIZATION DECK</option>
@@ -147,7 +146,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                   required
                   value={customNotes}
                   onChange={(e) => setCustomNotes(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 

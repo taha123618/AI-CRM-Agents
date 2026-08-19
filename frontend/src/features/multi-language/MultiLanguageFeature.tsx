@@ -54,7 +54,7 @@ export function MultiLanguageFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Globe className="w-5 h-5 text-[#39FF14]" />
+            <Globe className="w-5 h-5 text-[#FFB800]" />
             <span>{t('languages.title', 'MULTI-LANGUAGE & LOCALIZATION CONSOLE')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -109,7 +109,7 @@ export function MultiLanguageFeature() {
           <div className="text-sm font-black text-white pt-0.5 font-mono">
             {availableLanguages.length} LOCALES
           </div>
-          <span className="text-[10px] text-[#39FF14] font-bold uppercase">
+          <span className="text-[10px] text-[#FFB800] font-bold uppercase">
             {availableLanguages.filter((l) => l.is_enabled).length} ENABLED FOR USERS
           </span>
         </Card>
@@ -118,8 +118,8 @@ export function MultiLanguageFeature() {
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             FALLBACK RESOLUTION
           </span>
-          <div className="flex items-center gap-1.5 text-sm font-black text-[#39FF14] pt-0.5 uppercase">
-            <Shield className="w-4 h-4 text-[#39FF14]" />
+          <div className="flex items-center gap-1.5 text-sm font-black text-[#FFB800] pt-0.5 uppercase">
+            <Shield className="w-4 h-4 text-[#FFB800]" />
             <span>ENGLISH (EN)</span>
           </div>
           <span className="text-[10px] text-slate-500 uppercase">ZERO MISSING KEY CRASHES</span>
@@ -130,7 +130,7 @@ export function MultiLanguageFeature() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
-            <Languages className="w-3.5 h-3.5 text-[#39FF14]" />
+            <Languages className="w-3.5 h-3.5 text-[#FFB800]" />
             CONFIGURED SYSTEM LANGUAGES
           </h3>
         </div>
@@ -141,9 +141,8 @@ export function MultiLanguageFeature() {
             return (
               <Card
                 key={lang.code}
-                className={`p-4 bg-[#1F2833] border-[#3A4552] space-y-3 hover:border-[#39FF14] transition-none flex flex-col justify-between ${
-                  isCurrent ? 'border-[#39FF14]' : ''
-                }`}
+                className={`p-4 bg-[#1F2833] border-[#3A4552] space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between ${isCurrent ? 'border-[#FFB800]' : ''
+                  }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-start justify-between">
@@ -172,7 +171,7 @@ export function MultiLanguageFeature() {
                   <div className="text-[10px] text-slate-300 font-mono flex items-center gap-2">
                     <span>CODE: {lang.code}</span>
                     <span>•</span>
-                    <span className={lang.is_enabled ? 'text-[#39FF14] font-bold' : 'text-slate-500'}>
+                    <span className={lang.is_enabled ? 'text-[#FFB800] font-bold' : 'text-slate-500'}>
                       {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
                     </span>
                   </div>
@@ -208,7 +207,7 @@ export function MultiLanguageFeature() {
       {/* Locale Format Preview Card */}
       <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3 font-mono">
         <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+          <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
           LOCALE-AWARE FORMATTING SANDBOX ({activeLang.name.toUpperCase()})
         </h3>
         <p className="text-[10px] text-slate-400 uppercase">
@@ -218,7 +217,7 @@ export function MultiLanguageFeature() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-1">
           <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-slate-400 block">CURRENCY FORMATTER</span>
-            <div className="text-sm font-black text-[#39FF14]">{formatCurrency(124500.5)}</div>
+            <div className="text-sm font-black text-[#FFB800]">{formatCurrency(124500.5)}</div>
             <span className="text-[9px] text-slate-500 font-mono">124,500.50 USD</span>
           </div>
 

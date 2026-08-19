@@ -87,7 +87,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
           </div>
           <div>
             <span className="text-[9px] text-slate-500 uppercase font-bold block">TEMPERATURE</span>
-            <span className="font-bold text-[#39FF14]">{agent.temperature ?? 0.3}</span>
+            <span className="font-bold text-[#FFB800]">{agent.temperature ?? 0.3}</span>
           </div>
           <div>
             <span className="text-[9px] text-slate-500 uppercase font-bold block">TRIGGER TYPE</span>
@@ -107,7 +107,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
             className="w-full flex items-center justify-between p-3 text-xs font-bold text-slate-300 hover:text-white uppercase"
           >
             <div className="flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
               <span>INSPECT BASE SYSTEM PROMPT</span>
             </div>
             {showPromptPreview ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -131,7 +131,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
               <button
                 type="button"
                 onClick={() => setPayloadText(JSON.stringify(DEFAULT_SAMPLE_PAYLOAD, null, 2))}
-                className="text-[9px] text-slate-400 hover:text-[#39FF14] uppercase font-bold"
+                className="text-[9px] text-slate-400 hover:text-[#FFB800] uppercase font-bold"
               >
                 RESET PAYLOAD
               </button>
@@ -140,22 +140,22 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
               rows={12}
               value={payloadText}
               onChange={(e) => setPayloadText(e.target.value)}
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-[#39FF14] leading-relaxed"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-[#FFB800] leading-relaxed"
             />
           </div>
 
           {/* Execution Output Console */}
           <div className="space-y-1.5">
             <label className="text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5 text-[#39FF14]" />
+              <Cpu className="w-3.5 h-3.5 text-[#FFB800]" />
               OUTPUT TELEMETRY &amp; SYNTHESIS
             </label>
 
             {executionResult ? (
-              <div className="bg-[#0B0C10] border border-[#39FF14] rounded-none p-3 space-y-3 h-[278px] overflow-y-auto font-mono text-xs">
+              <div className="bg-[#0B0C10] border border-[#FFB800] rounded-none p-3 space-y-3 h-[278px] overflow-y-auto font-mono text-xs">
                 {/* Result header telemetry */}
                 <div className="flex items-center justify-between border-b border-[#3A4552] pb-2 text-[10px] uppercase">
-                  <div className="flex items-center gap-1.5 text-[#39FF14] font-bold">
+                  <div className="flex items-center gap-1.5 text-[#FFB800] font-bold">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>STATUS: {executionResult.status}</span>
                   </div>
@@ -191,7 +191,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
               </div>
             ) : (
               <div className="bg-[#0B0C10] border border-[#3A4552] rounded-none p-8 h-[278px] flex flex-col items-center justify-center text-center text-slate-500 space-y-2 uppercase">
-                <Play className="w-8 h-8 opacity-30 text-[#39FF14]" />
+                <Play className="w-8 h-8 opacity-30 text-[#FFB800]" />
                 <p className="text-xs">CLICK 'RUN TEST' TO TRIGGER AGENT INFERENCE</p>
               </div>
             )}

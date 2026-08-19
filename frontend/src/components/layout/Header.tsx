@@ -62,9 +62,8 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-14 bg-[#1F2833] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${
-          sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
-        }`}
+        className={`sticky top-0 z-30 h-14 bg-[#1F2833] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
+          }`}
       >
         {/* Search & AI Spotlight Bar */}
         <div className="flex items-center gap-3 w-64 sm:w-80 lg:w-96">
@@ -72,16 +71,16 @@ export function Header() {
             onClick={() => setGlobalSearchOpen(true)}
             className="relative flex items-center w-full cursor-pointer group"
           >
-            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-slate-400 group-hover:text-[#39FF14] transition-none pointer-events-none" />
+            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-slate-400 group-hover:text-[#FFB800] transition-none pointer-events-none" />
             <input
               type="text"
               readOnly
               value={searchQuery}
               onFocus={() => setGlobalSearchOpen(true)}
               placeholder="SEARCH OR EXECUTE COMMAND (⌘K)..."
-              className="w-full bg-[#0B0C10] text-slate-200 placeholder:text-slate-500 text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-[#3A4552] group-hover:border-[#39FF14] cursor-pointer transition-none uppercase"
+              className="w-full bg-[#0B0C10] text-slate-200 placeholder:text-slate-500 text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-[#3A4552] group-hover:border-[#FFB800] cursor-pointer transition-none uppercase"
             />
-            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#39FF14] bg-[#1F2833] border border-[#3A4552] rounded-none pointer-events-none">
+            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#FFB800] bg-[#1F2833] border border-[#3A4552] rounded-none pointer-events-none">
               ⌘K
             </kbd>
           </div>
@@ -95,17 +94,15 @@ export function Header() {
           {/* Realtime Stream Indicator */}
           <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs font-mono">
             <Radio
-              className={`w-3.5 h-3.5 ${
-                connectionStatus === 'OPEN' ? 'text-[#39FF14]' : 'text-amber-400'
-              }`}
+              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-[#FFB800]' : 'text-amber-400'
+                }`}
             />
             <span className="text-slate-300 font-bold uppercase text-[10px]">
               {connectionStatus === 'OPEN' ? 'WS STREAM ONLINE' : 'POLLING'}
             </span>
             <span
-              className={`w-1.5 h-1.5 rounded-none ${
-                backendHealth === 'healthy' ? 'bg-[#39FF14]' : 'bg-[#FF2A54]'
-              }`}
+              className={`w-1.5 h-1.5 rounded-none ${backendHealth === 'healthy' ? 'bg-[#FFB800]' : 'bg-[#FF2A54]'
+                }`}
             />
           </div>
 
@@ -119,7 +116,7 @@ export function Header() {
             }}
             className="hidden md:inline-flex text-xs h-7"
           >
-            <Bot className="w-3.5 h-3.5 text-[#39FF14]" />
+            <Bot className="w-3.5 h-3.5 text-[#FFB800]" />
             <span>{t('nav.agents', 'AGENTS')}</span>
           </Button>
 
@@ -140,7 +137,7 @@ export function Header() {
           {user && (
             <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-[#3A4552]">
               <div className="hidden sm:flex items-center gap-2">
-                <div className="w-7 h-7 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#39FF14] font-bold text-xs font-mono">
+                <div className="w-7 h-7 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs font-mono">
                   <User className="w-3.5 h-3.5" />
                 </div>
                 <div className="text-left leading-tight hidden xl:block font-mono">

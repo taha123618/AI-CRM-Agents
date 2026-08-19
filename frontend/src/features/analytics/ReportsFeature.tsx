@@ -202,11 +202,11 @@ export function ReportsFeature() {
         highlights: Array.isArray(agentResult?.insights) && agentResult.insights.length > 0
           ? agentResult.insights
           : [
-              `Live MRR Baseline: ${formatCurrency(totalMRR)}`,
-              `Projected ARR: ${formatCurrency(totalARR)}`,
-              `Lead qualification rate sustained at ${leadQualificationRate}%`,
-              `AI recommends proactive QBR cadence for medium-risk customer cohorts`,
-            ],
+            `Live MRR Baseline: ${formatCurrency(totalMRR)}`,
+            `Projected ARR: ${formatCurrency(totalARR)}`,
+            `Lead qualification rate sustained at ${leadQualificationRate}%`,
+            `AI recommends proactive QBR cadence for medium-risk customer cohorts`,
+          ],
         metricsData: {
           'Forecast ARR': formatCurrency(totalARR),
           'Win Rate': `${agentResult?.kpis?.win_rate || 24}%`,
@@ -234,7 +234,7 @@ export function ReportsFeature() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#39FF14]" />
+            <FileText className="w-5 h-5 text-[#FFB800]" />
             <span>{t('reports.title', 'EXECUTIVE AI REPORTS & SYNTHESIS')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5 uppercase">
@@ -263,11 +263,10 @@ export function ReportsFeature() {
               <button
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id)}
-                className={`px-2.5 py-1 text-[10px] font-bold uppercase transition-none ${
-                  activeCategory === tab.id
-                    ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                className={`px-2.5 py-1 text-[10px] font-bold uppercase transition-none ${activeCategory === tab.id
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                     : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
@@ -301,7 +300,7 @@ export function ReportsFeature() {
           {filteredReports.map((report) => (
             <Card
               key={report.id}
-              className="p-4 space-y-3 hover:border-[#39FF14] transition-none flex flex-col justify-between group font-mono"
+              className="p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between group font-mono"
             >
               <div className="space-y-2.5">
                 <div className="flex items-start justify-between gap-2">
@@ -311,17 +310,17 @@ export function ReportsFeature() {
                         {report.category.replace('_', ' ')}
                       </Badge>
                       {report.id.startsWith('rpt-fresh-') && (
-                        <span className="px-1.5 py-0.2 text-[8px] font-bold uppercase bg-[#0B0C10] text-[#39FF14] border border-[#39FF14] flex items-center gap-1">
+                        <span className="px-1.5 py-0.2 text-[8px] font-bold uppercase bg-[#0B0C10] text-[#FFB800] border border-[#FFB800] flex items-center gap-1">
                           <Sparkles className="w-2.5 h-2.5" />
                           AI GENERATED
                         </span>
                       )}
                     </div>
-                    <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#39FF14] transition-none">
+                    <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#FFB800] transition-none">
                       {report.title}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-1 text-[9px] font-bold text-[#39FF14] bg-[#0B0C10] px-2 py-0.5 border border-[#39FF14]/50 shrink-0 uppercase">
+                  <div className="flex items-center gap-1 text-[9px] font-bold text-[#FFB800] bg-[#0B0C10] px-2 py-0.5 border border-[#FFB800]/50 shrink-0 uppercase">
                     <Award className="w-3 h-3" />
                     <span>{report.confidence}% CONFIDENCE</span>
                   </div>
@@ -337,7 +336,7 @@ export function ReportsFeature() {
                   <ul className="space-y-1 text-xs text-slate-300 font-mono">
                     {report.highlights.map((highlight, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3 h-3 text-[#39FF14] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
                         <span>{highlight}</span>
                       </li>
                     ))}
@@ -381,7 +380,7 @@ export function ReportsFeature() {
         >
           <div className="space-y-3">
             <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1">
-              <span className="text-[10px] font-bold text-[#39FF14] uppercase tracking-wider">DYNAMIC OVERVIEW</span>
+              <span className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">DYNAMIC OVERVIEW</span>
               <p className="text-xs text-slate-200 leading-relaxed font-mono uppercase">{selectedReport.summary}</p>
             </div>
 
@@ -401,7 +400,7 @@ export function ReportsFeature() {
               <ul className="space-y-1 text-xs text-slate-300 font-mono">
                 {selectedReport.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#39FF14] shrink-0 mt-0.5" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#FFB800] shrink-0 mt-0.5" />
                     <span>{h}</span>
                   </li>
                 ))}

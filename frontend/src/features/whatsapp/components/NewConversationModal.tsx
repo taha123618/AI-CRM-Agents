@@ -41,7 +41,7 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10]">
           <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <div className="p-1 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+            <div className="p-1 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
               <Phone className="w-3.5 h-3.5" />
             </div>
             NEW WHATSAPP CONVERSATION
@@ -59,20 +59,20 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
         <form onSubmit={handleSubmit} className="p-4 space-y-3 font-mono">
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <User className="w-3 h-3 text-[#39FF14]" /> CONTACT NAME
+              <User className="w-3 h-3 text-[#FFB800]" /> CONTACT NAME
             </label>
             <input
               type="text"
               value={contactName}
               onChange={(e) => setContactName(e.target.value)}
               placeholder="E.G. SARAH JOHNSON"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#39FF14] uppercase"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800] uppercase"
             />
           </div>
 
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <Phone className="w-3 h-3 text-[#39FF14]" /> PHONE NUMBER *
+              <Phone className="w-3 h-3 text-[#FFB800]" /> PHONE NUMBER *
             </label>
             <input
               type="text"
@@ -80,7 +80,7 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="+1 (555) 000-0000"
               required
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#39FF14]"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800]"
             />
           </div>
 
@@ -94,7 +94,7 @@ export function NewConversationModal({ onClose }: NewConversationModalProps) {
               onChange={(e) => setFirstMessage(e.target.value)}
               placeholder="HI [NAME], I'M REACHING OUT FROM AI CRM..."
               required
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#39FF14] resize-none"
+              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800] resize-none"
             />
           </div>
 

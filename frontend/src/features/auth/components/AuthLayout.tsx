@@ -14,10 +14,10 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
       {/* Brand Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10 space-y-1 font-mono">
         <Link to="/" className="inline-flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-none bg-[#1F2833] border border-[#39FF14] flex items-center justify-center text-[#39FF14]">
+          <div className="w-8 h-8 rounded-none bg-[#1F2833] border border-[#FFB800] flex items-center justify-center text-[#FFB800]">
             <ShieldAlert className="w-4 h-4" />
           </div>
-          <span className="text-base font-black tracking-wider text-white uppercase group-hover:text-[#39FF14] transition-none">
+          <span className="text-base font-black tracking-wider text-white uppercase group-hover:text-[#FFB800] transition-none">
             AI-POWERED CRM // TACTICAL
           </span>
         </Link>

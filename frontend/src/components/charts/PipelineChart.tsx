@@ -5,18 +5,18 @@ import { formatCurrency } from '@/lib/utils';
 export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
   const data = metrics
     ? Object.entries(metrics).map(([stage, item]) => ({
-        stage: stage.replace('_', ' ').toUpperCase(),
-        value: item.value,
-        count: item.count,
-      }))
+      stage: stage.replace('_', ' ').toUpperCase(),
+      value: item.value,
+      count: item.count,
+    }))
     : [
-        { stage: 'PROSPECTING', value: 120000, count: 12 },
-        { stage: 'QUALIFICATION', value: 85000, count: 8 },
-        { stage: 'PROPOSAL', value: 64000, count: 5 },
-        { stage: 'NEGOTIATION', value: 45000, count: 3 },
-        { stage: 'CLOSED WON', value: 150000, count: 15 },
-        { stage: 'CLOSED LOST', value: 20000, count: 2 },
-      ];
+      { stage: 'PROSPECTING', value: 120000, count: 12 },
+      { stage: 'QUALIFICATION', value: 85000, count: 8 },
+      { stage: 'PROPOSAL', value: 64000, count: 5 },
+      { stage: 'NEGOTIATION', value: 45000, count: 3 },
+      { stage: 'CLOSED WON', value: 150000, count: 15 },
+      { stage: 'CLOSED LOST', value: 20000, count: 2 },
+    ];
 
   return (
     <div className="w-full h-64 font-mono">
@@ -51,7 +51,7 @@ export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
             }}
             formatter={(value: any) => [formatCurrency(Number(value)), 'Pipeline Value']}
           />
-          <Bar dataKey="value" fill="#39FF14" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="value" fill="#FFB800" radius={[0, 0, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

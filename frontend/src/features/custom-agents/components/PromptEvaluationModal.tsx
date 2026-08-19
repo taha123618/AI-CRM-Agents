@@ -27,11 +27,11 @@ export function PromptEvaluationModal({
 }: PromptEvaluationModalProps) {
   const [promptA, setPromptA] = useState(
     initialPrompt ||
-      'You are a high-performance CRM Sales Intelligence Agent. Qualify inbound prospects using BANT criteria.'
+    'You are a high-performance CRM Sales Intelligence Agent. Qualify inbound prospects using BANT criteria.'
   );
   const [promptB, setPromptB] = useState(
     (initialPrompt ? initialPrompt + '\n\n' : '') +
-      'Constraint: Rigorously verify SOC-2 security requirements and compute exact seat rollout timelines before qualifying.'
+    'Constraint: Rigorously verify SOC-2 security requirements and compute exact seat rollout timelines before qualifying.'
   );
   const [datasetSize] = useState<number>(4);
   const [isRunning, setIsRunning] = useState(false);
@@ -68,7 +68,7 @@ export function PromptEvaluationModal({
         <div className="p-4 sm:p-5 border-b border-[#3A4552] flex items-center justify-between bg-[#1F2833]">
           <div>
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#39FF14]" />
+              <Sparkles className="w-4 h-4 text-[#FFB800]" />
               <h2 className="text-sm font-bold text-white uppercase tracking-wider">LLM PROMPT EVALUATION &amp; BENCHMARKING STUDIO</h2>
               <Badge variant="purple" className="text-[9px] uppercase font-mono">
                 A/B BENCHMARK
@@ -109,7 +109,7 @@ export function PromptEvaluationModal({
                 rows={6}
                 value={promptA}
                 onChange={(e) => setPromptA(e.target.value)}
-                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
                 placeholder="Baseline system prompt..."
               />
             </div>
@@ -126,7 +126,7 @@ export function PromptEvaluationModal({
                 rows={6}
                 value={promptB}
                 onChange={(e) => setPromptB(e.target.value)}
-                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] font-mono"
+                className="w-full rounded-none bg-[#1F2833] border border-[#3A4552] p-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
                 placeholder="Candidate system prompt..."
               />
             </div>
@@ -153,9 +153,9 @@ export function PromptEvaluationModal({
           {benchmarkData && (
             <div className="space-y-3 pt-2 font-mono">
               {/* Winner Banner */}
-              <div className="p-3 rounded-none bg-[#0B0C10] border border-[#39FF14] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-3 rounded-none bg-[#0B0C10] border border-[#FFB800] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-none bg-[#1F2833] text-[#39FF14] border border-[#3A4552]">
+                  <div className="p-2 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552]">
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
@@ -204,7 +204,7 @@ export function PromptEvaluationModal({
                     </div>
                     <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
                       <span className="text-slate-500 block">QUALITY RATING</span>
-                      <span className="text-xs font-bold text-[#39FF14]">{metricsA?.quality_score ?? 0}%</span>
+                      <span className="text-xs font-bold text-[#FFB800]">{metricsA?.quality_score ?? 0}%</span>
                     </div>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export function PromptEvaluationModal({
                     </div>
                     <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552]">
                       <span className="text-slate-500 block">QUALITY RATING</span>
-                      <span className="text-xs font-bold text-[#39FF14]">{metricsB?.quality_score ?? 0}%</span>
+                      <span className="text-xs font-bold text-[#FFB800]">{metricsB?.quality_score ?? 0}%</span>
                     </div>
                   </div>
                 </div>

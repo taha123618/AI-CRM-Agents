@@ -12,7 +12,7 @@ export function HealthDistributionChart({
   highRiskCount = 2,
 }: HealthDistributionProps) {
   const data = [
-    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#39FF14' },
+    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#FFB800' },
     { name: 'Medium Risk', value: mediumRiskCount, color: '#FFB800' },
     { name: 'High Risk (Churn Warning)', value: highRiskCount, color: '#FF2A54' },
   ];

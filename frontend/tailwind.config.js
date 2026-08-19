@@ -76,7 +76,7 @@ export default {
           void: '#0B0C10',
           titanium: '#1F2833',
           overlay: '#26313F',
-          lime: '#39FF14',
+          lime: '#FFB800',
           border: '#3A4552',
           destructive: '#FF2A54',
           amber: '#FFB800',
@@ -85,7 +85,7 @@ export default {
         brand: {
           50: '#f0fdf4',
           100: '#dcfce7',
-          500: '#39FF14',
+          500: '#FFB800',
           600: '#22c55e',
           700: '#16a34a',
           900: '#14532d',

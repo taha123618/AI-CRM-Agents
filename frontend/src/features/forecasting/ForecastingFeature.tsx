@@ -32,10 +32,10 @@ import {
 
 const STAGE_COLORS: Record<string, string> = {
   Discovery: '#00E5FF',
-  Qualified: '#39FF14',
+  Qualified: '#FFB800',
   Proposal: '#FFB800',
   Negotiation: '#FF7700',
-  'Closed Won': '#39FF14',
+  'Closed Won': '#FFB800',
 };
 
 export function ForecastingFeature() {
@@ -136,7 +136,7 @@ export function ForecastingFeature() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#39FF14]" />
+              <TrendingUp className="w-5 h-5 text-[#FFB800]" />
               <span>REVENUE FORECASTING &amp; MONTE CARLO SIMULATION</span>
             </h1>
             <Badge variant="purple" className="text-[8px] font-mono">
@@ -156,7 +156,7 @@ export function ForecastingFeature() {
             disabled={isRefetching}
             className="text-xs h-7"
           >
-            <RefreshCw className={`w-3.5 h-3.5 mr-1 text-[#39FF14] ${isRefetching ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 mr-1 text-[#FFB800] ${isRefetching ? 'animate-spin' : ''}`} />
             <span>RE-RUN</span>
           </Button>
 
@@ -208,12 +208,12 @@ export function ForecastingFeature() {
           <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">STATISTICAL EXPECTATION</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#39FF14]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#39FF14] uppercase tracking-wider">
+        <Card className="p-3 bg-[#1F2833] border-[#FFB800]">
+          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">
             <span>P90 OPTIMISTIC</span>
             <Badge variant="success" className="text-[8px]">CEILING</Badge>
           </div>
-          <div className="text-2xl font-black text-[#39FF14] font-mono mt-1">
+          <div className="text-2xl font-black text-[#FFB800] font-mono mt-1">
             ${((simulation?.p90_optimistic || 0) / 1000).toFixed(1)}k
           </div>
           <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">BEST EXECUTION UPSIDE</span>
@@ -225,7 +225,7 @@ export function ForecastingFeature() {
         <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
-              <Target className="w-3.5 h-3.5 text-[#39FF14]" />
+              <Target className="w-3.5 h-3.5 text-[#FFB800]" />
               <span className="text-xs font-bold text-white uppercase tracking-wider">
                 TARGET REVENUE HORIZON PROGRESS
               </span>
@@ -235,7 +235,7 @@ export function ForecastingFeature() {
                 EXPECTED: <span className="text-[#FFB800] font-bold">${(simulation.p50_expected / 1000).toFixed(0)}k</span>
               </span>
               <span className="text-slate-400 uppercase text-[10px]">
-                CEILING: <span className="text-[#39FF14] font-bold">${(simulation.p90_optimistic / 1000).toFixed(0)}k</span>
+                CEILING: <span className="text-[#FFB800] font-bold">${(simulation.p90_optimistic / 1000).toFixed(0)}k</span>
               </span>
             </div>
           </div>
@@ -262,7 +262,7 @@ export function ForecastingFeature() {
             />
             {/* P90 band */}
             <div
-              className="absolute top-0 left-0 h-full bg-[#39FF14]/60"
+              className="absolute top-0 left-0 h-full bg-[#FFB800]/60"
               style={{
                 width: `${Math.min(
                   (simulation.p90_optimistic / simulation.pipeline_total_value) * 100,
@@ -285,11 +285,10 @@ export function ForecastingFeature() {
             key={tab.key}
             type="button"
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider border-b-2 -mb-px transition-none ${
-              activeTab === tab.key
-                ? 'border-[#39FF14] text-[#39FF14]'
+            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider border-b-2 -mb-px transition-none ${activeTab === tab.key
+                ? 'border-[#FFB800] text-[#FFB800]'
                 : 'border-transparent text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             {tab.icon}
             {tab.label}
@@ -304,7 +303,7 @@ export function ForecastingFeature() {
           <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sliders className="w-3.5 h-3.5 text-[#39FF14]" />
+                <Sliders className="w-3.5 h-3.5 text-[#FFB800]" />
                 SIMULATION CONTROLS
               </h3>
               <span className="text-[10px] font-mono text-slate-400 uppercase">{iterations.toLocaleString()} RUNS</span>
@@ -321,11 +320,10 @@ export function ForecastingFeature() {
                     key={num}
                     type="button"
                     onClick={() => setIterations(num)}
-                    className={`py-1 text-xs font-mono uppercase border transition-none ${
-                      iterations === num
-                        ? 'bg-[#39FF14] text-[#0B0C10] border-[#39FF14] font-bold'
+                    className={`py-1 text-xs font-mono uppercase border transition-none ${iterations === num
+                        ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800] font-bold'
                         : 'bg-[#0B0C10] text-slate-400 border-[#3A4552] hover:text-white'
-                    }`}
+                      }`}
                   >
                     {num.toLocaleString()}
                   </button>
@@ -346,7 +344,7 @@ export function ForecastingFeature() {
                 step="0.05"
                 value={slippageRate}
                 onChange={(e) => setSlippageRate(parseFloat(e.target.value))}
-                className="w-full accent-[#39FF14]"
+                className="w-full accent-[#FFB800]"
               />
               <span className="text-[9px] text-slate-500 mt-0.5 block uppercase font-mono">
                 SIMULATES MACRO PROCUREMENT DELAYS.
@@ -373,9 +371,9 @@ export function ForecastingFeature() {
                         [stage]: parseFloat(e.target.value),
                       }))
                     }
-                    className="flex-1 accent-[#39FF14] h-1"
+                    className="flex-1 accent-[#FFB800] h-1"
                   />
-                  <span className="text-[10px] font-mono text-[#39FF14] w-8 text-right font-bold">
+                  <span className="text-[10px] font-mono text-[#FFB800] w-8 text-right font-bold">
                     {(prob * 100).toFixed(0)}%
                   </span>
                 </div>
@@ -429,7 +427,7 @@ export function ForecastingFeature() {
                         color: '#F1F5F9',
                       }}
                     />
-                    <Bar dataKey="frequency" fill="#39FF14" radius={[0, 0, 0, 0]} />
+                    <Bar dataKey="frequency" fill="#FFB800" radius={[0, 0, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               )}
@@ -444,7 +442,7 @@ export function ForecastingFeature() {
           <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
             <div>
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-[#39FF14]" />
+                <TrendingUp className="w-4 h-4 text-[#FFB800]" />
                 MONTHLY ARR TREND VS TARGET
               </h3>
               <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -480,9 +478,9 @@ export function ForecastingFeature() {
                   type="monotone"
                   dataKey="actual_arr"
                   name="Actual ARR"
-                  stroke="#39FF14"
+                  stroke="#FFB800"
                   strokeWidth={2}
-                  dot={{ r: 3, fill: '#39FF14' }}
+                  dot={{ r: 3, fill: '#FFB800' }}
                 />
                 <Line
                   type="monotone"
@@ -511,17 +509,15 @@ export function ForecastingFeature() {
               {arrTrend.map((point) => (
                 <div
                   key={point.month}
-                  className={`p-2 bg-[#0B0C10] text-center border ${
-                    point.delta_pct >= 0
-                      ? 'border-[#39FF14]/40'
+                  className={`p-2 bg-[#0B0C10] text-center border ${point.delta_pct >= 0
+                      ? 'border-[#FFB800]/40'
                       : 'border-[#FF2A54]/40'
-                  }`}
+                    }`}
                 >
                   <div className="text-[9px] text-slate-400 font-mono uppercase">{point.month}</div>
                   <div
-                    className={`text-xs font-bold font-mono ${
-                      point.delta_pct >= 0 ? 'text-[#39FF14]' : 'text-[#FF2A54]'
-                    }`}
+                    className={`text-xs font-bold font-mono ${point.delta_pct >= 0 ? 'text-[#FFB800]' : 'text-[#FF2A54]'
+                      }`}
                   >
                     {point.delta_pct >= 0 ? '+' : ''}{point.delta_pct.toFixed(1)}%
                   </div>
@@ -573,7 +569,7 @@ export function ForecastingFeature() {
                     {(stageBreakdown || []).map((entry) => (
                       <Cell
                         key={entry.stage}
-                        fill={STAGE_COLORS[entry.stage] || '#39FF14'}
+                        fill={STAGE_COLORS[entry.stage] || '#FFB800'}
                       />
                     ))}
                   </Bar>
@@ -591,7 +587,7 @@ export function ForecastingFeature() {
               {(stageBreakdown || []).map((s) => {
                 const total = (stageBreakdown || []).reduce((acc, x) => acc + x.value, 0);
                 const pct = total > 0 ? Math.round((s.value / total) * 100) : 0;
-                const color = STAGE_COLORS[s.stage] || '#39FF14';
+                const color = STAGE_COLORS[s.stage] || '#FFB800';
                 return (
                   <div key={s.stage} className="space-y-1">
                     <div className="flex items-center justify-between text-xs font-mono">
@@ -619,7 +615,7 @@ export function ForecastingFeature() {
             {velocity && (
               <div className="mt-3 pt-3 border-t border-[#3A4552] grid grid-cols-2 gap-2">
                 {[
-                  { label: 'WIN RATE', value: `${velocity.win_rate_percentage}%`, color: 'text-[#39FF14]' },
+                  { label: 'WIN RATE', value: `${velocity.win_rate_percentage}%`, color: 'text-[#FFB800]' },
                   { label: 'AVG CYCLE', value: `${velocity.avg_sales_cycle_days}D`, color: 'text-[#FFB800]' },
                   { label: 'MONTHLY VELOCITY', value: `$${(velocity.monthly_velocity_arr / 1000).toFixed(0)}K`, color: 'text-cyan-400' },
                   { label: 'TOTAL PIPELINE', value: `$${((simulation?.pipeline_total_value || 0) / 1000).toFixed(0)}K`, color: 'text-white' },
@@ -636,7 +632,7 @@ export function ForecastingFeature() {
           {/* Stage Velocity Table */}
           <Card className="lg:col-span-2 p-4 bg-[#1F2833] border-[#3A4552] space-y-2.5">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Activity className="w-4 h-4 text-[#39FF14]" />
+              <Activity className="w-4 h-4 text-[#FFB800]" />
               PIPELINE STAGE VELOCITY &amp; CONVERSION MATRIX
             </h3>
             <div className="overflow-x-auto">
@@ -654,15 +650,15 @@ export function ForecastingFeature() {
                     <tr key={idx} className="odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] transition-none">
                       <td className="py-2 px-2.5 text-white font-bold uppercase">{s.stage}</td>
                       <td className="py-2 px-2.5 font-mono text-slate-300">{s.avg_days_in_stage} DAYS</td>
-                      <td className="py-2 px-2.5 font-mono text-[#39FF14]">{s.conversion_rate}%</td>
+                      <td className="py-2 px-2.5 font-mono text-[#FFB800]">{s.conversion_rate}%</td>
                       <td className="py-2 px-2.5">
                         <Badge
                           variant={
                             s.slippage_risk === 'Low'
                               ? 'success'
                               : s.slippage_risk === 'Medium'
-                              ? 'warning'
-                              : 'danger'
+                                ? 'warning'
+                                : 'danger'
                           }
                         >
                           {s.slippage_risk.toUpperCase()}
@@ -724,7 +720,7 @@ export function ForecastingFeature() {
                           <td className="py-2 px-2.5 font-mono text-[#FFB800] font-bold">
                             ${(s.p50_expected / 1000).toFixed(1)}k
                           </td>
-                          <td className="py-2 px-2.5 font-mono text-[#39FF14]">
+                          <td className="py-2 px-2.5 font-mono text-[#FFB800]">
                             ${(s.p90_optimistic / 1000).toFixed(1)}k
                           </td>
                           <td className="py-2 px-2.5 font-mono text-slate-400">
@@ -803,7 +799,7 @@ export function ForecastingFeature() {
                         <Legend wrapperStyle={{ fontSize: '10px', color: '#94a3b8', fontFamily: 'monospace' }} />
                         <Bar dataKey="p10" name="P10 Conservative" fill="#00E5FF" radius={[0, 0, 0, 0]} />
                         <Bar dataKey="p50" name="P50 Expected" fill="#FFB800" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="p90" name="P90 Optimistic" fill="#39FF14" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="p90" name="P90 Optimistic" fill="#FFB800" radius={[0, 0, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>

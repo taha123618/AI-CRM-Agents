@@ -31,7 +31,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
           <div className="py-10 text-center text-slate-500 text-xs uppercase">{t('custom_agents.loading_telemetry') || 'LOADING EXECUTION LOGS...'}</div>
         ) : !executions || executions.length === 0 ? (
           <div className="py-10 text-center text-slate-500 space-y-2 uppercase">
-            <History className="w-8 h-8 mx-auto opacity-30 text-[#39FF14]" />
+            <History className="w-8 h-8 mx-auto opacity-30 text-[#FFB800]" />
             <p className="text-xs">{t('custom_agents.no_telemetry') || 'NO EXECUTION TELEMETRY RECORDED YET FOR THIS AGENT.'}</p>
           </div>
         ) : (
@@ -60,7 +60,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
                   </div>
 
                   <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400 uppercase">
-                    <span className="flex items-center gap-1 text-[#39FF14]">
+                    <span className="flex items-center gap-1 text-[#FFB800]">
                       <Clock className="w-3 h-3" />
                       {exec.duration_ms}MS
                     </span>

@@ -111,7 +111,7 @@ export function LiveVoiceGatewayModal({
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
               <PhoneCall className="w-4 h-4" />
             </div>
             <div>
@@ -136,12 +136,12 @@ export function LiveVoiceGatewayModal({
         <div className="p-4 space-y-4 font-mono">
           {/* Call Status & Timer */}
           <div className="p-4 bg-[#0B0C10] border border-[#3A4552] flex flex-col items-center justify-center text-center relative overflow-hidden">
-            <div className="absolute top-2.5 right-3 flex items-center gap-1 text-[10px] font-mono text-[#39FF14] uppercase">
-              <span className="w-1.5 h-1.5 rounded-none bg-[#39FF14]"></span>
+            <div className="absolute top-2.5 right-3 flex items-center gap-1 text-[10px] font-mono text-[#FFB800] uppercase">
+              <span className="w-1.5 h-1.5 rounded-none bg-[#FFB800]"></span>
               <span>{formatDuration(durationSeconds)}</span>
             </div>
 
-            <div className="w-12 h-12 rounded-none bg-[#1F2833] border border-[#39FF14]/50 flex items-center justify-center text-[#39FF14] mb-2">
+            <div className="w-12 h-12 rounded-none bg-[#1F2833] border border-[#FFB800]/50 flex items-center justify-center text-[#FFB800] mb-2">
               <PhoneCall className="w-5 h-5" />
             </div>
 
@@ -153,7 +153,7 @@ export function LiveVoiceGatewayModal({
               {[40, 75, 90, 60, 100, 45, 80, 65, 95, 50, 85, 30].map((h, i) => (
                 <span
                   key={i}
-                  className="w-1 bg-[#39FF14] rounded-none transition-none"
+                  className="w-1 bg-[#FFB800] rounded-none transition-none"
                   style={{ height: `${h}%` }}
                 />
               ))}
@@ -164,7 +164,7 @@ export function LiveVoiceGatewayModal({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                <Bot className="w-3.5 h-3.5 text-[#39FF14]" />
+                <Bot className="w-3.5 h-3.5 text-[#FFB800]" />
                 LIVE AUDIO TRANSCRIPT &amp; BATTLE-CARDS
               </span>
               {tokenData && (
@@ -177,9 +177,8 @@ export function LiveVoiceGatewayModal({
                 <div key={index} className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-[10px] font-bold uppercase ${
-                        turn.speaker === 'Prospect' ? 'text-cyan-400' : 'text-[#39FF14]'
-                      }`}
+                      className={`text-[10px] font-bold uppercase ${turn.speaker === 'Prospect' ? 'text-cyan-400' : 'text-[#FFB800]'
+                        }`}
                     >
                       {turn.speaker}:
                     </span>
@@ -187,8 +186,8 @@ export function LiveVoiceGatewayModal({
                   </div>
 
                   {turn.battleCard && (
-                    <div className="p-2 bg-[#1F2833] border border-[#39FF14]/40 text-[#39FF14] flex items-start gap-1.5 text-[10px]">
-                      <Sparkles className="w-3 h-3 text-[#39FF14] shrink-0 mt-0.5" />
+                    <div className="p-2 bg-[#1F2833] border border-[#FFB800]/40 text-[#FFB800] flex items-start gap-1.5 text-[10px]">
+                      <Sparkles className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold block uppercase">LIVE BATTLE-CARD:</span>
                         <span>{turn.battleCard}</span>
@@ -204,11 +203,10 @@ export function LiveVoiceGatewayModal({
           <div className="flex items-center justify-center gap-3 pt-2 border-t border-[#3A4552]">
             <button
               onClick={() => setIsMuted(!isMuted)}
-              className={`p-2.5 border transition-none font-mono ${
-                isMuted
+              className={`p-2.5 border transition-none font-mono ${isMuted
                   ? 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
                   : 'bg-[#0B0C10] border-[#3A4552] text-slate-300 hover:text-white'
-              }`}
+                }`}
               title={isMuted ? 'Unmute' : 'Mute'}
             >
               {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
@@ -216,11 +214,10 @@ export function LiveVoiceGatewayModal({
 
             <button
               onClick={() => setIsSpeakerOn(!isSpeakerOn)}
-              className={`p-2.5 border transition-none font-mono ${
-                isSpeakerOn
-                  ? 'bg-[#0B0C10] border-[#3A4552] text-[#39FF14]'
+              className={`p-2.5 border transition-none font-mono ${isSpeakerOn
+                  ? 'bg-[#0B0C10] border-[#3A4552] text-[#FFB800]'
                   : 'bg-[#0B0C10] border-[#3A4552] text-slate-500'
-              }`}
+                }`}
               title="Speaker Audio"
             >
               {isSpeakerOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}

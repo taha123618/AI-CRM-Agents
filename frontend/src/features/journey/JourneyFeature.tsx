@@ -88,7 +88,7 @@ export function JourneyFeature() {
       {/* ── Header Banner ── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#1F2833] border border-[#3A4552] shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
-          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#39FF14] shadow-md shrink-0">
+          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
             <Milestone className="w-6 h-6" />
           </div>
           <div>
@@ -96,7 +96,7 @@ export function JourneyFeature() {
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
                 CUSTOMER JOURNEY &amp; CHURN RADAR STUDIO
               </h1>
-              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#39FF14] border border-[#39FF14]/50 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 uppercase tracking-wider">
                 TELEMETRY GUIDED
               </span>
             </div>
@@ -123,11 +123,11 @@ export function JourneyFeature() {
       {/* Summary KPI Ribbon */}
       {journeyData?.summary && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#39FF14] transition-none">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
               TOTAL MONITORED ARR
             </span>
-            <div className="text-2xl font-black font-mono text-[#39FF14] mt-0.5">
+            <div className="text-2xl font-black font-mono text-[#FFB800] mt-0.5">
               ${journeyData.summary.total_arr.toLocaleString()}
             </div>
             <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
@@ -148,7 +148,7 @@ export function JourneyFeature() {
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#39FF14] transition-none">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-[#00E5FF] uppercase tracking-wider block flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
               EXPANSION POTENTIAL ARR
@@ -161,7 +161,7 @@ export function JourneyFeature() {
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#39FF14] transition-none">
+          <Card className="p-4 bg-[#1F2833] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
             <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider block flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 text-purple-400" />
               AUTONOMOUS RESCUE FLEET
@@ -181,18 +181,17 @@ export function JourneyFeature() {
         <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552] space-y-3.5 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Milestone className="w-4 h-4 text-[#39FF14]" />
+              <Milestone className="w-4 h-4 text-[#FFB800]" />
               <span>CUSTOMER LIFECYCLE PIPELINE</span>
             </span>
             <div className="flex flex-wrap items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => setActiveStageFilter('all')}
-                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${
-                  activeStageFilter === 'all'
-                    ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === 'all'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                     : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
-                }`}
+                  }`}
               >
                 ALL ({allCustomers.length})
               </button>
@@ -201,11 +200,10 @@ export function JourneyFeature() {
                   key={st.id}
                   type="button"
                   onClick={() => setActiveStageFilter(st.id)}
-                  className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${
-                    activeStageFilter === st.id
-                      ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                  className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === st.id
+                      ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                       : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
-                  }`}
+                    }`}
                 >
                   {st.label} ({journeyData.distribution[st.id]?.count || 0})
                 </button>
@@ -221,11 +219,10 @@ export function JourneyFeature() {
                 <div
                   key={st.id}
                   onClick={() => setActiveStageFilter(isFiltered ? 'all' : st.id)}
-                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${
-                    isFiltered
-                      ? 'bg-[#0B0C10] border-[#39FF14] shadow-lg'
+                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${isFiltered
+                      ? 'bg-[#0B0C10] border-[#FFB800] shadow-lg'
                       : 'bg-[#0B0C10]/60 border-[#3A4552] hover:border-slate-500'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-300 uppercase">{st.label}</span>
@@ -233,7 +230,7 @@ export function JourneyFeature() {
                       {bucket.count}
                     </Badge>
                   </div>
-                  <div className="text-base font-black font-mono text-[#39FF14] mt-1.5">
+                  <div className="text-base font-black font-mono text-[#FFB800] mt-1.5">
                     ${bucket.total_arr.toLocaleString()}
                   </div>
                   <span className="text-[9px] text-slate-500 font-mono uppercase">STAGE ARR</span>
@@ -270,7 +267,7 @@ export function JourneyFeature() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH ACCOUNTS BY NAME..."
-              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono uppercase"
+              className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
             />
           </div>
 
@@ -282,15 +279,14 @@ export function JourneyFeature() {
                 <div
                   key={customer.id}
                   onClick={() => setSelectedCustomer(customer)}
-                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${
-                    isSelected
-                      ? 'bg-[#1F2833] border-[#39FF14] text-white shadow-xl'
-                      : 'bg-[#1F2833] border-[#3A4552] hover:border-[#39FF14] text-slate-300'
-                  }`}
+                  className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
+                      ? 'bg-[#1F2833] border-[#FFB800] text-white shadow-xl'
+                      : 'bg-[#1F2833] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-[#39FF14]" />
+                      <Briefcase className="w-3.5 h-3.5 text-[#FFB800]" />
                       <h4 className="text-xs font-bold text-white uppercase truncate">{customer.name}</h4>
                     </div>
                     <Badge
@@ -302,7 +298,7 @@ export function JourneyFeature() {
                   </div>
 
                   <div className="flex items-center justify-between text-[10px] font-mono mt-2 pt-2 border-t border-[#3A4552] uppercase">
-                    <span className="text-[#39FF14] font-bold">${customer.arr.toLocaleString()} ARR</span>
+                    <span className="text-[#FFB800] font-bold">${customer.arr.toLocaleString()} ARR</span>
                     <span className={isAtRisk ? 'text-[#FF2A54] font-bold' : 'text-slate-400'}>
                       {customer.churn_risk_pct}% CHURN RISK
                     </span>
@@ -345,7 +341,7 @@ export function JourneyFeature() {
                     <Badge variant="info" className="text-[9px] uppercase font-mono">
                       STAGE: {customerDetails.lifecycle_stage}
                     </Badge>
-                    <span className="text-xs text-[#39FF14] font-mono font-bold">
+                    <span className="text-xs text-[#FFB800] font-mono font-bold">
                       MRR: ${customerDetails.mrr.toLocaleString()}
                     </span>
                   </div>
@@ -377,15 +373,14 @@ export function JourneyFeature() {
                     >
                       <div className="flex items-center gap-2">
                         <CheckCircle2
-                          className={`w-3.5 h-3.5 ${
-                            t.status === 'completed'
-                              ? 'text-[#39FF14]'
+                          className={`w-3.5 h-3.5 ${t.status === 'completed'
+                              ? 'text-[#FFB800]'
                               : t.status === 'in_progress'
-                              ? 'text-[#00E5FF]'
-                              : t.status === 'flagged'
-                              ? 'text-[#FF2A54]'
-                              : 'text-slate-600'
-                          }`}
+                                ? 'text-[#00E5FF]'
+                                : t.status === 'flagged'
+                                  ? 'text-[#FF2A54]'
+                                  : 'text-slate-600'
+                            }`}
                         />
                         <span className="text-slate-200 font-medium">{t.event}</span>
                       </div>
@@ -427,7 +422,7 @@ export function JourneyFeature() {
                             variant="outline"
                             onClick={() => resolveMutation.mutate(intv.id)}
                             isLoading={resolveMutation.isPending}
-                            className="text-[9px] h-6 px-2 shrink-0 border-[#39FF14] text-[#39FF14] hover:bg-[#39FF14] hover:text-[#0B0C10] uppercase font-bold"
+                            className="text-[9px] h-6 px-2 shrink-0 border-[#FFB800] text-[#FFB800] hover:bg-[#FFB800] hover:text-[#0B0C10] uppercase font-bold"
                           >
                             <CheckCircle className="w-3 h-3 mr-1" />
                             <span>RESOLVE</span>
@@ -442,7 +437,7 @@ export function JourneyFeature() {
               {/* Recommended Plays */}
               <div className="space-y-2.5">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#39FF14]" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
                   <span>PROACTIVE AI RECOMMENDATIONS</span>
                 </span>
 
@@ -452,7 +447,7 @@ export function JourneyFeature() {
                       key={idx}
                       className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 flex items-start gap-2 uppercase"
                     >
-                      <span className="text-[#39FF14] font-bold shrink-0">⚡</span>
+                      <span className="text-[#FFB800] font-bold shrink-0">⚡</span>
                       <span>{play}</span>
                     </div>
                   ))}

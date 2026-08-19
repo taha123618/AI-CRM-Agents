@@ -143,7 +143,7 @@ export function WebhooksStudioTab() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <Globe className="w-4 h-4 text-[#39FF14]" />
+            <Globe className="w-4 h-4 text-[#FFB800]" />
             UNIVERSAL OUTBOUND WEBHOOKS &amp; INGESTION ENGINE
           </h2>
           <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -162,7 +162,7 @@ export function WebhooksStudioTab() {
       </div>
 
       {feedback && (
-        <div className="p-3 bg-[#0B0C10] border border-[#39FF14] text-[#39FF14] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
+        <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{feedback}</span>
         </div>
@@ -195,7 +195,7 @@ export function WebhooksStudioTab() {
                   disabled={testMutation.isPending}
                   className="flex items-center gap-1.5 text-xs h-7 uppercase"
                 >
-                  <Play className="w-3 h-3 text-[#39FF14]" />
+                  <Play className="w-3 h-3 text-[#FFB800]" />
                   <span>TEST PING</span>
                 </Button>
                 <Button
@@ -221,11 +221,11 @@ export function WebhooksStudioTab() {
                 <span>SECRET: ••••••••••••</span>
                 <button
                   onClick={() => handleCopySecret(ep.secret, ep.id)}
-                  className="hover:text-[#39FF14]"
+                  className="hover:text-[#FFB800]"
                   title="Copy Signing Secret"
                 >
                   {copiedId === ep.id ? (
-                    <CheckCircle2 className="w-3 h-3 text-[#39FF14]" />
+                    <CheckCircle2 className="w-3 h-3 text-[#FFB800]" />
                   ) : (
                     <Copy className="w-3 h-3" />
                   )}
@@ -247,7 +247,7 @@ export function WebhooksStudioTab() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-              <RefreshCw className="w-3.5 h-3.5 text-[#39FF14]" />
+              <RefreshCw className="w-3.5 h-3.5 text-[#FFB800]" />
               DELIVERY RECEIPTS &amp; DISPATCHES
             </h3>
             <span className="text-[9px] text-slate-400 uppercase font-mono">LIVE AUTO-REFRESH (5S)</span>
@@ -265,7 +265,7 @@ export function WebhooksStudioTab() {
                   setPage(1);
                 }}
                 placeholder="SEARCH EVENT, PAYLOAD..."
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -277,7 +277,7 @@ export function WebhooksStudioTab() {
                   setDeliveryStatusFilter(e.target.value as any);
                   setPage(1);
                 }}
-                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 <option value="all">ALL DELIVERIES</option>
                 <option value="success">SUCCESS ONLY</option>
@@ -318,7 +318,7 @@ export function WebhooksStudioTab() {
               <tbody className="divide-y divide-[#3A4552]">
                 {paginatedDeliveries.map((d) => (
                   <tr key={d.id} className="hover:bg-[#0B0C10] transition-none">
-                    <td className="px-3 py-2 font-mono text-[#39FF14] font-bold uppercase text-[11px]">
+                    <td className="px-3 py-2 font-mono text-[#FFB800] font-bold uppercase text-[11px]">
                       {d.event_type}
                     </td>
                     <td className="px-3 py-2">
@@ -372,7 +372,7 @@ export function WebhooksStudioTab() {
           <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Globe className="w-4 h-4 text-[#39FF14]" />
+                <Globe className="w-4 h-4 text-[#FFB800]" />
                 REGISTER WEBHOOK ENDPOINT
               </h3>
               <button
@@ -394,7 +394,7 @@ export function WebhooksStudioTab() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://api.yourdomain.com/webhooks/crm-events"
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] font-mono"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
                 />
               </div>
 
@@ -407,7 +407,7 @@ export function WebhooksStudioTab() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="E.G. ZAPIER LEAD NOTIFICATION PIPELINE"
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                 />
               </div>
 
@@ -421,7 +421,7 @@ export function WebhooksStudioTab() {
                       type="checkbox"
                       checked={selectedEvents.includes('*')}
                       onChange={() => handleToggleEvent('*')}
-                      className="rounded-none border-[#3A4552] text-[#39FF14] accent-[#39FF14]"
+                      className="rounded-none border-[#3A4552] text-[#FFB800] accent-[#FFB800]"
                     />
                     <span className="font-mono text-[#FFB800] font-bold text-[11px]">* (ALL EVENTS)</span>
                   </label>
@@ -435,7 +435,7 @@ export function WebhooksStudioTab() {
                         checked={selectedEvents.includes(ev)}
                         onChange={() => handleToggleEvent(ev)}
                         disabled={selectedEvents.includes('*')}
-                        className="rounded-none border-[#3A4552] text-[#39FF14] accent-[#39FF14]"
+                        className="rounded-none border-[#3A4552] text-[#FFB800] accent-[#FFB800]"
                       />
                       <span className="font-mono text-[11px] uppercase">{ev}</span>
                     </label>

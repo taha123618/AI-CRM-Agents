@@ -21,8 +21,8 @@ export function RevenueChart({ data }: RevenueChartProps) {
         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="mrrGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#39FF14" stopOpacity={0.4} />
-              <stop offset="95%" stopColor="#39FF14" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="#FFB800" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#FFB800" stopOpacity={0.0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
@@ -48,7 +48,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
           <Area
             type="monotone"
             dataKey="mrr"
-            stroke="#39FF14"
+            stroke="#FFB800"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#mrrGradient)"

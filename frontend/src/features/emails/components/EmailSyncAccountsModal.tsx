@@ -91,7 +91,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
         {/* Header */}
         <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#39FF14]/50 text-[#39FF14]">
+            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
               <Mail className="w-4 h-4" />
             </div>
             <div>
@@ -143,7 +143,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-none bg-[#39FF14]"></span>
+                        <span className="w-1.5 h-1.5 rounded-none bg-[#FFB800]"></span>
                         <h4 className="text-xs font-bold text-white uppercase">{acc.provider}</h4>
                       </div>
                       <p className="text-[10px] font-mono text-slate-300 mt-0.5">{acc.email_address}</p>
@@ -154,7 +154,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                       variant="ghost"
                       onClick={() => syncAccountMutation.mutate(acc.id)}
                       disabled={syncAccountMutation.isPending}
-                      className="h-6 px-2 text-xs text-[#39FF14] hover:bg-[#1F2833]"
+                      className="h-6 px-2 text-xs text-[#FFB800] hover:bg-[#1F2833]"
                       title="Sync Now"
                     >
                       <RefreshCw className={`w-3 h-3 ${syncAccountMutation.isPending ? 'animate-spin' : ''}`} />
@@ -178,11 +178,10 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                   <div
                     key={th.id}
                     onClick={() => setSelectedThreadId(th.id)}
-                    className={`p-2.5 border cursor-pointer transition-none ${
-                      selectedThreadId === th.id
-                        ? 'bg-[#0B0C10] border-[#39FF14] text-white'
+                    className={`p-2.5 border cursor-pointer transition-none ${selectedThreadId === th.id
+                        ? 'bg-[#0B0C10] border-[#FFB800] text-white'
                         : 'bg-[#0B0C10] border-[#3A4552] hover:border-slate-500 text-slate-300'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between text-[10px] mb-1">
                       <Badge variant="purple" className="text-[8px] py-0">
@@ -220,11 +219,10 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                     {threadMessages.messages?.map((msg: any, idx: number) => (
                       <div
                         key={idx}
-                        className={`p-2.5 border text-xs space-y-1 ${
-                          msg.direction === 'inbound'
+                        className={`p-2.5 border text-xs space-y-1 ${msg.direction === 'inbound'
                             ? 'bg-[#1F2833] border-[#3A4552] text-slate-200'
-                            : 'bg-[#0B0C10] border-[#39FF14]/40 text-[#39FF14]'
-                        }`}
+                            : 'bg-[#0B0C10] border-[#FFB800]/40 text-[#FFB800]'
+                          }`}
                       >
                         <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono">
                           <span className="font-bold text-white uppercase">{msg.sender}</span>

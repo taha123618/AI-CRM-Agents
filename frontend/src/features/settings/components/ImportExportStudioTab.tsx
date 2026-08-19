@@ -55,7 +55,7 @@ export function ImportExportStudioTab() {
       <div className="space-y-3">
         <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <Download className="w-4 h-4 text-[#39FF14]" />
+            <Download className="w-4 h-4 text-[#FFB800]" />
             1-CLICK DATA EXPORTERS
           </h2>
           <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -64,10 +64,10 @@ export function ImportExportStudioTab() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#39FF14] transition-none flex flex-col justify-between">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
-                <FileSpreadsheet className="w-4 h-4 text-[#39FF14]" />
+                <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
                 ALL CONTACTS &amp; LEADS
               </div>
               <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
@@ -85,7 +85,7 @@ export function ImportExportStudioTab() {
             </Button>
           </Card>
 
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#39FF14] transition-none flex flex-col justify-between">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-[#FFB800]" />
@@ -106,7 +106,7 @@ export function ImportExportStudioTab() {
             </Button>
           </Card>
 
-          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#39FF14] transition-none flex flex-col justify-between">
+          <Card className="bg-[#1F2833] border-[#3A4552] p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-purple-400" />
@@ -133,7 +133,7 @@ export function ImportExportStudioTab() {
       <div className="space-y-3 pt-3 border-t border-[#3A4552]">
         <div className="p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <Upload className="w-4 h-4 text-[#39FF14]" />
+            <Upload className="w-4 h-4 text-[#FFB800]" />
             BULK CSV INGESTION STUDIO
           </h2>
           <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
@@ -148,22 +148,20 @@ export function ImportExportStudioTab() {
               <button
                 type="button"
                 onClick={() => setImportType('leads')}
-                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${
-                  importType === 'leads'
-                    ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'leads'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                     : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
-                }`}
+                  }`}
               >
                 CONTACTS &amp; LEADS
               </button>
               <button
                 type="button"
                 onClick={() => setImportType('deals')}
-                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${
-                  importType === 'deals'
-                    ? 'bg-[#39FF14] text-[#0B0C10] border border-[#39FF14]'
+                className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'deals'
+                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
                     : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
-                }`}
+                  }`}
               >
                 SALES DEALS
               </button>
@@ -176,7 +174,7 @@ export function ImportExportStudioTab() {
               <button
                 type="button"
                 onClick={() => setCsvInput(SAMPLE_LEADS_CSV)}
-                className="text-[#39FF14] hover:underline flex items-center gap-1 font-bold"
+                className="text-[#FFB800] hover:underline flex items-center gap-1 font-bold"
               >
                 <Sparkles className="w-3 h-3" />
                 RESET SAMPLE DATA
@@ -186,7 +184,7 @@ export function ImportExportStudioTab() {
               rows={7}
               value={csvInput}
               onChange={(e) => setCsvInput(e.target.value)}
-              className="w-full font-mono text-xs bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-slate-200 focus:outline-none focus:border-[#39FF14]"
+              className="w-full font-mono text-xs bg-[#0B0C10] border border-[#3A4552] rounded-none p-3 text-slate-200 focus:outline-none focus:border-[#FFB800]"
               placeholder="PASTE RAW CSV WITH HEADER ROW HERE..."
             />
           </div>
@@ -208,10 +206,10 @@ export function ImportExportStudioTab() {
         </form>
 
         {importResult && (
-          <Card className="bg-[#0B0C10] border border-[#39FF14] p-3.5 space-y-2 animate-in fade-in font-mono">
+          <Card className="bg-[#0B0C10] border border-[#FFB800] p-3.5 space-y-2 animate-in fade-in font-mono">
             <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
               {importResult.success ? (
-                <CheckCircle2 className="w-4 h-4 text-[#39FF14]" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
               ) : (
                 <AlertCircle className="w-4 h-4 text-[#FF2A54]" />
               )}

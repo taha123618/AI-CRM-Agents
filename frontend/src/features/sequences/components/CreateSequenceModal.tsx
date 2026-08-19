@@ -91,7 +91,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
         {/* Modal Header */}
         <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Send className="w-5 h-5" />
             </div>
             <div>
@@ -129,7 +129,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="E.G. ENTERPRISE REVOPS HIGH-CONVERSION SEQUENCE"
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
 
@@ -140,7 +140,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               >
                 <option value="multichannel">OMNICHANNEL FLEET</option>
                 <option value="email">EMAIL INTELLIGENCE</option>
@@ -159,7 +159,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={targetPersona}
                 onChange={(e) => setTargetPersona(e.target.value)}
                 placeholder="E.G. VP OF SALES / CRO"
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
               />
             </div>
           </div>
@@ -189,7 +189,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                   className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2.5 font-mono"
                 >
                   <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
-                    <span className="text-xs font-bold text-[#39FF14] uppercase tracking-wider">
+                    <span className="text-xs font-bold text-[#FFB800] uppercase tracking-wider">
                       STEP #{step.step_number}
                     </span>
                     <div className="flex items-center gap-2">
@@ -236,7 +236,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.subject}
                       onChange={(e) => updateStep(idx, 'subject', e.target.value)}
                       placeholder="SUBJECT LINE"
-                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#39FF14] font-bold"
+                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-bold"
                     />
                     <textarea
                       rows={3}
@@ -244,7 +244,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.template}
                       onChange={(e) => updateStep(idx, 'template', e.target.value)}
                       placeholder="Template copy with {{first_name}}, {{company_name}} tags..."
-                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#39FF14] leading-relaxed font-mono"
+                      className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] leading-relaxed font-mono"
                     />
                   </div>
                 </div>

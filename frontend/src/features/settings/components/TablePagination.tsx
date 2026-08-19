@@ -40,7 +40,7 @@ export function TablePagination({
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="bg-[#1F2833] border border-[#3A4552] text-slate-300 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#39FF14] font-mono"
+              className="bg-[#1F2833] border border-[#3A4552] text-slate-300 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-[#FFB800] font-mono"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt} className="bg-[#0B0C10]">
@@ -58,7 +58,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
-          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#FFB800] disabled:opacity-30"
           title="First Page"
         >
           <ChevronsLeft className="w-3.5 h-3.5" />
@@ -68,7 +68,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#FFB800] disabled:opacity-30"
           title="Previous Page"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
@@ -83,7 +83,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#FFB800] disabled:opacity-30"
           title="Next Page"
         >
           <ChevronRight className="w-3.5 h-3.5" />
@@ -93,7 +93,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
-          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#39FF14] disabled:opacity-30"
+          className="h-7 w-7 p-0 border-[#3A4552] text-slate-300 hover:border-[#FFB800] disabled:opacity-30"
           title="Last Page"
         >
           <ChevronsRight className="w-3.5 h-3.5" />

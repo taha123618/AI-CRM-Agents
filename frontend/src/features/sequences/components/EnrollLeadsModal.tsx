@@ -70,7 +70,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
         {/* Modal Header */}
         <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#39FF14] border border-[#3A4552]">
+            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
               <Users className="w-5 h-5" />
             </div>
             <div>
@@ -97,8 +97,8 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 font-mono">
           {enrolledSuccess ? (
-            <div className="p-6 rounded-none bg-[#0B0C10] border border-[#39FF14] text-center space-y-2">
-              <div className="w-10 h-10 rounded-none bg-[#1F2833] text-[#39FF14] border border-[#3A4552] flex items-center justify-center mx-auto">
+            <div className="p-6 rounded-none bg-[#0B0C10] border border-[#FFB800] text-center space-y-2">
+              <div className="w-10 h-10 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <h3 className="text-xs font-bold text-white uppercase">ENROLLMENT DISPATCHED</h3>
@@ -118,7 +118,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="SEARCH BY NAME, COMPANY, OR EMAIL..."
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-[#39FF14] uppercase font-mono"
+                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
                   />
                 </div>
                 {filtered.length > 0 && (
@@ -147,18 +147,17 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                       <div
                         key={p.id}
                         onClick={() => toggleSelect(p.id)}
-                        className={`p-2.5 rounded-none border cursor-pointer flex items-center justify-between transition-none ${
-                          isSelected
-                            ? 'bg-[#1F2833] border-[#39FF14] text-white'
+                        className={`p-2.5 rounded-none border cursor-pointer flex items-center justify-between transition-none ${isSelected
+                            ? 'bg-[#1F2833] border-[#FFB800] text-white'
                             : 'bg-[#0B0C10] border-[#3A4552] hover:border-slate-500 text-slate-300'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2.5">
                           <input
                             type="checkbox"
                             checked={isSelected}
-                            onChange={() => {}}
-                            className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#39FF14] focus:ring-0"
+                            onChange={() => { }}
+                            className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#FFB800] focus:ring-0"
                           />
                           <div>
                             <div className="text-xs font-bold text-white flex items-center gap-1 uppercase">
