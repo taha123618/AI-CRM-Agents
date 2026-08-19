@@ -81,9 +81,9 @@ export function DataTable<T extends { id?: string | number }>({
   return (
     <Card className="overflow-hidden space-y-3 font-mono">
       {searchFilter && (
-        <div className="p-3 border-b border-[#3A4552] flex items-center justify-between gap-4">
+        <div className="p-3 border-b border-border flex items-center justify-between gap-4">
           <div className="relative w-72">
-            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-muted-foreground/60" />
             <Input
               value={search}
               onChange={(e) => {
@@ -94,7 +94,7 @@ export function DataTable<T extends { id?: string | number }>({
               className="pl-8 text-xs font-mono"
             />
           </div>
-          <span className="text-[10px] text-slate-400 font-mono uppercase">
+          <span className="text-[10px] text-muted-foreground font-mono uppercase">
             SHOWING {filteredData.length} RECORDS
           </span>
         </div>
@@ -107,7 +107,7 @@ export function DataTable<T extends { id?: string | number }>({
           ))}
         </div>
       ) : paginatedData.length === 0 ? (
-        <div className="text-center py-10 text-slate-500 text-xs uppercase font-mono">{emptyMessage}</div>
+        <div className="text-center py-10 text-muted-foreground/60 text-xs uppercase font-mono">{emptyMessage}</div>
       ) : (
         <Table>
           <TableHeader>
@@ -120,7 +120,7 @@ export function DataTable<T extends { id?: string | number }>({
                 >
                   <div className="flex items-center gap-1.5 cursor-pointer select-none">
                     <span>{col.header}</span>
-                    {col.sortable && <ArrowUpDown className="w-3 h-3 text-slate-500" />}
+                    {col.sortable && <ArrowUpDown className="w-3 h-3 text-muted-foreground/60" />}
                   </div>
                 </TableHead>
               ))}
@@ -149,7 +149,7 @@ export function DataTable<T extends { id?: string | number }>({
       )}
 
       {totalPages > 1 && (
-        <div className="p-3 border-t border-[#3A4552] flex items-center justify-between text-xs text-slate-400 font-mono uppercase">
+        <div className="p-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground font-mono uppercase">
           <span>
             PAGE {page} OF {totalPages}
           </span>

@@ -78,17 +78,17 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
       />
 
       <div className="space-y-1">
-        <label className="text-[10px] font-bold uppercase text-slate-300">MEETING FOCUS NOTES (OPTIONAL)</label>
+        <label className="text-[10px] font-bold uppercase text-foreground/80">MEETING FOCUS NOTES (OPTIONAL)</label>
         <textarea
           rows={3}
-          className="w-full rounded-none bg-[#0B0C10] border border-[#3A4552] p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+          className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
           placeholder="E.G. FOCUS ON SOC2 COMPLIANCE, POSTGRESQL ENCRYPTION, AND API INTEGRATIONS"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
       </div>
 
-      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
             CANCEL

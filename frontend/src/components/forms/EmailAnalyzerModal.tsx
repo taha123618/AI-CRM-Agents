@@ -70,18 +70,18 @@ export function EmailAnalyzerModal() {
         />
 
         <div className="space-y-1">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">
-            EMAIL CONTENT / BODY <span className="text-[#FF2A54] ml-0.5">*</span>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+            EMAIL CONTENT / BODY <span className="text-destructive ml-0.5">*</span>
           </label>
           <textarea
             rows={4}
-            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
+            className="w-full bg-background text-foreground border border-border rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-primary"
             {...register('body')}
           />
-          {errors.body && <p className="text-xs text-[#FF2A54] font-mono">{errors.body.message}</p>}
+          {errors.body && <p className="text-xs text-destructive font-mono">{errors.body.message}</p>}
         </div>
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
           <Button type="button" variant="outline" onClick={() => setEmailModalOpen(false)} className="text-xs">
             CANCEL
           </Button>

@@ -89,13 +89,13 @@ export function CustomAgentsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
           <h1 className="text-base font-black tracking-wider text-white uppercase flex items-center gap-2">
-            <Bot className="w-5 h-5 text-[#FFB800]" />
+            <Bot className="w-5 h-5 text-primary" />
             <span>{t('custom_agents.title') || 'NO-CODE AGENT STUDIO'}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('custom_agents.subtitle') || 'VISUALLY DESIGN AUTONOMOUS CUSTOM AI AGENTS, CONFIGURE MODEL PERSONAS, AND DEPLOY CRM WORKFLOWS.'}
           </p>
         </div>
@@ -107,7 +107,7 @@ export function CustomAgentsFeature() {
             onClick={() => setIsEvalOpen(true)}
             className="text-xs h-7"
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1 text-[#FFB800]" />
+            <Sparkles className="w-3.5 h-3.5 mr-1 text-primary" />
             <span>PROMPT BENCHMARK</span>
           </Button>
 
@@ -131,23 +131,23 @@ export function CustomAgentsFeature() {
 
       {/* KPI Highlights Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#121212] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+        <Card className="p-3 bg-card border-border">
+          <div className="flex items-center justify-between text-[10px] font-bold text-muted-foreground uppercase">
             <span>{t('custom_agents.total_agents') || 'TOTAL AGENTS'}</span>
-            <Bot className="w-4 h-4 text-[#FFB800]" />
+            <Bot className="w-4 h-4 text-primary" />
           </div>
           <div className="text-2xl font-black text-white mt-1 font-mono">{agents?.length || 0}</div>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase">
+        <Card className="p-3 bg-card border-border">
+          <div className="flex items-center justify-between text-[10px] font-bold text-primary uppercase">
             <span>{t('custom_agents.active_deployments') || 'ACTIVE FLEET'}</span>
-            <Activity className="w-4 h-4 text-[#FFB800]" />
+            <Activity className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-2xl font-black text-[#FFB800] mt-1 font-mono">{activeCount}</div>
+          <div className="text-2xl font-black text-primary mt-1 font-mono">{activeCount}</div>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552]">
+        <Card className="p-3 bg-card border-border">
           <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400 uppercase">
             <span>{t('custom_agents.total_executions') || 'EXECUTIONS'}</span>
             <Zap className="w-4 h-4 text-cyan-400" />
@@ -155,13 +155,13 @@ export function CustomAgentsFeature() {
           <div className="text-2xl font-black text-cyan-400 mt-1 font-mono">{totalExecutions}</div>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase">
+        <Card className="p-3 bg-card border-border">
+          <div className="flex items-center justify-between text-[10px] font-bold text-primary uppercase">
             <span>{t('custom_agents.runtime_engine') || 'RUNTIME ENGINE'}</span>
-            <Cpu className="w-4 h-4 text-[#FFB800]" />
+            <Cpu className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-[10px] font-bold text-[#FFB800] mt-2 flex items-center gap-1.5 uppercase font-mono">
-            <span className="w-1.5 h-1.5 rounded-none bg-[#FFB800] animate-pulse" />
+          <div className="text-[10px] font-bold text-primary mt-2 flex items-center gap-1.5 uppercase font-mono">
+            <span className="w-1.5 h-1.5 rounded-none bg-primary animate-pulse" />
             {t('custom_agents.smart_fallback_active') || 'SMART FALLBACK ACTIVE'}
           </div>
         </Card>
@@ -182,8 +182,8 @@ export function CustomAgentsFeature() {
             type="button"
             onClick={() => setFilterType(tab.id)}
             className={`px-3 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${filterType === tab.id
-                ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
+                ? 'bg-primary text-primary-foreground border border-primary'
+                : 'bg-background text-muted-foreground hover:text-white border border-border'
               }`}
           >
             {t(tab.labelKey) || tab.defaultLabel}
@@ -193,12 +193,12 @@ export function CustomAgentsFeature() {
 
       {/* Custom Agents Grid */}
       {isLoading ? (
-        <div className="py-20 text-center text-slate-500 text-xs font-mono uppercase">LOADING AGENT FLEET...</div>
+        <div className="py-20 text-center text-muted-foreground/60 text-xs font-mono uppercase">LOADING AGENT FLEET...</div>
       ) : filteredAgents.length === 0 ? (
-        <div className="py-16 text-center rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2.5 font-mono">
+        <div className="py-16 text-center rounded-none bg-background border border-border space-y-2.5 font-mono">
           <Bot className="w-10 h-10 text-slate-600 mx-auto" />
           <h3 className="text-xs font-bold text-white uppercase">{t('custom_agents.no_agents_found') || 'NO CUSTOM AGENTS FOUND'}</h3>
-          <p className="text-[10px] text-slate-500 max-w-sm mx-auto uppercase">
+          <p className="text-[10px] text-muted-foreground/60 max-w-sm mx-auto uppercase">
             {t('custom_agents.no_agents_desc') || 'DESIGN YOUR FIRST CUSTOM AUTONOMOUS AGENT TO AUTOMATE SPECIALIZED CRM WORKFLOWS.'}
           </p>
           <Button variant="primary" size="sm" onClick={handleOpenCreate} className="mt-2 text-xs">
@@ -211,23 +211,23 @@ export function CustomAgentsFeature() {
           {filteredAgents.map((agent) => (
             <Card
               key={agent.id}
-              className="p-4 bg-[#121212] border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between group space-y-3 font-mono"
+              className="p-4 bg-card border-border hover:border-primary transition-none flex flex-col justify-between group space-y-3 font-mono"
             >
               <div className="space-y-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
+                    <div className="p-2 rounded-none bg-background border border-primary/50 text-primary">
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#FFB800] transition-none">
+                      <h3 className="text-xs font-bold text-white uppercase group-hover:text-primary transition-none">
                         {agent.name}
                       </h3>
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="px-1 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/40">
+                        <span className="px-1 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold bg-background text-primary border border-primary/40">
                           {agent.trigger_type}
                         </span>
-                        <span className="text-[9px] text-slate-500 uppercase">
+                        <span className="text-[9px] text-muted-foreground/60 uppercase">
                           • {agent.model_name || 'SMART-FALLBACK'}
                         </span>
                       </div>
@@ -238,8 +238,8 @@ export function CustomAgentsFeature() {
                     type="button"
                     onClick={(e) => handleToggleActive(e, agent)}
                     className={`px-1.5 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold border transition-none ${agent.is_active
-                        ? 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]'
-                        : 'bg-[#0B0C10] text-slate-500 border-[#3A4552]'
+                        ? 'bg-background text-primary border-primary'
+                        : 'bg-background text-muted-foreground/60 border-border'
                       }`}
                     title="Toggle Active Status"
                   >
@@ -247,20 +247,20 @@ export function CustomAgentsFeature() {
                   </button>
                 </div>
 
-                <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 uppercase">
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 uppercase">
                   {agent.description || 'NO DESCRIPTION PROVIDED.'}
                 </p>
 
                 {/* Tools enabled */}
                 <div className="space-y-1 pt-1">
-                  <span className="text-[9px] text-slate-500 uppercase font-bold block">
+                  <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">
                     {t('custom_agents.step_capabilities') || 'CAPABILITIES'} ({agent.tools_enabled?.length || 0})
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {(agent.tools_enabled || []).map((tool) => (
                       <span
                         key={tool}
-                        className="px-1.5 py-0.2 rounded-none text-[9px] font-mono uppercase bg-[#0B0C10] text-cyan-400 border border-[#3A4552]"
+                        className="px-1.5 py-0.2 rounded-none text-[9px] font-mono uppercase bg-background text-cyan-400 border border-border"
                       >
                         {tool}
                       </span>
@@ -270,8 +270,8 @@ export function CustomAgentsFeature() {
               </div>
 
               {/* Card Footer */}
-              <div className="pt-2 border-t border-[#3A4552] space-y-2">
-                <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono uppercase">
+              <div className="pt-2 border-t border-border space-y-2">
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground/60 font-mono uppercase">
                   <span className="flex items-center gap-1 text-cyan-400 font-bold">
                     <Zap className="w-3 h-3" />
                     {agent.execution_count || 0} {t('custom_agents.runs') || 'RUNS'}
@@ -289,7 +289,7 @@ export function CustomAgentsFeature() {
                       onClick={() => setSandboxAgent(agent)}
                       className="h-6 px-2 text-[10px]"
                     >
-                      <Play className="w-3 h-3 mr-1 fill-current text-[#FFB800]" />
+                      <Play className="w-3 h-3 mr-1 fill-current text-primary" />
                       <span>{t('custom_agents.sandbox') || 'SANDBOX'}</span>
                     </Button>
 
@@ -297,7 +297,7 @@ export function CustomAgentsFeature() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setHistoryAgent(agent)}
-                      className="h-6 px-1.5 text-xs text-slate-400 hover:text-white"
+                      className="h-6 px-1.5 text-xs text-muted-foreground hover:text-white"
                       title={t('custom_agents.view_history') || 'View Run History & Telemetry'}
                     >
                       <History className="w-3 h-3" />
@@ -309,7 +309,7 @@ export function CustomAgentsFeature() {
                       variant="ghost"
                       size="sm"
                       onClick={(e) => handleOpenEdit(e, agent)}
-                      className="h-6 w-6 p-0 text-slate-400 hover:text-white"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-white"
                       title={t('custom_agents.edit_agent') || 'Edit Agent Configuration'}
                     >
                       <Pencil className="w-3 h-3" />
@@ -318,7 +318,7 @@ export function CustomAgentsFeature() {
                       variant="ghost"
                       size="sm"
                       onClick={(e) => handleDelete(e, agent)}
-                      className="h-6 w-6 p-0 text-slate-400 hover:text-[#FF2A54]"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
                       title={t('custom_agents.delete_agent') || 'Delete Agent'}
                     >
                       <Trash2 className="w-3 h-3" />

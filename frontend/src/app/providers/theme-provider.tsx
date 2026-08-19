@@ -8,17 +8,30 @@ export interface ThemeProviderProps {
   storageKey?: string;
 }
 
-export interface ThemeProviderState {
+interface ThemeProviderState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  /** The resolved theme actually applied to the DOM ('light' | 'dark') */
+  resolvedTheme: 'light' | 'dark';
 }
 
 const initialState: ThemeProviderState = {
   theme: 'system',
   setTheme: () => null,
+  resolvedTheme: 'dark',
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+function getSystemTheme(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function resolveTheme(theme: Theme): 'light' | 'dark' {
+  if (theme === 'system') return getSystemTheme();
+  return theme;
+}
 
 export function ThemeProvider({
   children,
@@ -28,37 +41,33 @@ export function ThemeProvider({
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === 'undefined') return defaultTheme;
     try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored === 'dark' || stored === 'light' || stored === 'system') {
-        return stored as Theme;
-      }
+      const stored = localStorage.getItem(storageKey) as Theme | null;
+      if (stored === 'dark' || stored === 'light' || stored === 'system') return stored;
     } catch {
-      // Ignore localStorage access errors
+      // localStorage unavailable (e.g. incognito)
     }
     return defaultTheme;
   });
 
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() =>
+    resolveTheme(theme)
+  );
+
   useEffect(() => {
     const root = document.documentElement;
 
-    const applyTheme = () => {
+    const applyTheme = (t: Theme) => {
+      const resolved = resolveTheme(t);
       root.classList.remove('light', 'dark');
-
-      if (theme === 'system') {
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light';
-        root.classList.add(systemTheme);
-      } else {
-        root.classList.add(theme);
-      }
+      root.classList.add(resolved);
+      setResolvedTheme(resolved);
     };
 
-    applyTheme();
+    applyTheme(theme);
 
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const listener = () => applyTheme();
+      const listener = () => applyTheme('system');
       mediaQuery.addEventListener('change', listener);
       return () => mediaQuery.removeEventListener('change', listener);
     }
@@ -68,27 +77,20 @@ export function ThemeProvider({
     try {
       localStorage.setItem(storageKey, newTheme);
     } catch {
-      // Ignore storage write failure
+      // Ignore write failure
     }
     setThemeState(newTheme);
   };
 
-  const value = {
-    theme,
-    setTheme,
-  };
-
   return (
-    <ThemeProviderContext.Provider value={value}>
+    <ThemeProviderContext.Provider value={{ theme, setTheme, resolvedTheme }}>
       {children}
     </ThemeProviderContext.Provider>
   );
 }
 
 export const useTheme = (): ThemeProviderState => {
-  const context = useContext(ThemeProviderContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+  const ctx = useContext(ThemeProviderContext);
+  if (!ctx) throw new Error('useTheme must be used within a ThemeProvider');
+  return ctx;
 };

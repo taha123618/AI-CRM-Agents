@@ -58,24 +58,24 @@ export function ResetPasswordPage() {
       subtitle="ENTER TOKEN AND CHOOSE A SECURE PASSWORD"
     >
       {errorMessage && (
-        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
-          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+        <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
           <div className="uppercase">{errorMessage}</div>
         </div>
       )}
 
       {isSuccess ? (
         <div className="space-y-3 text-center font-mono">
-          <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#FFB800] flex items-center justify-center mx-auto text-[#FFB800]">
+          <div className="w-12 h-12 rounded-none bg-background border border-primary flex items-center justify-center mx-auto text-primary">
             <CheckCircle2 className="w-6 h-6" />
           </div>
 
-          <h3 className="text-xs font-bold text-white uppercase">CREDENTIALS UPDATED!</h3>
-          <p className="text-[10px] text-slate-300 uppercase">
+          <h3 className="text-xs font-bold text-foreground uppercase">CREDENTIALS UPDATED!</h3>
+          <p className="text-[10px] text-muted-foreground uppercase">
             YOUR PASSWORD HAS BEEN RESET. YOU CAN NOW SIGN IN WITH UPDATED CREDENTIALS.
           </p>
 
-          <div className="pt-2 border-t border-[#3A4552]">
+          <div className="pt-2 border-t border-border">
             <Button
               variant="primary"
               onClick={() => navigate('/login')}
@@ -88,40 +88,40 @@ export function ResetPasswordPage() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3 font-mono">
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               RESET SECURITY TOKEN
             </label>
             <div className="relative">
-              <KeyRound className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <KeyRound className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 required
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
                 placeholder="Paste token received via email"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               NEW PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showNewPassword ? 'text' : 'password'}
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-8 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-none"
                 tabIndex={-1}
               >
                 {showNewPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -131,23 +131,23 @@ export function ResetPasswordPage() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               CONFIRM NEW PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-8 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-none"
                 tabIndex={-1}
               >
                 {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -165,10 +165,10 @@ export function ResetPasswordPage() {
             <span>{isResetting ? 'UPDATING...' : 'UPDATE PASSWORD'}</span>
           </Button>
 
-          <div className="text-center pt-1 border-t border-[#3A4552]">
+          <div className="text-center pt-1 border-t border-border">
             <Link
               to="/login"
-              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-white uppercase"
+              className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground uppercase"
             >
               <ArrowLeft className="w-3 h-3" />
               BACK TO SIGN IN

@@ -14,25 +14,25 @@ export function UnauthorizedPage() {
       subtitle="ROLE-BASED ACCESS CONTROL (RBAC) PERMISSION REQUIRED"
     >
       <div className="space-y-4 text-center font-mono">
-        <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#FF2A54] flex items-center justify-center mx-auto text-[#FF2A54]">
+        <div className="w-12 h-12 rounded-none bg-background border border-destructive flex items-center justify-center mx-auto text-destructive">
           <ShieldAlert className="w-6 h-6" />
         </div>
 
         <div className="space-y-1">
-          <h3 className="text-xs font-bold text-white uppercase">403 — INSUFFICIENT PRIVILEGES</h3>
-          <p className="text-[10px] text-slate-300 leading-relaxed uppercase">
-            YOUR CURRENT ROLE (<strong className="text-[#FFB800] uppercase font-mono">{user?.role || 'GUEST'}</strong>) DOES NOT HAVE PERMISSION TO ACCESS THIS RESOURCE.
+          <h3 className="text-xs font-bold text-foreground uppercase">403 — INSUFFICIENT PRIVILEGES</h3>
+          <p className="text-[10px] text-muted-foreground leading-relaxed uppercase">
+            YOUR CURRENT ROLE (<strong className="text-primary uppercase font-mono">{user?.role || 'GUEST'}</strong>) DOES NOT HAVE PERMISSION TO ACCESS THIS RESOURCE.
           </p>
         </div>
 
-        <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] rounded-none text-left text-xs space-y-1 font-mono uppercase">
-          <div className="flex justify-between text-slate-400 text-[10px]">
+        <div className="p-2.5 bg-background border border-border rounded-none text-left text-xs space-y-1 font-mono uppercase">
+          <div className="flex justify-between text-muted-foreground text-[10px]">
             <span>USER ID:</span>
-            <span className="text-slate-200">{user?.email || 'UNAUTHENTICATED'}</span>
+            <span className="text-foreground">{user?.email || 'UNAUTHENTICATED'}</span>
           </div>
-          <div className="flex justify-between text-slate-400 text-[10px]">
+          <div className="flex justify-between text-muted-foreground text-[10px]">
             <span>DEPARTMENT:</span>
-            <span className="text-[#FFB800] uppercase">{user?.role || 'NONE'}</span>
+            <span className="text-primary uppercase">{user?.role || 'NONE'}</span>
           </div>
         </div>
 
@@ -56,10 +56,10 @@ export function UnauthorizedPage() {
           </Button>
         </div>
 
-        <div className="pt-2 border-t border-[#3A4552]">
+        <div className="pt-2 border-t border-border">
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-white uppercase"
+            className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground uppercase"
           >
             <ArrowLeft className="w-3 h-3" />
             RETURN TO PLATFORM

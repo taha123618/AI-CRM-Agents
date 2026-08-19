@@ -1,114 +1,115 @@
 import { useState, useRef, useEffect } from 'react';
 import { Moon, Sun, Laptop, Check } from 'lucide-react';
-import { useTheme } from '@/app/providers/theme-provider';
-import { Button } from '@/components/ui/Button';
+import { useTheme, type Theme } from '@/app/providers/theme-provider';
+
+interface ThemeOption {
+  value: Theme;
+  label: string;
+  icon: React.ElementType;
+}
+
+const THEME_OPTIONS: ThemeOption[] = [
+  { value: 'light', label: 'Light', icon: Sun },
+  { value: 'dark', label: 'Dark', icon: Moon },
+  { value: 'system', label: 'System', icon: Laptop },
+];
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Close on outside click
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (!isOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, [isOpen]);
 
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isOpen]);
+
+  const ActiveIcon = resolvedTheme === 'dark' ? Moon : Sun;
+
   return (
-    <div ref={dropdownRef} className="fixed bottom-6 right-6 z-50 font-mono">
-      {/* Dropdown Menu */}
+    <div
+      ref={dropdownRef}
+      className="fixed bottom-6 right-6 z-50 font-mono"
+      role="region"
+      aria-label="Theme selector"
+    >
+      {/* Dropdown panel */}
       {isOpen && (
         <div
-          className="absolute bottom-12 right-0 w-36 bg-[#121212] border border-[#3A4552] shadow-2xl p-1 mb-2 animate-in fade-in slide-in-from-bottom-2 duration-150"
           role="menu"
           aria-orientation="vertical"
+          className="absolute bottom-14 right-0 w-40 bg-card border border-border shadow-2xl p-1"
         >
-          <div className="px-2 py-1 text-[10px] uppercase font-bold text-slate-400 border-b border-[#3A4552]/60 mb-1 tracking-wider">
+          <div className="px-2 py-1.5 text-[9px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border mb-1">
             Theme Mode
           </div>
 
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setTheme('light');
-              setIsOpen(false);
-            }}
-            className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-left uppercase transition-colors cursor-pointer ${theme === 'light'
-              ? 'bg-[#FFB800] text-[#0B0C10] font-bold'
-              : 'text-slate-300 hover:bg-[#1C1C1C] hover:text-white'
-              }`}
-          >
-            <div className="flex items-center gap-2">
-              <Sun className="w-3.5 h-3.5 shrink-0" />
-              <span>Light</span>
-            </div>
-            {theme === 'light' && <Check className="w-3.5 h-3.5 shrink-0" />}
-          </button>
-
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setTheme('dark');
-              setIsOpen(false);
-            }}
-            className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-left uppercase transition-colors cursor-pointer ${theme === 'dark'
-              ? 'bg-[#FFB800] text-[#0B0C10] font-bold'
-              : 'text-slate-300 hover:bg-[#1C1C1C] hover:text-white'
-              }`}
-          >
-            <div className="flex items-center gap-2">
-              <Moon className="w-3.5 h-3.5 shrink-0" />
-              <span>Dark</span>
-            </div>
-            {theme === 'dark' && <Check className="w-3.5 h-3.5 shrink-0" />}
-          </button>
-
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setTheme('system');
-              setIsOpen(false);
-            }}
-            className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-left uppercase transition-colors cursor-pointer ${theme === 'system'
-              ? 'bg-[#FFB800] text-[#0B0C10] font-bold'
-              : 'text-slate-300 hover:bg-[#1C1C1C] hover:text-white'
-              }`}
-          >
-            <div className="flex items-center gap-2">
-              <Laptop className="w-3.5 h-3.5 shrink-0" />
-              <span>System</span>
-            </div>
-            {theme === 'system' && <Check className="w-3.5 h-3.5 shrink-0" />}
-          </button>
+          {THEME_OPTIONS.map(({ value, label, icon: Icon }) => {
+            const isActive = theme === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                role="menuitem"
+                aria-checked={isActive}
+                onClick={() => {
+                  setTheme(value);
+                  setIsOpen(false);
+                }}
+                className={[
+                  'w-full flex items-center justify-between px-2.5 py-2 text-xs uppercase font-mono font-bold cursor-pointer',
+                  isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-foreground hover:bg-muted hover:text-foreground',
+                ].join(' ')}
+              >
+                <span className="flex items-center gap-2">
+                  <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  {label}
+                </span>
+                {isActive && <Check className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
+              </button>
+            );
+          })}
         </div>
       )}
 
-      {/* Trigger Button */}
-      <Button
+      {/* Trigger button */}
+      <button
         type="button"
-        variant="outline"
-        onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        aria-haspopup="true"
-        title="Toggle application theme (Light, Dark, System)"
-        className="relative h-11 w-11 p-0 rounded-none border border-[#3A4552] bg-[#121212] hover:bg-[#1C1C1C] text-slate-200 shadow-2xl hover:border-[#FFB800] focus:outline-none focus:border-[#FFB800] flex items-center justify-center cursor-pointer"
+        aria-haspopup="menu"
+        aria-label={`Theme: ${theme}. Click to change.`}
+        title={`Theme: ${theme}`}
+        onClick={() => setIsOpen((v) => !v)}
+        className={[
+          'h-10 w-10 flex items-center justify-center',
+          'bg-card border border-border text-foreground',
+          'hover:border-primary hover:text-primary',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          'shadow-xl cursor-pointer',
+        ].join(' ')}
       >
-        <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0 text-[#FFB800]" />
-        <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100 text-[#FFB800]" />
+        <ActiveIcon className="h-4 w-4" aria-hidden="true" />
         <span className="sr-only">Toggle theme</span>
-      </Button>
+      </button>
     </div>
   );
 }

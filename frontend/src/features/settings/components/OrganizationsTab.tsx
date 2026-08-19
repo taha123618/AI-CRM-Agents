@@ -60,22 +60,22 @@ export function OrganizationsTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Tab Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
           <div className="flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-[#FFB800]" />
+            <Building2 className="w-4 h-4 text-primary" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">MULTI-TENANT WORKSPACES &amp; ORGANIZATIONS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               MULTI-TENANCY
             </Badge>
           </div>
-          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+          <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
             ISOLATE CONTACTS, DEALS, CUSTOMER INTERACTIONS, AND AGENT EXECUTIONS WITHIN SECURE BOUNDARIES.
           </p>
         </div>
 
         <Button size="sm" variant="primary" onClick={() => setIsCreateModalOpen(true)} className="text-xs h-7 uppercase font-bold flex items-center gap-1.5">
-          <Plus className="w-3.5 h-3.5 text-[#0B0C10]" />
+          <Plus className="w-3.5 h-3.5 text-primary-foreground" />
           <span>NEW WORKSPACE</span>
         </Button>
       </div>
@@ -90,11 +90,11 @@ export function OrganizationsTab() {
           {orgs?.map((org: Organization) => (
             <div
               key={org.id}
-              className="p-4 rounded-none bg-[#121212] border border-[#3A4552] hover:border-[#FFB800] transition-none flex flex-col justify-between"
+              className="p-4 rounded-none bg-card border border-border hover:border-primary transition-none flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2.5">
-                  <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs font-mono">
+                  <div className="w-8 h-8 rounded-none bg-background border border-border flex items-center justify-center text-primary font-bold text-xs font-mono">
                     {org.name.slice(0, 2).toUpperCase()}
                   </div>
                   <Badge variant={org.plan_tier === 'enterprise' ? 'purple' : 'info'} className="text-[9px] uppercase font-mono">
@@ -103,29 +103,29 @@ export function OrganizationsTab() {
                 </div>
 
                 <h3 className="text-xs font-bold text-white uppercase tracking-wide">{org.name}</h3>
-                <p className="text-[10px] font-mono text-[#FFB800] mt-0.5">SLUG: {org.slug}</p>
+                <p className="text-[10px] font-mono text-primary mt-0.5">SLUG: {org.slug}</p>
 
-                <div className="mt-3 space-y-1.5 text-xs text-slate-300">
+                <div className="mt-3 space-y-1.5 text-xs text-foreground/80">
                   <div className="flex items-center gap-2 text-[10px] uppercase">
-                    <Globe className="w-3 h-3 text-slate-500" />
+                    <Globe className="w-3 h-3 text-muted-foreground/60" />
                     <span>{org.domain || 'INTERNAL WORKSPACE'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-[10px] uppercase">
-                    <CheckCircle2 className="w-3 h-3 text-[#FFB800]" />
+                    <CheckCircle2 className="w-3 h-3 text-primary" />
                     <span>STATUS: {org.is_active ? 'ACTIVE' : 'SUSPENDED'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#3A4552] flex items-center justify-between text-xs">
-                <span className="font-mono text-[9px] text-slate-500 truncate max-w-[120px]">{org.id}</span>
+              <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs">
+                <span className="font-mono text-[9px] text-muted-foreground/60 truncate max-w-[120px]">{org.id}</span>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => handleCopy(org.id)}
-                  className="h-6 px-1.5 text-[10px] text-slate-400 hover:text-white uppercase"
+                  className="h-6 px-1.5 text-[10px] text-muted-foreground hover:text-white uppercase"
                 >
-                  {copiedId === org.id ? <Check className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
+                  {copiedId === org.id ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3" />}
                   <span className="ml-1">{copiedId === org.id ? 'COPIED' : 'COPY ID'}</span>
                 </Button>
               </div>
@@ -136,68 +136,68 @@ export function OrganizationsTab() {
 
       {/* Create Workspace Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0B0C10]/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#121212] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+        <div className="fixed inset-0 z-50 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Building2 className="w-4 h-4 text-[#FFB800]" />
+                <Building2 className="w-4 h-4 text-primary" />
                 CREATE ORGANIZATION WORKSPACE
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-slate-400 hover:text-white text-xs"
+                className="text-muted-foreground hover:text-white text-xs"
               >
                 ✕
               </button>
             </div>
 
             {formError && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs rounded-none uppercase font-mono">
+              <div className="p-2.5 bg-background border border-destructive text-destructive text-xs rounded-none uppercase font-mono">
                 {formError}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">ORGANIZATION NAME *</label>
+                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">ORGANIZATION NAME *</label>
                 <input
                   type="text"
                   required
                   placeholder="E.G. APEX GLOBAL VENTURES"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">IDENTIFIER SLUG (OPTIONAL)</label>
+                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">IDENTIFIER SLUG (OPTIONAL)</label>
                 <input
                   type="text"
                   placeholder="E.G. APEX-GLOBAL"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">COMPANY DOMAIN</label>
+                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">COMPANY DOMAIN</label>
                 <input
                   type="text"
                   placeholder="E.G. APEXGLOBAL.COM"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">SUBSCRIPTION PLAN TIER</label>
+                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">SUBSCRIPTION PLAN TIER</label>
                 <select
                   value={planTier}
                   onChange={(e) => setPlanTier(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="starter">STARTER (SMALL BUSINESS)</option>
                   <option value="growth">GROWTH (SCALE-UP)</option>
@@ -205,7 +205,7 @@ export function OrganizationsTab() {
                 </select>
               </div>
 
-              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+              <div className="pt-2 flex justify-end gap-2 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)} className="text-xs uppercase">
                   CANCEL
                 </Button>

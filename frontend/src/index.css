@@ -3,58 +3,126 @@
 @tailwind utilities;
 
 @layer base {
+  /* ═══════════════════════════════════════════════
+     DARK THEME (default) — Tactical Command OS
+     Void Black / Matte Black / Amber Gold
+     ═══════════════════════════════════════════════ */
   :root {
-    --background: 220 22% 5%;
-    /* #0B0C10 - Void Black */
-    --foreground: 210 20% 98%;
-    --card: 214 24% 16%;
-    /* #121212 - Matte Black */
-    --card-foreground: 210 20% 98%;
-    --popover: 215 24% 20%;
-    /* #1C1C1C - Overlay Surface */
-    --popover-foreground: 210 20% 98%;
-    --primary: 104 100% 54%;
-    /* #FFB800 - Radioactive Lime */
-    --primary-foreground: 220 22% 5%;
-    /* #0B0C10 - Void Black text on primary */
-    --secondary: 214 24% 16%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 24% 20%;
-    --muted-foreground: 215 16% 65%;
-    --accent: 214 24% 16%;
-    --accent-foreground: 104 100% 54%;
-    --destructive: 348 100% 58%;
-    /* #FF2A54 - High-contrast Alert */
+    --background: 222 14% 7%;       /* #0B0C10  Void Black */
+    --foreground: 210 20% 96%;      /* #F1F5F9  Near-white */
+
+    --card: 0 0% 7%;                /* #121212  Matte Black */
+    --card-foreground: 210 20% 96%;
+
+    --popover: 0 0% 11%;            /* #1C1C1C  Overlay Surface */
+    --popover-foreground: 210 20% 96%;
+
+    --primary: 43 100% 50%;         /* #FFB800  Tactical Amber */
+    --primary-foreground: 222 14% 7%; /* #0B0C10  Dark text on amber */
+
+    --secondary: 217 19% 15%;       /* #1E252F */
+    --secondary-foreground: 210 20% 96%;
+
+    --muted: 217 19% 15%;           /* #1E252F */
+    --muted-foreground: 215 16% 57%; /* #8A96A3 */
+
+    --accent: 217 19% 15%;
+    --accent-foreground: 43 100% 50%; /* Amber accent text */
+
+    --destructive: 348 100% 58%;    /* #FF2A54  Alert Red */
     --destructive-foreground: 0 0% 100%;
-    --border: 215 19% 28%;
-    /* #3A4552 - Steel Border */
-    --input: 215 19% 28%;
-    --ring: 104 100% 54%;
+
+    --border: 215 19% 25%;          /* #3A4552  Steel Border */
+    --input: 215 19% 20%;           /* slightly darker than border */
+    --ring: 43 100% 50%;            /* Amber focus ring */
+
     --radius: 0rem;
+
+    /* Chart colors */
+    --chart-1: 43 100% 50%;         /* Amber */
+    --chart-2: 199 89% 48%;         /* Cyan */
+    --chart-3: 271 91% 65%;         /* Purple */
+    --chart-4: 142 72% 42%;         /* Emerald */
+    --chart-5: 348 100% 58%;        /* Red */
   }
 
+  /* ═══════════════════════════════════════════════
+     LIGHT THEME — Tactical Field Manual
+     Warm Off-White / Near-Black / Same Amber Primary
+     ═══════════════════════════════════════════════ */
+  .light {
+    --background: 60 11% 96%;       /* #F5F5F0  Warm off-white */
+    --foreground: 220 20% 9%;       /* #0F1117  Near-black */
+
+    --card: 0 0% 100%;              /* #FFFFFF  Pure white */
+    --card-foreground: 220 20% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 9%;
+
+    --primary: 43 100% 45%;         /* #E6A500  Slightly deeper amber for light bg */
+    --primary-foreground: 0 0% 100%; /* White text on primary in light mode */
+
+    --secondary: 210 14% 91%;       /* #E4E8ED */
+    --secondary-foreground: 220 20% 15%;
+
+    --muted: 210 15% 93%;           /* #E8ECF0 */
+    --muted-foreground: 215 14% 38%; /* #576070 */
+
+    --accent: 210 14% 91%;
+    --accent-foreground: 220 20% 9%;
+
+    --destructive: 348 85% 48%;     /* #E0254A  Slightly darker red */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 18% 80%;          /* #BDC5CE  Steel-light border */
+    --input: 214 18% 88%;           /* #D5DAE0  Input border light */
+    --ring: 43 100% 45%;            /* Amber focus ring */
+
+    --radius: 0rem;
+
+    /* Chart colors — slightly muted for light bg */
+    --chart-1: 43 100% 40%;         /* Amber */
+    --chart-2: 199 89% 38%;         /* Cyan */
+    --chart-3: 271 91% 55%;         /* Purple */
+    --chart-4: 142 72% 35%;         /* Emerald */
+    --chart-5: 348 85% 48%;         /* Red */
+  }
+
+  /* ═══════════════════════════════════════════════
+     DARK CLASS alias (maps to :root dark values)
+     ═══════════════════════════════════════════════ */
   .dark {
-    --background: 220 22% 5%;
-    --foreground: 210 20% 98%;
-    --card: 214 24% 16%;
-    --card-foreground: 210 20% 98%;
-    --popover: 215 24% 20%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 104 100% 54%;
-    --primary-foreground: 220 22% 5%;
-    --secondary: 214 24% 16%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 24% 20%;
-    --muted-foreground: 215 16% 65%;
-    --accent: 214 24% 16%;
-    --accent-foreground: 104 100% 54%;
+    --background: 222 14% 7%;
+    --foreground: 210 20% 96%;
+    --card: 0 0% 7%;
+    --card-foreground: 210 20% 96%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 43 100% 50%;
+    --primary-foreground: 222 14% 7%;
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 217 19% 15%;
+    --muted-foreground: 215 16% 57%;
+    --accent: 217 19% 15%;
+    --accent-foreground: 43 100% 50%;
     --destructive: 348 100% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 215 19% 28%;
-    --input: 215 19% 28%;
-    --ring: 104 100% 54%;
+    --border: 215 19% 25%;
+    --input: 215 19% 20%;
+    --ring: 43 100% 50%;
     --radius: 0rem;
+    --chart-1: 43 100% 50%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 271 91% 65%;
+    --chart-4: 142 72% 42%;
+    --chart-5: 348 100% 58%;
   }
+
+  /* ═══════════════════════════════════════════════
+     GLOBAL DESIGN RULES
+     ═══════════════════════════════════════════════ */
 
   /* Universal Strict Zero-Radius Enforcement */
   *,
@@ -72,52 +140,74 @@
   }
 
   body {
-    @apply bg-[#0B0C10] text-slate-100 antialiased font-sans;
-    background-color: #0B0C10;
-    color: #F1F5F9;
+    @apply bg-background text-foreground antialiased font-sans;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   }
 }
 
-/* Custom Tactical Squared Scrollbars */
+/* ═══════════════════════════════════════════════
+   SCROLLBARS — Tactical Squared Style
+   ═══════════════════════════════════════════════ */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0C10;
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3A4552;
+  background: hsl(var(--border));
   border-radius: 0 !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFB800;
+  background: hsl(var(--primary));
 }
 
-/* High-Density Alternating Striped Tables */
+/* ═══════════════════════════════════════════════
+   TABLE STRIPES — Theme-aware
+   ═══════════════════════════════════════════════ */
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
-table tbody tr:nth-child(even) {
-  background-color: #121212;
-}
-
-table tbody tr:nth-child(odd) {
+/* Dark theme stripes */
+.dark table tbody tr:nth-child(even),
+:root table tbody tr:nth-child(even) {
   background-color: #0E0E0E;
 }
 
-table tbody tr:hover {
-  outline: 1px solid #FFB800;
+.dark table tbody tr:nth-child(odd),
+:root table tbody tr:nth-child(odd) {
+  background-color: #121212;
+}
+
+.dark table tbody tr:hover,
+:root table tbody tr:hover {
+  outline: 1px solid hsl(var(--primary));
   background-color: #1C1C1C !important;
 }
 
-/* RTL Layout Utilities */
+/* Light theme stripes */
+.light table tbody tr:nth-child(even) {
+  background-color: #F0F1F3;
+}
+
+.light table tbody tr:nth-child(odd) {
+  background-color: #FFFFFF;
+}
+
+.light table tbody tr:hover {
+  outline: 1px solid hsl(var(--primary));
+  background-color: #FFF8E7 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   RTL LAYOUT UTILITIES
+   ═══════════════════════════════════════════════ */
 [dir="rtl"] {
   text-align: right;
 }

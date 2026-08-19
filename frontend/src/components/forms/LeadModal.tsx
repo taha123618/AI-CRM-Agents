@@ -107,7 +107,7 @@ export function LeadModal() {
           {...register('lead_source')}
         />
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
           <Button type="button" variant="outline" onClick={() => setLeadModalOpen(false)} className="text-xs">
             CANCEL
           </Button>

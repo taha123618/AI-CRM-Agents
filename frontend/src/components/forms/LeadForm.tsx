@@ -86,7 +86,7 @@ export function LeadForm({ onSuccess, onCancel }: LeadFormProps) {
         onChange={(e) => setPhone(e.target.value)}
       />
 
-      <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+      <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} className="text-xs uppercase">
             CANCEL

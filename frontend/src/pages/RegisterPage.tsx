@@ -79,8 +79,8 @@ export function RegisterPage() {
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
-          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+        <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
           <div className="uppercase">{errorMessage}</div>
         </div>
       )}
@@ -112,68 +112,68 @@ export function RegisterPage() {
 
       <div className="relative my-3 font-mono">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#3A4552]" />
+          <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-[10px] uppercase">
-          <span className="bg-[#121212] px-2 text-slate-500">OR REGISTER WITH EMAIL</span>
+          <span className="bg-card px-2 text-muted-foreground">OR REGISTER WITH EMAIL</span>
         </div>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-3 font-mono">
         <div>
-          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+          <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
             FULL NAME
           </label>
           <div className="relative">
-            <User className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <User className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="JORDAN VANCE"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+          <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
             WORK EMAIL ADDRESS
           </label>
           <div className="relative">
-            <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="JORDAN.VANCE@COMPANY.COM"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-8 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-none"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -183,23 +183,23 @@ export function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               CONFIRM PASSWORD
             </label>
             <div className="relative">
-              <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Lock className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-8 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-none"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-none"
                 tabIndex={-1}
               >
                 {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -210,19 +210,19 @@ export function RegisterPage() {
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="block text-[10px] font-bold text-slate-300 uppercase">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase">
               DEPARTMENT ROLE
             </label>
-            <span className="text-[9px] text-[#FFB800] font-mono uppercase">
+            <span className="text-[9px] text-primary font-mono uppercase">
               ADMIN PROVISIONED VIA SETTINGS
             </span>
           </div>
           <div className="relative">
-            <ShieldCheck className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <ShieldCheck className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[#FFB800] cursor-pointer font-mono uppercase"
+              className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-primary cursor-pointer font-mono uppercase"
             >
               <option value="sales">SALES (PIPELINE, SDR &amp; DEALS)</option>
               <option value="support">SUPPORT (CUSTOMER SUCCESS &amp; JOURNEY)</option>
@@ -242,9 +242,9 @@ export function RegisterPage() {
         </Button>
       </form>
 
-      <div className="text-center text-[10px] text-slate-400 pt-2 border-t border-[#3A4552] font-mono uppercase">
+      <div className="text-center text-[10px] text-muted-foreground pt-2 border-t border-border font-mono uppercase">
         ALREADY HAVE AN ACCOUNT?{' '}
-        <Link to="/login" className="text-[#FFB800] font-bold hover:underline">
+        <Link to="/login" className="text-primary font-bold hover:underline">
           SIGN IN
         </Link>
       </div>

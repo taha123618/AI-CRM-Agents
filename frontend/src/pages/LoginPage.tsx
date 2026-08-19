@@ -62,8 +62,8 @@ export function LoginPage() {
     >
       {/* Error Notice */}
       {errorMessage && (
-        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
-          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+        <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
           <div className="uppercase">{errorMessage}</div>
         </div>
       )}
@@ -95,21 +95,21 @@ export function LoginPage() {
 
       <div className="relative my-3 font-mono">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#3A4552]" />
+          <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-[10px] uppercase">
-          <span className="bg-[#121212] px-2 text-slate-500">OR DIRECT CREDENTIALS</span>
+          <span className="bg-card px-2 text-muted-foreground">OR DIRECT CREDENTIALS</span>
         </div>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-3 font-mono">
         <div>
-          <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+          <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
             EMAIL ADDRESS
           </label>
           <div className="relative">
-            <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
@@ -117,25 +117,25 @@ export function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@enterprise.com"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="block text-[10px] font-bold text-slate-300 uppercase">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase">
               PASSWORD
             </label>
             <Link
               to="/forgot-password"
-              className="text-[10px] text-[#FFB800] hover:underline uppercase"
+              className="text-[10px] text-primary hover:underline uppercase"
             >
               FORGOT PASSWORD?
             </Link>
           </div>
           <div className="relative">
-            <Lock className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Lock className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="password"
               required
@@ -143,18 +143,18 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background text-foreground border border-border rounded-none pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
         </div>
 
         <div className="flex items-center justify-between pt-0.5">
-          <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer uppercase text-[10px]">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer uppercase text-[10px]">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="rounded-none border-[#3A4552] bg-[#0B0C10] text-[#FFB800] focus:ring-0"
+              className="rounded-none border-border bg-background text-primary focus:ring-0"
             />
             <span>REMEMBER THIS DEVICE</span>
           </label>
@@ -171,9 +171,9 @@ export function LoginPage() {
         </Button>
       </form>
 
-      <div className="text-center text-[10px] text-slate-400 pt-2 border-t border-[#3A4552] font-mono uppercase">
+      <div className="text-center text-[10px] text-muted-foreground pt-2 border-t border-border font-mono uppercase">
         NO OPERATOR ACCOUNT?{' '}
-        <Link to="/register" className="text-[#FFB800] font-bold hover:underline">
+        <Link to="/register" className="text-primary font-bold hover:underline">
           REGISTER ACCOUNT
         </Link>
       </div>

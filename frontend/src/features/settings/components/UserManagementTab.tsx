@@ -341,13 +341,13 @@ export function UserManagementTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <Shield className="w-4 h-4 text-[#FFB800]" />
+            <Shield className="w-4 h-4 text-primary" />
             ROLE-BASED ACCESS CONTROL (RBAC) &amp; USER PERMISSIONS
           </h2>
-          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+          <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
             DEFINE FINE-GRAINED OPERATIONAL PERMISSIONS, ADMINISTRATIVE DELEGATIONS, AND SECURITY POLICIES.
           </p>
         </div>
@@ -358,7 +358,7 @@ export function UserManagementTab() {
             onClick={() => logoutMutation.mutate()}
             className="text-xs h-7 uppercase"
           >
-            <LogOut className="w-3 h-3 mr-1 text-slate-400" />
+            <LogOut className="w-3 h-3 mr-1 text-muted-foreground" />
             CLEAR SESSION
           </Button>
 
@@ -369,12 +369,12 @@ export function UserManagementTab() {
               size="sm"
               className="text-xs h-7 uppercase font-bold"
             >
-              <UserPlus className="w-3.5 h-3.5 mr-1 text-[#0B0C10]" />
+              <UserPlus className="w-3.5 h-3.5 mr-1 text-primary-foreground" />
               PROVISION USER
             </Button>
           ) : (
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-slate-400 text-[10px] uppercase font-mono">
-              <Lock className="w-3 h-3 text-[#FFB800]" />
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-background border border-border text-muted-foreground text-[10px] uppercase font-mono">
+              <Lock className="w-3 h-3 text-primary" />
               <span>READ-ONLY MODE</span>
             </div>
           )}
@@ -383,11 +383,11 @@ export function UserManagementTab() {
 
       {/* RBAC Role Notice for Non-Admins */}
       {!isAdmin && (
-        <div className="p-3 rounded-none bg-[#0B0C10] border border-amber-500/40 text-amber-300 text-xs flex items-center justify-between gap-3 font-mono uppercase">
+        <div className="p-3 rounded-none bg-background border border-amber-500/40 text-amber-300 text-xs flex items-center justify-between gap-3 font-mono uppercase">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 text-[#FFB800] shrink-0" />
+            <ShieldAlert className="w-4 h-4 text-primary shrink-0" />
             <span>
-              SIGNED IN AS <strong className="font-mono text-[#FFB800]">{(currentUser?.role || 'User').toUpperCase()}</strong>. FULL USER CRUD &amp; PERMISSION DELEGATION IS RESTRICTED TO <strong>SUPER ADMIN</strong>.
+              SIGNED IN AS <strong className="font-mono text-primary">{(currentUser?.role || 'User').toUpperCase()}</strong>. FULL USER CRUD &amp; PERMISSION DELEGATION IS RESTRICTED TO <strong>SUPER ADMIN</strong>.
             </span>
           </div>
           <Badge variant="warning" className="text-[9px] uppercase font-mono">
@@ -400,30 +400,30 @@ export function UserManagementTab() {
       {feedback && (
         <div
           className={`p-3 rounded-none border text-xs flex items-center justify-between gap-2 uppercase font-mono animate-in fade-in ${feedback.type === 'error'
-              ? 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
-              : 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
+              ? 'bg-background border-destructive text-destructive'
+              : 'bg-background border-primary text-primary'
             }`}
         >
           <div className="flex items-center gap-2">
             {feedback.type === 'error' ? (
-              <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0" />
+              <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
             )}
             <span>{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-muted-foreground hover:text-white">
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
       {/* Search, Filter & Quick Stats Toolbar */}
-      <Card className="p-3 border-[#3A4552] bg-[#121212] font-mono">
+      <Card className="p-3 border-border bg-card font-mono">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500 pointer-events-none" />
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-muted-foreground/60 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
@@ -432,42 +432,42 @@ export function UserManagementTab() {
                 setPage(1);
               }}
               placeholder="SEARCH BY FULL NAME OR EMAIL..."
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
             />
           </div>
 
           {/* Filters */}
           <div className="flex items-center gap-2 flex-wrap font-mono">
-            <div className="flex items-center gap-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1">
-              <Filter className="w-3 h-3 text-slate-500" />
+            <div className="flex items-center gap-1 bg-background border border-border rounded-none px-2 py-1">
+              <Filter className="w-3 h-3 text-muted-foreground/60" />
               <select
                 value={roleFilter}
                 onChange={(e) => {
                   setRoleFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer uppercase font-mono"
+                className="bg-transparent text-xs text-foreground/80 focus:outline-none cursor-pointer uppercase font-mono"
               >
-                <option value="all" className="bg-[#0B0C10]">ALL ROLES ({users.length})</option>
-                <option value="admin" className="bg-[#0B0C10]">ADMIN ({users.filter((u) => u.role === 'admin').length})</option>
-                <option value="sales" className="bg-[#0B0C10]">SALES ({users.filter((u) => u.role === 'sales').length})</option>
-                <option value="support" className="bg-[#0B0C10]">SUPPORT ({users.filter((u) => u.role === 'support').length})</option>
-                <option value="auditor" className="bg-[#0B0C10]">AUDITOR ({users.filter((u) => u.role === 'auditor').length})</option>
+                <option value="all" className="bg-background">ALL ROLES ({users.length})</option>
+                <option value="admin" className="bg-background">ADMIN ({users.filter((u) => u.role === 'admin').length})</option>
+                <option value="sales" className="bg-background">SALES ({users.filter((u) => u.role === 'sales').length})</option>
+                <option value="support" className="bg-background">SUPPORT ({users.filter((u) => u.role === 'support').length})</option>
+                <option value="auditor" className="bg-background">AUDITOR ({users.filter((u) => u.role === 'auditor').length})</option>
               </select>
             </div>
 
-            <div className="flex items-center gap-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1">
+            <div className="flex items-center gap-1 bg-background border border-border rounded-none px-2 py-1">
               <select
                 value={statusFilter}
                 onChange={(e) => {
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer uppercase font-mono"
+                className="bg-transparent text-xs text-foreground/80 focus:outline-none cursor-pointer uppercase font-mono"
               >
-                <option value="all" className="bg-[#0B0C10]">ALL STATUSES</option>
-                <option value="active" className="bg-[#0B0C10]">ACTIVE ({users.filter((u) => u.is_active).length})</option>
-                <option value="suspended" className="bg-[#0B0C10]">SUSPENDED ({users.filter((u) => !u.is_active).length})</option>
+                <option value="all" className="bg-background">ALL STATUSES</option>
+                <option value="active" className="bg-background">ACTIVE ({users.filter((u) => u.is_active).length})</option>
+                <option value="suspended" className="bg-background">SUSPENDED ({users.filter((u) => !u.is_active).length})</option>
               </select>
             </div>
 
@@ -476,7 +476,7 @@ export function UserManagementTab() {
                 variant="ghost"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-slate-400 hover:text-white h-7 px-2 uppercase"
+                className="text-xs text-muted-foreground hover:text-white h-7 px-2 uppercase"
                 title="Reset Filters"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
@@ -488,11 +488,11 @@ export function UserManagementTab() {
       </Card>
 
       {/* Users & RBAC Permissions Table */}
-      <Card className="border-[#3A4552] overflow-hidden bg-[#121212]">
+      <Card className="border-border overflow-hidden bg-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse font-mono">
             <thead>
-              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-border bg-background text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
                 <th className="py-2.5 px-3">USER</th>
                 <th className="py-2.5 px-3">EMAIL</th>
                 <th className="py-2.5 px-3">ROLE</th>
@@ -505,31 +505,31 @@ export function UserManagementTab() {
             <tbody className="divide-y divide-[#3A4552]">
               {paginatedUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-slate-500 uppercase">
+                  <td colSpan={7} className="py-8 text-center text-muted-foreground/60 uppercase">
                     <User className="w-6 h-6 mx-auto mb-1 text-slate-600" />
                     NO USERS MATCHING THE ACTIVE SEARCH OR FILTER CRITERIA.
                   </td>
                 </tr>
               ) : (
                 paginatedUsers.map((u) => (
-                  <tr key={u.id} className="hover:bg-[#0B0C10] transition-none group">
+                  <tr key={u.id} className="hover:bg-background transition-none group">
                     {/* Full Name & Avatar */}
                     <td className="py-2 px-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs shrink-0 font-mono">
+                        <div className="w-6 h-6 rounded-none bg-background border border-border flex items-center justify-center text-primary font-bold text-xs shrink-0 font-mono">
                           {u.full_name?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <div>
                           <span className="font-bold text-white block uppercase text-[11px]">{u.full_name}</span>
                           {currentUser?.id === u.id && (
-                            <span className="text-[9px] text-[#FFB800] font-mono">(YOUR SESSION)</span>
+                            <span className="text-[9px] text-primary font-mono">(YOUR SESSION)</span>
                           )}
                         </div>
                       </div>
                     </td>
 
                     {/* Email */}
-                    <td className="py-2 px-3 text-slate-400 font-mono text-[11px]">{u.email}</td>
+                    <td className="py-2 px-3 text-muted-foreground font-mono text-[11px]">{u.email}</td>
 
                     {/* Role Dropdown / Badge */}
                     <td className="py-2 px-3">
@@ -540,7 +540,7 @@ export function UserManagementTab() {
                             updateRoleMutation.mutate({ userId: u.id, newRole: e.target.value })
                           }
                           disabled={updateRoleMutation.isPending}
-                          className="bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-0.5 text-xs text-slate-200 focus:outline-none focus:border-[#FFB800] cursor-pointer font-mono uppercase"
+                          className="bg-background border border-border rounded-none px-2 py-0.5 text-xs text-foreground focus:outline-none focus:border-primary cursor-pointer font-mono uppercase"
                         >
                           <option value="admin">ADMIN (SUPERUSER)</option>
                           <option value="sales">SALES (PIPELINE &amp; SDR)</option>
@@ -561,8 +561,8 @@ export function UserManagementTab() {
                           onClick={() => toggleStatusMutation.mutate({ userId: u.id, isActive: !u.is_active })}
                           disabled={currentUser?.id === u.id || toggleStatusMutation.isPending}
                           className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border transition-none font-mono ${u.is_active
-                              ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800] hover:border-[#FF2A54] hover:text-[#FF2A54]'
-                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54] hover:border-[#FFB800] hover:text-[#FFB800]'
+                              ? 'bg-background border-primary text-primary hover:border-destructive hover:text-destructive'
+                              : 'bg-background border-destructive text-destructive hover:border-primary hover:text-primary'
                             } ${currentUser?.id === u.id ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                           title={currentUser?.id === u.id ? 'Cannot suspend self' : 'Click to toggle status'}
                         >
@@ -571,8 +571,8 @@ export function UserManagementTab() {
                       ) : (
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-bold uppercase border font-mono ${u.is_active
-                              ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
-                              : 'bg-[#0B0C10] border-[#FF2A54] text-[#FF2A54]'
+                              ? 'bg-background border-primary text-primary'
+                              : 'bg-background border-destructive text-destructive'
                             }`}
                         >
                           {u.is_active ? 'ACTIVE' : 'SUSPENDED'}
@@ -588,7 +588,7 @@ export function UserManagementTab() {
                         </Badge>
                       ) : (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-mono bg-[#0B0C10] px-1.5 py-0.5 rounded-none border border-[#3A4552] text-[#FFB800]">
+                          <span className="text-[10px] font-mono bg-background px-1.5 py-0.5 rounded-none border border-border text-primary">
                             {(u.permissions && u.permissions.length > 0 ? u.permissions.length : (ROLE_DEFAULT_PERMISSIONS[u.role] || []).length)} SCOPES
                           </span>
                         </div>
@@ -596,7 +596,7 @@ export function UserManagementTab() {
                     </td>
 
                     {/* Created Date */}
-                    <td className="py-2 px-3 text-slate-500 text-[10px]">
+                    <td className="py-2 px-3 text-muted-foreground/60 text-[10px]">
                       {new Date(u.created_at).toLocaleDateString()}
                     </td>
 
@@ -608,10 +608,10 @@ export function UserManagementTab() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleOpenEdit(u)}
-                            className="p-1 text-slate-400 hover:text-white h-6 w-6"
+                            className="p-1 text-muted-foreground hover:text-white h-6 w-6"
                             title="Edit Permissions & User Profile"
                           >
-                            <Edit2 className="w-3 h-3 text-[#FFB800]" />
+                            <Edit2 className="w-3 h-3 text-primary" />
                           </Button>
 
                           <Button
@@ -621,7 +621,7 @@ export function UserManagementTab() {
                             disabled={currentUser?.id === u.id}
                             className={`p-1 h-6 w-6 ${currentUser?.id === u.id
                                 ? 'text-slate-600 cursor-not-allowed'
-                                : 'text-slate-400 hover:text-[#FF2A54]'
+                                : 'text-muted-foreground hover:text-destructive'
                               }`}
                             title={currentUser?.id === u.id ? 'Cannot delete self' : 'Delete User'}
                           >
@@ -629,7 +629,7 @@ export function UserManagementTab() {
                           </Button>
                         </div>
                       ) : (
-                        <span className="text-slate-500 text-[10px] uppercase">READ-ONLY</span>
+                        <span className="text-muted-foreground/60 text-[10px] uppercase">READ-ONLY</span>
                       )}
                     </td>
                   </tr>
@@ -654,14 +654,14 @@ export function UserManagementTab() {
       </Card>
 
       {/* Enterprise SSO Identity Providers Section */}
-      <Card className="p-4 border-[#3A4552] bg-[#121212] space-y-3 font-mono">
+      <Card className="p-4 border-border bg-card space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-              <Building className="w-3.5 h-3.5 text-[#FFB800]" />
+              <Building className="w-3.5 h-3.5 text-primary" />
               ENTERPRISE SINGLE SIGN-ON (SSO / SAML 2.0 / OIDC)
             </h3>
-            <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+            <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
               ACTIVE IDENTITY FEDERATION DIRECTORY INTEGRATIONS CONFIGURED FOR WORKSPACE DOMAIN AUTHENTICATION.
             </p>
           </div>
@@ -671,7 +671,7 @@ export function UserManagementTab() {
           {(ssoData?.providers || []).map((provider) => (
             <div
               key={provider.id}
-              className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between"
+              className="p-3 rounded-none bg-background border border-border flex items-center justify-between"
             >
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
@@ -680,7 +680,7 @@ export function UserManagementTab() {
                     ENABLED
                   </Badge>
                 </div>
-                <div className="text-[10px] text-slate-500 uppercase">{provider.protocol}</div>
+                <div className="text-[10px] text-muted-foreground/60 uppercase">{provider.protocol}</div>
               </div>
 
               {isAdmin && (
@@ -698,7 +698,7 @@ export function UserManagementTab() {
                     })
                   }
                   disabled={ssoLoginMutation.isPending}
-                  className="text-xs h-7 uppercase border-[#3A4552]"
+                  className="text-xs h-7 uppercase border-border"
                 >
                   TEST HANDSHAKE
                 </Button>
@@ -710,16 +710,16 @@ export function UserManagementTab() {
 
       {/* Modal: Provision New User (Admin Only) */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#121212] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-border rounded-none w-full max-w-2xl p-5 bg-card shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-border pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <UserPlus className="w-4 h-4 text-[#FFB800]" />
+                <UserPlus className="w-4 h-4 text-primary" />
                 PROVISION NEW CRM USER &amp; ASSIGN RBAC SCOPES
               </h3>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-slate-400 hover:text-white transition-none"
+                className="text-muted-foreground hover:text-white transition-none"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -728,35 +728,35 @@ export function UserManagementTab() {
             <form onSubmit={handleCreateSubmit} className="space-y-3 font-mono">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     FULL NAME
                   </label>
                   <div className="relative">
-                    <User className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                    <User className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
                     <input
                       type="text"
                       required
                       value={createName}
                       onChange={(e) => setCreateName(e.target.value)}
                       placeholder="MORGAN LEE"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     WORK EMAIL ADDRESS
                   </label>
                   <div className="relative">
-                    <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                    <Mail className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
                     <input
                       type="email"
                       required
                       value={createEmail}
                       onChange={(e) => setCreateEmail(e.target.value)}
                       placeholder="MORGAN.LEE@COMPANY.COM"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
                     />
                   </div>
                 </div>
@@ -764,30 +764,30 @@ export function UserManagementTab() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     INITIAL PASSWORD
                   </label>
                   <div className="relative">
-                    <Key className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                    <Key className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
                     <input
                       type="password"
                       required
                       value={createPassword}
                       onChange={(e) => setCreatePassword(e.target.value)}
                       placeholder="MIN 6 CHARS"
-                      className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     DEPARTMENT ROLE
                   </label>
                   <select
                     value={createRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, false)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
                     <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
@@ -797,13 +797,13 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     INITIAL STATUS
                   </label>
                   <select
                     value={createActive ? 'active' : 'suspended'}
                     onChange={(e) => setCreateActive(e.target.value === 'active')}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="active">ACTIVE &amp; VERIFIED</option>
                     <option value="suspended">SUSPENDED</option>
@@ -815,14 +815,14 @@ export function UserManagementTab() {
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
-                    <Layers className="w-3.5 h-3.5 text-[#FFB800]" />
+                    <Layers className="w-3.5 h-3.5 text-primary" />
                     GRANULAR PERMISSION SCOPES ({createPermissions.length} SELECTED)
                   </label>
                   <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(createRole, false)}
-                      className="text-[#FFB800] font-bold flex items-center gap-1"
+                      className="text-primary font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
@@ -831,7 +831,7 @@ export function UserManagementTab() {
                     <button
                       type="button"
                       onClick={() => setCreatePermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
-                      className="text-slate-400 hover:text-white"
+                      className="text-muted-foreground hover:text-white"
                     >
                       ALL
                     </button>
@@ -839,7 +839,7 @@ export function UserManagementTab() {
                     <button
                       type="button"
                       onClick={() => setCreatePermissions([])}
-                      className="text-slate-400 hover:text-white"
+                      className="text-muted-foreground hover:text-white"
                     >
                       NONE
                     </button>
@@ -848,14 +848,14 @@ export function UserManagementTab() {
 
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
-                    <div key={group.category} className="bg-[#0B0C10] p-2.5 rounded-none border border-[#3A4552] space-y-1.5">
-                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-[#3A4552] pb-1 uppercase">
+                    <div key={group.category} className="bg-background p-2.5 rounded-none border border-border space-y-1.5">
+                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-border pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-slate-300 cursor-pointer">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground/80 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={createPermissions.includes(item.id) || createPermissions.includes('*')}
@@ -867,11 +867,11 @@ export function UserManagementTab() {
                                   setCreatePermissions(createPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#121212] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-border bg-card text-primary accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
-                              <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
-                              <span className="text-[8px] text-slate-500 font-mono">{item.id}</span>
+                              <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
+                              <span className="text-[8px] text-muted-foreground/60 font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}
@@ -881,7 +881,7 @@ export function UserManagementTab() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
                 <Button
                   type="button"
                   variant="outline"
@@ -908,16 +908,16 @@ export function UserManagementTab() {
 
       {/* Modal: Edit User & RBAC Permissions (Admin Only) */}
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#3A4552] rounded-none w-full max-w-2xl p-5 bg-[#121212] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-border rounded-none w-full max-w-2xl p-5 bg-card shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-border pb-2.5">
               <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Edit2 className="w-4 h-4 text-[#FFB800]" />
+                <Edit2 className="w-4 h-4 text-primary" />
                 EDIT RBAC SCOPES: {editingUser.email}
               </h3>
               <button
                 onClick={() => setEditingUser(null)}
-                className="text-slate-400 hover:text-white transition-none"
+                className="text-muted-foreground hover:text-white transition-none"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -926,7 +926,7 @@ export function UserManagementTab() {
             <form onSubmit={handleSaveEdit} className="space-y-3 font-mono">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     FULL NAME
                   </label>
                   <input
@@ -934,12 +934,12 @@ export function UserManagementTab() {
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     EMAIL ADDRESS
                   </label>
                   <input
@@ -947,14 +947,14 @@ export function UserManagementTab() {
                     required
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     RESET PASSWORD
                   </label>
                   <input
@@ -962,18 +962,18 @@ export function UserManagementTab() {
                     value={editPassword}
                     onChange={(e) => setEditPassword(e.target.value)}
                     placeholder="OPTIONAL NEW PASSWORD"
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     DEPARTMENT ROLE
                   </label>
                   <select
                     value={editRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, true)}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="admin">ADMIN (SUPERUSER)</option>
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
@@ -983,14 +983,14 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-300 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
                     STATUS
                   </label>
                   <select
                     value={editActive ? 'active' : 'suspended'}
                     onChange={(e) => setEditActive(e.target.value === 'active')}
                     disabled={currentUser?.id === editingUser.id}
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] cursor-pointer uppercase font-mono disabled:opacity-60"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono disabled:opacity-60"
                   >
                     <option value="active">ACTIVE</option>
                     <option value="suspended">SUSPENDED</option>
@@ -1002,14 +1002,14 @@ export function UserManagementTab() {
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
-                    <Layers className="w-3.5 h-3.5 text-[#FFB800]" />
+                    <Layers className="w-3.5 h-3.5 text-primary" />
                     GRANULAR PERMISSION SCOPES ({editPermissions.length} SELECTED)
                   </label>
                   <div className="flex items-center gap-2 text-[10px] uppercase font-mono">
                     <button
                       type="button"
                       onClick={() => applyRolePreset(editRole, true)}
-                      className="text-[#FFB800] font-bold flex items-center gap-1"
+                      className="text-primary font-bold flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
@@ -1018,7 +1018,7 @@ export function UserManagementTab() {
                     <button
                       type="button"
                       onClick={() => setEditPermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
-                      className="text-slate-400 hover:text-white"
+                      className="text-muted-foreground hover:text-white"
                     >
                       ALL
                     </button>
@@ -1026,7 +1026,7 @@ export function UserManagementTab() {
                     <button
                       type="button"
                       onClick={() => setEditPermissions([])}
-                      className="text-slate-400 hover:text-white"
+                      className="text-muted-foreground hover:text-white"
                     >
                       NONE
                     </button>
@@ -1035,14 +1035,14 @@ export function UserManagementTab() {
 
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
-                    <div key={group.category} className="bg-[#0B0C10] p-2.5 rounded-none border border-[#3A4552] space-y-1.5">
-                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-[#3A4552] pb-1 uppercase">
+                    <div key={group.category} className="bg-background p-2.5 rounded-none border border-border space-y-1.5">
+                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-border pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-slate-300 cursor-pointer">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground/80 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={editPermissions.includes(item.id) || editPermissions.includes('*')}
@@ -1054,11 +1054,11 @@ export function UserManagementTab() {
                                   setEditPermissions(editPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-[#3A4552] bg-[#121212] text-[#FFB800] accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-border bg-card text-primary accent-[#FFB800] mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
-                              <span className="font-bold text-slate-200 block uppercase text-[10px]">{item.label}</span>
-                              <span className="text-[8px] text-slate-500 font-mono">{item.id}</span>
+                              <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
+                              <span className="text-[8px] text-muted-foreground/60 font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}
@@ -1068,7 +1068,7 @@ export function UserManagementTab() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
                 <Button
                   type="button"
                   variant="outline"
@@ -1095,20 +1095,20 @@ export function UserManagementTab() {
 
       {/* Modal: Delete Confirmation (Admin Only) */}
       {deletingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-sm animate-in fade-in font-mono">
-          <div className="border border-[#FF2A54] rounded-none w-full max-w-md p-5 bg-[#121212] shadow-2xl space-y-3">
-            <div className="w-10 h-10 rounded-none bg-[#0B0C10] border border-[#FF2A54] flex items-center justify-center text-[#FF2A54]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm animate-in fade-in font-mono">
+          <div className="border border-destructive rounded-none w-full max-w-md p-5 bg-card shadow-2xl space-y-3">
+            <div className="w-10 h-10 rounded-none bg-background border border-destructive flex items-center justify-center text-destructive">
               <Trash2 className="w-5 h-5" />
             </div>
 
             <div className="space-y-1">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">PERMANENTLY DELETE USER?</h3>
-              <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+              <p className="text-[10px] text-muted-foreground uppercase leading-relaxed">
                 ARE YOU SURE YOU WANT TO REMOVE <strong className="text-white">{deletingUser.email}</strong>? THIS WILL REVOKE ALL SESSION TOKENS AND REMOVE ROLE ASSIGNMENTS. THIS ACTION CANNOT BE UNDONE.
               </p>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
               <Button
                 variant="outline"
                 size="sm"

@@ -20,8 +20,8 @@ export function StatCard({
   value,
   subtitle,
   icon,
-  iconBgColor = 'bg-[#0B0C10] border-[#3A4552]',
-  iconColor = 'text-[#FFB800]',
+  iconBgColor = 'bg-background border-border',
+  iconColor = 'text-primary',
   glowClass = '',
   loading,
   className,
@@ -29,13 +29,13 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        'bg-[#121212] border border-[#3A4552] rounded-none p-4 hover:border-[#FFB800] transition-none font-mono',
+        'bg-card border border-border rounded-none p-4 hover:border-primary transition-none font-mono',
         glowClass,
         className
       )}
     >
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">{title}</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground font-mono">{title}</span>
         <div className={cn('p-2 rounded-none border', iconBgColor, iconColor)}>
           {icon}
         </div>
@@ -48,7 +48,7 @@ export function StatCard({
           <div className="text-xl sm:text-2xl font-black text-white tracking-tight font-mono">
             {value}
           </div>
-          {subtitle && <div className="text-[10px] text-slate-400 mt-1 flex items-center gap-1 font-mono uppercase">{subtitle}</div>}
+          {subtitle && <div className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1 font-mono uppercase">{subtitle}</div>}
         </div>
       )}
     </Card>

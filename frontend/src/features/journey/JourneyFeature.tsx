@@ -86,9 +86,9 @@ export function JourneyFeature() {
   return (
     <div className="space-y-4 font-mono pb-12">
       {/* ── Header Banner ── */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-card border border-border shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
-          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
+          <div className="p-3 rounded-none bg-background border border-border text-primary shadow-md shrink-0">
             <Milestone className="w-6 h-6" />
           </div>
           <div>
@@ -96,11 +96,11 @@ export function JourneyFeature() {
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
                 CUSTOMER JOURNEY &amp; CHURN RADAR STUDIO
               </h1>
-              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase tracking-wider">
                 TELEMETRY GUIDED
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl uppercase">
+            <p className="text-xs text-muted-foreground mt-1 max-w-2xl uppercase">
               TRACK LIFECYCLE STAGE VELOCITY, MONITOR REAL-TIME HEALTH DECAY, AND TRIGGER 1-CLICK AUTONOMOUS RETENTION RESCUE PLAYS.
             </p>
           </div>
@@ -114,7 +114,7 @@ export function JourneyFeature() {
             isLoading={isRefetching}
             className="text-xs h-8 px-3 uppercase"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1 text-slate-400" />
+            <RefreshCw className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
             <span>REFRESH TELEMETRY</span>
           </Button>
         </div>
@@ -123,32 +123,32 @@ export function JourneyFeature() {
       {/* Summary KPI Ribbon */}
       {journeyData?.summary && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+          <Card className="p-4 bg-card border-border rounded-none hover:border-primary transition-none">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
               TOTAL MONITORED ARR
             </span>
-            <div className="text-2xl font-black font-mono text-[#FFB800] mt-0.5">
+            <div className="text-2xl font-black font-mono text-primary mt-0.5">
               ${journeyData.summary.total_arr.toLocaleString()}
             </div>
-            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+            <span className="text-[10px] text-muted-foreground font-mono mt-1 block uppercase">
               ACROSS {journeyData.summary.total_customers} ACCOUNTS
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#121212] border-[#FF2A54]/50 rounded-none hover:border-[#FF2A54] transition-none">
-            <span className="text-[10px] font-bold text-[#FF2A54] uppercase tracking-wider block flex items-center gap-1.5">
-              <ShieldAlert className="w-3.5 h-3.5 text-[#FF2A54]" />
+          <Card className="p-4 bg-card border-destructive/50 rounded-none hover:border-destructive transition-none">
+            <span className="text-[10px] font-bold text-destructive uppercase tracking-wider block flex items-center gap-1.5">
+              <ShieldAlert className="w-3.5 h-3.5 text-destructive" />
               REVENUE AT RISK
             </span>
-            <div className="text-2xl font-black font-mono text-[#FF2A54] mt-0.5">
+            <div className="text-2xl font-black font-mono text-destructive mt-0.5">
               ${journeyData.summary.at_risk_arr.toLocaleString()}
             </div>
-            <span className="text-[10px] text-[#FF2A54]/80 font-mono mt-1 block uppercase">
+            <span className="text-[10px] text-destructive/80 font-mono mt-1 block uppercase">
               {journeyData.summary.at_risk_count} ACCOUNTS FLAGGED
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+          <Card className="p-4 bg-card border-border rounded-none hover:border-primary transition-none">
             <span className="text-[10px] font-bold text-[#00E5FF] uppercase tracking-wider block flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
               EXPANSION POTENTIAL ARR
@@ -156,12 +156,12 @@ export function JourneyFeature() {
             <div className="text-2xl font-black font-mono text-[#00E5FF] mt-0.5">
               ${journeyData.summary.expansion_arr.toLocaleString()}
             </div>
-            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+            <span className="text-[10px] text-muted-foreground font-mono mt-1 block uppercase">
               HIGH HEALTH ADVOCATES
             </span>
           </Card>
 
-          <Card className="p-4 bg-[#121212] border-[#3A4552] rounded-none hover:border-[#FFB800] transition-none">
+          <Card className="p-4 bg-card border-border rounded-none hover:border-primary transition-none">
             <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider block flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 text-purple-400" />
               AUTONOMOUS RESCUE FLEET
@@ -169,7 +169,7 @@ export function JourneyFeature() {
             <div className="text-2xl font-black font-mono text-purple-300 mt-0.5">
               24/7 AI AUTO-PILOT
             </div>
-            <span className="text-[10px] text-slate-400 font-mono mt-1 block uppercase">
+            <span className="text-[10px] text-muted-foreground font-mono mt-1 block uppercase">
               CUSTOMER SUCCESS AGENT
             </span>
           </Card>
@@ -178,10 +178,10 @@ export function JourneyFeature() {
 
       {/* Lifecycle Stage Progression Track */}
       {journeyData?.stages && journeyData?.distribution && (
-        <div className="p-4 rounded-none bg-[#121212] border border-[#3A4552] space-y-3.5 shadow-xl">
+        <div className="p-4 rounded-none bg-card border border-border space-y-3.5 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Milestone className="w-4 h-4 text-[#FFB800]" />
+            <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+              <Milestone className="w-4 h-4 text-primary" />
               <span>CUSTOMER LIFECYCLE PIPELINE</span>
             </span>
             <div className="flex flex-wrap items-center gap-1.5">
@@ -189,8 +189,8 @@ export function JourneyFeature() {
                 type="button"
                 onClick={() => setActiveStageFilter('all')}
                 className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === 'all'
-                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                    : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                    ? 'bg-primary text-primary-foreground border border-primary'
+                    : 'bg-background text-muted-foreground border border-border hover:text-white'
                   }`}
               >
                 ALL ({allCustomers.length})
@@ -201,8 +201,8 @@ export function JourneyFeature() {
                   type="button"
                   onClick={() => setActiveStageFilter(st.id)}
                   className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === st.id
-                      ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                      : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                      ? 'bg-primary text-primary-foreground border border-primary'
+                      : 'bg-background text-muted-foreground border border-border hover:text-white'
                     }`}
                 >
                   {st.label} ({journeyData.distribution[st.id]?.count || 0})
@@ -220,20 +220,20 @@ export function JourneyFeature() {
                   key={st.id}
                   onClick={() => setActiveStageFilter(isFiltered ? 'all' : st.id)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isFiltered
-                      ? 'bg-[#0B0C10] border-[#FFB800] shadow-lg'
-                      : 'bg-[#0B0C10]/60 border-[#3A4552] hover:border-slate-500'
+                      ? 'bg-background border-primary shadow-lg'
+                      : 'bg-background/60 border-border hover:border-slate-500'
                     }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-300 uppercase">{st.label}</span>
+                    <span className="text-xs font-bold text-foreground/80 uppercase">{st.label}</span>
                     <Badge variant="default" className="text-[9px] uppercase font-mono">
                       {bucket.count}
                     </Badge>
                   </div>
-                  <div className="text-base font-black font-mono text-[#FFB800] mt-1.5">
+                  <div className="text-base font-black font-mono text-primary mt-1.5">
                     ${bucket.total_arr.toLocaleString()}
                   </div>
-                  <span className="text-[9px] text-slate-500 font-mono uppercase">STAGE ARR</span>
+                  <span className="text-[9px] text-muted-foreground/60 font-mono uppercase">STAGE ARR</span>
                 </div>
               );
             })}
@@ -246,7 +246,7 @@ export function JourneyFeature() {
         {/* Left: Searchable & Sortable Accounts List */}
         <div className="lg:col-span-5 space-y-2.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
               ACCOUNTS IN STAGE ({filteredCustomers.length})
             </span>
             <Button
@@ -261,13 +261,13 @@ export function JourneyFeature() {
           </div>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2" />
+            <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH ACCOUNTS BY NAME..."
-              className="w-full bg-[#121212] border border-[#3A4552] rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono uppercase"
+              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
             />
           </div>
 
@@ -280,13 +280,13 @@ export function JourneyFeature() {
                   key={customer.id}
                   onClick={() => setSelectedCustomer(customer)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
-                      ? 'bg-[#121212] border-[#FFB800] text-white shadow-xl'
-                      : 'bg-[#121212] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                      ? 'bg-card border-primary text-white shadow-xl'
+                      : 'bg-card border-border hover:border-primary text-foreground/80'
                     }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-[#FFB800]" />
+                      <Briefcase className="w-3.5 h-3.5 text-primary" />
                       <h4 className="text-xs font-bold text-white uppercase truncate">{customer.name}</h4>
                     </div>
                     <Badge
@@ -297,17 +297,17 @@ export function JourneyFeature() {
                     </Badge>
                   </div>
 
-                  <div className="flex items-center justify-between text-[10px] font-mono mt-2 pt-2 border-t border-[#3A4552] uppercase">
-                    <span className="text-[#FFB800] font-bold">${customer.arr.toLocaleString()} ARR</span>
-                    <span className={isAtRisk ? 'text-[#FF2A54] font-bold' : 'text-slate-400'}>
+                  <div className="flex items-center justify-between text-[10px] font-mono mt-2 pt-2 border-t border-border uppercase">
+                    <span className="text-primary font-bold">${customer.arr.toLocaleString()} ARR</span>
+                    <span className={isAtRisk ? 'text-destructive font-bold' : 'text-muted-foreground'}>
                       {customer.churn_risk_pct}% CHURN RISK
                     </span>
                   </div>
 
                   {isAtRisk && (
-                    <div className="mt-2 pt-2 border-t border-[#FF2A54]/30 flex items-center justify-between">
-                      <span className="text-[9px] text-[#FF2A54] font-bold flex items-center gap-1 uppercase">
-                        <AlertTriangle className="w-3 h-3 text-[#FF2A54]" />
+                    <div className="mt-2 pt-2 border-t border-destructive/30 flex items-center justify-between">
+                      <span className="text-[9px] text-destructive font-bold flex items-center gap-1 uppercase">
+                        <AlertTriangle className="w-3 h-3 text-destructive" />
                         RESCUE PLAY READY
                       </span>
                       <Button
@@ -332,16 +332,16 @@ export function JourneyFeature() {
         {/* Right: Detailed Account Journey & Interventions */}
         <div className="lg:col-span-7 space-y-4">
           {activeCust && customerDetails ? (
-            <div className="p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] space-y-4 shadow-xl">
+            <div className="p-4 sm:p-5 rounded-none bg-card border border-border space-y-4 shadow-xl">
               {/* Account Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                 <div>
                   <h3 className="text-base font-black text-white uppercase">{customerDetails.customer_name}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="info" className="text-[9px] uppercase font-mono">
                       STAGE: {customerDetails.lifecycle_stage}
                     </Badge>
-                    <span className="text-xs text-[#FFB800] font-mono font-bold">
+                    <span className="text-xs text-primary font-mono font-bold">
                       MRR: ${customerDetails.mrr.toLocaleString()}
                     </span>
                   </div>
@@ -353,14 +353,14 @@ export function JourneyFeature() {
                   onClick={() => setInterventionCustomer(activeCust)}
                   className="font-bold text-xs h-8 px-3 uppercase"
                 >
-                  <Sparkles className="w-3.5 h-3.5 mr-1 text-[#0B0C10]" />
+                  <Sparkles className="w-3.5 h-3.5 mr-1 text-primary-foreground" />
                   <span>LAUNCH RETENTION PLAYBOOK</span>
                 </Button>
               </div>
 
               {/* Journey Timeline */}
               <div className="space-y-2.5">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-[#00E5FF]" />
                   <span>LIFECYCLE MILESTONE TIMELINE</span>
                 </span>
@@ -369,22 +369,22 @@ export function JourneyFeature() {
                   {customerDetails.timeline.map((t, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs uppercase"
+                      className="p-2.5 rounded-none bg-background border border-border flex items-center justify-between text-xs uppercase"
                     >
                       <div className="flex items-center gap-2">
                         <CheckCircle2
                           className={`w-3.5 h-3.5 ${t.status === 'completed'
-                              ? 'text-[#FFB800]'
+                              ? 'text-primary'
                               : t.status === 'in_progress'
                                 ? 'text-[#00E5FF]'
                                 : t.status === 'flagged'
-                                  ? 'text-[#FF2A54]'
+                                  ? 'text-destructive'
                                   : 'text-slate-600'
                             }`}
                         />
-                        <span className="text-slate-200 font-medium">{t.event}</span>
+                        <span className="text-foreground font-medium">{t.event}</span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500">{t.date}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground/60">{t.date}</span>
                     </div>
                   ))}
                 </div>
@@ -393,8 +393,8 @@ export function JourneyFeature() {
               {/* Active Interventions History */}
               {customerDetails.active_interventions && customerDetails.active_interventions.length > 0 && (
                 <div className="space-y-2.5">
-                  <span className="text-xs font-bold text-[#FF2A54] uppercase tracking-wider flex items-center gap-1.5">
-                    <ShieldAlert className="w-3.5 h-3.5 text-[#FF2A54]" />
+                  <span className="text-xs font-bold text-destructive uppercase tracking-wider flex items-center gap-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5 text-destructive" />
                     <span>DISPATCHED INTERVENTIONS ({customerDetails.active_interventions.length})</span>
                   </span>
 
@@ -402,7 +402,7 @@ export function JourneyFeature() {
                     {customerDetails.active_interventions.map((intv) => (
                       <div
                         key={intv.id}
-                        className="p-3 rounded-none bg-[#0B0C10] border border-[#FF2A54]/50 flex items-start justify-between gap-3 text-xs uppercase"
+                        className="p-3 rounded-none bg-background border border-destructive/50 flex items-start justify-between gap-3 text-xs uppercase"
                       >
                         <div>
                           <div className="flex items-center gap-2">
@@ -413,7 +413,7 @@ export function JourneyFeature() {
                               {intv.status}
                             </Badge>
                           </div>
-                          <p className="text-slate-300 text-[10px] mt-1">{intv.action_summary}</p>
+                          <p className="text-foreground/80 text-[10px] mt-1">{intv.action_summary}</p>
                         </div>
 
                         {intv.status !== 'completed' && (
@@ -422,7 +422,7 @@ export function JourneyFeature() {
                             variant="outline"
                             onClick={() => resolveMutation.mutate(intv.id)}
                             isLoading={resolveMutation.isPending}
-                            className="text-[9px] h-6 px-2 shrink-0 border-[#FFB800] text-[#FFB800] hover:bg-[#FFB800] hover:text-[#0B0C10] uppercase font-bold"
+                            className="text-[9px] h-6 px-2 shrink-0 border-primary text-primary hover:bg-primary hover:text-primary-foreground uppercase font-bold"
                           >
                             <CheckCircle className="w-3 h-3 mr-1" />
                             <span>RESOLVE</span>
@@ -436,8 +436,8 @@ export function JourneyFeature() {
 
               {/* Recommended Plays */}
               <div className="space-y-2.5">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
                   <span>PROACTIVE AI RECOMMENDATIONS</span>
                 </span>
 
@@ -445,9 +445,9 @@ export function JourneyFeature() {
                   {customerDetails.recommended_plays.map((play, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 flex items-start gap-2 uppercase"
+                      className="p-2.5 rounded-none bg-background border border-border text-xs text-foreground/80 flex items-start gap-2 uppercase"
                     >
-                      <span className="text-[#FFB800] font-bold shrink-0">⚡</span>
+                      <span className="text-primary font-bold shrink-0">⚡</span>
                       <span>{play}</span>
                     </div>
                   ))}
@@ -455,11 +455,11 @@ export function JourneyFeature() {
               </div>
             </div>
           ) : isLoadingDetails ? (
-            <div className="p-12 text-center text-slate-500 text-xs uppercase font-mono">
+            <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
               LOADING CUSTOMER JOURNEY DETAILS...
             </div>
           ) : (
-            <div className="p-12 text-center text-slate-500 text-xs uppercase font-mono">
+            <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
               SELECT AN ACCOUNT TO VIEW TELEMETRY.
             </div>
           )}

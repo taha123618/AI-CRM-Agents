@@ -68,26 +68,26 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-0 left-0 z-40 h-screen bg-[#121212] border-r border-[#3A4552] transition-none flex flex-col font-mono',
+        'fixed top-0 left-0 z-40 h-screen bg-card border-r border-border transition-none flex flex-col font-mono',
         sidebarOpen ? 'w-64' : 'w-16'
       )}
     >
       {/* Brand Header */}
-      <div className="flex items-center justify-between h-14 px-3 border-b border-[#3A4552] bg-[#0B0C10]">
+      <div className="flex items-center justify-between h-14 px-3 border-b border-border bg-background">
         <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-8 h-8 rounded-none bg-[#FFB800] text-[#0B0C10] flex items-center justify-center font-mono font-black text-xs shrink-0 border border-[#FFB800]">
-            <Terminal className="w-4 h-4 text-[#0B0C10]" />
+          <div className="w-8 h-8 rounded-none bg-primary text-primary-foreground flex items-center justify-center font-mono font-black text-xs shrink-0 border border-primary">
+            <Terminal className="w-4 h-4 text-primary-foreground" />
           </div>
           {sidebarOpen && (
             <div className="flex flex-col">
-              <span className="font-bold text-xs uppercase tracking-wider text-white">TACTICAL CRM</span>
-              <span className="text-[9px] font-mono text-[#FFB800] uppercase">COMMAND OS</span>
+              <span className="font-bold text-xs uppercase tracking-wider text-foreground">TACTICAL CRM</span>
+              <span className="text-[9px] font-mono text-primary uppercase">COMMAND OS</span>
             </div>
           )}
         </div>
         <button
           onClick={toggleSidebar}
-          className="p-1 rounded-none text-slate-400 hover:bg-[#121212] hover:text-white transition-none"
+          className="p-1 rounded-none text-muted-foreground hover:bg-muted hover:text-foreground transition-none"
         >
           {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>
@@ -105,11 +105,11 @@ export function Sidebar() {
               className={cn(
                 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-none text-xs font-mono font-bold uppercase transition-none group relative',
                 isActive
-                  ? 'bg-[#0B0C10] text-[#FFB800] border-l-2 border-l-[#FFB800] border border-[#FFB800]/40'
-                  : 'text-slate-400 hover:bg-[#0B0C10] hover:text-white border border-transparent'
+                  ? 'bg-background text-primary border-l-2 border-l-primary border border-primary/40'
+                  : 'text-muted-foreground hover:bg-background hover:text-foreground border border-transparent'
               )}
             >
-              <Icon className={cn('w-4 h-4 shrink-0 transition-none', isActive ? 'text-[#FFB800]' : 'group-hover:text-white')} />
+              <Icon className={cn('w-4 h-4 shrink-0 transition-none', isActive ? 'text-primary' : 'group-hover:text-foreground')} />
               {sidebarOpen && <span className="truncate">{t(item.labelKey, item.defaultLabel)}</span>}
 
               {item.badge && sidebarOpen && (
@@ -117,8 +117,8 @@ export function Sidebar() {
                   className={cn(
                     'ml-auto text-[8px] font-mono font-bold px-1.5 py-0.2 rounded-none border',
                     isActive
-                      ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
-                      : 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]/40'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-background text-primary border-primary/40'
                   )}
                 >
                   {item.badge}
@@ -131,12 +131,12 @@ export function Sidebar() {
 
       {/* Footer Info */}
       {sidebarOpen && (
-        <div className="p-3 border-t border-[#3A4552] bg-[#0B0C10] font-mono">
+        <div className="p-3 border-t border-border bg-background font-mono">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-none bg-[#FFB800]"></span>
-            <span className="text-[11px] font-bold uppercase text-slate-300">COMMAND TELEMETRY</span>
+            <span className="w-2 h-2 rounded-none bg-primary"></span>
+            <span className="text-[11px] font-bold uppercase text-foreground">COMMAND TELEMETRY</span>
           </div>
-          <p className="text-[9px] text-slate-500 mt-0.5 font-mono uppercase">ONLINE • POSTGRES &amp; REDIS</p>
+          <p className="text-[9px] text-muted-foreground mt-0.5 font-mono uppercase">ONLINE • POSTGRES &amp; REDIS</p>
         </div>
       )}
     </aside>

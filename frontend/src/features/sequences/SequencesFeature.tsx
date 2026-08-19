@@ -104,7 +104,7 @@ export function SequencesFeature() {
   const getChannelIcon = (channel: string) => {
     switch (channel) {
       case 'whatsapp':
-        return <MessageSquare className="w-3.5 h-3.5 text-[#FFB800]" />;
+        return <MessageSquare className="w-3.5 h-3.5 text-primary" />;
       case 'voice':
         return <Phone className="w-3.5 h-3.5 text-purple-400" />;
       default:
@@ -115,9 +115,9 @@ export function SequencesFeature() {
   return (
     <div className="space-y-4 font-mono pb-12">
       {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-none bg-card border border-border shadow-2xl relative overflow-hidden">
         <div className="flex items-start sm:items-center gap-3.5 z-10">
-          <div className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[#FFB800] shadow-md shrink-0">
+          <div className="p-3 rounded-none bg-background border border-border text-primary shadow-md shrink-0">
             <Send className="w-6 h-6" />
           </div>
           <div>
@@ -125,11 +125,11 @@ export function SequencesFeature() {
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
                 AI SDR OUTREACH CADENCE STUDIO
               </h1>
-              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase tracking-wider">
                 AUTONOMOUS SDR CADENCES
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl uppercase">
+            <p className="text-xs text-muted-foreground mt-1 max-w-2xl uppercase">
               BUILD OMNICHANNEL OUTREACH SEQUENCES ACROSS EMAIL, WHATSAPP, AND VOICE BRIEFINGS WITH DYNAMIC AI PROMPT INJECTION.
             </p>
           </div>
@@ -143,7 +143,7 @@ export function SequencesFeature() {
             isLoading={isRefetching}
             className="text-xs h-8 px-3 uppercase"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1 text-slate-400" />
+            <RefreshCw className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
             <span>REFRESH</span>
           </Button>
 
@@ -153,19 +153,19 @@ export function SequencesFeature() {
             onClick={() => setIsCreateModalOpen(true)}
             className="text-xs h-8 px-3.5 uppercase font-bold"
           >
-            <Plus className="w-4 h-4 mr-1 text-[#0B0C10]" />
+            <Plus className="w-4 h-4 mr-1 text-primary-foreground" />
             <span>NEW AI CADENCE</span>
           </Button>
         </div>
       </div>
 
       {/* Mode Switcher Tabs */}
-      <div className="flex items-center gap-1.5 border-b border-[#3A4552] pb-2">
+      <div className="flex items-center gap-1.5 border-b border-border pb-2">
         <button
           onClick={() => setActiveTab('cadence')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'cadence'
-              ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-              : 'bg-[#121212] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+              ? 'bg-primary text-primary-foreground border border-primary'
+              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
             }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -175,13 +175,13 @@ export function SequencesFeature() {
         <button
           onClick={() => setActiveTab('workflow_canvas')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'workflow_canvas'
-              ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-              : 'bg-[#121212] text-slate-300 border border-[#3A4552] hover:border-[#FFB800] hover:text-white'
+              ? 'bg-primary text-primary-foreground border border-primary'
+              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
             }`}
         >
           <Workflow className="w-3.5 h-3.5" />
           <span>VISUAL WORKFLOW CANVAS</span>
-          <span className="text-[8px] px-1 py-0.2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
+          <span className="text-[8px] px-1 py-0.2 rounded-none bg-background text-primary border border-border">
             PIPELINE
           </span>
         </button>
@@ -194,7 +194,7 @@ export function SequencesFeature() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Left Column: Sequences List */}
           <div className="lg:col-span-5 space-y-2.5">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
               ACTIVE SDR CADENCES ({sequences?.length || 0})
             </span>
 
@@ -207,8 +207,8 @@ export function SequencesFeature() {
                     key={seq.id}
                     onClick={() => setSelectedSequence(seq)}
                     className={`p-4 rounded-none border cursor-pointer transition-none ${isSelected
-                        ? 'bg-[#121212] border-[#FFB800] text-white shadow-xl'
-                        : 'bg-[#121212] border-[#3A4552] hover:border-[#FFB800] text-slate-300'
+                        ? 'bg-card border-primary text-white shadow-xl'
+                        : 'bg-card border-border hover:border-primary text-foreground/80'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -219,25 +219,25 @@ export function SequencesFeature() {
                             {seq.status}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-0.5 uppercase">TARGET: {seq.target_persona}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5 uppercase">TARGET: {seq.target_persona}</p>
                       </div>
                       <Badge variant="purple" className="text-[9px] uppercase font-mono shrink-0">
                         {seq.channel}
                       </Badge>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-[#3A4552] text-center">
-                      <div className="bg-[#0B0C10] p-1.5 rounded-none border border-[#3A4552]">
-                        <span className="text-[8px] text-slate-500 uppercase font-bold block">STEPS</span>
+                    <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-border text-center">
+                      <div className="bg-background p-1.5 rounded-none border border-border">
+                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">STEPS</span>
                         <span className="text-xs font-bold font-mono text-white">{seq.steps.length} STEPS</span>
                       </div>
-                      <div className="bg-[#0B0C10] p-1.5 rounded-none border border-[#3A4552]">
-                        <span className="text-[8px] text-slate-500 uppercase font-bold block">ENROLLED</span>
-                        <span className="text-xs font-bold font-mono text-[#FFB800]">{seq.enrolled_count}</span>
+                      <div className="bg-background p-1.5 rounded-none border border-border">
+                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">ENROLLED</span>
+                        <span className="text-xs font-bold font-mono text-primary">{seq.enrolled_count}</span>
                       </div>
-                      <div className="bg-[#0B0C10] p-1.5 rounded-none border border-[#3A4552]">
-                        <span className="text-[8px] text-slate-500 uppercase font-bold block">CONVERSION</span>
-                        <span className="text-xs font-bold font-mono text-[#FFB800]">{seq.conversion_rate_pct}%</span>
+                      <div className="bg-background p-1.5 rounded-none border border-border">
+                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">CONVERSION</span>
+                        <span className="text-xs font-bold font-mono text-primary">{seq.conversion_rate_pct}%</span>
                       </div>
                     </div>
                   </div>
@@ -249,16 +249,16 @@ export function SequencesFeature() {
           {/* Right Column: Cadence Steps Timeline & AI Copy Tester */}
           <div className="lg:col-span-7 space-y-4">
             {activeSeq ? (
-              <div className="p-4 sm:p-5 rounded-none bg-[#121212] border border-[#3A4552] space-y-4 shadow-xl">
+              <div className="p-4 sm:p-5 rounded-none bg-card border border-border space-y-4 shadow-xl">
                 {/* Cadence Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#3A4552] pb-3.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                   <div>
                     <h2 className="text-base font-black text-white uppercase">{activeSeq.name}</h2>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant={activeSeq.status === 'paused' ? 'warning' : 'success'} className="text-[9px] uppercase font-mono">
                         {activeSeq.status}
                       </Badge>
-                      <span className="text-xs text-slate-400 uppercase">
+                      <span className="text-xs text-muted-foreground uppercase">
                         {activeSeq.steps.length} TOUCHPOINTS
                       </span>
                     </div>
@@ -274,12 +274,12 @@ export function SequencesFeature() {
                     >
                       {activeSeq.status === 'active' ? (
                         <>
-                          <Pause className="w-3 h-3 mr-1 text-[#FFB800]" />
+                          <Pause className="w-3 h-3 mr-1 text-primary" />
                           <span>PAUSE</span>
                         </>
                       ) : (
                         <>
-                          <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
+                          <Play className="w-3 h-3 mr-1 text-primary" />
                           <span>RESUME</span>
                         </>
                       )}
@@ -307,29 +307,29 @@ export function SequencesFeature() {
                 </div>
 
                 {/* AI Copy Customizer */}
-                <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2">
+                <div className="p-3.5 rounded-none bg-background border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+                    <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
                       <span>AI PROMPT &amp; COPY PERSONALIZATION INJECTION</span>
                     </span>
-                    <span className="text-[9px] text-[#FFB800] uppercase">LIVE AGENT INFERENCE</span>
+                    <span className="text-[9px] text-primary uppercase">LIVE AGENT INFERENCE</span>
                   </div>
                   <input
                     type="text"
                     value={testPainPoint}
                     onChange={(e) => setTestPainPoint(e.target.value)}
                     placeholder="ENTER PROSPECT PAIN POINT TO INJECT..."
-                    className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
                 {/* Generated AI Copy Box */}
                 {generatedCopy && (
-                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 space-y-2">
+                  <div className="p-3.5 rounded-none bg-background border border-primary/50 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#FFB800] flex items-center gap-1.5 uppercase">
-                        <Bot className="w-4 h-4 text-[#FFB800]" />
+                      <span className="text-xs font-bold text-primary flex items-center gap-1.5 uppercase">
+                        <Bot className="w-4 h-4 text-primary" />
                         <span>AI SDR GENERATED OUTREACH COPY</span>
                       </span>
                       <Button
@@ -338,11 +338,11 @@ export function SequencesFeature() {
                         onClick={() => handleCopyClipboard(generatedCopy)}
                         className="text-xs h-6 px-2 uppercase"
                       >
-                        {copySuccess ? <CheckCircle2 className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
+                        {copySuccess ? <CheckCircle2 className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3" />}
                         <span className="ml-1">{copySuccess ? 'COPIED!' : 'COPY'}</span>
                       </Button>
                     </div>
-                    <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 leading-relaxed whitespace-pre-wrap font-mono uppercase">
+                    <div className="p-3 rounded-none bg-card border border-border text-xs text-foreground leading-relaxed whitespace-pre-wrap font-mono uppercase">
                       {generatedCopy}
                     </div>
                   </div>
@@ -350,17 +350,17 @@ export function SequencesFeature() {
 
                 {/* Live Step Execution HUD */}
                 {stepExecResult && (
-                  <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-2">
+                  <div className="p-3.5 rounded-none bg-background border border-primary space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#FFB800] flex items-center gap-1.5 uppercase">
-                        <Zap className="w-4 h-4 text-[#FFB800]" />
+                      <span className="text-xs font-bold text-primary flex items-center gap-1.5 uppercase">
+                        <Zap className="w-4 h-4 text-primary" />
                         <span>LIVE STEP EXECUTION: {stepExecResult.executed_by}</span>
                       </span>
                       <Badge variant="success" className="text-[9px] uppercase font-mono">
                         {stepExecResult.status}
                       </Badge>
                     </div>
-                    <div className="p-2.5 rounded-none bg-[#121212] border border-[#3A4552] text-xs text-slate-200 font-mono uppercase">
+                    <div className="p-2.5 rounded-none bg-card border border-border text-xs text-foreground font-mono uppercase">
                       {stepExecResult.result}
                     </div>
                   </div>
@@ -368,7 +368,7 @@ export function SequencesFeature() {
 
                 {/* Steps List */}
                 <div className="space-y-2.5">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
                     CADENCE STEP SEQUENCE
                   </span>
 
@@ -376,7 +376,7 @@ export function SequencesFeature() {
                     {activeSeq.steps.map((step) => (
                       <div
                         key={step.step_number}
-                        className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2 hover:border-[#FFB800] transition-none"
+                        className="p-3.5 rounded-none bg-background border border-border space-y-2 hover:border-primary transition-none"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -396,7 +396,7 @@ export function SequencesFeature() {
                               isLoading={generateCopyMutation.isPending}
                               className="text-[10px] h-6 px-2 uppercase"
                             >
-                              <Sparkles className="w-3 h-3 mr-1 text-[#FFB800]" />
+                              <Sparkles className="w-3 h-3 mr-1 text-primary" />
                               <span>PERSONALIZE</span>
                             </Button>
                             <Button
@@ -406,13 +406,13 @@ export function SequencesFeature() {
                               isLoading={executeStepMutation.isPending}
                               className="text-[10px] h-6 px-2 uppercase font-bold"
                             >
-                              <Play className="w-3 h-3 mr-1 text-[#0B0C10]" />
+                              <Play className="w-3 h-3 mr-1 text-primary-foreground" />
                               <span>RUN STEP</span>
                             </Button>
                           </div>
                         </div>
 
-                        <p className="text-xs text-slate-400 font-mono leading-relaxed whitespace-pre-wrap pl-5 uppercase">
+                        <p className="text-xs text-muted-foreground font-mono leading-relaxed whitespace-pre-wrap pl-5 uppercase">
                           {step.template}
                         </p>
                       </div>
@@ -421,7 +421,7 @@ export function SequencesFeature() {
                 </div>
               </div>
             ) : (
-              <div className="p-12 text-center text-slate-500 text-xs uppercase font-mono">
+              <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
                 NO CADENCE SELECTED. CREATE OR SELECT A CADENCE ON THE LEFT.
               </div>
             )}

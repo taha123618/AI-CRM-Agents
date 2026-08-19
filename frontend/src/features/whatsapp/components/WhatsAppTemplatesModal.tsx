@@ -67,11 +67,11 @@ export function WhatsAppTemplatesModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 font-mono">
-      <div className="w-full max-w-4xl bg-[#121212] border border-[#3A4552] rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-4xl bg-card border border-border rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="p-4 border-b border-[#3A4552] flex items-center justify-between bg-[#0B0C10]">
+        <div className="p-4 border-b border-border flex items-center justify-between bg-background">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
+            <div className="p-2 rounded-none bg-background border border-primary/50 text-primary">
               <MessageSquare className="w-4 h-4" />
             </div>
             <div>
@@ -81,7 +81,7 @@ export function WhatsAppTemplatesModal({
                   CLOUD API V20.0
                 </Badge>
               </div>
-              <p className="text-[10px] text-slate-400 uppercase">
+              <p className="text-[10px] text-muted-foreground uppercase">
                 PRE-APPROVED BROADCAST TEMPLATES AND MEDIA UPLOADS.
               </p>
             </div>
@@ -99,19 +99,19 @@ export function WhatsAppTemplatesModal({
               <span>SYNC META</span>
             </Button>
 
-            <button onClick={onClose} className="p-1 rounded-none text-slate-400 hover:text-white">
+            <button onClick={onClose} className="p-1 rounded-none text-muted-foreground hover:text-white">
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex border-b border-[#3A4552] bg-[#0B0C10] px-4 font-mono">
+        <div className="flex border-b border-border bg-background px-4 font-mono">
           <button
             onClick={() => setActiveTab('templates')}
             className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'templates'
-                ? 'border-[#FFB800] text-[#FFB800]'
-                : 'border-transparent text-slate-400 hover:text-white'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-white'
               }`}
           >
             APPROVED TEMPLATES ({templates?.length || 0})
@@ -119,8 +119,8 @@ export function WhatsAppTemplatesModal({
           <button
             onClick={() => setActiveTab('media')}
             className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'media'
-                ? 'border-[#FFB800] text-[#FFB800]'
-                : 'border-transparent text-slate-400 hover:text-white'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-white'
               }`}
           >
             MEDIA UPLOAD &amp; ASSETS
@@ -140,7 +140,7 @@ export function WhatsAppTemplatesModal({
                   {templates?.map((tpl: any) => (
                     <div
                       key={tpl.id}
-                      className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 flex flex-col justify-between"
+                      className="p-3.5 rounded-none bg-background border border-border hover:border-primary transition-none space-y-2 flex flex-col justify-between"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
@@ -149,17 +149,17 @@ export function WhatsAppTemplatesModal({
                             {tpl.status}
                           </Badge>
                         </div>
-                        <div className="flex items-center gap-2 text-[9px] text-slate-400 uppercase">
+                        <div className="flex items-center gap-2 text-[9px] text-muted-foreground uppercase">
                           <span>LANG: {tpl.language}</span>
                           <span>•</span>
                           <span>CAT: {tpl.category}</span>
                         </div>
-                        <p className="text-xs text-slate-300 leading-relaxed font-mono whitespace-pre-wrap">
+                        <p className="text-xs text-foreground/80 leading-relaxed font-mono whitespace-pre-wrap">
                           {tpl.body_text}
                         </p>
                       </div>
 
-                      <div className="pt-2 border-t border-[#3A4552] flex justify-end">
+                      <div className="pt-2 border-t border-border flex justify-end">
                         <Button
                           size="sm"
                           variant="primary"
@@ -181,19 +181,19 @@ export function WhatsAppTemplatesModal({
 
           {activeTab === 'media' && (
             <div className="max-w-lg mx-auto space-y-4 py-4 font-mono">
-              <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
+              <div className="p-4 rounded-none bg-background border border-border space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
-                  <Upload className="w-4 h-4 text-[#FFB800]" />
+                  <Upload className="w-4 h-4 text-primary" />
                   <span>UPLOAD OUTBOUND MEDIA ATTACHMENT</span>
                 </div>
 
                 <div className="space-y-2 text-xs">
                   <div>
-                    <label className="block text-[10px] text-slate-300 font-bold uppercase mb-1">MEDIA TYPE</label>
+                    <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">MEDIA TYPE</label>
                     <select
                       value={mediaType}
                       onChange={(e) => setMediaType(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-[#121212] border border-[#3A4552] text-white text-xs font-mono"
+                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-white text-xs font-mono"
                     >
                       <option value="document">PDF DOCUMENT</option>
                       <option value="image">PNG / JPEG IMAGE</option>
@@ -203,12 +203,12 @@ export function WhatsAppTemplatesModal({
                   </div>
 
                   <div>
-                    <label className="block text-[10px] text-slate-300 font-bold uppercase mb-1">FILENAME</label>
+                    <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">FILENAME</label>
                     <input
                       type="text"
                       value={filename}
                       onChange={(e) => setFilename(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-[#121212] border border-[#3A4552] text-white text-xs font-mono uppercase"
+                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-white text-xs font-mono uppercase"
                     />
                   </div>
 
@@ -226,12 +226,12 @@ export function WhatsAppTemplatesModal({
               </div>
 
               {uploadedMediaId && (
-                <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-xs font-mono space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#FFB800] font-bold uppercase">
+                <div className="p-3 bg-background border border-primary text-xs font-mono space-y-1">
+                  <div className="flex items-center gap-1.5 text-primary font-bold uppercase">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>MEDIA ATTACHMENT READY</span>
                   </div>
-                  <p className="text-[10px] text-slate-300">MEDIA ID: {uploadedMediaId}</p>
+                  <p className="text-[10px] text-foreground/80">MEDIA ID: {uploadedMediaId}</p>
                 </div>
               )}
             </div>

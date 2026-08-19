@@ -40,12 +40,12 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md font-mono">
+      <div className="bg-card border border-border rounded-none w-full max-w-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-border bg-card flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-none bg-[#0B0C10] text-[#FF2A54] border border-[#FF2A54]">
+            <div className="p-2.5 rounded-none bg-background text-destructive border border-destructive">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
@@ -55,7 +55,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                   TARGET: {customer.name}
                 </Badge>
               </h2>
-              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                 DEPLOY PROACTIVE AI AGENT PLAYS TO PRESERVE ARR AND RESOLVE ACCOUNT VULNERABILITIES.
               </p>
             </div>
@@ -63,7 +63,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -72,39 +72,39 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
           {/* Account Vital Badges */}
-          <div className="grid grid-cols-3 gap-2.5 bg-[#0B0C10] p-3 rounded-none border border-[#3A4552]">
+          <div className="grid grid-cols-3 gap-2.5 bg-background p-3 rounded-none border border-border">
             <div>
-              <span className="text-[9px] text-slate-400 uppercase font-bold block">HEALTH SCORE</span>
+              <span className="text-[9px] text-muted-foreground uppercase font-bold block">HEALTH SCORE</span>
               <span
-                className={`text-sm font-bold font-mono ${customer.health_score >= 70 ? 'text-[#FFB800]' : 'text-[#FF2A54]'
+                className={`text-sm font-bold font-mono ${customer.health_score >= 70 ? 'text-primary' : 'text-destructive'
                   }`}
               >
                 {customer.health_score}%
               </span>
             </div>
             <div>
-              <span className="text-[9px] text-slate-400 uppercase font-bold block">ANNUAL CONTRACT (ARR)</span>
+              <span className="text-[9px] text-muted-foreground uppercase font-bold block">ANNUAL CONTRACT (ARR)</span>
               <span className="text-sm font-bold font-mono text-white">
                 ${customer.arr.toLocaleString()}
               </span>
             </div>
             <div>
-              <span className="text-[9px] text-slate-400 uppercase font-bold block">CHURN PROBABILITY</span>
-              <span className="text-sm font-bold font-mono text-[#FFB800]">
+              <span className="text-[9px] text-muted-foreground uppercase font-bold block">CHURN PROBABILITY</span>
+              <span className="text-sm font-bold font-mono text-primary">
                 {customer.churn_risk_pct}%
               </span>
             </div>
           </div>
 
           {resultPlaybook ? (
-            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-3 animate-in fade-in font-mono">
+            <div className="p-4 rounded-none bg-background border border-primary space-y-3 animate-in fade-in font-mono">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
+                <CheckCircle2 className="w-4 h-4 text-primary" />
                 <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                   AI RETENTION PLAYBOOK DISPATCHED
                 </h3>
               </div>
-              <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] font-mono text-xs text-[#FFB800] whitespace-pre-wrap leading-relaxed">
+              <div className="p-3 rounded-none bg-card border border-border font-mono text-xs text-primary whitespace-pre-wrap leading-relaxed">
                 {resultPlaybook}
               </div>
               <div className="flex justify-end pt-2">
@@ -122,13 +122,13 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
               className="space-y-3 font-mono"
             >
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-[10px] font-bold text-foreground/80 uppercase tracking-wider mb-1">
                   INTERVENTION PLAY TYPE
                 </label>
                 <select
                   value={interventionType}
                   onChange={(e) => setInterventionType(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="executive_check_in">EXECUTIVE SPONSOR HEALTH CHECK-IN</option>
                   <option value="technical_audit">TECHNICAL AUDIT &amp; OPTIMIZATION DECK</option>
@@ -138,7 +138,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-[10px] font-bold text-foreground/80 uppercase tracking-wider mb-1">
                   PLAYBOOK CUSTOM CONTEXT &amp; MANDATE
                 </label>
                 <textarea
@@ -146,11 +146,11 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                   required
                   value={customNotes}
                   onChange={(e) => setCustomNotes(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+              <div className="flex justify-end gap-2 pt-2 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
                   CANCEL
                 </Button>

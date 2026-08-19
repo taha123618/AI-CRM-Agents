@@ -39,24 +39,24 @@ export function VerifyEmailPage() {
       subtitle="CONFIRM IDENTITY TO ACTIVATE AGENT FLEET CAPABILITIES"
     >
       {errorMessage && (
-        <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2 font-mono">
-          <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+        <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2 font-mono">
+          <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
           <div className="uppercase">{errorMessage}</div>
         </div>
       )}
 
       {isVerified ? (
         <div className="space-y-3 text-center font-mono">
-          <div className="w-12 h-12 rounded-none bg-[#0B0C10] border border-[#FFB800] flex items-center justify-center mx-auto text-[#FFB800]">
+          <div className="w-12 h-12 rounded-none bg-background border border-primary flex items-center justify-center mx-auto text-primary">
             <CheckCircle2 className="w-6 h-6" />
           </div>
 
-          <h3 className="text-xs font-bold text-white uppercase">EMAIL VERIFIED SUCCESSFULLY!</h3>
-          <p className="text-[10px] text-slate-300 uppercase">
+          <h3 className="text-xs font-bold text-foreground uppercase">EMAIL VERIFIED SUCCESSFULLY!</h3>
+          <p className="text-[10px] text-muted-foreground uppercase">
             YOUR ENTERPRISE OPERATOR EMAIL IS NOW VERIFIED AND ACTIVE.
           </p>
 
-          <div className="pt-2 border-t border-[#3A4552]">
+          <div className="pt-2 border-t border-border">
             <Button
               variant="primary"
               onClick={() => navigate('/dashboard')}
@@ -69,7 +69,7 @@ export function VerifyEmailPage() {
       ) : (
         <div className="space-y-3 font-mono">
           <div>
-            <label className="block text-[10px] font-bold text-slate-300 uppercase mb-1">
+            <label className="block text-[10px] font-bold text-muted-foreground uppercase mb-1">
               VERIFICATION SECURITY TOKEN
             </label>
             <input
@@ -78,7 +78,7 @@ export function VerifyEmailPage() {
               value={token}
               onChange={(e) => setToken(e.target.value)}
               placeholder="PASTE VERIFICATION TOKEN"
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background text-foreground border border-border rounded-none px-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
 
@@ -92,10 +92,10 @@ export function VerifyEmailPage() {
             <span>{isVerifyingEmail ? 'VERIFYING...' : 'VERIFY EMAIL ADDRESS'}</span>
           </Button>
 
-          <div className="text-center pt-1 border-t border-[#3A4552]">
+          <div className="text-center pt-1 border-t border-border">
             <Link
               to="/login"
-              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-white uppercase"
+              className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground uppercase"
             >
               <ArrowLeft className="w-3 h-3" />
               BACK TO SIGN IN

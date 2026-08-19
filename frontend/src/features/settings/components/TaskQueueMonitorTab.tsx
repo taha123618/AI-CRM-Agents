@@ -97,9 +97,9 @@ export function TaskQueueMonitorTab() {
       case 'monte_carlo_simulation':
         return <Layers className="w-3.5 h-3.5 text-cyan-400" />;
       case 'bulk_lead_enrichment':
-        return <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />;
+        return <Sparkles className="w-3.5 h-3.5 text-primary" />;
       case 'voice_call_audio_synthesis':
-        return <Mic className="w-3.5 h-3.5 text-[#FFB800]" />;
+        return <Mic className="w-3.5 h-3.5 text-primary" />;
       default:
         return <Cpu className="w-3.5 h-3.5 text-purple-400" />;
     }
@@ -129,16 +129,16 @@ export function TaskQueueMonitorTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header Panel */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-[#FFB800]" />
+            <Cpu className="w-4 h-4 text-primary" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">ASYNC TASK QUEUE &amp; WORKER MONITOR</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               WORKER.PY ACTIVE
             </Badge>
           </div>
-          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+          <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
             RESILIENT DISTRIBUTED WORKER PROCESS RUNNING SIMULATIONS, EMAIL DELIVERY, AND ENRICHMENTS.
           </p>
         </div>
@@ -151,7 +151,7 @@ export function TaskQueueMonitorTab() {
             disabled={clearCompletedMutation.isPending || tasks.length === 0}
             className="text-xs h-7 uppercase"
           >
-            <Trash2 className="w-3 h-3 mr-1 text-slate-400" />
+            <Trash2 className="w-3 h-3 mr-1 text-muted-foreground" />
             <span>PURGE LOGS</span>
           </Button>
 
@@ -161,14 +161,14 @@ export function TaskQueueMonitorTab() {
             onClick={() => queryClient.invalidateQueries({ queryKey: ['background-tasks'] })}
             className="text-xs h-7 uppercase"
           >
-            <RefreshCw className="w-3 h-3 mr-1 text-[#FFB800]" />
+            <RefreshCw className="w-3 h-3 mr-1 text-primary" />
             <span>REFRESH</span>
           </Button>
         </div>
       </div>
 
       {feedback && (
-        <div className="p-3 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
+        <div className="p-3 bg-background border border-primary text-primary text-xs flex items-center gap-2 uppercase animate-in fade-in font-mono">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{feedback}</span>
         </div>
@@ -176,14 +176,14 @@ export function TaskQueueMonitorTab() {
 
       {/* Trigger Quick-Action Launchpad */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-cyan-400" />
               MONTE CARLO SIMULATION
             </span>
           </div>
-          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+          <p className="text-[10px] text-muted-foreground uppercase leading-relaxed">
             DISPATCH COMPLEX STOCHASTIC SIMULATION RUNS OVER THE PIPELINE TO WORKER.PY.
           </p>
           <div className="flex items-center gap-2">
@@ -194,7 +194,7 @@ export function TaskQueueMonitorTab() {
               step={100}
               value={simCount}
               onChange={(e) => setSimCount(Number(e.target.value))}
-              className="w-20 bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white font-mono"
+              className="w-20 bg-background border border-border rounded-none px-2 py-1 text-xs text-white font-mono"
             />
             <Button
               size="sm"
@@ -203,20 +203,20 @@ export function TaskQueueMonitorTab() {
               disabled={launchSimMutation.isPending}
               className="flex-1 text-xs uppercase h-7"
             >
-              <Play className="w-3 h-3 mr-1 text-[#0B0C10]" />
+              <Play className="w-3 h-3 mr-1 text-primary-foreground" />
               <span>LAUNCH SIM</span>
             </Button>
           </div>
         </Card>
 
-        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-[#FFB800]" />
+              <Sparkles className="w-4 h-4 text-primary" />
               BULK LEAD ENRICHMENT
             </span>
           </div>
-          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+          <p className="text-[10px] text-muted-foreground uppercase leading-relaxed">
             BATCH QUALIFY &amp; ENRICH UNTOUCHED INBOUND PROSPECTS WITH LLM SCORING.
           </p>
           <Button
@@ -226,19 +226,19 @@ export function TaskQueueMonitorTab() {
             disabled={launchEnrichMutation.isPending}
             className="w-full text-xs uppercase h-7"
           >
-            <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
+            <Play className="w-3 h-3 mr-1 text-primary" />
             <span>TRIGGER ENRICHMENT</span>
           </Button>
         </Card>
 
-        <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3">
+        <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
-              <Mic className="w-4 h-4 text-[#FFB800]" />
+              <Mic className="w-4 h-4 text-primary" />
               AUDIO CALL SYNTHESIS
             </span>
           </div>
-          <p className="text-[10px] text-slate-400 uppercase leading-relaxed">
+          <p className="text-[10px] text-muted-foreground uppercase leading-relaxed">
             GENERATE FULL POST-CALL CRM NOTES, ACTION ITEMS, AND SENTIMENT RADAR.
           </p>
           <Button
@@ -248,18 +248,18 @@ export function TaskQueueMonitorTab() {
             disabled={launchAudioMutation.isPending}
             className="w-full text-xs uppercase h-7"
           >
-            <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
+            <Play className="w-3 h-3 mr-1 text-primary" />
             <span>SYNTHESIZE CALL</span>
           </Button>
         </Card>
       </div>
 
       {/* Task Queue Table Container */}
-      <Card className="bg-[#121212] border-[#3A4552] overflow-hidden">
+      <Card className="bg-card border-border overflow-hidden">
         {/* Search and Filters Bar */}
-        <div className="p-3 bg-[#0B0C10] border-b border-[#3A4552] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-3 bg-background border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-72">
-            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="SEARCH TASK ID OR TYPE..."
@@ -268,19 +268,19 @@ export function TaskQueueMonitorTab() {
                 setTaskSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-[#121212] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
             />
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
             <select
               value={taskStatusFilter}
               onChange={(e) => {
                 setTaskStatusFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-[#121212] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="bg-card border border-border text-xs text-foreground rounded-none px-2 py-1 focus:outline-none focus:border-primary uppercase font-mono"
             >
               <option value="all">ALL STATUSES</option>
               <option value="completed">COMPLETED</option>
@@ -299,7 +299,7 @@ export function TaskQueueMonitorTab() {
                   setTaskStatusFilter('all');
                   setPage(1);
                 }}
-                className="text-xs h-7 px-2 text-slate-400 hover:text-white uppercase"
+                className="text-xs h-7 px-2 text-muted-foreground hover:text-white uppercase"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
                 RESET
@@ -312,7 +312,7 @@ export function TaskQueueMonitorTab() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse font-mono">
             <thead>
-              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-[10px] uppercase font-bold text-slate-400">
+              <tr className="border-b border-border bg-background text-[10px] uppercase font-bold text-muted-foreground">
                 <th className="py-2.5 px-3">TASK ID / TYPE</th>
                 <th className="py-2.5 px-3">STATUS</th>
                 <th className="py-2.5 px-3">PROGRESS</th>
@@ -323,13 +323,13 @@ export function TaskQueueMonitorTab() {
             <tbody className="divide-y divide-[#3A4552] text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="py-10 text-center text-slate-500">
+                  <td colSpan={5} className="py-10 text-center text-muted-foreground/60">
                     <LoadingSpinner size="sm" />
                   </td>
                 </tr>
               ) : paginatedTasks.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-slate-500 uppercase">
+                  <td colSpan={5} className="py-8 text-center text-muted-foreground/60 uppercase">
                     NO BACKGROUND TASKS MATCHING FILTER.
                   </td>
                 </tr>
@@ -337,13 +337,13 @@ export function TaskQueueMonitorTab() {
                 paginatedTasks.map((task) => {
                   const taskType = task.task_type || task.task_name || 'background_task';
                   return (
-                    <tr key={task.task_id} className="hover:bg-[#0B0C10] transition-none">
+                    <tr key={task.task_id} className="hover:bg-background transition-none">
                       <td className="py-2.5 px-3 space-y-0.5">
                         <div className="flex items-center gap-1.5 font-bold text-white uppercase text-[11px]">
                           {getTaskIcon(taskType)}
                           <span>{taskType.replace(/_/g, ' ')}</span>
                         </div>
-                        <span className="text-[9px] text-slate-500 font-mono block">
+                        <span className="text-[9px] text-muted-foreground/60 font-mono block">
                           ID: {task.task_id}
                         </span>
                       </td>
@@ -351,21 +351,21 @@ export function TaskQueueMonitorTab() {
                       <td className="py-2.5 px-3">{getStatusBadge(task.status)}</td>
 
                       <td className="py-2.5 px-3 space-y-1">
-                        <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono uppercase">
+                        <div className="flex items-center justify-between text-[9px] text-muted-foreground font-mono uppercase">
                           <span>{task.progress}%</span>
                         </div>
-                        <div className="w-32 h-1 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
+                        <div className="w-32 h-1 bg-background border border-border rounded-none overflow-hidden">
                           <div
-                            className="h-full bg-[#FFB800] transition-none"
+                            className="h-full bg-primary transition-none"
                             style={{ width: `${task.progress}%` }}
                           />
                         </div>
                       </td>
 
-                      <td className="py-2.5 px-3 space-y-0.5 text-[10px] text-slate-400 uppercase">
+                      <td className="py-2.5 px-3 space-y-0.5 text-[10px] text-muted-foreground uppercase">
                         <div>QUEUED: {new Date(task.created_at).toLocaleTimeString()}</div>
                         {task.completed_at && (
-                          <div className="text-slate-500">
+                          <div className="text-muted-foreground/60">
                             DONE: {new Date(task.completed_at).toLocaleTimeString()}
                           </div>
                         )}
@@ -377,13 +377,13 @@ export function TaskQueueMonitorTab() {
                             size="sm"
                             variant="ghost"
                             onClick={() => cancelMutation.mutate(task.task_id)}
-                            className="h-6 px-2 text-slate-400 hover:text-[#FF2A54] text-[10px] uppercase"
+                            className="h-6 px-2 text-muted-foreground hover:text-destructive text-[10px] uppercase"
                           >
                             <XCircle className="w-3 h-3 mr-1" />
                             CANCEL
                           </Button>
                         ) : (
-                          <span className="text-[10px] text-slate-500 uppercase">—</span>
+                          <span className="text-[10px] text-muted-foreground/60 uppercase">—</span>
                         )}
                       </td>
                     </tr>

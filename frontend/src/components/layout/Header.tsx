@@ -62,7 +62,7 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-14 bg-[#121212] border-b border-[#3A4552] px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
+        className={`sticky top-0 z-30 h-14 bg-card border-b border-border px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
           }`}
       >
         {/* Search & AI Spotlight Bar */}
@@ -71,16 +71,16 @@ export function Header() {
             onClick={() => setGlobalSearchOpen(true)}
             className="relative flex items-center w-full cursor-pointer group"
           >
-            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-slate-400 group-hover:text-[#FFB800] transition-none pointer-events-none" />
+            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-none pointer-events-none" />
             <input
               type="text"
               readOnly
               value={searchQuery}
               onFocus={() => setGlobalSearchOpen(true)}
               placeholder="SEARCH OR EXECUTE COMMAND (⌘K)..."
-              className="w-full bg-[#0B0C10] text-slate-200 placeholder:text-slate-500 text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-[#3A4552] group-hover:border-[#FFB800] cursor-pointer transition-none uppercase"
+              className="w-full bg-background text-foreground placeholder:text-muted-foreground text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-border group-hover:border-primary cursor-pointer transition-none uppercase"
             />
-            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-[#FFB800] bg-[#121212] border border-[#3A4552] rounded-none pointer-events-none">
+            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-primary bg-card border border-border rounded-none pointer-events-none">
               ⌘K
             </kbd>
           </div>
@@ -92,16 +92,16 @@ export function Header() {
           <LanguageSelector onOpenSettings={() => setIsLangManagerOpen(true)} />
 
           {/* Realtime Stream Indicator */}
-          <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs font-mono">
+          <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-none bg-background border border-border text-xs font-mono">
             <Radio
-              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-[#FFB800]' : 'text-amber-400'
+              className={`w-3.5 h-3.5 ${connectionStatus === 'OPEN' ? 'text-primary' : 'text-amber-400'
                 }`}
             />
-            <span className="text-slate-300 font-bold uppercase text-[10px]">
+            <span className="text-foreground font-bold uppercase text-[10px]">
               {connectionStatus === 'OPEN' ? 'WS STREAM ONLINE' : 'POLLING'}
             </span>
             <span
-              className={`w-1.5 h-1.5 rounded-none ${backendHealth === 'healthy' ? 'bg-[#FFB800]' : 'bg-[#FF2A54]'
+              className={`w-1.5 h-1.5 rounded-none ${backendHealth === 'healthy' ? 'bg-primary' : 'bg-destructive'
                 }`}
             />
           </div>
@@ -116,7 +116,7 @@ export function Header() {
             }}
             className="hidden md:inline-flex text-xs h-7"
           >
-            <Bot className="w-3.5 h-3.5 text-[#FFB800]" />
+            <Bot className="w-3.5 h-3.5 text-primary" />
             <span>{t('nav.agents', 'AGENTS')}</span>
           </Button>
 
@@ -135,13 +135,13 @@ export function Header() {
 
           {/* Authenticated User & Logout */}
           {user && (
-            <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-[#3A4552]">
+            <div className="flex items-center gap-2 ltr:pl-2 rtl:pr-2 border-l border-border">
               <div className="hidden sm:flex items-center gap-2">
-                <div className="w-7 h-7 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-center text-[#FFB800] font-bold text-xs font-mono">
+                <div className="w-7 h-7 rounded-none bg-background border border-border flex items-center justify-center text-primary font-bold text-xs font-mono">
                   <User className="w-3.5 h-3.5" />
                 </div>
                 <div className="text-left leading-tight hidden xl:block font-mono">
-                  <div className="text-xs font-bold text-white truncate max-w-[120px] uppercase">{user.full_name}</div>
+                  <div className="text-xs font-bold text-foreground truncate max-w-[120px] uppercase">{user.full_name}</div>
                   <Badge variant={getRoleBadgeVariant(user.role)} className="text-[8px] py-0 px-1 font-mono">
                     {user.role.toUpperCase()}
                   </Badge>
@@ -154,7 +154,7 @@ export function Header() {
                 onClick={() => logout()}
                 disabled={isLoggingOut}
                 title="Log Out & Invalidate Session Cookies"
-                className="text-slate-400 hover:text-[#FF2A54] hover:bg-rose-950/30 p-1.5 h-7 w-7"
+                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 p-1.5 h-7 w-7"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </Button>

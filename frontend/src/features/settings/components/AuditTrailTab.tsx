@@ -76,25 +76,25 @@ export function AuditTrailTab() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-[#121212] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
           <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-            <History className="w-4 h-4 text-[#FFB800]" />
+            <History className="w-4 h-4 text-primary" />
             COMPLIANCE AUDIT TRAIL &amp; FORENSIC LEDGER
           </h2>
-          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+          <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
             IMMUTABLE WRITE-AHEAD AUDIT ENTRIES CAPTURING ACTOR IDS, IP ADDRESSES, AND ENTITY MUTATIONS.
           </p>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <Card className="bg-[#121212] border-[#3A4552] p-3 font-mono">
+      <Card className="bg-card border-border p-3 font-mono">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Search */}
             <div className="relative flex-1 sm:w-64">
-              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={filterQuery}
@@ -103,20 +103,20 @@ export function AuditTrailTab() {
                   setPage(1);
                 }}
                 placeholder="SEARCH ENTITY, ACTOR, ACTION, IP..."
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
               />
             </div>
 
             {/* Entity Filter */}
             <div className="flex items-center gap-1">
-              <Filter className="w-3.5 h-3.5 text-slate-500" />
+              <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
               <select
                 value={entityFilter}
                 onChange={(e) => {
                   setEntityFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="bg-background border border-border text-xs text-foreground rounded-none px-2 py-1 focus:outline-none focus:border-primary uppercase font-mono"
               >
                 <option value="all">ALL ENTITIES</option>
                 {availableEntityTypes.map((et) => (
@@ -134,7 +134,7 @@ export function AuditTrailTab() {
                 setActionFilter(e.target.value);
                 setPage(1);
               }}
-              className="bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+              className="bg-background border border-border text-xs text-foreground rounded-none px-2 py-1 focus:outline-none focus:border-primary uppercase font-mono"
             >
               <option value="all">ALL ACTIONS</option>
               <option value="write">MUTATIONS &amp; WRITES</option>
@@ -152,7 +152,7 @@ export function AuditTrailTab() {
                   setActionFilter('all');
                   setPage(1);
                 }}
-                className="text-xs h-7 px-2 text-slate-400 hover:text-white uppercase flex items-center gap-1"
+                className="text-xs h-7 px-2 text-muted-foreground hover:text-white uppercase flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
                 RESET
@@ -160,17 +160,17 @@ export function AuditTrailTab() {
             )}
           </div>
 
-          <div className="text-[10px] text-slate-400 font-mono self-end sm:self-center uppercase">
+          <div className="text-[10px] text-muted-foreground font-mono self-end sm:self-center uppercase">
             {filteredLogs.length} AUDIT ENTRIES MATCHED
           </div>
         </div>
       </Card>
 
       {/* Audit Logs Table */}
-      <Card className="bg-[#121212] border-[#3A4552] overflow-hidden">
+      <Card className="bg-card border-border overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300 font-mono">
-            <thead className="bg-[#0B0C10] text-slate-400 uppercase font-bold text-[10px] border-b border-[#3A4552]">
+          <table className="w-full text-left text-xs text-foreground/80 font-mono">
+            <thead className="bg-background text-muted-foreground uppercase font-bold text-[10px] border-b border-border">
               <tr>
                 <th className="px-3 py-2.5">TIMESTAMP</th>
                 <th className="px-3 py-2.5">ENTITY</th>
@@ -182,12 +182,12 @@ export function AuditTrailTab() {
             </thead>
             <tbody className="divide-y divide-[#3A4552]">
               {paginatedLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-[#0B0C10] transition-none">
-                  <td className="px-3 py-2 text-slate-400 whitespace-nowrap text-[10px]">
+                <tr key={log.id} className="hover:bg-background transition-none">
+                  <td className="px-3 py-2 text-muted-foreground whitespace-nowrap text-[10px]">
                     {new Date(log.created_at).toLocaleTimeString()}
                   </td>
                   <td className="px-3 py-2">
-                    <span className="font-mono text-[#FFB800] uppercase font-bold text-[11px]">
+                    <span className="font-mono text-primary uppercase font-bold text-[11px]">
                       {log.entity_type}
                     </span>
                   </td>
@@ -197,20 +197,20 @@ export function AuditTrailTab() {
                     </Badge>
                   </td>
                   <td className="px-3 py-2 font-bold text-white flex items-center gap-1.5 uppercase text-[11px]">
-                    <UserCheck className="w-3 h-3 text-slate-400" />
+                    <UserCheck className="w-3 h-3 text-muted-foreground" />
                     {log.actor}
                   </td>
-                  <td className="px-3 py-2 font-mono text-slate-400 max-w-xs truncate text-[10px]">
+                  <td className="px-3 py-2 font-mono text-muted-foreground max-w-xs truncate text-[10px]">
                     {JSON.stringify(log.details || {})}
                   </td>
-                  <td className="px-3 py-2 text-right font-mono text-slate-500 text-[10px]">
+                  <td className="px-3 py-2 text-right font-mono text-muted-foreground/60 text-[10px]">
                     {log.ip_address || 'internal'}
                   </td>
                 </tr>
               ))}
               {paginatedLogs.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-slate-500 uppercase">
+                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground/60 uppercase">
                     {hasActiveFilters
                       ? 'NO COMPLIANCE LOGS MATCH THE FILTER CRITERIA.'
                       : 'NO COMPLIANCE LOGS REGISTERED YET.'}

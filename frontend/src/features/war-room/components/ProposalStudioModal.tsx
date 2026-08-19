@@ -106,12 +106,12 @@ E-Signature Link: ${proposal.esign_url}
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#121212] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md font-mono">
+      <div className="bg-card border border-border rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#121212] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-border bg-card flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
+            <div className="p-2 rounded-none bg-background text-primary border border-border">
               <FileText className="w-5 h-5" />
             </div>
             <div>
@@ -121,7 +121,7 @@ E-Signature Link: ${proposal.esign_url}
                   {deal.company}
                 </Badge>
               </h2>
-              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                 OPPORTUNITY: {deal.title} • PIPELINE VALUE: ${deal.value?.toLocaleString()} USD
               </p>
             </div>
@@ -129,7 +129,7 @@ E-Signature Link: ${proposal.esign_url}
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -138,15 +138,15 @@ E-Signature Link: ${proposal.esign_url}
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
           {/* Controls Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 bg-[#0B0C10] p-3.5 rounded-none border border-[#3A4552]">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 bg-background p-3.5 rounded-none border border-border">
             <div>
-              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
                 TIER PACKAGING
               </label>
               <select
                 value={tier}
                 onChange={(e) => setTier(e.target.value as any)}
-                className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
               >
                 <option value="starter">STARTER DECK</option>
                 <option value="growth">GROWTH FLEET</option>
@@ -155,7 +155,7 @@ E-Signature Link: ${proposal.esign_url}
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
                 DISCOUNT (%)
               </label>
               <input
@@ -164,21 +164,21 @@ E-Signature Link: ${proposal.esign_url}
                 max="50"
                 value={discountPct}
                 onChange={(e) => setDiscountPct(Number(e.target.value))}
-                className="w-full bg-[#121212] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
+                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
               />
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
                 SLA GUARANTEE
               </label>
               <div className="flex items-center h-8">
-                <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-slate-300 uppercase text-[10px]">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-foreground/80 uppercase text-[10px]">
                   <input
                     type="checkbox"
                     checked={includeSla}
                     onChange={(e) => setIncludeSla(e.target.checked)}
-                    className="rounded-none border-[#3A4552] bg-[#121212] text-[#FFB800] focus:ring-0"
+                    className="rounded-none border-border bg-card text-primary focus:ring-0"
                   />
                   <span>99.99% ENTERPRISE SLA</span>
                 </label>
@@ -201,28 +201,28 @@ E-Signature Link: ${proposal.esign_url}
 
           {/* Custom Terms Input */}
           <div className="space-y-1">
-            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+            <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
               SPECIAL COMMERCIAL TERMS &amp; CLAUSES
             </label>
             <textarea
               rows={2}
               value={customTerms}
               onChange={(e) => setCustomTerms(e.target.value)}
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
+              className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
             />
           </div>
 
           {/* Generated Proposal Preview */}
           {proposal && (
-            <div className="space-y-4 animate-in fade-in border-t border-[#3A4552] pt-4 font-mono">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0B0C10] p-4 rounded-none border border-[#3A4552]">
+            <div className="space-y-4 animate-in fade-in border-t border-border pt-4 font-mono">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-background p-4 rounded-none border border-border">
                 <div>
-                  <span className="text-[10px] font-mono text-slate-400 block uppercase">FINAL PRICING</span>
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase">FINAL PRICING</span>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-black text-[#FFB800] font-mono">
+                    <span className="text-xl font-black text-primary font-mono">
                       ${proposal.pricing.final_arr.toLocaleString()} USD
                     </span>
-                    <span className="text-xs text-slate-400 font-mono line-through">
+                    <span className="text-xs text-muted-foreground font-mono line-through">
                       ${proposal.pricing.base_arr.toLocaleString()}
                     </span>
                     <Badge variant="success" className="text-[9px] uppercase font-mono">
@@ -241,7 +241,7 @@ E-Signature Link: ${proposal.esign_url}
                   >
                     {copied ? (
                       <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-[#FFB800]" />
+                        <Check className="w-3.5 h-3.5 mr-1 text-primary" />
                         <span>COPIED!</span>
                       </>
                     ) : (
@@ -255,7 +255,7 @@ E-Signature Link: ${proposal.esign_url}
                     href={proposal.esign_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-xs px-3 py-1 bg-[#121212] hover:bg-[#1C1C1C] text-slate-200 border border-[#3A4552] hover:border-[#FFB800] uppercase transition-none h-7"
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1 bg-card hover:bg-popover text-foreground border border-border hover:border-primary uppercase transition-none h-7"
                   >
                     <span>E-SIGN LINK</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -264,12 +264,12 @@ E-Signature Link: ${proposal.esign_url}
               </div>
 
               {/* Proposal Document Body */}
-              <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
+              <div className="p-4 rounded-none bg-background border border-border space-y-3">
                 <div>
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">
                     EXECUTIVE SUMMARY
                   </h3>
-                  <p className="text-xs text-slate-300 leading-relaxed uppercase">
+                  <p className="text-xs text-foreground/80 leading-relaxed uppercase">
                     {proposal.executive_summary}
                   </p>
                 </div>
@@ -282,9 +282,9 @@ E-Signature Link: ${proposal.esign_url}
                     {proposal.modules_included.map((mod, i) => (
                       <div
                         key={i}
-                        className="p-2 rounded-none bg-[#121212] border border-[#3A4552] flex items-center gap-2 text-xs text-slate-200 font-bold uppercase"
+                        className="p-2 rounded-none bg-card border border-border flex items-center gap-2 text-xs text-foreground font-bold uppercase"
                       >
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#FFB800] shrink-0" />
+                        <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
                         <span>{mod}</span>
                       </div>
                     ))}
@@ -292,45 +292,45 @@ E-Signature Link: ${proposal.esign_url}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                  <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <div className="p-3 rounded-none bg-card border border-border space-y-1">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                       SLA &amp; UPTIME TERMS
                     </span>
-                    <p className="text-[11px] text-slate-300 uppercase leading-relaxed">{proposal.sla_terms}</p>
+                    <p className="text-[11px] text-foreground/80 uppercase leading-relaxed">{proposal.sla_terms}</p>
                   </div>
 
-                  <div className="p-3 rounded-none bg-[#121212] border border-[#3A4552] space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <div className="p-3 rounded-none bg-card border border-border space-y-1">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                       COMMERCIAL TERMS
                     </span>
-                    <p className="text-[11px] text-slate-300 uppercase leading-relaxed">{proposal.custom_notes || 'Standard agreement.'}</p>
+                    <p className="text-[11px] text-foreground/80 uppercase leading-relaxed">{proposal.custom_notes || 'Standard agreement.'}</p>
                   </div>
                 </div>
               </div>
 
               {/* Direct SMTP Email Dispatch Studio */}
-              <div className="p-4 rounded-none bg-[#121212] border border-[#3A4552] space-y-3 font-mono">
+              <div className="p-4 rounded-none bg-card border border-border space-y-3 font-mono">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#FFB800]" />
+                    <Mail className="w-4 h-4 text-primary" />
                     <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                       DISPATCH PROPOSAL VIA SECURE TASK QUEUE
                     </h3>
                   </div>
-                  <span className="text-[10px] text-slate-400 uppercase">
+                  <span className="text-[10px] text-muted-foreground uppercase">
                     SMTP ENVELOPE DELIVERY
                   </span>
                 </div>
 
                 {emailSuccessMsg && (
-                  <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-center gap-2 uppercase">
+                  <div className="p-2.5 bg-background border border-primary text-primary text-xs flex items-center gap-2 uppercase">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
                     <span>{emailSuccessMsg}</span>
                   </div>
                 )}
 
                 {emailErrorMsg && (
-                  <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-center gap-2 uppercase">
+                  <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-center gap-2 uppercase">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>{emailErrorMsg}</span>
                   </div>
@@ -343,7 +343,7 @@ E-Signature Link: ${proposal.esign_url}
                     value={recipientEmail}
                     onChange={(e) => setRecipientEmail(e.target.value)}
                     placeholder="recipient@company.com"
-                    className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
                   />
                   <Button
                     type="button"

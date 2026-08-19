@@ -51,13 +51,13 @@ export function MultiLanguageFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#121212] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
           <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Globe className="w-5 h-5 text-[#FFB800]" />
+            <Globe className="w-5 h-5 text-primary" />
             <span>{t('languages.title', 'MULTI-LANGUAGE & LOCALIZATION CONSOLE')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('languages.subtitle', 'MANAGE SUPPORTED LANGUAGES, CUSTOMIZE TRANSLATION STRINGS, AND CONFIGURE LOCALE FORMATS')}
           </p>
         </div>
@@ -77,21 +77,21 @@ export function MultiLanguageFeature() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border space-y-1">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             {t('languages.active_language', 'ACTIVE LOCALE')}
           </span>
           <div className="flex items-center gap-2 pt-0.5">
             <span className="text-2xl">{activeLang.flag_emoji || '🌐'}</span>
             <div>
               <div className="text-sm font-black text-white uppercase">{activeLang.name}</div>
-              <div className="text-[10px] text-slate-400 font-mono uppercase">ISO: {activeLang.code}</div>
+              <div className="text-[10px] text-muted-foreground font-mono uppercase">ISO: {activeLang.code}</div>
             </div>
           </div>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border space-y-1">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             {t('languages.direction', 'TEXT DIRECTION')}
           </span>
           <div className="flex items-center gap-2 pt-0.5">
@@ -102,27 +102,27 @@ export function MultiLanguageFeature() {
           </div>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border space-y-1">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             INSTALLED LOCALES
           </span>
           <div className="text-sm font-black text-white pt-0.5 font-mono">
             {availableLanguages.length} LOCALES
           </div>
-          <span className="text-[10px] text-[#FFB800] font-bold uppercase">
+          <span className="text-[10px] text-primary font-bold uppercase">
             {availableLanguages.filter((l) => l.is_enabled).length} ENABLED FOR USERS
           </span>
         </Card>
 
-        <Card className="p-3 bg-[#121212] border-[#3A4552] space-y-1">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border space-y-1">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             FALLBACK RESOLUTION
           </span>
-          <div className="flex items-center gap-1.5 text-sm font-black text-[#FFB800] pt-0.5 uppercase">
-            <Shield className="w-4 h-4 text-[#FFB800]" />
+          <div className="flex items-center gap-1.5 text-sm font-black text-primary pt-0.5 uppercase">
+            <Shield className="w-4 h-4 text-primary" />
             <span>ENGLISH (EN)</span>
           </div>
-          <span className="text-[10px] text-slate-500 uppercase">ZERO MISSING KEY CRASHES</span>
+          <span className="text-[10px] text-muted-foreground/60 uppercase">ZERO MISSING KEY CRASHES</span>
         </Card>
       </div>
 
@@ -130,7 +130,7 @@ export function MultiLanguageFeature() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
-            <Languages className="w-3.5 h-3.5 text-[#FFB800]" />
+            <Languages className="w-3.5 h-3.5 text-primary" />
             CONFIGURED SYSTEM LANGUAGES
           </h3>
         </div>
@@ -141,7 +141,7 @@ export function MultiLanguageFeature() {
             return (
               <Card
                 key={lang.code}
-                className={`p-4 bg-[#121212] border-[#3A4552] space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between ${isCurrent ? 'border-[#FFB800]' : ''
+                className={`p-4 bg-card border-border space-y-3 hover:border-primary transition-none flex flex-col justify-between ${isCurrent ? 'border-primary' : ''
                   }`}
               >
                 <div className="space-y-2">
@@ -150,7 +150,7 @@ export function MultiLanguageFeature() {
                       <span className="text-2xl">{lang.flag_emoji || '🌐'}</span>
                       <div>
                         <h4 className="font-bold text-xs text-white uppercase">{lang.name}</h4>
-                        <span className="text-[10px] text-slate-400 uppercase">{lang.english_name}</span>
+                        <span className="text-[10px] text-muted-foreground uppercase">{lang.english_name}</span>
                       </div>
                     </div>
 
@@ -168,16 +168,16 @@ export function MultiLanguageFeature() {
                     </div>
                   </div>
 
-                  <div className="text-[10px] text-slate-300 font-mono flex items-center gap-2">
+                  <div className="text-[10px] text-foreground/80 font-mono flex items-center gap-2">
                     <span>CODE: {lang.code}</span>
                     <span>•</span>
-                    <span className={lang.is_enabled ? 'text-[#FFB800] font-bold' : 'text-slate-500'}>
+                    <span className={lang.is_enabled ? 'text-primary font-bold' : 'text-muted-foreground/60'}>
                       {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-border flex items-center justify-between gap-2">
                   <Button
                     size="sm"
                     variant={isCurrent ? 'outline' : 'primary'}
@@ -205,38 +205,38 @@ export function MultiLanguageFeature() {
       </div>
 
       {/* Locale Format Preview Card */}
-      <Card className="p-4 bg-[#121212] border-[#3A4552] space-y-3 font-mono">
+      <Card className="p-4 bg-card border-border space-y-3 font-mono">
         <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
           LOCALE-AWARE FORMATTING SANDBOX ({activeLang.name.toUpperCase()})
         </h3>
-        <p className="text-[10px] text-slate-400 uppercase">
+        <p className="text-[10px] text-muted-foreground uppercase">
           CURRENCIES, NUMBERS, DATES, AND TIMES AUTOMATICALLY ADAPT BASED ON THE ACTIVE LOCALE SELECTION.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-1">
-          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
-            <span className="text-[9px] uppercase font-bold text-slate-400 block">CURRENCY FORMATTER</span>
-            <div className="text-sm font-black text-[#FFB800]">{formatCurrency(124500.5)}</div>
-            <span className="text-[9px] text-slate-500 font-mono">124,500.50 USD</span>
+          <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-muted-foreground block">CURRENCY FORMATTER</span>
+            <div className="text-sm font-black text-primary">{formatCurrency(124500.5)}</div>
+            <span className="text-[9px] text-muted-foreground/60 font-mono">124,500.50 USD</span>
           </div>
 
-          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
-            <span className="text-[9px] uppercase font-bold text-slate-400 block">NUMBER FORMATTER</span>
+          <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-muted-foreground block">NUMBER FORMATTER</span>
             <div className="text-sm font-black text-cyan-400">{formatNumber(9876543)}</div>
-            <span className="text-[9px] text-slate-500 font-mono">9,876,543 LEADS</span>
+            <span className="text-[9px] text-muted-foreground/60 font-mono">9,876,543 LEADS</span>
           </div>
 
-          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
-            <span className="text-[9px] uppercase font-bold text-slate-400 block">DATE FORMATTER</span>
+          <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-muted-foreground block">DATE FORMATTER</span>
             <div className="text-sm font-black text-white">{formatDate(new Date())}</div>
-            <span className="text-[9px] text-slate-500 font-mono">SHORT MONTH, DAY, YEAR</span>
+            <span className="text-[9px] text-muted-foreground/60 font-mono">SHORT MONTH, DAY, YEAR</span>
           </div>
 
-          <div className="p-2.5 bg-[#0B0C10] rounded-none border border-[#3A4552] space-y-0.5">
-            <span className="text-[9px] uppercase font-bold text-slate-400 block">LAYOUT DIRECTION</span>
-            <div className="text-sm font-black text-[#FFB800] uppercase">{currentDirection}</div>
-            <span className="text-[9px] text-slate-500 font-mono">HTML DIR=&ldquo;{currentDirection}&rdquo;</span>
+          <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
+            <span className="text-[9px] uppercase font-bold text-muted-foreground block">LAYOUT DIRECTION</span>
+            <div className="text-sm font-black text-primary uppercase">{currentDirection}</div>
+            <span className="text-[9px] text-muted-foreground/60 font-mono">HTML DIR=&ldquo;{currentDirection}&rdquo;</span>
           </div>
         </div>
       </Card>
