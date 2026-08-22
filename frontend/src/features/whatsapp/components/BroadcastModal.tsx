@@ -126,13 +126,13 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
               {phoneList.map((p) => (
                 <div
                   key={p}
-                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none bg-background border border-border text-xs text-foreground/80 font-mono"
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none bg-background border border-border text-xs text-foreground font-mono"
                 >
                   <span>{p}</span>
                   <button
                     type="button"
                     onClick={() => removePhone(p)}
-                    className="text-muted-foreground/60 hover:text-destructive transition-none"
+                    className="text-muted-foreground hover:text-destructive transition-none"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

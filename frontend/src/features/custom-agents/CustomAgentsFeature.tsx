@@ -193,12 +193,12 @@ export function CustomAgentsFeature() {
 
       {/* Custom Agents Grid */}
       {isLoading ? (
-        <div className="py-20 text-center text-muted-foreground/60 text-xs font-mono uppercase">LOADING AGENT FLEET...</div>
+        <div className="py-20 text-center text-muted-foreground text-xs font-mono uppercase">LOADING AGENT FLEET...</div>
       ) : filteredAgents.length === 0 ? (
         <div className="py-16 text-center rounded-none bg-background border border-border space-y-2.5 font-mono">
-          <Bot className="w-10 h-10 text-muted-foreground/60 mx-auto" />
+          <Bot className="w-10 h-10 text-muted-foreground mx-auto" />
           <h3 className="text-xs font-bold text-foreground uppercase">{t('custom_agents.no_agents_found') || 'NO CUSTOM AGENTS FOUND'}</h3>
-          <p className="text-[10px] text-muted-foreground/60 max-w-sm mx-auto uppercase">
+          <p className="text-[10px] text-muted-foreground max-w-sm mx-auto uppercase">
             {t('custom_agents.no_agents_desc') || 'DESIGN YOUR FIRST CUSTOM AUTONOMOUS AGENT TO AUTOMATE SPECIALIZED CRM WORKFLOWS.'}
           </p>
           <Button variant="primary" size="sm" onClick={handleOpenCreate} className="mt-2 text-xs">
@@ -227,7 +227,7 @@ export function CustomAgentsFeature() {
                         <span className="px-1 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold bg-background text-primary border border-primary/40">
                           {agent.trigger_type}
                         </span>
-                        <span className="text-[9px] text-muted-foreground/60 uppercase">
+                        <span className="text-[9px] text-muted-foreground uppercase">
                           • {agent.model_name || 'SMART-FALLBACK'}
                         </span>
                       </div>
@@ -239,7 +239,7 @@ export function CustomAgentsFeature() {
                     onClick={(e) => handleToggleActive(e, agent)}
                     className={`px-1.5 py-0.2 rounded-none text-[8px] font-mono uppercase font-bold border transition-none ${agent.is_active
                         ? 'bg-background text-primary border-primary'
-                        : 'bg-background text-muted-foreground/60 border-border'
+                        : 'bg-background text-muted-foreground border-border'
                       }`}
                     title="Toggle Active Status"
                   >
@@ -253,7 +253,7 @@ export function CustomAgentsFeature() {
 
                 {/* Tools enabled */}
                 <div className="space-y-1 pt-1">
-                  <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
                     {t('custom_agents.step_capabilities') || 'CAPABILITIES'} ({agent.tools_enabled?.length || 0})
                   </span>
                   <div className="flex flex-wrap gap-1">
@@ -271,7 +271,7 @@ export function CustomAgentsFeature() {
 
               {/* Card Footer */}
               <div className="pt-2 border-t border-border space-y-2">
-                <div className="flex items-center justify-between text-[10px] text-muted-foreground/60 font-mono uppercase">
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono uppercase">
                   <span className="flex items-center gap-1 text-cyan-400 font-bold">
                     <Zap className="w-3 h-3" />
                     {agent.execution_count || 0} {t('custom_agents.runs') || 'RUNS'}

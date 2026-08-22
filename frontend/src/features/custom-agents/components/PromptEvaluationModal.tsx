@@ -103,7 +103,7 @@ export function PromptEvaluationModal({
                 <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
                   VARIANT A (BASELINE PROMPT)
                 </span>
-                <span className="text-[10px] text-muted-foreground/60 font-mono">Control</span>
+                <span className="text-[10px] text-muted-foreground font-mono">Control</span>
               </div>
               <textarea
                 rows={6}
@@ -120,7 +120,7 @@ export function PromptEvaluationModal({
                 <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">
                   VARIANT B (CANDIDATE REFINEMENT)
                 </span>
-                <span className="text-[10px] text-muted-foreground/60 font-mono">Challenger</span>
+                <span className="text-[10px] text-muted-foreground font-mono">Challenger</span>
               </div>
               <textarea
                 rows={6}
@@ -195,15 +195,15 @@ export function PromptEvaluationModal({
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">SCHEMA COMPLIANCE</span>
+                      <span className="text-muted-foreground block">SCHEMA COMPLIANCE</span>
                       <span className="text-xs font-bold text-foreground">{metricsA?.schema_compliance ?? 0}%</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">AVG LATENCY</span>
+                      <span className="text-muted-foreground block">AVG LATENCY</span>
                       <span className="text-xs font-bold text-foreground">{metricsA?.avg_latency_ms ?? 0}MS</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">QUALITY RATING</span>
+                      <span className="text-muted-foreground block">QUALITY RATING</span>
                       <span className="text-xs font-bold text-primary">{metricsA?.quality_score ?? 0}%</span>
                     </div>
                   </div>
@@ -219,15 +219,15 @@ export function PromptEvaluationModal({
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">SCHEMA COMPLIANCE</span>
+                      <span className="text-muted-foreground block">SCHEMA COMPLIANCE</span>
                       <span className="text-xs font-bold text-foreground">{metricsB?.schema_compliance ?? 0}%</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">AVG LATENCY</span>
+                      <span className="text-muted-foreground block">AVG LATENCY</span>
                       <span className="text-xs font-bold text-foreground">{metricsB?.avg_latency_ms ?? 0}MS</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
-                      <span className="text-muted-foreground/60 block">QUALITY RATING</span>
+                      <span className="text-muted-foreground block">QUALITY RATING</span>
                       <span className="text-xs font-bold text-primary">{metricsB?.quality_score ?? 0}%</span>
                     </div>
                   </div>

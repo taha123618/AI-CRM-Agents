@@ -78,7 +78,7 @@ function RouteSync() {
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background text-slate-100 font-sans selection:bg-brand-500 selection:text-foreground flex flex-col justify-between">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-brand-500 selection:text-foreground flex flex-col justify-between">
       <div>
         <Sidebar />
         <Header />

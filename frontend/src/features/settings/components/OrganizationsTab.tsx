@@ -105,9 +105,9 @@ export function OrganizationsTab() {
                 <h3 className="text-xs font-bold text-foreground uppercase tracking-wide">{org.name}</h3>
                 <p className="text-[10px] font-mono text-primary mt-0.5">SLUG: {org.slug}</p>
 
-                <div className="mt-3 space-y-1.5 text-xs text-foreground/80">
+                <div className="mt-3 space-y-1.5 text-xs text-foreground">
                   <div className="flex items-center gap-2 text-[10px] uppercase">
-                    <Globe className="w-3 h-3 text-muted-foreground/60" />
+                    <Globe className="w-3 h-3 text-muted-foreground" />
                     <span>{org.domain || 'INTERNAL WORKSPACE'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-[10px] uppercase">
@@ -118,7 +118,7 @@ export function OrganizationsTab() {
               </div>
 
               <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs">
-                <span className="font-mono text-[9px] text-muted-foreground/60 truncate max-w-[120px]">{org.id}</span>
+                <span className="font-mono text-[9px] text-muted-foreground truncate max-w-[120px]">{org.id}</span>
                 <Button
                   size="sm"
                   variant="ghost"
@@ -159,7 +159,7 @@ export function OrganizationsTab() {
 
             <form onSubmit={handleSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">ORGANIZATION NAME *</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">ORGANIZATION NAME *</label>
                 <input
                   type="text"
                   required
@@ -171,7 +171,7 @@ export function OrganizationsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">IDENTIFIER SLUG (OPTIONAL)</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">IDENTIFIER SLUG (OPTIONAL)</label>
                 <input
                   type="text"
                   placeholder="E.G. APEX-GLOBAL"
@@ -182,7 +182,7 @@ export function OrganizationsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">COMPANY DOMAIN</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">COMPANY DOMAIN</label>
                 <input
                   type="text"
                   placeholder="E.G. APEXGLOBAL.COM"
@@ -193,7 +193,7 @@ export function OrganizationsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">SUBSCRIPTION PLAN TIER</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">SUBSCRIPTION PLAN TIER</label>
                 <select
                   value={planTier}
                   onChange={(e) => setPlanTier(e.target.value as any)}

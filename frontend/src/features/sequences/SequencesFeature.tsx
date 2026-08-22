@@ -108,7 +108,7 @@ export function SequencesFeature() {
       case 'voice':
         return <Phone className="w-3.5 h-3.5 text-purple-400" />;
       default:
-        return <Mail className="w-3.5 h-3.5 text-[#00E5FF]" />;
+        return <Mail className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />;
     }
   };
 
@@ -165,7 +165,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('cadence')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'cadence'
               ? 'bg-primary text-primary-foreground border border-primary'
-              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
+              : 'bg-card text-foreground border border-border hover:border-primary hover:text-foreground'
             }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('workflow_canvas')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'workflow_canvas'
               ? 'bg-primary text-primary-foreground border border-primary'
-              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
+              : 'bg-card text-foreground border border-border hover:border-primary hover:text-foreground'
             }`}
         >
           <Workflow className="w-3.5 h-3.5" />
@@ -208,7 +208,7 @@ export function SequencesFeature() {
                     onClick={() => setSelectedSequence(seq)}
                     className={`p-4 rounded-none border cursor-pointer transition-none ${isSelected
                         ? 'bg-card border-primary text-foreground shadow-xl'
-                        : 'bg-card border-border hover:border-primary text-foreground/80'
+                        : 'bg-card border-border hover:border-primary text-foreground'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -228,15 +228,15 @@ export function SequencesFeature() {
 
                     <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-border text-center">
                       <div className="bg-background p-1.5 rounded-none border border-border">
-                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">STEPS</span>
+                        <span className="text-[8px] text-muted-foreground uppercase font-bold block">STEPS</span>
                         <span className="text-xs font-bold font-mono text-foreground">{seq.steps.length} STEPS</span>
                       </div>
                       <div className="bg-background p-1.5 rounded-none border border-border">
-                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">ENROLLED</span>
+                        <span className="text-[8px] text-muted-foreground uppercase font-bold block">ENROLLED</span>
                         <span className="text-xs font-bold font-mono text-primary">{seq.enrolled_count}</span>
                       </div>
                       <div className="bg-background p-1.5 rounded-none border border-border">
-                        <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">CONVERSION</span>
+                        <span className="text-[8px] text-muted-foreground uppercase font-bold block">CONVERSION</span>
                         <span className="text-xs font-bold font-mono text-primary">{seq.conversion_rate_pct}%</span>
                       </div>
                     </div>
@@ -309,7 +309,7 @@ export function SequencesFeature() {
                 {/* AI Copy Customizer */}
                 <div className="p-3.5 rounded-none bg-background border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-primary" />
                       <span>AI PROMPT &amp; COPY PERSONALIZATION INJECTION</span>
                     </span>
@@ -421,7 +421,7 @@ export function SequencesFeature() {
                 </div>
               </div>
             ) : (
-              <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
+              <div className="p-12 text-center text-muted-foreground text-xs uppercase font-mono">
                 NO CADENCE SELECTED. CREATE OR SELECT A CADENCE ON THE LEFT.
               </div>
             )}

@@ -19,7 +19,7 @@ export function StatusIndicator({
     idle: 'bg-amber-500',
     warning: 'bg-orange-500',
     error: 'bg-rose-500',
-    offline: 'bg-slate-500',
+    offline: 'bg-muted',
   };
 
   const ringMap = {
@@ -28,7 +28,7 @@ export function StatusIndicator({
     idle: 'bg-amber-400',
     warning: 'bg-orange-400',
     error: 'bg-rose-400',
-    offline: 'bg-slate-400',
+    offline: 'bg-muted',
   };
 
   return (
@@ -44,7 +44,7 @@ export function StatusIndicator({
         )}
         <span className={cn('relative inline-flex rounded-none h-2 w-2', colorMap[status])} />
       </span>
-      {label && <span className="text-xs font-semibold text-foreground/90 capitalize">{label}</span>}
+      {label && <span className="text-xs font-semibold text-foreground capitalize">{label}</span>}
     </div>
   );
 }

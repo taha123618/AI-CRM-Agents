@@ -326,14 +326,14 @@ export function ReportsFeature() {
                   </div>
                 </div>
 
-                <p className="text-xs text-foreground/80 leading-relaxed font-mono uppercase">{report.summary}</p>
+                <p className="text-xs text-foreground leading-relaxed font-mono uppercase">{report.summary}</p>
 
                 {/* Dynamic Findings List */}
                 <div className="p-2.5 bg-background border border-border space-y-1.5">
                   <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider block">
                     AI KEY FINDINGS &amp; METRICS
                   </span>
-                  <ul className="space-y-1 text-xs text-foreground/80 font-mono">
+                  <ul className="space-y-1 text-xs text-foreground font-mono">
                     {report.highlights.map((highlight, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
                         <CheckCircle2 className="w-3 h-3 text-primary shrink-0 mt-0.5" />
@@ -348,7 +348,7 @@ export function ReportsFeature() {
               <div className="pt-3 border-t border-border flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono uppercase">
                   <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-muted-foreground/60" />
+                    <Calendar className="w-3 h-3 text-muted-foreground" />
                     <span>{report.generatedAt}</span>
                   </div>
                   <span>• {report.period}</span>
@@ -397,7 +397,7 @@ export function ReportsFeature() {
             {/* Complete Highlights */}
             <div className="p-3 bg-background border border-border space-y-1.5">
               <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">DETAILED OBSERVATIONS</span>
-              <ul className="space-y-1 text-xs text-foreground/80 font-mono">
+              <ul className="space-y-1 text-xs text-foreground font-mono">
                 {selectedReport.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />

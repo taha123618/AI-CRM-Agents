@@ -236,7 +236,7 @@ export function WebhooksStudioTab() {
         ))}
 
         {webhooks.length === 0 && (
-          <Card className="p-8 text-center bg-card/50 border border-border text-muted-foreground/60 text-xs uppercase">
+          <Card className="p-8 text-center bg-card/50 border border-border text-muted-foreground text-xs uppercase">
             NO OUTBOUND WEBHOOKS CONFIGURED YET. REGISTER A DESTINATION ENDPOINT ABOVE.
           </Card>
         )}
@@ -256,7 +256,7 @@ export function WebhooksStudioTab() {
           {/* Delivery Filter Toolbar */}
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:w-56">
-              <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={deliverySearch}
@@ -270,7 +270,7 @@ export function WebhooksStudioTab() {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
+              <Filter className="w-3.5 h-3.5 text-muted-foreground" />
               <select
                 value={deliveryStatusFilter}
                 onChange={(e) => {
@@ -305,7 +305,7 @@ export function WebhooksStudioTab() {
 
         <Card className="bg-card border-border overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-foreground/80 font-mono">
+            <table className="w-full text-left text-xs text-foreground font-mono">
               <thead className="bg-background text-muted-foreground uppercase font-bold text-[10px] border-b border-border">
                 <tr>
                   <th className="px-3 py-2.5">EVENT TYPE</th>
@@ -332,14 +332,14 @@ export function WebhooksStudioTab() {
                     <td className="px-3 py-2 text-muted-foreground truncate max-w-xs text-[10px]">
                       {d.response_body || (d.success ? 'Delivered successfully' : 'No response')}
                     </td>
-                    <td className="px-3 py-2 text-right text-muted-foreground/60 text-[10px]">
+                    <td className="px-3 py-2 text-right text-muted-foreground text-[10px]">
                       {d.created_at ? new Date(d.created_at).toLocaleTimeString() : 'RECENT'}
                     </td>
                   </tr>
                 ))}
                 {paginatedDeliveries.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-6 text-center text-muted-foreground/60 uppercase">
+                    <td colSpan={5} className="px-4 py-6 text-center text-muted-foreground uppercase">
                       {hasActiveFilters
                         ? 'NO WEBHOOK DELIVERIES MATCH THE FILTER CRITERIA.'
                         : 'NO WEBHOOK DELIVERIES DISPATCHED YET.'}
@@ -385,7 +385,7 @@ export function WebhooksStudioTab() {
 
             <form onSubmit={handleCreate} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                   DESTINATION URL (HTTPS RECOMMENDED)
                 </label>
                 <input
@@ -399,7 +399,7 @@ export function WebhooksStudioTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                   DESCRIPTION / SERVICE NAME
                 </label>
                 <input
@@ -412,11 +412,11 @@ export function WebhooksStudioTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                   EVENT SUBSCRIPTIONS
                 </label>
                 <div className="grid grid-cols-2 gap-1.5 max-h-44 overflow-y-auto p-2 bg-background rounded-none border border-border">
-                  <label className="flex items-center gap-2 text-xs text-foreground/80 p-1.5 rounded-none hover:bg-card cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-foreground p-1.5 rounded-none hover:bg-card cursor-pointer">
                     <input
                       type="checkbox"
                       checked={selectedEvents.includes('*')}
@@ -428,7 +428,7 @@ export function WebhooksStudioTab() {
                   {AVAILABLE_EVENTS.map((ev) => (
                     <label
                       key={ev}
-                      className="flex items-center gap-2 text-xs text-foreground/80 p-1.5 rounded-none hover:bg-card cursor-pointer"
+                      className="flex items-center gap-2 text-xs text-foreground p-1.5 rounded-none hover:bg-card cursor-pointer"
                     >
                       <input
                         type="checkbox"

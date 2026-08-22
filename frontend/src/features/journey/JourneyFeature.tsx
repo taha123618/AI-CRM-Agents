@@ -149,11 +149,11 @@ export function JourneyFeature() {
           </Card>
 
           <Card className="p-4 bg-card border-border rounded-none hover:border-primary transition-none">
-            <span className="text-[10px] font-bold text-[#00E5FF] uppercase tracking-wider block flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
+            <span className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider block flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
               EXPANSION POTENTIAL ARR
             </span>
-            <div className="text-2xl font-black font-mono text-[#00E5FF] mt-0.5">
+            <div className="text-2xl font-black font-mono text-cyan-600 dark:text-cyan-400 mt-0.5">
               ${journeyData.summary.expansion_arr.toLocaleString()}
             </div>
             <span className="text-[10px] text-muted-foreground font-mono mt-1 block uppercase">
@@ -180,7 +180,7 @@ export function JourneyFeature() {
       {journeyData?.stages && journeyData?.distribution && (
         <div className="p-4 rounded-none bg-card border border-border space-y-3.5 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               <Milestone className="w-4 h-4 text-primary" />
               <span>CUSTOMER LIFECYCLE PIPELINE</span>
             </span>
@@ -221,11 +221,11 @@ export function JourneyFeature() {
                   onClick={() => setActiveStageFilter(isFiltered ? 'all' : st.id)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isFiltered
                       ? 'bg-background border-primary shadow-lg'
-                      : 'bg-background/60 border-border hover:border-slate-500'
+                      : 'bg-background/60 border-border hover:border-border'
                     }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-foreground/80 uppercase">{st.label}</span>
+                    <span className="text-xs font-bold text-foreground uppercase">{st.label}</span>
                     <Badge variant="default" className="text-[9px] uppercase font-mono">
                       {bucket.count}
                     </Badge>
@@ -233,7 +233,7 @@ export function JourneyFeature() {
                   <div className="text-base font-black font-mono text-primary mt-1.5">
                     ${bucket.total_arr.toLocaleString()}
                   </div>
-                  <span className="text-[9px] text-muted-foreground/60 font-mono uppercase">STAGE ARR</span>
+                  <span className="text-[9px] text-muted-foreground font-mono uppercase">STAGE ARR</span>
                 </div>
               );
             })}
@@ -261,7 +261,7 @@ export function JourneyFeature() {
           </div>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2" />
+            <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2" />
             <input
               type="text"
               value={searchQuery}
@@ -281,7 +281,7 @@ export function JourneyFeature() {
                   onClick={() => setSelectedCustomer(customer)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
                       ? 'bg-card border-primary text-foreground shadow-xl'
-                      : 'bg-card border-border hover:border-primary text-foreground/80'
+                      : 'bg-card border-border hover:border-primary text-foreground'
                     }`}
                 >
                   <div className="flex items-center justify-between">
@@ -361,7 +361,7 @@ export function JourneyFeature() {
               {/* Journey Timeline */}
               <div className="space-y-2.5">
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#00E5FF]" />
+                  <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                   <span>LIFECYCLE MILESTONE TIMELINE</span>
                 </span>
 
@@ -376,15 +376,15 @@ export function JourneyFeature() {
                           className={`w-3.5 h-3.5 ${t.status === 'completed'
                               ? 'text-primary'
                               : t.status === 'in_progress'
-                                ? 'text-[#00E5FF]'
+                                ? 'text-cyan-600 dark:text-cyan-400'
                                 : t.status === 'flagged'
                                   ? 'text-destructive'
-                                  : 'text-muted-foreground/60'
+                                  : 'text-muted-foreground'
                             }`}
                         />
                         <span className="text-foreground font-medium">{t.event}</span>
                       </div>
-                      <span className="text-[10px] font-mono text-muted-foreground/60">{t.date}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground">{t.date}</span>
                     </div>
                   ))}
                 </div>
@@ -413,7 +413,7 @@ export function JourneyFeature() {
                               {intv.status}
                             </Badge>
                           </div>
-                          <p className="text-foreground/80 text-[10px] mt-1">{intv.action_summary}</p>
+                          <p className="text-foreground text-[10px] mt-1">{intv.action_summary}</p>
                         </div>
 
                         {intv.status !== 'completed' && (
@@ -445,7 +445,7 @@ export function JourneyFeature() {
                   {customerDetails.recommended_plays.map((play, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-none bg-background border border-border text-xs text-foreground/80 flex items-start gap-2 uppercase"
+                      className="p-2.5 rounded-none bg-background border border-border text-xs text-foreground flex items-start gap-2 uppercase"
                     >
                       <span className="text-primary font-bold shrink-0">⚡</span>
                       <span>{play}</span>
@@ -455,11 +455,11 @@ export function JourneyFeature() {
               </div>
             </div>
           ) : isLoadingDetails ? (
-            <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
+            <div className="p-12 text-center text-muted-foreground text-xs uppercase font-mono">
               LOADING CUSTOMER JOURNEY DETAILS...
             </div>
           ) : (
-            <div className="p-12 text-center text-muted-foreground/60 text-xs uppercase font-mono">
+            <div className="p-12 text-center text-muted-foreground text-xs uppercase font-mono">
               SELECT AN ACCOUNT TO VIEW TELEMETRY.
             </div>
           )}

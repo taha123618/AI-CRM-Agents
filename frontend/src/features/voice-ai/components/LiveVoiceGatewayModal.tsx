@@ -168,7 +168,7 @@ export function LiveVoiceGatewayModal({
                 LIVE AUDIO TRANSCRIPT &amp; BATTLE-CARDS
               </span>
               {tokenData && (
-                <span className="text-[9px] font-mono text-muted-foreground/60 uppercase">SESSION: {tokenData.session_id}</span>
+                <span className="text-[9px] font-mono text-muted-foreground uppercase">SESSION: {tokenData.session_id}</span>
               )}
             </div>
 
@@ -205,7 +205,7 @@ export function LiveVoiceGatewayModal({
               onClick={() => setIsMuted(!isMuted)}
               className={`p-2.5 border transition-none font-mono ${isMuted
                   ? 'bg-background border-destructive text-destructive'
-                  : 'bg-background border-border text-foreground/80 hover:text-foreground'
+                  : 'bg-background border-border text-foreground hover:text-foreground'
                 }`}
               title={isMuted ? 'Unmute' : 'Mute'}
             >
@@ -216,7 +216,7 @@ export function LiveVoiceGatewayModal({
               onClick={() => setIsSpeakerOn(!isSpeakerOn)}
               className={`p-2.5 border transition-none font-mono ${isSpeakerOn
                   ? 'bg-background border-border text-primary'
-                  : 'bg-background border-border text-muted-foreground/60'
+                  : 'bg-background border-border text-muted-foreground'
                 }`}
               title="Speaker Audio"
             >

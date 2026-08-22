@@ -81,7 +81,7 @@ export function AnalyticsFeature() {
           ) : insights ? (
             <div className="space-y-3">
               {/* Summary */}
-              <p className="text-xs text-foreground/80 font-mono border-l-2 border-primary pl-3 uppercase">{insights.summary}</p>
+              <p className="text-xs text-foreground font-mono border-l-2 border-primary pl-3 uppercase">{insights.summary}</p>
 
               {/* KPI Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
@@ -89,11 +89,11 @@ export function AnalyticsFeature() {
                   <div key={kpi.label} className="p-2.5 bg-background border border-border space-y-1">
                     <div className="text-[9px] text-muted-foreground uppercase font-bold">{kpi.label}</div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-base font-black font-mono ${kpi.trend === 'up' ? 'text-primary' : kpi.trend === 'down' ? 'text-destructive' : 'text-foreground/80'
+                      <span className={`text-base font-black font-mono ${kpi.trend === 'up' ? 'text-primary' : kpi.trend === 'down' ? 'text-destructive' : 'text-foreground'
                         }`}>{kpi.value}</span>
                       {kpi.trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-primary" />}
                       {kpi.trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-destructive" />}
-                      {kpi.trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-muted-foreground/60" />}
+                      {kpi.trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-muted-foreground" />}
                     </div>
                   </div>
                 ))}
@@ -102,7 +102,7 @@ export function AnalyticsFeature() {
               {/* Insight bullets */}
               <div className="space-y-1.5 pt-1">
                 {insights.insights.map((insight, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-foreground/80 font-mono">
+                  <div key={i} className="flex items-start gap-2 text-xs text-foreground font-mono">
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                     <span>{insight}</span>
                   </div>
@@ -110,7 +110,7 @@ export function AnalyticsFeature() {
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-muted-foreground/60 text-xs font-mono uppercase">UNABLE TO LOAD INSIGHTS.</div>
+            <div className="text-center py-6 text-muted-foreground text-xs font-mono uppercase">UNABLE TO LOAD INSIGHTS.</div>
           )}
         </CardContent>
       </Card>
@@ -246,7 +246,7 @@ export function AnalyticsFeature() {
                 <Sparkles className="w-3 h-3 text-primary" />
                 STRATEGIC AI INSIGHTS
               </h4>
-              <ul className="space-y-1 text-xs font-mono text-foreground/80">
+              <ul className="space-y-1 text-xs font-mono text-foreground">
                 {Array.isArray(forecastResult.insights) && forecastResult.insights.length > 0 ? (
                   forecastResult.insights.map((insight: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5">

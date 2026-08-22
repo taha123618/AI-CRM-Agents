@@ -94,7 +94,7 @@ export function AuditTrailTab() {
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Search */}
             <div className="relative flex-1 sm:w-64">
-              <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={filterQuery}
@@ -109,7 +109,7 @@ export function AuditTrailTab() {
 
             {/* Entity Filter */}
             <div className="flex items-center gap-1">
-              <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
+              <Filter className="w-3.5 h-3.5 text-muted-foreground" />
               <select
                 value={entityFilter}
                 onChange={(e) => {
@@ -169,7 +169,7 @@ export function AuditTrailTab() {
       {/* Audit Logs Table */}
       <Card className="bg-card border-border overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-foreground/80 font-mono">
+          <table className="w-full text-left text-xs text-foreground font-mono">
             <thead className="bg-background text-muted-foreground uppercase font-bold text-[10px] border-b border-border">
               <tr>
                 <th className="px-3 py-2.5">TIMESTAMP</th>
@@ -203,14 +203,14 @@ export function AuditTrailTab() {
                   <td className="px-3 py-2 font-mono text-muted-foreground max-w-xs truncate text-[10px]">
                     {JSON.stringify(log.details || {})}
                   </td>
-                  <td className="px-3 py-2 text-right font-mono text-muted-foreground/60 text-[10px]">
+                  <td className="px-3 py-2 text-right font-mono text-muted-foreground text-[10px]">
                     {log.ip_address || 'internal'}
                   </td>
                 </tr>
               ))}
               {paginatedLogs.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground/60 uppercase">
+                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground uppercase">
                     {hasActiveFilters
                       ? 'NO COMPLIANCE LOGS MATCH THE FILTER CRITERIA.'
                       : 'NO COMPLIANCE LOGS REGISTERED YET.'}

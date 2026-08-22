@@ -152,18 +152,18 @@ export function ObservabilityMetricsTab() {
           </div>
         </div>
 
-        <div className="p-4 max-h-[480px] overflow-y-auto font-mono text-[11px] leading-relaxed text-foreground/80 select-text">
+        <div className="p-4 max-h-[480px] overflow-y-auto font-mono text-[11px] leading-relaxed text-foreground select-text">
           {isLoading ? (
             <div className="py-12 flex justify-center">
               <LoadingSpinner />
             </div>
           ) : filteredLines.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground/60 uppercase">NO METRICS MATCHING '{filterText}'</div>
+            <div className="text-center py-12 text-muted-foreground uppercase">NO METRICS MATCHING '{filterText}'</div>
           ) : (
             filteredLines.map((line, idx) => {
               if (line.startsWith('# HELP')) {
                 return (
-                  <div key={idx} className="text-muted-foreground/60 font-semibold mt-2">
+                  <div key={idx} className="text-muted-foreground font-semibold mt-2">
                     {line}
                   </div>
                 );

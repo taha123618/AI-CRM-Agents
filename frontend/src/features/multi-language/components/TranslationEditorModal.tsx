@@ -185,7 +185,7 @@ export function TranslationEditorModal({
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Search Input */}
             <div className="relative flex-1 sm:w-64">
-              <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2" />
+              <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2" />
               <input
                 type="text"
                 placeholder="SEARCH TRANSLATION KEYS..."
@@ -197,7 +197,7 @@ export function TranslationEditorModal({
 
             {/* Namespace Filter */}
             <div className="flex items-center gap-1">
-              <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
+              <Filter className="w-3.5 h-3.5 text-muted-foreground" />
               <select
                 value={activeNamespace}
                 onChange={(e) => setActiveNamespace(e.target.value)}
@@ -256,7 +256,7 @@ export function TranslationEditorModal({
             <tbody className="divide-y divide-border text-xs">
               {translationRows.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-muted-foreground/60 uppercase">
+                  <td colSpan={4} className="py-8 text-center text-muted-foreground uppercase">
                     NO TRANSLATION KEYS FOUND FOR CURRENT QUERY.
                   </td>
                 </tr>
@@ -314,7 +314,7 @@ export function TranslationEditorModal({
 
         {/* Modal Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-border">
-          <span className="text-[10px] text-muted-foreground/60 uppercase font-mono">
+          <span className="text-[10px] text-muted-foreground uppercase font-mono">
             {translationRows.length} STRINGS DISPLAYED • ALL EDITS IMMEDIATELY BROADCAST VIA REACT STATE
           </span>
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">

@@ -60,28 +60,28 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 9%;
 
-    --primary: 43 100% 45%;         /* #E6A500  Slightly deeper amber for light bg */
-    --primary-foreground: 0 0% 100%; /* White text on primary in light mode */
+    --primary: 43 100% 48%;         /* Tactical Amber */
+    --primary-foreground: 222 14% 7%; /* Dark text on amber (high contrast in both light & dark) */
 
     --secondary: 210 14% 91%;       /* #E4E8ED */
-    --secondary-foreground: 220 20% 15%;
+    --secondary-foreground: 220 20% 9%;
 
-    --muted: 210 15% 93%;           /* #E8ECF0 */
-    --muted-foreground: 215 14% 38%; /* #576070 */
+    --muted: 210 15% 91%;           /* #E6EAEE */
+    --muted-foreground: 215 19% 34%; /* #465161 Crisp readable text */
 
     --accent: 210 14% 91%;
-    --accent-foreground: 220 20% 9%;
+    --accent-foreground: 43 100% 40%;
 
-    --destructive: 348 85% 48%;     /* #E0254A  Slightly darker red */
+    --destructive: 348 85% 48%;     /* #E0254A */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 18% 80%;          /* #BDC5CE  Steel-light border */
-    --input: 214 18% 88%;           /* #D5DAE0  Input border light */
-    --ring: 43 100% 45%;            /* Amber focus ring */
+    --border: 214 18% 75%;          /* #B5BFCB Crisp border */
+    --input: 214 18% 82%;
+    --ring: 43 100% 48%;            /* Amber focus ring */
 
     --radius: 0rem;
 
-    /* Chart colors — slightly muted for light bg */
+    /* Chart colors — calibrated for light bg */
     --chart-1: 43 100% 40%;         /* Amber */
     --chart-2: 199 89% 38%;         /* Cyan */
     --chart-3: 271 91% 55%;         /* Purple */
@@ -167,42 +167,24 @@
 }
 
 /* ═══════════════════════════════════════════════
-   TABLE STRIPES — Theme-aware
+   TABLE STRIPES — Theme-aware Semantic
    ═══════════════════════════════════════════════ */
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
-/* Dark theme stripes */
-.dark table tbody tr:nth-child(even),
-:root table tbody tr:nth-child(even) {
-  background-color: #0E0E0E;
+table tbody tr:nth-child(even) {
+  background-color: hsl(var(--card));
 }
 
-.dark table tbody tr:nth-child(odd),
-:root table tbody tr:nth-child(odd) {
-  background-color: #121212;
+table tbody tr:nth-child(odd) {
+  background-color: hsl(var(--background));
 }
 
-.dark table tbody tr:hover,
-:root table tbody tr:hover {
+table tbody tr:hover {
   outline: 1px solid hsl(var(--primary));
-  background-color: #1C1C1C !important;
-}
-
-/* Light theme stripes */
-.light table tbody tr:nth-child(even) {
-  background-color: #F0F1F3;
-}
-
-.light table tbody tr:nth-child(odd) {
-  background-color: #FFFFFF;
-}
-
-.light table tbody tr:hover {
-  outline: 1px solid hsl(var(--primary));
-  background-color: #FFF8E7 !important;
+  background-color: hsl(var(--muted)) !important;
 }
 
 /* ═══════════════════════════════════════════════

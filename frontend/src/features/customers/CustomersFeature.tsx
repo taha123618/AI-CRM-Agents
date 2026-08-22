@@ -174,7 +174,7 @@ export function CustomersFeature() {
               ))}
             </div>
           ) : !customers || customers.length === 0 ? (
-            <div className="text-center py-10 text-muted-foreground/60 text-xs font-mono uppercase">NO CUSTOMERS MONITORED.</div>
+            <div className="text-center py-10 text-muted-foreground text-xs font-mono uppercase">NO CUSTOMERS MONITORED.</div>
           ) : (
             <Table>
               <TableHeader>
@@ -231,7 +231,7 @@ export function CustomersFeature() {
                           {cust.churn_probability}%
                         </span>
                       ) : (
-                        <span className="text-muted-foreground/60 text-xs font-mono">—</span>
+                        <span className="text-muted-foreground text-xs font-mono">—</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -324,7 +324,7 @@ export function CustomersFeature() {
                 </h4>
                 <ul className="space-y-1">
                   {currentActions.map((action: string, i: number) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground/80 font-mono uppercase">
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground font-mono uppercase">
                       <CheckCircle2 className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{action}</span>
                     </li>

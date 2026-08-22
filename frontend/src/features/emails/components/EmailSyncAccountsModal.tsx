@@ -146,7 +146,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                         <span className="w-1.5 h-1.5 rounded-none bg-primary"></span>
                         <h4 className="text-xs font-bold text-foreground uppercase">{acc.provider}</h4>
                       </div>
-                      <p className="text-[10px] font-mono text-foreground/80 mt-0.5">{acc.email_address}</p>
+                      <p className="text-[10px] font-mono text-foreground mt-0.5">{acc.email_address}</p>
                     </div>
 
                     <Button
@@ -180,14 +180,14 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                     onClick={() => setSelectedThreadId(th.id)}
                     className={`p-2.5 border cursor-pointer transition-none ${selectedThreadId === th.id
                         ? 'bg-background border-primary text-foreground'
-                        : 'bg-background border-border hover:border-slate-500 text-foreground/80'
+                        : 'bg-background border-border hover:border-border text-foreground'
                       }`}
                   >
                     <div className="flex items-center justify-between text-[10px] mb-1">
                       <Badge variant="purple" className="text-[8px] py-0">
                         {th.message_count} MSGS
                       </Badge>
-                      <span className="text-[9px] text-muted-foreground/60 font-mono">
+                      <span className="text-[9px] text-muted-foreground font-mono">
                         {th.last_message_at ? new Date(th.last_message_at).toLocaleDateString() : ''}
                       </span>
                     </div>
@@ -234,7 +234,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                   </div>
                 </div>
               ) : (
-                <div className="p-10 text-center text-muted-foreground/60 text-xs bg-background border border-border font-mono uppercase">
+                <div className="p-10 text-center text-muted-foreground text-xs bg-background border border-border font-mono uppercase">
                   SELECT A CONVERSATION THREAD TO INSPECT HISTORY.
                 </div>
               )}
@@ -250,7 +250,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
 
               <div className="space-y-2 text-xs">
                 <div>
-                  <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">PROVIDER TYPE</label>
+                  <label className="block text-[10px] text-foreground font-bold uppercase mb-1">PROVIDER TYPE</label>
                   <select
                     value={provider}
                     onChange={(e) => setProvider(e.target.value)}
@@ -263,7 +263,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">EMAIL ADDRESS *</label>
+                  <label className="block text-[10px] text-foreground font-bold uppercase mb-1">EMAIL ADDRESS *</label>
                   <input
                     type="email"
                     required
@@ -275,7 +275,7 @@ export function EmailSyncAccountsModal({ isOpen, onClose }: EmailSyncAccountsMod
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">DISPLAY LABEL</label>
+                  <label className="block text-[10px] text-foreground font-bold uppercase mb-1">DISPLAY LABEL</label>
                   <input
                     type="text"
                     placeholder="E.G. SALES INBOUND"

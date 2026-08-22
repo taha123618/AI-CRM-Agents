@@ -82,19 +82,19 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
         {/* Top Info Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-none bg-background border border-border text-xs">
           <div>
-            <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">MODEL ENGINE</span>
+            <span className="text-[9px] text-muted-foreground uppercase font-bold block">MODEL ENGINE</span>
             <span className="font-bold text-foreground uppercase">{agent.model_name || 'smart-fallback'}</span>
           </div>
           <div>
-            <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">TEMPERATURE</span>
+            <span className="text-[9px] text-muted-foreground uppercase font-bold block">TEMPERATURE</span>
             <span className="font-bold text-primary">{agent.temperature ?? 0.3}</span>
           </div>
           <div>
-            <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">TRIGGER TYPE</span>
+            <span className="text-[9px] text-muted-foreground uppercase font-bold block">TRIGGER TYPE</span>
             <span className="font-bold text-cyan-400 uppercase">{agent.trigger_type}</span>
           </div>
           <div>
-            <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">TOOLS ENABLED</span>
+            <span className="text-[9px] text-muted-foreground uppercase font-bold block">TOOLS ENABLED</span>
             <span className="font-bold text-purple-400 uppercase">{agent.tools_enabled?.length || 0} ACTIVE</span>
           </div>
         </div>
@@ -104,7 +104,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
           <button
             type="button"
             onClick={() => setShowPromptPreview(!showPromptPreview)}
-            className="w-full flex items-center justify-between p-3 text-xs font-bold text-foreground/80 hover:text-foreground uppercase"
+            className="w-full flex items-center justify-between p-3 text-xs font-bold text-foreground hover:text-foreground uppercase"
           >
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
@@ -113,7 +113,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
             {showPromptPreview ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
           {showPromptPreview && (
-            <div className="p-3 border-t border-border bg-card text-xs text-foreground/80 font-mono whitespace-pre-wrap leading-relaxed">
+            <div className="p-3 border-t border-border bg-card text-xs text-foreground font-mono whitespace-pre-wrap leading-relaxed">
               {agent.system_prompt}
             </div>
           )}
@@ -124,7 +124,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
           {/* Input Payload Console */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-[10px] font-bold text-foreground/80 uppercase flex items-center gap-1.5">
+              <label className="text-[10px] font-bold text-foreground uppercase flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                 INPUT TEST PAYLOAD (JSON)
               </label>
@@ -146,7 +146,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
 
           {/* Execution Output Console */}
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-foreground/80 uppercase flex items-center gap-1.5">
+            <label className="text-[10px] font-bold text-foreground uppercase flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-primary" />
               OUTPUT TELEMETRY &amp; SYNTHESIS
             </label>
@@ -174,7 +174,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
                 {/* Recommendation summary */}
                 {(executionResult.response || executionResult.output?.recommendation) && (
                   <div className="space-y-1">
-                    <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">AGENT SYNTHESIS</span>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold block">AGENT SYNTHESIS</span>
                     <p className="text-foreground uppercase leading-relaxed">
                       {executionResult.response || executionResult.output?.recommendation}
                     </p>
@@ -183,14 +183,14 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
 
                 {/* Raw JSON Payload */}
                 <div className="space-y-1">
-                  <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">STRUCTURED DATA</span>
-                  <pre className="p-2 bg-card border border-border rounded-none text-[10px] text-foreground/80 overflow-x-auto">
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">STRUCTURED DATA</span>
+                  <pre className="p-2 bg-card border border-border rounded-none text-[10px] text-foreground overflow-x-auto">
                     {JSON.stringify(executionResult.output, null, 2)}
                   </pre>
                 </div>
               </div>
             ) : (
-              <div className="bg-background border border-border rounded-none p-8 h-[278px] flex flex-col items-center justify-center text-center text-muted-foreground/60 space-y-2 uppercase">
+              <div className="bg-background border border-border rounded-none p-8 h-[278px] flex flex-col items-center justify-center text-center text-muted-foreground space-y-2 uppercase">
                 <Play className="w-8 h-8 opacity-30 text-primary" />
                 <p className="text-xs">CLICK 'RUN TEST' TO TRIGGER AGENT INFERENCE</p>
               </div>
@@ -200,7 +200,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
 
         {/* Modal Footer Controls */}
         <div className="flex items-center justify-between pt-3 border-t border-border">
-          <span className="text-[10px] text-muted-foreground/60 uppercase font-mono">
+          <span className="text-[10px] text-muted-foreground uppercase font-mono">
             USES SMARTFALLBACK ENGINE WITH ZERO LATENCY SPIKES
           </span>
 

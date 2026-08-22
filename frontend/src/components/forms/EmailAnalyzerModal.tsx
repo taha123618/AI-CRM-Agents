@@ -70,7 +70,7 @@ export function EmailAnalyzerModal() {
         />
 
         <div className="space-y-1">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground">
             EMAIL CONTENT / BODY <span className="text-destructive ml-0.5">*</span>
           </label>
           <textarea

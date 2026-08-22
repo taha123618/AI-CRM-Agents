@@ -102,7 +102,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <h3 className="text-xs font-bold text-foreground uppercase">ENROLLMENT DISPATCHED</h3>
-              <p className="text-[10px] text-foreground/80 uppercase">{enrolledSuccess}</p>
+              <p className="text-[10px] text-foreground uppercase">{enrolledSuccess}</p>
               <Button variant="primary" size="sm" onClick={onClose} className="mt-2 text-xs uppercase">
                 RETURN TO SEQUENCES
               </Button>
@@ -112,7 +112,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
               {/* Search and Select All Bar */}
               <div className="flex items-center justify-between gap-2">
                 <div className="relative flex-1">
-                  <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2" />
+                  <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2" />
                   <input
                     type="text"
                     value={search}
@@ -137,9 +137,9 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
               {/* Contacts List */}
               <div className="space-y-1.5 max-h-[360px] overflow-y-auto pr-1">
                 {isLoading ? (
-                  <div className="p-6 text-center text-xs text-muted-foreground/60 uppercase">LOADING PROSPECTS...</div>
+                  <div className="p-6 text-center text-xs text-muted-foreground uppercase">LOADING PROSPECTS...</div>
                 ) : filtered.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-muted-foreground/60 uppercase">NO CONTACTS FOUND.</div>
+                  <div className="p-6 text-center text-xs text-muted-foreground uppercase">NO CONTACTS FOUND.</div>
                 ) : (
                   filtered.map((p) => {
                     const isSelected = selectedIds.includes(p.id);
@@ -149,7 +149,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                         onClick={() => toggleSelect(p.id)}
                         className={`p-2.5 rounded-none border cursor-pointer flex items-center justify-between transition-none ${isSelected
                             ? 'bg-card border-primary text-foreground'
-                            : 'bg-background border-border hover:border-slate-500 text-foreground/80'
+                            : 'bg-background border-border hover:border-border text-foreground'
                           }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -166,11 +166,11 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                             </div>
                             <div className="flex items-center gap-3 text-[10px] text-muted-foreground mt-0.5 uppercase">
                               <span className="flex items-center gap-1">
-                                <Building className="w-3 h-3 text-muted-foreground/60" />
+                                <Building className="w-3 h-3 text-muted-foreground" />
                                 {p.company}
                               </span>
                               <span className="flex items-center gap-1">
-                                <Mail className="w-3 h-3 text-muted-foreground/60" />
+                                <Mail className="w-3 h-3 text-muted-foreground" />
                                 {p.email}
                               </span>
                             </div>

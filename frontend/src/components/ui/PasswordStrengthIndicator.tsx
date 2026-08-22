@@ -49,10 +49,10 @@ export function PasswordStrengthIndicator({
                 {isMet ? (
                   <Check className="w-3 h-3 text-primary shrink-0" />
                 ) : (
-                  <X className="w-3 h-3 text-muted-foreground/60 shrink-0" />
+                  <X className="w-3 h-3 text-muted-foreground shrink-0" />
                 )}
                 <span
-                  className={`text-[9px] font-mono uppercase ${isMet ? 'text-primary' : 'text-muted-foreground/60'
+                  className={`text-[9px] font-mono uppercase ${isMet ? 'text-primary' : 'text-muted-foreground'
                     }`}
                 >
                   {req}

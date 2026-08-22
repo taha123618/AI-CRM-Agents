@@ -122,7 +122,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
               className="space-y-3 font-mono"
             >
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 uppercase tracking-wider mb-1">
+                <label className="block text-[10px] font-bold text-foreground uppercase tracking-wider mb-1">
                   INTERVENTION PLAY TYPE
                 </label>
                 <select
@@ -138,7 +138,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 uppercase tracking-wider mb-1">
+                <label className="block text-[10px] font-bold text-foreground uppercase tracking-wider mb-1">
                   PLAYBOOK CUSTOM CONTEXT &amp; MANDATE
                 </label>
                 <textarea

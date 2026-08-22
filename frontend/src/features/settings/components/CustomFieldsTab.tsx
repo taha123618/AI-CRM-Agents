@@ -167,7 +167,7 @@ export function CustomFieldsTab() {
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-none bg-background border border-border text-[10px] font-mono text-foreground/80 uppercase">
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-none bg-background border border-border text-[10px] font-mono text-foreground uppercase">
                     {getFieldTypeIcon(f.field_type)}
                     <span>{f.field_type}</span>
                   </div>
@@ -187,7 +187,7 @@ export function CustomFieldsTab() {
                     {f.options.map((opt, idx) => (
                       <span
                         key={idx}
-                        className="px-1.5 py-0.5 rounded-none bg-background text-[9px] text-foreground/80 border border-border uppercase font-mono"
+                        className="px-1.5 py-0.5 rounded-none bg-background text-[9px] text-foreground border border-border uppercase font-mono"
                       >
                         {opt}
                       </span>
@@ -197,7 +197,7 @@ export function CustomFieldsTab() {
               </div>
 
               <div className="mt-3 pt-2.5 border-t border-border flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground/60 font-mono uppercase">ENTITY: {f.entity_type}</span>
+                <span className="text-[9px] text-muted-foreground font-mono uppercase">ENTITY: {f.entity_type}</span>
                 <Button
                   size="sm"
                   variant="ghost"
@@ -213,9 +213,9 @@ export function CustomFieldsTab() {
         </div>
       ) : (
         <div className="text-center py-12 rounded-none bg-card/50 border border-border p-6 space-y-2 font-mono">
-          <Tag className="w-8 h-8 mx-auto text-muted-foreground/60 mb-1" />
-          <p className="text-xs font-bold text-foreground/80 uppercase">NO CUSTOM FIELDS FOR {activeEntity.toUpperCase()}S YET</p>
-          <p className="text-[10px] text-muted-foreground/60 max-w-sm mx-auto uppercase">
+          <Tag className="w-8 h-8 mx-auto text-muted-foreground mb-1" />
+          <p className="text-xs font-bold text-foreground uppercase">NO CUSTOM FIELDS FOR {activeEntity.toUpperCase()}S YET</p>
+          <p className="text-[10px] text-muted-foreground max-w-sm mx-auto uppercase">
             CLICK &quot;ADD CUSTOM FIELD&quot; TO DEFINE CUSTOM PROPERTIES AND START CAPTURING DYNAMIC ATTRIBUTES.
           </p>
         </div>
@@ -243,7 +243,7 @@ export function CustomFieldsTab() {
 
             <form onSubmit={handleSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">TARGET ENTITY</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">TARGET ENTITY</label>
                 <select
                   value={activeEntity}
                   onChange={(e) => setActiveEntity(e.target.value)}
@@ -257,7 +257,7 @@ export function CustomFieldsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">FIELD LABEL *</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">FIELD LABEL *</label>
                 <input
                   type="text"
                   required
@@ -269,7 +269,7 @@ export function CustomFieldsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">FIELD KEY (OPTIONAL SNAKE_CASE)</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">FIELD KEY (OPTIONAL SNAKE_CASE)</label>
                 <input
                   type="text"
                   placeholder="E.G. SECURITY_CLEARANCE_TIER"
@@ -280,7 +280,7 @@ export function CustomFieldsTab() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">DATA TYPE</label>
+                <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">DATA TYPE</label>
                 <select
                   value={fieldType}
                   onChange={(e) => setFieldType(e.target.value as any)}
@@ -297,7 +297,7 @@ export function CustomFieldsTab() {
 
               {fieldType === 'select' && (
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-bold text-foreground/80 uppercase tracking-wider">DROPDOWN OPTIONS *</label>
+                  <label className="block text-[10px] font-bold text-foreground uppercase tracking-wider">DROPDOWN OPTIONS *</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -321,13 +321,13 @@ export function CustomFieldsTab() {
                     {options.map((opt) => (
                       <span
                         key={opt}
-                        className="px-2 py-0.5 rounded-none bg-background border border-border text-xs text-foreground/80 flex items-center gap-1.5 uppercase font-mono"
+                        className="px-2 py-0.5 rounded-none bg-background border border-border text-xs text-foreground flex items-center gap-1.5 uppercase font-mono"
                       >
                         <span>{opt}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveOption(opt)}
-                          className="text-muted-foreground/60 hover:text-destructive text-xs"
+                          className="text-muted-foreground hover:text-destructive text-xs"
                         >
                           ✕
                         </button>
@@ -345,7 +345,7 @@ export function CustomFieldsTab() {
                   onChange={(e) => setIsRequired(e.target.checked)}
                   className="rounded-none bg-background border-border text-primary accent-primary"
                 />
-                <label htmlFor="is_required" className="text-xs font-bold text-foreground/80 cursor-pointer uppercase">
+                <label htmlFor="is_required" className="text-xs font-bold text-foreground cursor-pointer uppercase">
                   MANDATORY REQUIRED FIELD
                 </label>
               </div>

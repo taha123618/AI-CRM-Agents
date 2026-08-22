@@ -59,7 +59,7 @@ function StatCard({
 }) {
   return (
     <Card className={`p-4 bg-card/60 backdrop-blur-xl border-border/80 hover:border-border/80 transition-none  flex items-start gap-3.5 group ${glowClass}`}>
-      <div className="p-2.5 rounded-none bg-muted/90 text-foreground/90 border border-border/50 group-hover:scale-105 transition-none ">
+      <div className="p-2.5 rounded-none bg-muted/90 text-foreground border border-border/50 group-hover:scale-105 transition-none ">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
@@ -67,7 +67,7 @@ function StatCard({
           {label}
         </span>
         <div className={`text-2xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
-        {sub && <span className="text-[10px] text-muted-foreground/70 mt-0.5 block truncate">{sub}</span>}
+        {sub && <span className="text-[10px] text-muted-foreground mt-0.5 block truncate">{sub}</span>}
       </div>
     </Card>
   );
@@ -136,7 +136,7 @@ function TagsEditor({
         <button
           type="button"
           onClick={onClose}
-          className="p-1 text-muted-foreground hover:text-slate-200"
+          className="p-1 text-muted-foreground hover:text-foreground"
         >
           <X className="w-4 h-4" />
         </button>
@@ -279,7 +279,7 @@ function VoiceNoteBubble({
               <div
                 key={i}
                 className={`flex-1 rounded-none transition-none  ${
-                  progress > (i / 18) * 100 ? 'bg-emerald-400 scale-y-110' : 'bg-slate-700'
+                  progress > (i / 18) * 100 ? 'bg-emerald-400 scale-y-110' : 'bg-muted'
                 }`}
                 style={{ height: `${h}%` }}
               />
@@ -295,7 +295,7 @@ function VoiceNoteBubble({
             setPlaybackRate(nextRate);
             if (audioRef.current) audioRef.current.playbackRate = nextRate;
           }}
-          className="px-2 py-1 rounded-none bg-card border border-border text-[10px] font-mono font-bold text-foreground/90 hover:text-foreground"
+          className="px-2 py-1 rounded-none bg-card border border-border text-[10px] font-mono font-bold text-foreground hover:text-foreground"
         >
           {playbackRate}x
         </button>
@@ -609,7 +609,7 @@ export function WhatsAppFeature() {
             size="sm"
             onClick={() => refetch()}
             isLoading={isRefetching}
-            className="border-border bg-card/80 hover:bg-muted text-foreground/90"
+            className="border-border bg-card/80 hover:bg-muted text-foreground"
           >
             <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
             <span>Refresh</span>
@@ -702,7 +702,7 @@ export function WhatsAppFeature() {
 
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/70" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search name, phone, or tags..."
@@ -716,9 +716,9 @@ export function WhatsAppFeature() {
           {/* Conversation Items */}
           <div className="flex-1 overflow-y-auto min-h-0 divide-y divide-slate-800/60 scrollbar-thin">
             {isLoadingConvs ? (
-              <div className="py-16 text-center text-muted-foreground/70 text-xs">Loading conversations...</div>
+              <div className="py-16 text-center text-muted-foreground text-xs">Loading conversations...</div>
             ) : !displayedConvs?.length ? (
-              <div className="py-16 text-center text-muted-foreground/70 text-xs p-4">
+              <div className="py-16 text-center text-muted-foreground text-xs p-4">
                 {searchQuery ? 'No matching conversations found.' : 'No conversations started yet.'}
               </div>
             ) : (
@@ -731,7 +731,7 @@ export function WhatsAppFeature() {
                     className={`p-3.5 cursor-pointer transition-none  space-y-1.5 ${
                       isSelected
                         ? 'bg-emerald-950/30 border-l-4 border-l-emerald-500 text-foreground shadow-lg'
-                        : 'hover:bg-card/60 text-foreground/90'
+                        : 'hover:bg-card/60 text-foreground'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -742,7 +742,7 @@ export function WhatsAppFeature() {
                             {conv.unread_count}
                           </span>
                         )}
-                        <span className="text-[10px] text-muted-foreground/70 font-mono">
+                        <span className="text-[10px] text-muted-foreground font-mono">
                           {conv.last_message_at
                             ? new Date(conv.last_message_at).toLocaleTimeString([], {
                                 hour: '2-digit',
@@ -757,7 +757,7 @@ export function WhatsAppFeature() {
                       <span>{conv.phone_number}</span>
                       <div className="flex items-center gap-1.5">
                         {conv.status === 'archived' && (
-                          <span className="text-[9px] text-muted-foreground/70 uppercase font-bold">Archived</span>
+                          <span className="text-[9px] text-muted-foreground uppercase font-bold">Archived</span>
                         )}
                         {conv.ai_auto_pilot && (
                           <span className="flex items-center gap-0.5 text-emerald-400 text-[10px] font-bold">
@@ -801,7 +801,7 @@ export function WhatsAppFeature() {
                         .slice(0, 2)
                         .join('')}
                     </div>
-                    <span className="absolute bottom-0 right-0 w-3 h-3 rounded-none bg-emerald-400 border-2 border-slate-950" />
+                    <span className="absolute bottom-0 right-0 w-3 h-3 rounded-none bg-emerald-400 border-2 border-background" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -811,7 +811,7 @@ export function WhatsAppFeature() {
                       </span>
                     </div>
                     <span className="text-[11px] text-muted-foreground font-mono flex items-center gap-2">
-                      <Phone className="w-3 h-3 text-muted-foreground/70" />
+                      <Phone className="w-3 h-3 text-muted-foreground" />
                       {activeConv.phone_number}
                     </span>
                   </div>
@@ -888,11 +888,11 @@ export function WhatsAppFeature() {
               {/* Message Stream */}
               <div className="flex-1 overflow-y-auto min-h-0 p-5 space-y-4 scrollbar-thin bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/40">
                 {isLoadingMsgs ? (
-                  <div className="py-24 text-center text-muted-foreground/70 text-xs">
+                  <div className="py-24 text-center text-muted-foreground text-xs">
                     Loading conversation stream...
                   </div>
                 ) : !messages?.length ? (
-                  <div className="py-24 text-center text-muted-foreground/70 text-xs space-y-2">
+                  <div className="py-24 text-center text-muted-foreground text-xs space-y-2">
                     <MessageSquare className="w-8 h-8 opacity-30 mx-auto" />
                     <p>No messages yet. Send an opening greeting or record a voice note!</p>
                   </div>
@@ -942,7 +942,7 @@ export function WhatsAppFeature() {
                                 ? 'bg-gradient-to-br from-purple-950/90 to-slate-900 border border-purple-500/50 text-purple-100 rounded-none-tr-none'
                                 : isAgent
                                 ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-foreground rounded-none-tr-none'
-                                : 'bg-card border border-border text-slate-200 rounded-none-tl-none'
+                                : 'bg-card border border-border text-foreground rounded-none-tl-none'
                             }`}
                           >
                             {/* Sender Header */}
@@ -983,7 +983,7 @@ export function WhatsAppFeature() {
                             {/* Time & Read Receipts */}
                             <div
                               className={`flex items-center justify-end gap-1 text-[9px] font-mono pt-1 ${
-                                isProspect ? 'text-muted-foreground/70' : 'text-emerald-200/70'
+                                isProspect ? 'text-muted-foreground' : 'text-emerald-200/70'
                               }`}
                             >
                               <span>
@@ -1031,7 +1031,7 @@ export function WhatsAppFeature() {
 
               {/* Quick AI Suggestion Chips */}
               <div className="px-4 py-2 bg-card/60 border-t border-border flex items-center gap-2 overflow-x-auto scrollbar-none shrink-0">
-                <span className="text-[10px] text-muted-foreground/70 uppercase font-bold shrink-0 flex items-center gap-1">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold shrink-0 flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-emerald-400" />
                   Quick Actions:
                 </span>
@@ -1045,7 +1045,7 @@ export function WhatsAppFeature() {
                     key={tmpl}
                     type="button"
                     onClick={() => setInputText(tmpl)}
-                    className="px-3 py-1 rounded-none bg-card border border-border hover:border-emerald-500/40 text-[10px] text-foreground/90 hover:text-foreground whitespace-nowrap transition-none flex items-center gap-1"
+                    className="px-3 py-1 rounded-none bg-card border border-border hover:border-emerald-500/40 text-[10px] text-foreground hover:text-foreground whitespace-nowrap transition-none flex items-center gap-1"
                   >
                     + {tmpl}
                   </button>
@@ -1116,7 +1116,7 @@ export function WhatsAppFeature() {
                       <div className="p-2 rounded-none bg-card group-hover:scale-110 transition-none">
                         {att.icon}
                       </div>
-                      <span className="text-[10px] font-bold text-foreground/90 group-hover:text-foreground">
+                      <span className="text-[10px] font-bold text-foreground group-hover:text-foreground">
                         {att.label}
                       </span>
                     </button>
@@ -1155,7 +1155,7 @@ export function WhatsAppFeature() {
                           0:{voiceNoteDuration.toString().padStart(2, '0')}
                         </span>
                       </div>
-                      <span className="text-xs text-foreground/90 font-medium">
+                      <span className="text-xs text-foreground font-medium">
                         {liveVoiceTranscript ? `"${liveVoiceTranscript}"` : 'Listening to your voice...'}
                       </span>
                     </div>
@@ -1216,7 +1216,7 @@ export function WhatsAppFeature() {
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'agent'
                             ? 'bg-emerald-600 text-foreground'
-                            : 'text-muted-foreground hover:text-slate-200'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send as Sales Rep"
                       >
@@ -1228,7 +1228,7 @@ export function WhatsAppFeature() {
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'prospect'
                             ? 'bg-blue-600 text-foreground'
-                            : 'text-muted-foreground hover:text-slate-200'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send as Inbound Prospect (triggers AI Bot reply)"
                       >
@@ -1240,7 +1240,7 @@ export function WhatsAppFeature() {
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'bot'
                             ? 'bg-purple-600 text-foreground'
-                            : 'text-muted-foreground hover:text-slate-200'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send directly as AI Bot"
                       >
@@ -1287,7 +1287,7 @@ export function WhatsAppFeature() {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-muted-foreground/70 space-y-4 p-8">
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4 p-8">
               <div className="p-4 rounded-none bg-card border border-border">
                 <MessageSquare className="w-12 h-12 opacity-30 text-emerald-400" />
               </div>

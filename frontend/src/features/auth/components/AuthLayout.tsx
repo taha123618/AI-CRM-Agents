@@ -33,7 +33,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
         </div>
 
         {/* Security & Compliance Footer */}
-        <div className="mt-4 text-center text-[10px] text-muted-foreground/60 uppercase space-y-0.5 font-mono">
+        <div className="mt-4 text-center text-[10px] text-muted-foreground uppercase space-y-0.5 font-mono">
           <p>PROTECTED BY ENTERPRISE RBAC, HTTP-ONLY SESSIONS &amp; HMAC SIGNATURES</p>
           <p className="text-[9px]">SOC2 TYPE II &amp; GDPR COMPLIANT SECURITY CONTROLS</p>
         </div>

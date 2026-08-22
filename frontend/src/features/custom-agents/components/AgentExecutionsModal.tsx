@@ -28,9 +28,9 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
     >
       <div className="space-y-3 font-mono">
         {isLoading ? (
-          <div className="py-10 text-center text-muted-foreground/60 text-xs uppercase">{t('custom_agents.loading_telemetry') || 'LOADING EXECUTION LOGS...'}</div>
+          <div className="py-10 text-center text-muted-foreground text-xs uppercase">{t('custom_agents.loading_telemetry') || 'LOADING EXECUTION LOGS...'}</div>
         ) : !executions || executions.length === 0 ? (
-          <div className="py-10 text-center text-muted-foreground/60 space-y-2 uppercase">
+          <div className="py-10 text-center text-muted-foreground space-y-2 uppercase">
             <History className="w-8 h-8 mx-auto opacity-30 text-primary" />
             <p className="text-xs">{t('custom_agents.no_telemetry') || 'NO EXECUTION TELEMETRY RECORDED YET FOR THIS AGENT.'}</p>
           </div>
@@ -54,7 +54,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
                         {t('custom_agents.failed') || 'FAILED'}
                       </Badge>
                     )}
-                    <span className="text-xs font-mono font-bold text-foreground/80 uppercase">
+                    <span className="text-xs font-mono font-bold text-foreground uppercase">
                       {t('custom_agents.status') || 'TRIGGER'}: {exec.trigger_event}
                     </span>
                   </div>
@@ -82,7 +82,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
                 {/* Input Payload details */}
                 {exec.input_payload && (
                   <div className="p-2 rounded-none bg-card border border-border text-[10px] font-mono text-muted-foreground overflow-x-auto">
-                    <span className="text-muted-foreground/60 block mb-1 uppercase font-bold">INPUT PAYLOAD:</span>
+                    <span className="text-muted-foreground block mb-1 uppercase font-bold">INPUT PAYLOAD:</span>
                     <pre>{JSON.stringify(exec.input_payload, null, 2)}</pre>
                   </div>
                 )}

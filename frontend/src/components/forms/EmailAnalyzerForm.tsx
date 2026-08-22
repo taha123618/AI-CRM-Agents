@@ -51,7 +51,7 @@ export function EmailAnalyzerForm({ onSuccess, onCancel }: EmailAnalyzerFormProp
       />
 
       <div className="space-y-1 font-mono">
-        <label className="text-[10px] font-bold uppercase text-foreground/80">EMAIL BODY TEXT</label>
+        <label className="text-[10px] font-bold uppercase text-foreground">EMAIL BODY TEXT</label>
         <textarea
           rows={4}
           className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"

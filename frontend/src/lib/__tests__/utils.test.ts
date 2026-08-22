@@ -37,6 +37,6 @@ describe('Utility Functions (src/lib/utils.ts)', () => {
     expect(getStatusBadgeClass('qualified')).toContain('emerald');
     expect(getStatusBadgeClass('proposal')).toContain('blue');
     expect(getStatusBadgeClass('urgent')).toContain('rose');
-    expect(getStatusBadgeClass('unknown_status')).toContain('slate');
+    expect(getStatusBadgeClass('unknown_status')).toContain('muted');
   });
 });

@@ -120,7 +120,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
           {/* Metadata Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-background p-3.5 rounded-none border border-border">
             <div className="space-y-1 sm:col-span-2">
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                 CADENCE NAME
               </label>
               <input
@@ -134,7 +134,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                 CADENCE CHANNEL
               </label>
               <select
@@ -150,7 +150,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
             </div>
 
             <div className="space-y-1 sm:col-span-3">
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                 TARGET PERSONA
               </label>
               <input
@@ -221,7 +221,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                         <button
                           type="button"
                           onClick={() => removeStep(idx)}
-                          className="p-1 text-muted-foreground/60 hover:text-destructive transition-none"
+                          className="p-1 text-muted-foreground hover:text-destructive transition-none"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

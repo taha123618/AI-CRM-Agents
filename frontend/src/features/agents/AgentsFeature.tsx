@@ -154,15 +154,15 @@ export function AgentsFeature() {
         <CardContent className="pt-2">
           <div className="bg-background p-3 rounded-none border border-border font-mono text-xs max-h-96 overflow-y-auto space-y-2">
             {events.length === 0 ? (
-              <p className="text-muted-foreground/60 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
+              <p className="text-muted-foreground text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
             ) : (
               events.map((evt) => (
                 <div key={evt.id} className="p-2 bg-card border border-border space-y-1">
                   <div className="flex items-center justify-between text-[10px]">
                     <span className="text-primary font-bold">[{evt.agent}]</span>
-                    <span className="text-muted-foreground/60 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
+                    <span className="text-muted-foreground font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  <div className="text-foreground/80 text-xs font-mono">
+                  <div className="text-foreground text-xs font-mono">
                     <span className="text-cyan-400 uppercase text-[9px] font-bold mr-2">
                       {evt.type}
                     </span>

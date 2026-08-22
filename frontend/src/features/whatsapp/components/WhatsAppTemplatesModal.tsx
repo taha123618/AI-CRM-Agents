@@ -154,7 +154,7 @@ export function WhatsAppTemplatesModal({
                           <span>•</span>
                           <span>CAT: {tpl.category}</span>
                         </div>
-                        <p className="text-xs text-foreground/80 leading-relaxed font-mono whitespace-pre-wrap">
+                        <p className="text-xs text-foreground leading-relaxed font-mono whitespace-pre-wrap">
                           {tpl.body_text}
                         </p>
                       </div>
@@ -189,7 +189,7 @@ export function WhatsAppTemplatesModal({
 
                 <div className="space-y-2 text-xs">
                   <div>
-                    <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">MEDIA TYPE</label>
+                    <label className="block text-[10px] text-foreground font-bold uppercase mb-1">MEDIA TYPE</label>
                     <select
                       value={mediaType}
                       onChange={(e) => setMediaType(e.target.value)}
@@ -203,7 +203,7 @@ export function WhatsAppTemplatesModal({
                   </div>
 
                   <div>
-                    <label className="block text-[10px] text-foreground/80 font-bold uppercase mb-1">FILENAME</label>
+                    <label className="block text-[10px] text-foreground font-bold uppercase mb-1">FILENAME</label>
                     <input
                       type="text"
                       value={filename}
@@ -231,7 +231,7 @@ export function WhatsAppTemplatesModal({
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>MEDIA ATTACHMENT READY</span>
                   </div>
-                  <p className="text-[10px] text-foreground/80">MEDIA ID: {uploadedMediaId}</p>
+                  <p className="text-[10px] text-foreground">MEDIA ID: {uploadedMediaId}</p>
                 </div>
               )}
             </div>

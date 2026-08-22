@@ -423,7 +423,7 @@ export function UserManagementTab() {
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-muted-foreground/60 pointer-events-none" />
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
@@ -439,14 +439,14 @@ export function UserManagementTab() {
           {/* Filters */}
           <div className="flex items-center gap-2 flex-wrap font-mono">
             <div className="flex items-center gap-1 bg-background border border-border rounded-none px-2 py-1">
-              <Filter className="w-3 h-3 text-muted-foreground/60" />
+              <Filter className="w-3 h-3 text-muted-foreground" />
               <select
                 value={roleFilter}
                 onChange={(e) => {
                   setRoleFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-foreground/80 focus:outline-none cursor-pointer uppercase font-mono"
+                className="bg-transparent text-xs text-foreground focus:outline-none cursor-pointer uppercase font-mono"
               >
                 <option value="all" className="bg-background">ALL ROLES ({users.length})</option>
                 <option value="admin" className="bg-background">ADMIN ({users.filter((u) => u.role === 'admin').length})</option>
@@ -463,7 +463,7 @@ export function UserManagementTab() {
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent text-xs text-foreground/80 focus:outline-none cursor-pointer uppercase font-mono"
+                className="bg-transparent text-xs text-foreground focus:outline-none cursor-pointer uppercase font-mono"
               >
                 <option value="all" className="bg-background">ALL STATUSES</option>
                 <option value="active" className="bg-background">ACTIVE ({users.filter((u) => u.is_active).length})</option>
@@ -505,8 +505,8 @@ export function UserManagementTab() {
             <tbody className="divide-y divide-border">
               {paginatedUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-muted-foreground/60 uppercase">
-                    <User className="w-6 h-6 mx-auto mb-1 text-muted-foreground/60" />
+                  <td colSpan={7} className="py-8 text-center text-muted-foreground uppercase">
+                    <User className="w-6 h-6 mx-auto mb-1 text-muted-foreground" />
                     NO USERS MATCHING THE ACTIVE SEARCH OR FILTER CRITERIA.
                   </td>
                 </tr>
@@ -596,7 +596,7 @@ export function UserManagementTab() {
                     </td>
 
                     {/* Created Date */}
-                    <td className="py-2 px-3 text-muted-foreground/60 text-[10px]">
+                    <td className="py-2 px-3 text-muted-foreground text-[10px]">
                       {new Date(u.created_at).toLocaleDateString()}
                     </td>
 
@@ -620,7 +620,7 @@ export function UserManagementTab() {
                             onClick={() => setDeletingUser(u)}
                             disabled={currentUser?.id === u.id}
                             className={`p-1 h-6 w-6 ${currentUser?.id === u.id
-                                ? 'text-muted-foreground/60 cursor-not-allowed'
+                                ? 'text-muted-foreground cursor-not-allowed'
                                 : 'text-muted-foreground hover:text-destructive'
                               }`}
                             title={currentUser?.id === u.id ? 'Cannot delete self' : 'Delete User'}
@@ -629,7 +629,7 @@ export function UserManagementTab() {
                           </Button>
                         </div>
                       ) : (
-                        <span className="text-muted-foreground/60 text-[10px] uppercase">READ-ONLY</span>
+                        <span className="text-muted-foreground text-[10px] uppercase">READ-ONLY</span>
                       )}
                     </td>
                   </tr>
@@ -680,7 +680,7 @@ export function UserManagementTab() {
                     ENABLED
                   </Badge>
                 </div>
-                <div className="text-[10px] text-muted-foreground/60 uppercase">{provider.protocol}</div>
+                <div className="text-[10px] text-muted-foreground uppercase">{provider.protocol}</div>
               </div>
 
               {isAdmin && (
@@ -728,11 +728,11 @@ export function UserManagementTab() {
             <form onSubmit={handleCreateSubmit} className="space-y-3 font-mono">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     FULL NAME
                   </label>
                   <div className="relative">
-                    <User className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+                    <User className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
                     <input
                       type="text"
                       required
@@ -745,11 +745,11 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     WORK EMAIL ADDRESS
                   </label>
                   <div className="relative">
-                    <Mail className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+                    <Mail className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
                     <input
                       type="email"
                       required
@@ -764,11 +764,11 @@ export function UserManagementTab() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     INITIAL PASSWORD
                   </label>
                   <div className="relative">
-                    <Key className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+                    <Key className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
                     <input
                       type="password"
                       required
@@ -781,7 +781,7 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     DEPARTMENT ROLE
                   </label>
                   <select
@@ -797,7 +797,7 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     INITIAL STATUS
                   </label>
                   <select
@@ -827,7 +827,7 @@ export function UserManagementTab() {
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
                     </button>
-                    <span className="text-muted-foreground/60">|</span>
+                    <span className="text-muted-foreground">|</span>
                     <button
                       type="button"
                       onClick={() => setCreatePermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
@@ -835,7 +835,7 @@ export function UserManagementTab() {
                     >
                       ALL
                     </button>
-                    <span className="text-muted-foreground/60">|</span>
+                    <span className="text-muted-foreground">|</span>
                     <button
                       type="button"
                       onClick={() => setCreatePermissions([])}
@@ -855,7 +855,7 @@ export function UserManagementTab() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground/80 cursor-pointer">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground cursor-pointer">
                             <input
                               type="checkbox"
                               checked={createPermissions.includes(item.id) || createPermissions.includes('*')}
@@ -871,7 +871,7 @@ export function UserManagementTab() {
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
-                              <span className="text-[8px] text-muted-foreground/60 font-mono">{item.id}</span>
+                              <span className="text-[8px] text-muted-foreground font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}
@@ -926,7 +926,7 @@ export function UserManagementTab() {
             <form onSubmit={handleSaveEdit} className="space-y-3 font-mono">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     FULL NAME
                   </label>
                   <input
@@ -939,7 +939,7 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     EMAIL ADDRESS
                   </label>
                   <input
@@ -954,7 +954,7 @@ export function UserManagementTab() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     RESET PASSWORD
                   </label>
                   <input
@@ -967,7 +967,7 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     DEPARTMENT ROLE
                   </label>
                   <select
@@ -983,7 +983,7 @@ export function UserManagementTab() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-foreground/80 mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-foreground mb-1 uppercase tracking-wider">
                     STATUS
                   </label>
                   <select
@@ -1014,7 +1014,7 @@ export function UserManagementTab() {
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
                     </button>
-                    <span className="text-muted-foreground/60">|</span>
+                    <span className="text-muted-foreground">|</span>
                     <button
                       type="button"
                       onClick={() => setEditPermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
@@ -1022,7 +1022,7 @@ export function UserManagementTab() {
                     >
                       ALL
                     </button>
-                    <span className="text-muted-foreground/60">|</span>
+                    <span className="text-muted-foreground">|</span>
                     <button
                       type="button"
                       onClick={() => setEditPermissions([])}
@@ -1042,7 +1042,7 @@ export function UserManagementTab() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {group.items.map((item) => (
-                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground/80 cursor-pointer">
+                          <label key={item.id} className="flex items-start gap-1.5 text-xs text-foreground cursor-pointer">
                             <input
                               type="checkbox"
                               checked={editPermissions.includes(item.id) || editPermissions.includes('*')}
@@ -1058,7 +1058,7 @@ export function UserManagementTab() {
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
-                              <span className="text-[8px] text-muted-foreground/60 font-mono">{item.id}</span>
+                              <span className="text-[8px] text-muted-foreground font-mono">{item.id}</span>
                             </div>
                           </label>
                         ))}

@@ -114,7 +114,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
                     <span className={`font-bold ${isRep ? 'text-primary' : 'text-muted-foreground'}`}>
                       {isRep ? 'SALES REP' : call.contact_name}
                     </span>
-                    <span className="text-muted-foreground/60 flex items-center gap-1 font-mono">
+                    <span className="text-muted-foreground flex items-center gap-1 font-mono">
                       <Clock className="w-2.5 h-2.5" />
                       {formatTime(t.timestamp_seconds)}
                     </span>
@@ -144,13 +144,13 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
 
         {/* Footer */}
         <div className="p-3 border-t border-border flex items-center justify-between font-mono">
-          <span className="text-[9px] text-muted-foreground/60 font-mono uppercase">
+          <span className="text-[9px] text-muted-foreground font-mono uppercase">
             {transcripts.length} TURNS • BATTLE-CARDS HIGHLIGHTED IN AMBER
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1 rounded-none text-xs font-bold uppercase bg-background text-foreground/80 hover:bg-card border border-border transition-none"
+            className="px-3 py-1 rounded-none text-xs font-bold uppercase bg-background text-foreground hover:bg-card border border-border transition-none"
           >
             CLOSE
           </button>

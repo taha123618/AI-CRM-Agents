@@ -221,7 +221,7 @@ export function GlobalSearchModal() {
         {/* Entity Filter Chips (Semantic Search Mode) */}
         {mode === 'search' && (
           <div className="px-3 py-1.5 border-b border-border bg-background flex items-center gap-1.5 overflow-x-auto text-xs font-mono">
-            <span className="text-[9px] text-muted-foreground/60 font-mono mr-1 uppercase">FILTER:</span>
+            <span className="text-[9px] text-muted-foreground font-mono mr-1 uppercase">FILTER:</span>
             {[
               { id: 'all', label: 'ALL SOURCES' },
               { id: 'voice_call', label: 'VOICE CALLS' },
@@ -293,14 +293,14 @@ export function GlobalSearchModal() {
                   );
                 })
               ) : query.trim().length >= 2 && !isLoading ? (
-                <div className="text-center py-10 text-muted-foreground/60 text-xs font-mono uppercase">
+                <div className="text-center py-10 text-muted-foreground text-xs font-mono uppercase">
                   NO SEMANTIC KNOWLEDGE MATCHED &quot;{query}&quot;.
                 </div>
               ) : (
-                <div className="text-center py-8 text-muted-foreground/60 text-xs space-y-1 font-mono uppercase">
-                  <Layers className="w-6 h-6 mx-auto text-muted-foreground/60 mb-1" />
+                <div className="text-center py-8 text-muted-foreground text-xs space-y-1 font-mono uppercase">
+                  <Layers className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
                   <p>INPUT QUERY FOR DENSE VECTOR SIMILARITY SEARCH.</p>
-                  <p className="text-[9px] text-muted-foreground/60 font-mono">
+                  <p className="text-[9px] text-muted-foreground font-mono">
                     SCANS TRANSCRIPTS, MEETING NOTES, EMAIL THREADS, PIPELINES.
                   </p>
                 </div>
@@ -346,7 +346,7 @@ export function GlobalSearchModal() {
                             <span className="w-4 h-4 rounded-none bg-card flex items-center justify-center text-[9px] font-mono text-primary shrink-0">
                               {src.source_index}
                             </span>
-                            <span className="text-xs text-foreground/80 truncate font-mono uppercase">{src.title}</span>
+                            <span className="text-xs text-foreground truncate font-mono uppercase">{src.title}</span>
                           </div>
                           <Badge variant="info" className="text-[8px] uppercase font-mono py-0 shrink-0">
                             {src.entity_type.replace('_', ' ')}
@@ -357,10 +357,10 @@ export function GlobalSearchModal() {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-8 text-muted-foreground/60 text-xs space-y-1 font-mono uppercase">
+                <div className="text-center py-8 text-muted-foreground text-xs space-y-1 font-mono uppercase">
                   <Bot className="w-6 h-6 mx-auto text-primary mb-1" />
-                  <p className="text-foreground/80 font-bold">ASK NATURAL LANGUAGE CRM QUESTIONS</p>
-                  <p className="text-[9px] text-muted-foreground/60 max-w-sm mx-auto">
+                  <p className="text-foreground font-bold">ASK NATURAL LANGUAGE CRM QUESTIONS</p>
+                  <p className="text-[9px] text-muted-foreground max-w-sm mx-auto">
                     RETRIEVES VECTOR EMBEDDINGS AND SYNTHESIZES GROUNDED RESPONSES.
                   </p>
                 </div>
@@ -370,7 +370,7 @@ export function GlobalSearchModal() {
         </div>
 
         {/* Footer Shortcut Bar */}
-        <div className="px-3 py-2 bg-background border-t border-border flex items-center justify-between text-[9px] text-muted-foreground/60 font-mono uppercase">
+        <div className="px-3 py-2 bg-background border-t border-border flex items-center justify-between text-[9px] text-muted-foreground font-mono uppercase">
           <div>DENSE VECTOR &amp; RAG ENGINE</div>
           <div>PGVECTOR / HIGH-DIMENSIONAL EMBEDDINGS</div>
         </div>

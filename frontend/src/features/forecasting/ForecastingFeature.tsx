@@ -183,7 +183,7 @@ export function ForecastingFeature() {
           <div className="text-2xl font-black text-foreground font-mono mt-1">
             ${((simulation?.pipeline_total_value || 0) / 1000).toFixed(1)}k
           </div>
-          <span className="text-[9px] text-muted-foreground/60 mt-0.5 block uppercase">SUM OF OPEN DEAL VALUE</span>
+          <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase">SUM OF OPEN DEAL VALUE</span>
         </Card>
 
         <Card className="p-3 bg-card border-border">
@@ -271,7 +271,7 @@ export function ForecastingFeature() {
               }}
             />
           </div>
-          <div className="flex items-center justify-between mt-1 text-[9px] text-muted-foreground/60 font-mono uppercase">
+          <div className="flex items-center justify-between mt-1 text-[9px] text-muted-foreground font-mono uppercase">
             <span>$0</span>
             <span>${(simulation.pipeline_total_value / 1000).toFixed(0)}k TOTAL PIPELINE</span>
           </div>
@@ -311,7 +311,7 @@ export function ForecastingFeature() {
 
             {/* Iterations selector */}
             <div>
-              <label className="text-[10px] font-bold uppercase text-foreground/80 block mb-1.5">
+              <label className="text-[10px] font-bold uppercase text-foreground block mb-1.5">
                 MONTE CARLO ITERATIONS
               </label>
               <div className="grid grid-cols-2 gap-1.5">
@@ -333,7 +333,7 @@ export function ForecastingFeature() {
 
             {/* Slippage slider */}
             <div>
-              <div className="flex items-center justify-between text-xs font-bold text-foreground/80 uppercase mb-1">
+              <div className="flex items-center justify-between text-xs font-bold text-foreground uppercase mb-1">
                 <span>DEAL SLIPPAGE HAZARD</span>
                 <span className="font-mono text-primary">{(slippageRate * 100).toFixed(0)}%</span>
               </div>
@@ -346,7 +346,7 @@ export function ForecastingFeature() {
                 onChange={(e) => setSlippageRate(parseFloat(e.target.value))}
                 className="w-full accent-primary"
               />
-              <span className="text-[9px] text-muted-foreground/60 mt-0.5 block uppercase font-mono">
+              <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase font-mono">
                 SIMULATES MACRO PROCUREMENT DELAYS.
               </span>
             </div>
@@ -399,7 +399,7 @@ export function ForecastingFeature() {
 
             <div className="h-64 w-full">
               {isLoadingSim ? (
-                <div className="flex items-center justify-center h-full text-muted-foreground/60 text-xs uppercase font-mono">
+                <div className="flex items-center justify-center h-full text-muted-foreground text-xs uppercase font-mono">
                   COMPUTING MONTE CARLO ITERATIONS...
                 </div>
               ) : (
@@ -597,7 +597,7 @@ export function ForecastingFeature() {
                         <span className="font-bold text-foreground">
                           ${(s.value / 1000).toFixed(0)}k
                         </span>
-                        <span className="text-muted-foreground/60">{pct}%</span>
+                        <span className="text-muted-foreground">{pct}%</span>
                       </div>
                     </div>
                     <div className="h-1.5 bg-background border border-border">
@@ -621,7 +621,7 @@ export function ForecastingFeature() {
                   { label: 'TOTAL PIPELINE', value: `$${((simulation?.pipeline_total_value || 0) / 1000).toFixed(0)}K`, color: 'text-foreground' },
                 ].map((item) => (
                   <div key={item.label} className="p-2 bg-background border border-border">
-                    <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">{item.label}</span>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold block">{item.label}</span>
                     <span className={`text-sm font-black font-mono ${item.color}`}>{item.value}</span>
                   </div>
                 ))}
@@ -649,7 +649,7 @@ export function ForecastingFeature() {
                   {(velocity?.stages || []).map((s, idx) => (
                     <tr key={idx} className="odd:bg-background/70 even:bg-card hover:bg-popover transition-none">
                       <td className="py-2 px-2.5 text-foreground font-bold uppercase">{s.stage}</td>
-                      <td className="py-2 px-2.5 font-mono text-foreground/80">{s.avg_days_in_stage} DAYS</td>
+                      <td className="py-2 px-2.5 font-mono text-foreground">{s.avg_days_in_stage} DAYS</td>
                       <td className="py-2 px-2.5 font-mono text-primary">{s.conversion_rate}%</td>
                       <td className="py-2 px-2.5">
                         <Badge
@@ -677,7 +677,7 @@ export function ForecastingFeature() {
       {activeTab === 'scenarios' && (
         <div className="space-y-3">
           {!savedSimulations || savedSimulations.length === 0 ? (
-            <Card className="p-10 text-center text-muted-foreground/60 text-xs font-mono uppercase">
+            <Card className="p-10 text-center text-muted-foreground text-xs font-mono uppercase">
               NO SAVED RUNS RECORDED. USE &ldquo;SAVE SCENARIO&rdquo; ABOVE TO PERSIST A RUN.
             </Card>
           ) : (
@@ -726,14 +726,14 @@ export function ForecastingFeature() {
                           <td className="py-2 px-2.5 font-mono text-muted-foreground">
                             {(s.deal_slippage_rate * 100).toFixed(0)}%
                           </td>
-                          <td className="py-2 px-2.5 text-muted-foreground/60 font-mono text-[9px]">
+                          <td className="py-2 px-2.5 text-muted-foreground font-mono text-[9px]">
                             {new Date(s.created_at).toLocaleDateString()}
                           </td>
                           <td className="py-2 px-2.5">
                             <button
                               type="button"
                               onClick={() => deleteMutation.mutate(s.id)}
-                              className="p-1 text-muted-foreground/60 hover:text-destructive transition-none"
+                              className="p-1 text-muted-foreground hover:text-destructive transition-none"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>

@@ -18,7 +18,7 @@ const EMOTION_CONFIG: Record<string, { color: string; emoji: string }> = {
   frustration: { color: 'text-amber-400 bg-background border-amber-400', emoji: '😤' },
   happiness: { color: 'text-primary bg-background border-primary', emoji: '😊' },
   excitement: { color: 'text-yellow-400 bg-background border-yellow-400', emoji: '🎉' },
-  neutral: { color: 'text-muted-foreground bg-background border-slate-500', emoji: '😐' },
+  neutral: { color: 'text-muted-foreground bg-background border-border', emoji: '😐' },
 };
 
 function EmotionBadge({ emotion }: { emotion: string | null | undefined }) {
@@ -239,7 +239,7 @@ export function EmailsFeature() {
         {isLoading ? (
           [...Array(4)].map((_, i) => <Skeleton key={i} className="h-24 w-full" />)
         ) : filteredEmails.length === 0 ? (
-          <Card className="p-10 text-center text-muted-foreground/60 text-xs font-mono uppercase">
+          <Card className="p-10 text-center text-muted-foreground text-xs font-mono uppercase">
             NO EMAILS MATCH YOUR SEARCH CRITERIA.
           </Card>
         ) : (
@@ -275,18 +275,18 @@ export function EmailsFeature() {
                 <div className="flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground font-mono">
                   {email.from_email && (
                     <span className="flex items-center gap-1">
-                      <span className="text-muted-foreground/60">FROM:</span>
-                      <strong className="text-foreground/80 font-mono text-[10px] uppercase">{email.from_email}</strong>
+                      <span className="text-muted-foreground">FROM:</span>
+                      <strong className="text-foreground font-mono text-[10px] uppercase">{email.from_email}</strong>
                     </span>
                   )}
                   {email.to_email && (
                     <span className="flex items-center gap-1">
-                      <span className="text-muted-foreground/60">TO:</span>
-                      <span className="text-foreground/80 font-mono text-[10px] uppercase">{email.to_email}</span>
+                      <span className="text-muted-foreground">TO:</span>
+                      <span className="text-foreground font-mono text-[10px] uppercase">{email.to_email}</span>
                     </span>
                   )}
                   {email.sent_at && (
-                    <span className="flex items-center gap-1 text-muted-foreground/60 ml-auto text-[9px] font-mono uppercase">
+                    <span className="flex items-center gap-1 text-muted-foreground ml-auto text-[9px] font-mono uppercase">
                       <Clock className="w-2.5 h-2.5" />
                       {new Date(email.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -295,11 +295,11 @@ export function EmailsFeature() {
 
                 {/* Sentiment score bar */}
                 <div className="flex items-center gap-2 pt-1 border-t border-border/60">
-                  <span className="text-[8px] text-muted-foreground/60 uppercase font-bold shrink-0">SENTIMENT</span>
+                  <span className="text-[8px] text-muted-foreground uppercase font-bold shrink-0">SENTIMENT</span>
                   <div className="flex-1 max-w-[120px]">
                     <SentimentBar score={email.sentiment_score} />
                   </div>
-                  <span className="text-[8px] text-muted-foreground/60 ml-auto uppercase font-mono">
+                  <span className="text-[8px] text-muted-foreground ml-auto uppercase font-mono">
                     {email.category}
                   </span>
                 </div>
@@ -335,7 +335,7 @@ export function EmailsFeature() {
 
             {/* Recipient Input & Confirmation */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold text-foreground/80 uppercase flex items-center gap-1">
+              <label className="block text-[10px] font-bold text-foreground uppercase flex items-center gap-1">
                 <UserCheck className="w-3 h-3 text-primary" />
                 RECIPIENT ADDRESS
               </label>
@@ -361,7 +361,7 @@ export function EmailsFeature() {
               {selectedEmail.sentiment_score != null && (
                 <div className="flex items-center gap-2">
                   <Brain className="w-3 h-3 text-primary shrink-0" />
-                  <span className="text-[10px] text-muted-foreground/60 uppercase">SENTIMENT SCORE:</span>
+                  <span className="text-[10px] text-muted-foreground uppercase">SENTIMENT SCORE:</span>
                   <div className="flex-1">
                     <SentimentBar score={selectedEmail.sentiment_score} />
                   </div>
@@ -378,7 +378,7 @@ export function EmailsFeature() {
                 </h4>
                 <ul className="space-y-1">
                   {selectedEmail.follow_up_suggestions.map((s, i) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground/80 font-mono uppercase">
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground font-mono uppercase">
                       <ArrowRight className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span>{s}</span>
                     </li>
@@ -389,7 +389,7 @@ export function EmailsFeature() {
 
             {/* Editable draft */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold text-foreground/80 uppercase flex items-center gap-1">
+              <label className="block text-[10px] font-bold text-foreground uppercase flex items-center gap-1">
                 <MessageSquare className="w-3 h-3 text-primary" />
                 RESPONSE CONTENT (EDITABLE BODY)
               </label>
@@ -454,7 +454,7 @@ export function EmailsFeature() {
             />
 
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground">
                 EMAIL MESSAGE BODY <span className="text-destructive ml-0.5">*</span>
               </label>
               <textarea

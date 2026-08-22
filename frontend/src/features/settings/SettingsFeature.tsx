@@ -47,7 +47,7 @@ export function SettingsFeature() {
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-none bg-background border border-border text-xs shrink-0 self-start md:self-auto font-mono">
             <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-primary' : 'text-muted-foreground'}`} />
             <div>
-              <span className="text-muted-foreground/60 block text-[9px] uppercase">ACTIVE SESSION</span>
+              <span className="text-muted-foreground block text-[9px] uppercase">ACTIVE SESSION</span>
               <span className="font-mono text-foreground text-xs font-bold uppercase">{currentUser.email}</span>
             </div>
             <Badge variant={isAdmin ? 'purple' : 'info'} className="text-[8px] font-mono uppercase ml-1">

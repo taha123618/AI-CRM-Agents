@@ -167,7 +167,7 @@ export function LeadsFeature() {
               </button>
             ))}
           </div>
-          <span className="text-xs text-muted-foreground/70 font-mono">
+          <span className="text-xs text-muted-foreground font-mono">
             {filteredLeads.length} / {formatNumber(leads?.length || 0)}
           </span>
         </div>
@@ -186,7 +186,7 @@ export function LeadsFeature() {
               ))}
             </div>
           ) : filteredLeads.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground/70 text-sm">
+            <div className="text-center py-12 text-muted-foreground text-sm">
               No leads match your filter criteria.
             </div>
           ) : (
@@ -222,7 +222,7 @@ export function LeadsFeature() {
                       </div>
                       {lead.job_title && <div className="text-xs text-muted-foreground font-normal">{lead.job_title}</div>}
                     </TableCell>
-                    <TableCell className="font-mono text-xs text-foreground/90">{lead.email}</TableCell>
+                    <TableCell className="font-mono text-xs text-foreground">{lead.email}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1 min-w-[80px]">
                         <div className="flex items-center gap-1">
@@ -249,25 +249,25 @@ export function LeadsFeature() {
                             </span>
                           ))}
                           {lead.buying_signals.length > 2 && (
-                            <span className="text-[10px] text-muted-foreground/70">+{lead.buying_signals.length - 2}</span>
+                            <span className="text-[10px] text-muted-foreground">+{lead.buying_signals.length - 2}</span>
                           )}
                         </div>
-                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground text-xs">—</span>}
                     </TableCell>
                     <TableCell>
                       {lead.routing_team ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
                           <Target className="w-2.5 h-2.5" />{lead.routing_team}
                         </span>
-                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground text-xs">—</span>}
                     </TableCell>
                     <TableCell>
                       {lead.recommended_action ? (
                         <div className="flex items-start gap-1 max-w-[160px]">
                           <ArrowRight className="w-3 h-3 text-amber-400 mt-0.5 shrink-0" />
-                          <span className="text-xs text-foreground/90 leading-tight">{lead.recommended_action}</span>
+                          <span className="text-xs text-foreground leading-tight">{lead.recommended_action}</span>
                         </div>
-                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground text-xs">—</span>}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1.5">
@@ -285,7 +285,7 @@ export function LeadsFeature() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleOpenEdit(lead)}
-                          className="text-muted-foreground/70 hover:text-brand-400 p-1.5 h-8 w-8"
+                          className="text-muted-foreground hover:text-brand-400 p-1.5 h-8 w-8"
                           title="Edit Lead Details"
                         >
                           <Pencil className="w-4 h-4" />
@@ -295,7 +295,7 @@ export function LeadsFeature() {
                           variant="ghost"
                           size="sm"
                           onClick={() => deleteLeadMutation.mutate(lead.id)}
-                          className="text-muted-foreground/70 hover:text-rose-400 p-1.5 h-8 w-8"
+                          className="text-muted-foreground hover:text-rose-400 p-1.5 h-8 w-8"
                           title="Delete Lead"
                         >
                           <Trash2 className="w-4 h-4" />

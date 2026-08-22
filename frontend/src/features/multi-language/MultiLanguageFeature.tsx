@@ -122,7 +122,7 @@ export function MultiLanguageFeature() {
             <Shield className="w-4 h-4 text-primary" />
             <span>ENGLISH (EN)</span>
           </div>
-          <span className="text-[10px] text-muted-foreground/60 uppercase">ZERO MISSING KEY CRASHES</span>
+          <span className="text-[10px] text-muted-foreground uppercase">ZERO MISSING KEY CRASHES</span>
         </Card>
       </div>
 
@@ -168,10 +168,10 @@ export function MultiLanguageFeature() {
                     </div>
                   </div>
 
-                  <div className="text-[10px] text-foreground/80 font-mono flex items-center gap-2">
+                  <div className="text-[10px] text-foreground font-mono flex items-center gap-2">
                     <span>CODE: {lang.code}</span>
                     <span>•</span>
-                    <span className={lang.is_enabled ? 'text-primary font-bold' : 'text-muted-foreground/60'}>
+                    <span className={lang.is_enabled ? 'text-primary font-bold' : 'text-muted-foreground'}>
                       {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
                     </span>
                   </div>
@@ -218,25 +218,25 @@ export function MultiLanguageFeature() {
           <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-muted-foreground block">CURRENCY FORMATTER</span>
             <div className="text-sm font-black text-primary">{formatCurrency(124500.5)}</div>
-            <span className="text-[9px] text-muted-foreground/60 font-mono">124,500.50 USD</span>
+            <span className="text-[9px] text-muted-foreground font-mono">124,500.50 USD</span>
           </div>
 
           <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-muted-foreground block">NUMBER FORMATTER</span>
             <div className="text-sm font-black text-cyan-400">{formatNumber(9876543)}</div>
-            <span className="text-[9px] text-muted-foreground/60 font-mono">9,876,543 LEADS</span>
+            <span className="text-[9px] text-muted-foreground font-mono">9,876,543 LEADS</span>
           </div>
 
           <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-muted-foreground block">DATE FORMATTER</span>
             <div className="text-sm font-black text-foreground">{formatDate(new Date())}</div>
-            <span className="text-[9px] text-muted-foreground/60 font-mono">SHORT MONTH, DAY, YEAR</span>
+            <span className="text-[9px] text-muted-foreground font-mono">SHORT MONTH, DAY, YEAR</span>
           </div>
 
           <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-muted-foreground block">LAYOUT DIRECTION</span>
             <div className="text-sm font-black text-primary uppercase">{currentDirection}</div>
-            <span className="text-[9px] text-muted-foreground/60 font-mono">HTML DIR=&ldquo;{currentDirection}&rdquo;</span>
+            <span className="text-[9px] text-muted-foreground font-mono">HTML DIR=&ldquo;{currentDirection}&rdquo;</span>
           </div>
         </div>
       </Card>

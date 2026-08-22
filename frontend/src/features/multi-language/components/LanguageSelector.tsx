@@ -78,14 +78,14 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
                     onClick={() => handleSelectLanguage(lang)}
                     className={`w-full flex items-center justify-between px-3 py-1.5 text-xs uppercase transition-none ${isSelected
                         ? 'bg-background text-primary font-bold border-l-2 border-primary'
-                        : 'text-foreground/80 hover:bg-background hover:text-foreground'
+                        : 'text-foreground hover:bg-background hover:text-foreground'
                       }`}
                   >
                     <div className="flex items-center gap-2">
                       <span>{lang.flag_emoji}</span>
                       <span>{lang.name}</span>
                       {lang.code !== lang.english_name.toLowerCase() && (
-                        <span className="text-[10px] text-muted-foreground/60 font-mono">({lang.english_name})</span>
+                        <span className="text-[10px] text-muted-foreground font-mono">({lang.english_name})</span>
                       )}
                     </div>
                     {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}

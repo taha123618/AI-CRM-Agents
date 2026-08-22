@@ -140,7 +140,7 @@ E-Signature Link: ${proposal.esign_url}
           {/* Controls Bar */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 bg-background p-3.5 rounded-none border border-border">
             <div>
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block mb-1">
                 TIER PACKAGING
               </label>
               <select
@@ -155,7 +155,7 @@ E-Signature Link: ${proposal.esign_url}
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block mb-1">
                 DISCOUNT (%)
               </label>
               <input
@@ -169,11 +169,11 @@ E-Signature Link: ${proposal.esign_url}
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block mb-1">
+              <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block mb-1">
                 SLA GUARANTEE
               </label>
               <div className="flex items-center h-8">
-                <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-foreground/80 uppercase text-[10px]">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-foreground uppercase text-[10px]">
                   <input
                     type="checkbox"
                     checked={includeSla}
@@ -201,7 +201,7 @@ E-Signature Link: ${proposal.esign_url}
 
           {/* Custom Terms Input */}
           <div className="space-y-1">
-            <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+            <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
               SPECIAL COMMERCIAL TERMS &amp; CLAUSES
             </label>
             <textarea
@@ -269,7 +269,7 @@ E-Signature Link: ${proposal.esign_url}
                   <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                     EXECUTIVE SUMMARY
                   </h3>
-                  <p className="text-xs text-foreground/80 leading-relaxed uppercase">
+                  <p className="text-xs text-foreground leading-relaxed uppercase">
                     {proposal.executive_summary}
                   </p>
                 </div>
@@ -296,14 +296,14 @@ E-Signature Link: ${proposal.esign_url}
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                       SLA &amp; UPTIME TERMS
                     </span>
-                    <p className="text-[11px] text-foreground/80 uppercase leading-relaxed">{proposal.sla_terms}</p>
+                    <p className="text-[11px] text-foreground uppercase leading-relaxed">{proposal.sla_terms}</p>
                   </div>
 
                   <div className="p-3 rounded-none bg-card border border-border space-y-1">
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                       COMMERCIAL TERMS
                     </span>
-                    <p className="text-[11px] text-foreground/80 uppercase leading-relaxed">{proposal.custom_notes || 'Standard agreement.'}</p>
+                    <p className="text-[11px] text-foreground uppercase leading-relaxed">{proposal.custom_notes || 'Standard agreement.'}</p>
                   </div>
                 </div>
               </div>

@@ -259,7 +259,7 @@ export function TaskQueueMonitorTab() {
         {/* Search and Filters Bar */}
         <div className="p-3 bg-background border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-72">
-            <Search className="w-3.5 h-3.5 text-muted-foreground/60 absolute left-3 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="SEARCH TASK ID OR TYPE..."
@@ -273,7 +273,7 @@ export function TaskQueueMonitorTab() {
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
+            <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             <select
               value={taskStatusFilter}
               onChange={(e) => {
@@ -323,13 +323,13 @@ export function TaskQueueMonitorTab() {
             <tbody className="divide-y divide-border text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="py-10 text-center text-muted-foreground/60">
+                  <td colSpan={5} className="py-10 text-center text-muted-foreground">
                     <LoadingSpinner size="sm" />
                   </td>
                 </tr>
               ) : paginatedTasks.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-muted-foreground/60 uppercase">
+                  <td colSpan={5} className="py-8 text-center text-muted-foreground uppercase">
                     NO BACKGROUND TASKS MATCHING FILTER.
                   </td>
                 </tr>
@@ -343,7 +343,7 @@ export function TaskQueueMonitorTab() {
                           {getTaskIcon(taskType)}
                           <span>{taskType.replace(/_/g, ' ')}</span>
                         </div>
-                        <span className="text-[9px] text-muted-foreground/60 font-mono block">
+                        <span className="text-[9px] text-muted-foreground font-mono block">
                           ID: {task.task_id}
                         </span>
                       </td>
@@ -365,7 +365,7 @@ export function TaskQueueMonitorTab() {
                       <td className="py-2.5 px-3 space-y-0.5 text-[10px] text-muted-foreground uppercase">
                         <div>QUEUED: {new Date(task.created_at).toLocaleTimeString()}</div>
                         {task.completed_at && (
-                          <div className="text-muted-foreground/60">
+                          <div className="text-muted-foreground">
                             DONE: {new Date(task.completed_at).toLocaleTimeString()}
                           </div>
                         )}
@@ -383,7 +383,7 @@ export function TaskQueueMonitorTab() {
                             CANCEL
                           </Button>
                         ) : (
-                          <span className="text-[10px] text-muted-foreground/60 uppercase">—</span>
+                          <span className="text-[10px] text-muted-foreground uppercase">—</span>
                         )}
                       </td>
                     </tr>

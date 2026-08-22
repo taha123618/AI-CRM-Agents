@@ -239,7 +239,7 @@ export function VisualWorkflowCanvas() {
             >
               <Zap className="w-3 h-3" />
               <span>{wf.name}</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-card text-foreground/80 font-mono border border-border">
+              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-card text-foreground font-mono border border-border">
                 {wf.execution_count} RUNS
               </span>
             </button>
@@ -266,7 +266,7 @@ export function VisualWorkflowCanvas() {
                   deleteWfMutation.mutate(activeWf.id);
                 }
               }}
-              className="h-7 px-2 text-muted-foreground/60 hover:text-destructive"
+              className="h-7 px-2 text-muted-foreground hover:text-destructive"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </Button>
@@ -293,7 +293,7 @@ export function VisualWorkflowCanvas() {
                   <div className="w-56 p-3.5 rounded-none bg-card border border-border hover:border-primary transition-none space-y-2 group relative">
                     <button
                       onClick={() => handleRemoveNode(node.id)}
-                      className="absolute top-2.5 right-2.5 text-muted-foreground/60 hover:text-destructive opacity-0 group-hover:opacity-100 transition-none"
+                      className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-none"
                       title="Remove Step"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -383,7 +383,7 @@ export function VisualWorkflowCanvas() {
 
             <div className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">STEP TYPE</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">STEP TYPE</label>
                 <select
                   value={nodeType}
                   onChange={(e) => setNodeType(e.target.value as any)}
@@ -396,7 +396,7 @@ export function VisualWorkflowCanvas() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">STEP NAME / LABEL *</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">STEP NAME / LABEL *</label>
                 <input
                   type="text"
                   required
@@ -409,7 +409,7 @@ export function VisualWorkflowCanvas() {
 
               {nodeType === 'agent' && (
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">TARGET AI AGENT</label>
+                  <label className="block text-[10px] font-bold uppercase text-foreground mb-1">TARGET AI AGENT</label>
                   <select
                     value={nodeAgent}
                     onChange={(e) => setNodeAgent(e.target.value)}
@@ -460,7 +460,7 @@ export function VisualWorkflowCanvas() {
 
             <form onSubmit={handleCreateWorkflowSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">PIPELINE NAME *</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">PIPELINE NAME *</label>
                 <input
                   type="text"
                   required
@@ -472,7 +472,7 @@ export function VisualWorkflowCanvas() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">DESCRIPTION</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">DESCRIPTION</label>
                 <textarea
                   rows={3}
                   placeholder="SUMMARIZE MULTI-AGENT CADENCE GOALS..."
@@ -483,7 +483,7 @@ export function VisualWorkflowCanvas() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-foreground/80 mb-1">TRIGGER EXECUTION MODE</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">TRIGGER EXECUTION MODE</label>
                 <select
                   value={newWfTrigger}
                   onChange={(e) => setNewWfTrigger(e.target.value)}

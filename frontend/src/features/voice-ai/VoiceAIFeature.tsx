@@ -76,7 +76,7 @@ function StatCard({
           {label}
         </span>
         <div className={`text-xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
-        {sub && <span className="text-[9px] text-muted-foreground/60 block mt-0.5 truncate uppercase">{sub}</span>}
+        {sub && <span className="text-[9px] text-muted-foreground block mt-0.5 truncate uppercase">{sub}</span>}
       </div>
     </Card>
   );
@@ -671,7 +671,7 @@ export function VoiceAIFeature() {
             variant="outline"
             size="sm"
             onClick={() => setIsGatewayModalOpen(true)}
-            className="text-xs h-8 px-3 uppercase border-[#00E5FF]/40 text-[#00E5FF] hover:border-[#00E5FF]"
+            className="text-xs h-8 px-3 uppercase border-cyan-500/40 text-cyan-600 dark:text-cyan-400 hover:border-cyan-500"
           >
             <Radio className="w-3.5 h-3.5 mr-1" />
             <span>TWILIO / WEBRTC GATEWAY</span>
@@ -729,8 +729,8 @@ export function VoiceAIFeature() {
               : '—'
           }
           sub={`${stats?.sentiment_distribution.positive ?? 0} QUALIFIED CALLS`}
-          color="text-[#00E5FF]"
-          icon={<BarChart2 className="w-4 h-4 text-[#00E5FF]" />}
+          color="text-cyan-600 dark:text-cyan-400"
+          icon={<BarChart2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />}
         />
         <StatCard
           label="AVG CALL DURATION"
@@ -787,7 +787,7 @@ export function VoiceAIFeature() {
                 ))}
               </div>
               <div className="border-l border-border pl-3 pr-1 text-right">
-                <span className="text-[8px] font-bold uppercase text-muted-foreground/60 block">BUYER INTENT</span>
+                <span className="text-[8px] font-bold uppercase text-muted-foreground block">BUYER INTENT</span>
                 <span className="text-sm font-black font-mono text-primary">{liveIntentScore}%</span>
               </div>
             </div>
@@ -830,11 +830,11 @@ export function VoiceAIFeature() {
                       }`}
                   >
                     <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                      <span className={`font-bold uppercase tracking-wider flex items-center gap-1.5 ${isRep ? 'text-[#00E5FF]' : 'text-primary'}`}>
-                        {isRep ? <User className="w-3.5 h-3.5 text-[#00E5FF]" /> : <Mic className="w-3.5 h-3.5 text-primary" />}
+                      <span className={`font-bold uppercase tracking-wider flex items-center gap-1.5 ${isRep ? 'text-cyan-600 dark:text-cyan-400' : 'text-primary'}`}>
+                        {isRep ? <User className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> : <Mic className="w-3.5 h-3.5 text-primary" />}
                         {isRep ? 'SALES REP (YOU)' : `${contactName} (PROSPECT)`}
                       </span>
-                      <span className="font-mono text-muted-foreground/60">{t.timestamp}</span>
+                      <span className="font-mono text-muted-foreground">{t.timestamp}</span>
                     </div>
 
                     <p className="leading-relaxed font-mono">{t.text}</p>
@@ -855,7 +855,7 @@ export function VoiceAIFeature() {
             <div className="p-3.5 rounded-none bg-background border border-border space-y-3 flex flex-col justify-between">
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5 text-primary" />
                     <span>SPEAKER CHANNEL</span>
                   </span>
@@ -905,13 +905,13 @@ export function VoiceAIFeature() {
                           'Your pricing seems 30% higher than Salesforce. Can you justify the ROI?'
                         )
                       }
-                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
+                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground transition-none group uppercase font-mono"
                     >
                       <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
                         <DollarSign className="w-3 h-3 text-primary" />
                         PRICING
                       </span>
-                      <span className="text-[8px] text-muted-foreground/60 block truncate">SALESFORCE VS ROI</span>
+                      <span className="text-[8px] text-muted-foreground block truncate">SALESFORCE VS ROI</span>
                     </button>
 
                     <button
@@ -922,13 +922,13 @@ export function VoiceAIFeature() {
                           'We require SOC2 Type II compliance and custom enterprise SLAs before approval.'
                         )
                       }
-                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
+                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground transition-none group uppercase font-mono"
                     >
                       <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
-                        <Shield className="w-3 h-3 text-[#00E5FF]" />
+                        <Shield className="w-3 h-3 text-cyan-600 dark:text-cyan-400" />
                         SECURITY
                       </span>
-                      <span className="text-[8px] text-muted-foreground/60 block truncate">SOC2 &amp; ENTERPRISE SLA</span>
+                      <span className="text-[8px] text-muted-foreground block truncate">SOC2 &amp; ENTERPRISE SLA</span>
                     </button>
 
                     <button
@@ -939,13 +939,13 @@ export function VoiceAIFeature() {
                           'Our VP of Sales is evaluating Gong. How does your multi-agent architecture compare?'
                         )
                       }
-                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
+                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground transition-none group uppercase font-mono"
                     >
                       <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
                         <Zap className="w-3 h-3 text-purple-400" />
                         GONG STACK
                       </span>
-                      <span className="text-[8px] text-muted-foreground/60 block truncate">MULTI-AGENT FLEET</span>
+                      <span className="text-[8px] text-muted-foreground block truncate">MULTI-AGENT FLEET</span>
                     </button>
 
                     <button
@@ -956,13 +956,13 @@ export function VoiceAIFeature() {
                           'We deliver 3.4x faster qualification times with autonomous multi-agent fleet routing.'
                         )
                       }
-                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
+                      className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground transition-none group uppercase font-mono"
                     >
                       <span className="flex items-center gap-1 font-bold text-primary">
                         <Sparkles className="w-3 h-3 text-primary" />
                         VALUE PITCH
                       </span>
-                      <span className="text-[8px] text-muted-foreground/60 block truncate">ROI &amp; VELOCITY</span>
+                      <span className="text-[8px] text-muted-foreground block truncate">ROI &amp; VELOCITY</span>
                     </button>
                   </div>
                 </div>
@@ -1001,7 +1001,7 @@ export function VoiceAIFeature() {
               onClick={() => setActiveTab(tab)}
               className={`px-3.5 py-1.5 text-xs font-bold uppercase rounded-none transition-none ${activeTab === tab
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
+                  : 'bg-card text-foreground border border-border hover:border-primary hover:text-foreground'
                 }`}
             >
               {tab === 'overview' ? 'CALL RECORDS & AUDIO' : 'INTELLIGENCE ANALYTICS'}
@@ -1011,7 +1011,7 @@ export function VoiceAIFeature() {
 
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/60" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
             <input
               type="text"
               placeholder="SEARCH CONTACTS, PHONES..."
@@ -1022,11 +1022,11 @@ export function VoiceAIFeature() {
           </div>
 
           <div className="flex items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5 text-muted-foreground/60" />
+            <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             <select
               value={filterSentiment}
               onChange={(e) => setFilterSentiment(e.target.value)}
-              className="bg-card border border-border rounded-none px-2 py-1 text-xs text-foreground/80 focus:outline-none focus:border-primary uppercase font-mono"
+              className="bg-card border border-border rounded-none px-2 py-1 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
             >
               <option value="">ALL SENTIMENTS</option>
               <option value="positive">POSITIVE</option>
@@ -1036,7 +1036,7 @@ export function VoiceAIFeature() {
             <select
               value={filterDirection}
               onChange={(e) => setFilterDirection(e.target.value)}
-              className="bg-card border border-border rounded-none px-2 py-1 text-xs text-foreground/80 focus:outline-none focus:border-primary uppercase font-mono"
+              className="bg-card border border-border rounded-none px-2 py-1 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
             >
               <option value="">ALL DIRECTIONS</option>
               <option value="outbound">OUTBOUND</option>
@@ -1051,18 +1051,18 @@ export function VoiceAIFeature() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Call Records List */}
           <div className="space-y-2.5">
-            <h3 className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center justify-between">
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-primary" />
                 <span>RECORDED CALLS ({calls?.length ?? 0})</span>
               </span>
-              <span className="text-[10px] text-muted-foreground/60 font-mono uppercase">SORTED BY DATE</span>
+              <span className="text-[10px] text-muted-foreground font-mono uppercase">SORTED BY DATE</span>
             </h3>
 
             {isLoading ? (
-              <div className="py-16 text-center text-muted-foreground/60 text-xs uppercase font-mono">LOADING RECORDED CALLS...</div>
+              <div className="py-16 text-center text-muted-foreground text-xs uppercase font-mono">LOADING RECORDED CALLS...</div>
             ) : !calls?.length ? (
-              <div className="py-16 text-center text-muted-foreground/60 text-xs rounded-none bg-card border border-border p-6 uppercase font-mono">
+              <div className="py-16 text-center text-muted-foreground text-xs rounded-none bg-card border border-border p-6 uppercase font-mono">
                 NO CALLS MATCH YOUR QUERY OR FILTERS.
               </div>
             ) : (
@@ -1082,12 +1082,12 @@ export function VoiceAIFeature() {
                       }}
                       className={`p-3.5 rounded-none border cursor-pointer transition-none space-y-2 ${isSelected
                           ? 'bg-card border-primary text-foreground shadow-xl'
-                          : 'bg-card border-border hover:border-primary text-foreground/80'
+                          : 'bg-card border-border hover:border-primary text-foreground'
                         }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
-                          <div className={`p-1 rounded-none ${c.direction === 'outbound' ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-primary/10 text-primary'}`}>
+                          <div className={`p-1 rounded-none ${c.direction === 'outbound' ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400' : 'bg-primary/10 text-primary'}`}>
                             {c.direction === 'outbound' ? (
                               <PhoneOutgoing className="w-3.5 h-3.5" />
                             ) : (
@@ -1117,7 +1117,7 @@ export function VoiceAIFeature() {
 
                       <p className="text-[10px] text-muted-foreground line-clamp-2 leading-relaxed uppercase">{c.summary}</p>
 
-                      <div className="flex items-center justify-between text-[9px] text-muted-foreground/60 font-mono pt-1 border-t border-border uppercase">
+                      <div className="flex items-center justify-between text-[9px] text-muted-foreground font-mono pt-1 border-t border-border uppercase">
                         <span>{fmtDuration(c.duration_seconds)} DURATION</span>
                         <span className="text-primary font-bold">INTENT: {c.buyer_intent_score}%</span>
                       </div>
@@ -1160,7 +1160,7 @@ export function VoiceAIFeature() {
 
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block tracking-wider">
+                      <span className="text-[9px] text-muted-foreground uppercase font-bold block tracking-wider">
                         BUYER INTENT SCORE
                       </span>
                       <span className="text-base font-mono font-black text-primary">
@@ -1172,7 +1172,7 @@ export function VoiceAIFeature() {
                       type="button"
                       title="Delete Call Record"
                       onClick={() => deleteMutation.mutate(activeCallRecord.id)}
-                      className="p-1.5 rounded-none text-muted-foreground/60 hover:text-destructive hover:bg-destructive/10 transition-none"
+                      className="p-1.5 rounded-none text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-none"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -1201,7 +1201,7 @@ export function VoiceAIFeature() {
                           ? 'bg-primary'
                           : activeCallRecord.sentiment === 'negative'
                             ? 'bg-destructive'
-                            : 'bg-slate-500',
+                            : 'bg-muted',
                     },
                   ].map((item) => (
                     <div key={item.label} className="p-2.5 rounded-none bg-background border border-border space-y-1.5">
@@ -1344,7 +1344,7 @@ export function VoiceAIFeature() {
                 {/* Summary Box with Quick Copy & Email Generator */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-primary" />
                       <span>EXECUTIVE CALL SYNTHESIS</span>
                     </span>
@@ -1360,14 +1360,14 @@ export function VoiceAIFeature() {
                       <button
                         type="button"
                         onClick={() => setShowEmailDraftModal(true)}
-                        className="text-[10px] text-[#00E5FF] hover:text-primary flex items-center gap-1 uppercase transition-none"
+                        className="text-[10px] text-cyan-600 dark:text-cyan-400 hover:text-primary flex items-center gap-1 uppercase transition-none"
                       >
                         <Mail className="w-3 h-3" />
                         <span>DRAFT FOLLOW-UP EMAIL</span>
                       </button>
                     </div>
                   </div>
-                  <p className="text-xs text-foreground/80 bg-background p-3 rounded-none border border-border leading-relaxed uppercase">
+                  <p className="text-xs text-foreground bg-background p-3 rounded-none border border-border leading-relaxed uppercase">
                     {activeCallRecord.summary}
                   </p>
                 </div>
@@ -1375,7 +1375,7 @@ export function VoiceAIFeature() {
                 {/* Objections Handled Badges */}
                 {activeCallRecord.objections_handled.length > 0 && (
                   <div className="space-y-1.5">
-                    <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider block">
+                    <span className="text-xs font-bold text-foreground uppercase tracking-wider block">
                       OBJECTIONS HANDLED ({activeCallRecord.objections_handled.length})
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -1394,7 +1394,7 @@ export function VoiceAIFeature() {
 
                 {/* Action Items List */}
                 <div className="space-y-1.5">
-                  <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                     <span>NEXT ACTION ITEMS ({activeCallRecord.action_items?.length ?? 0})</span>
                   </span>
@@ -1423,7 +1423,7 @@ export function VoiceAIFeature() {
                 </Button>
               </Card>
             ) : (
-              <div className="py-28 text-center rounded-none bg-card border border-border text-muted-foreground/60 text-xs p-6 uppercase font-mono">
+              <div className="py-28 text-center rounded-none bg-card border border-border text-muted-foreground text-xs p-6 uppercase font-mono">
                 SELECT A CALL RECORD TO INSPECT AUDIO INTELLIGENCE AND ACTION ITEMS.
               </div>
             )}
@@ -1473,7 +1473,7 @@ export function VoiceAIFeature() {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex items-center justify-center h-full text-muted-foreground/60 text-xs font-mono uppercase">
+                <div className="flex items-center justify-center h-full text-muted-foreground text-xs font-mono uppercase">
                   NO OBJECTION DATA RECORDED YET.
                 </div>
               )}
@@ -1555,7 +1555,7 @@ export function VoiceAIFeature() {
               </div>
               <div>
                 <label className="text-muted-foreground font-bold uppercase block mb-1">EMAIL BODY:</label>
-                <div className="p-2.5 rounded-none bg-background border border-border text-foreground/80 leading-relaxed max-h-48 overflow-y-auto font-mono uppercase text-[11px]">
+                <div className="p-2.5 rounded-none bg-background border border-border text-foreground leading-relaxed max-h-48 overflow-y-auto font-mono uppercase text-[11px]">
                   Hi {activeCallRecord.contact_name.split(' ')[0]},<br /><br />
                   Great speaking with you today! As discussed, here is a summary of our conversation and key next steps:<br /><br />
                   <strong>Action Items:</strong><br />

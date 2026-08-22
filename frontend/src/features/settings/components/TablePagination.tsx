@@ -36,11 +36,11 @@ export function TablePagination({
 
         {onPageSizeChange && (
           <div className="flex items-center gap-1.5 ml-2">
-            <span className="text-muted-foreground/60 text-[10px]">PER PAGE:</span>
+            <span className="text-muted-foreground text-[10px]">PER PAGE:</span>
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="bg-card border border-border text-foreground/80 rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-primary font-mono"
+              className="bg-card border border-border text-foreground rounded-none px-1.5 py-0.5 text-xs focus:outline-none focus:border-primary font-mono"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt} className="bg-background">
@@ -58,7 +58,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
-          className="h-7 w-7 p-0 border-border text-foreground/80 hover:border-primary disabled:opacity-30"
+          className="h-7 w-7 p-0 border-border text-foreground hover:border-primary disabled:opacity-30"
           title="First Page"
         >
           <ChevronsLeft className="w-3.5 h-3.5" />
@@ -68,13 +68,13 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="h-7 w-7 p-0 border-border text-foreground/80 hover:border-primary disabled:opacity-30"
+          className="h-7 w-7 p-0 border-border text-foreground hover:border-primary disabled:opacity-30"
           title="Previous Page"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
         </Button>
 
-        <span className="px-2 py-0.5 text-foreground/80 font-bold text-[10px] font-mono">
+        <span className="px-2 py-0.5 text-foreground font-bold text-[10px] font-mono">
           PAGE {currentPage} OF {Math.max(1, totalPages)}
         </span>
 
@@ -83,7 +83,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="h-7 w-7 p-0 border-border text-foreground/80 hover:border-primary disabled:opacity-30"
+          className="h-7 w-7 p-0 border-border text-foreground hover:border-primary disabled:opacity-30"
           title="Next Page"
         >
           <ChevronRight className="w-3.5 h-3.5" />
@@ -93,7 +93,7 @@ export function TablePagination({
           variant="outline"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
-          className="h-7 w-7 p-0 border-border text-foreground/80 hover:border-primary disabled:opacity-30"
+          className="h-7 w-7 p-0 border-border text-foreground hover:border-primary disabled:opacity-30"
           title="Last Page"
         >
           <ChevronsRight className="w-3.5 h-3.5" />

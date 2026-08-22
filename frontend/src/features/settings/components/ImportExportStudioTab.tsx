@@ -143,7 +143,7 @@ export function ImportExportStudioTab() {
 
         <form onSubmit={handleImport} className="p-4 rounded-none bg-card border border-border space-y-3">
           <div className="flex items-center gap-3">
-            <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider">TARGET ENTITY:</label>
+            <label className="text-[10px] font-bold text-foreground uppercase tracking-wider">TARGET ENTITY:</label>
             <div className="flex items-center gap-1.5 font-mono">
               <button
                 type="button"

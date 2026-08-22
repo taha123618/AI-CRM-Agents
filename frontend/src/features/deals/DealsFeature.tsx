@@ -26,7 +26,7 @@ import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Deal, DealStage } from '@/types/crm.types';
 
 const STAGES: { id: DealStage; titleKey: string; defaultTitle: string; color: string; badgeColor: string }[] = [
-  { id: 'prospecting', titleKey: 'deals.stage_discovery', defaultTitle: 'Discovery', color: 'border-border', badgeColor: 'bg-muted text-foreground/90' },
+  { id: 'prospecting', titleKey: 'deals.stage_discovery', defaultTitle: 'Discovery', color: 'border-border', badgeColor: 'bg-muted text-foreground' },
   { id: 'qualification', titleKey: 'leads.qualification_status', defaultTitle: 'Qualification', color: 'border-brand-500/50', badgeColor: 'bg-brand-500/20 text-brand-300' },
   { id: 'proposal', titleKey: 'deals.stage_proposal', defaultTitle: 'Proposal Sent', color: 'border-blue-500/50', badgeColor: 'bg-blue-500/20 text-blue-300' },
   { id: 'negotiation', titleKey: 'deals.stage_negotiation', defaultTitle: 'Negotiation', color: 'border-amber-500/50', badgeColor: 'bg-amber-500/20 text-amber-300' },
@@ -271,7 +271,7 @@ export function DealsFeature() {
                 className={`flex flex-col w-[280px] shrink-0 rounded-none p-3 transition-none  border h-full ${
                   isTargetColumn
                     ? 'bg-brand-500/10 ring-2 ring-brand-500/40 border-brand-500/30 scale-[1.01]'
-                    : 'bg-card/30 border-slate-900'
+                    : 'bg-card/30 border-border'
                 }`}
               >
                 {/* Kanban Column Header with Colored Stripe */}
@@ -279,7 +279,7 @@ export function DealsFeature() {
                   className={`p-3 rounded-none bg-background/80 border-t-2 ${topStripeClass} border-x border-b border-border/80 flex flex-col gap-1 shadow-md shrink-0`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                       {t(col.titleKey, col.defaultTitle)}
                     </h3>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-none ${col.badgeColor}`}>
@@ -298,7 +298,7 @@ export function DealsFeature() {
                       className={`h-28 border border-dashed rounded-none flex flex-col items-center justify-center text-xs transition-none ${
                         isTargetColumn
                           ? 'border-brand-500/60 bg-brand-500/10 text-brand-300 font-bold'
-                          : 'border-border/60 text-slate-650'
+                          : 'border-border/60 text-muted-foreground'
                       }`}
                     >
                       <span>{isTargetColumn ? 'Drop Here' : 'No Deals'}</span>
@@ -321,7 +321,7 @@ export function DealsFeature() {
                           {/* Header with Grip Icon */}
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-1.5 flex-1">
-                              <GripVertical className="w-4 h-4 text-muted-foreground/60 group-hover:text-muted-foreground shrink-0 mt-0.5" />
+                              <GripVertical className="w-4 h-4 text-muted-foreground group-hover:text-muted-foreground shrink-0 mt-0.5" />
                               <div>
                                 <h4 className="font-semibold text-xs text-foreground line-clamp-2">{deal.name}</h4>
                                 {Boolean(deal.next_actions?.length) && (
@@ -372,7 +372,7 @@ export function DealsFeature() {
 
                           {/* AI Risk Factors */}
                           {deal.risk_factors && deal.risk_factors.length > 0 && (
-                            <div className="pt-2 border-t border-slate-850 space-y-1">
+                            <div className="pt-2 border-t border-border space-y-1">
                               <span className="text-[9px] uppercase font-bold text-amber-400 flex items-center gap-1">
                                 <AlertTriangle className="w-3 h-3 text-amber-400" />
                                 <span>AI Risk Factors</span>
@@ -405,7 +405,7 @@ export function DealsFeature() {
                                 </div>
                               )}
                               {deal.forecast_close_date && (
-                                <div className="text-[9px] text-muted-foreground/70">
+                                <div className="text-[9px] text-muted-foreground">
                                   <span className="text-muted-foreground">Forecast: </span>
                                   {deal.forecast_close_date}
                                 </div>
@@ -477,7 +477,7 @@ export function DealsFeature() {
         >
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-foreground/90 block mb-1">Deal Name</label>
+              <label className="text-xs font-semibold text-foreground block mb-1">Deal Name</label>
               <Input
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
@@ -487,7 +487,7 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-foreground/90 block mb-1">Deal Value ($)</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Deal Value ($)</label>
                 <div className="relative">
                   <DollarSign className="w-4 h-4 text-muted-foreground absolute left-3 top-2.5" />
                   <Input
@@ -500,7 +500,7 @@ export function DealsFeature() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-foreground/90 block mb-1">Pipeline Stage</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Pipeline Stage</label>
                 <select
                   value={editStage}
                   onChange={(e) => setEditStage(e.target.value as DealStage)}
@@ -517,7 +517,7 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-foreground/90 block mb-1 flex items-center gap-1">
+                <label className="text-xs font-semibold text-foreground block mb-1 flex items-center gap-1">
                   <Activity className="w-3.5 h-3.5 text-brand-400" />
                   <span>Health Score (0-100)</span>
                 </label>
@@ -547,7 +547,7 @@ export function DealsFeature() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-foreground/90 block mb-1">
+              <label className="text-xs font-semibold text-foreground block mb-1">
                 AI Risk Factors (comma separated)
               </label>
               <Input
@@ -559,7 +559,7 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-foreground/90 block mb-1">Close Probability (%)</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Close Probability (%)</label>
                 <Input
                   type="number" min="0" max="100"
                   value={editCloseProbability}
@@ -568,7 +568,7 @@ export function DealsFeature() {
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-foreground/90 block mb-1">Forecast Close Date</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Forecast Close Date</label>
                 <Input
                   value={editForecastDate}
                   onChange={(e) => setEditForecastDate(e.target.value)}
@@ -578,7 +578,7 @@ export function DealsFeature() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-foreground/90 block mb-1">
+              <label className="text-xs font-semibold text-foreground block mb-1">
                 AI Next Actions (one per line)
               </label>
               <textarea
@@ -586,7 +586,7 @@ export function DealsFeature() {
                 value={editNextActions}
                 onChange={(e) => setEditNextActions(e.target.value)}
                 placeholder="e.g. Schedule technical review&#10;Send security questionnaire&#10;Loop in procurement"
-                className="w-full bg-card text-slate-100 border border-border/80 rounded-none p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-card text-foreground border border-border/80 rounded-none p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
               />
             </div>
 

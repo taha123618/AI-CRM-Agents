@@ -228,7 +228,7 @@ export function MeetingsFeature() {
         {isLoading ? (
           [...Array(4)].map((_, i) => <Skeleton key={i} className="h-32 w-full" />)
         ) : filteredMeetings.length === 0 ? (
-          <Card className="md:col-span-2 p-10 text-center text-muted-foreground/60 text-xs font-mono uppercase">
+          <Card className="md:col-span-2 p-10 text-center text-muted-foreground text-xs font-mono uppercase">
             NO UPCOMING MEETINGS SCHEDULED.
           </Card>
         ) : (
@@ -364,7 +364,7 @@ export function MeetingsFeature() {
                 <FileText className="w-3 h-3 text-primary shrink-0" />
                 PROPOSED MEETING AGENDA
               </h4>
-              <ul className="text-xs text-foreground/80 space-y-1 pl-1 min-w-0 font-mono">
+              <ul className="text-xs text-foreground space-y-1 pl-1 min-w-0 font-mono">
                 {Array.isArray(selectedMeeting.agenda) && selectedMeeting.agenda.length > 0 ? (
                   selectedMeeting.agenda.map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5 min-w-0">
@@ -384,8 +384,8 @@ export function MeetingsFeature() {
 
             {/* Context & Notes */}
             {selectedMeeting.notes && (
-              <div className="p-2.5 bg-background border border-border text-xs text-foreground/80 break-words min-w-0 font-mono uppercase">
-                <span className="text-muted-foreground/60 font-bold block mb-0.5">CONTEXT NOTES:</span>
+              <div className="p-2.5 bg-background border border-border text-xs text-foreground break-words min-w-0 font-mono uppercase">
+                <span className="text-muted-foreground font-bold block mb-0.5">CONTEXT NOTES:</span>
                 {selectedMeeting.notes}
               </div>
             )}
@@ -399,7 +399,7 @@ export function MeetingsFeature() {
                 </h4>
                 <ul className="space-y-1 min-w-0">
                   {Object.entries(selectedMeeting.prep_materials).map(([k, v]) => (
-                    <li key={k} className="flex items-start gap-1.5 text-xs text-foreground/80 min-w-0 font-mono uppercase">
+                    <li key={k} className="flex items-start gap-1.5 text-xs text-foreground min-w-0 font-mono uppercase">
                       <ChevronRight className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span className="break-all flex-1"><span className="font-bold text-muted-foreground">{k.replace(/_/g, ' ')}:</span> {typeof v === 'string' ? v : JSON.stringify(v)}</span>
                     </li>
@@ -417,7 +417,7 @@ export function MeetingsFeature() {
                 </h4>
                 <ul className="space-y-1 min-w-0">
                   {selectedMeeting.followup_tasks.map((task: string, i: number) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground/80 min-w-0 font-mono uppercase">
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground min-w-0 font-mono uppercase">
                       <CheckSquare className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{task}</span>
                     </li>
@@ -527,7 +527,7 @@ export function MeetingsFeature() {
             />
 
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground/80">CONTEXT / NOTES</label>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground">CONTEXT / NOTES</label>
               <textarea
                 rows={3}
                 value={editNotes}

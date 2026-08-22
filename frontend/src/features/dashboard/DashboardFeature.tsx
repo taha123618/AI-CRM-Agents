@@ -169,7 +169,7 @@ export function DashboardFeature() {
           <CardContent className="pt-2">
             <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
               {events.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground/70 text-xs">Waiting for agent events...</div>
+                <div className="text-center py-8 text-muted-foreground text-xs">Waiting for agent events...</div>
               ) : (
                 events.map((evt) => (
                   <div
@@ -178,11 +178,11 @@ export function DashboardFeature() {
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-brand-400 font-mono">{evt.agent}</span>
-                      <span className="text-[10px] text-muted-foreground/70 font-mono">
+                      <span className="text-[10px] text-muted-foreground font-mono">
                         {new Date(evt.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <p className="text-foreground/90 font-medium">{evt.type.replace('_', ' ')}</p>
+                    <p className="text-foreground font-medium">{evt.type.replace('_', ' ')}</p>
                     {evt.data?.message && <p className="text-[11px] text-muted-foreground">{evt.data.message}</p>}
                   </div>
                 ))

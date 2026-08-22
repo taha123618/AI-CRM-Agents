@@ -78,7 +78,7 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
       />
 
       <div className="space-y-1">
-        <label className="text-[10px] font-bold uppercase text-foreground/80">MEETING FOCUS NOTES (OPTIONAL)</label>
+        <label className="text-[10px] font-bold uppercase text-foreground">MEETING FOCUS NOTES (OPTIONAL)</label>
         <textarea
           rows={3}
           className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"

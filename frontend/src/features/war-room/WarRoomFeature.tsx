@@ -111,7 +111,7 @@ export function WarRoomFeature() {
             variant="outline"
             size="sm"
             onClick={() => setShowAutomationsModal(true)}
-            className="text-xs h-8 px-3 uppercase border-[#A855F7]/40 text-[#A855F7] hover:border-[#A855F7]"
+            className="text-xs h-8 px-3 uppercase border-purple-500/40 text-purple-600 dark:text-purple-400 hover:border-purple-500"
           >
             <Zap className="w-3.5 h-3.5 mr-1" />
             <span>AUTOMATION RULES</span>
@@ -134,20 +134,20 @@ export function WarRoomFeature() {
       {/* ── Active Deal Selector Strip (Horizontal Tactical Bar) ── */}
       <div className="p-3.5 rounded-none bg-card border border-border space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
+          <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Crosshair className="w-3.5 h-3.5 text-destructive" />
             <span>TARGET ENTERPRISE ACCOUNTS ({deals?.length || 0})</span>
           </span>
-          <span className="text-[10px] text-muted-foreground/60 font-mono hidden sm:inline uppercase">
+          <span className="text-[10px] text-muted-foreground font-mono hidden sm:inline uppercase">
             SELECT PIPELINE DEAL TO LOAD CROSS-AGENT CONSENSUS
           </span>
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 scrollbar-thin">
           {isLoadingDeals ? (
-            <div className="text-xs text-muted-foreground/60 py-2 uppercase">LOADING TARGET PIPELINE...</div>
+            <div className="text-xs text-muted-foreground py-2 uppercase">LOADING TARGET PIPELINE...</div>
           ) : !deals?.length ? (
-            <div className="text-xs text-muted-foreground/60 py-2 uppercase">NO DEALS REGISTERED IN PIPELINE YET.</div>
+            <div className="text-xs text-muted-foreground py-2 uppercase">NO DEALS REGISTERED IN PIPELINE YET.</div>
           ) : (
             deals?.map((d) => {
               const isSelected = activeDeal?.id === d.id;
@@ -158,11 +158,11 @@ export function WarRoomFeature() {
                   onClick={() => setSelectedDeal(d)}
                   className={`px-3.5 py-2 rounded-none text-xs font-bold whitespace-nowrap transition-none flex items-center gap-2.5 border shrink-0 ${isSelected
                       ? 'bg-background border-primary text-foreground shadow-lg'
-                      : 'bg-background/60 border-border text-muted-foreground hover:text-foreground hover:border-slate-500'
+                      : 'bg-background/60 border-border text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                 >
                   <div className="flex items-center gap-1.5">
-                    <Briefcase className={`w-3.5 h-3.5 ${isSelected ? 'text-primary' : 'text-muted-foreground/60'}`} />
+                    <Briefcase className={`w-3.5 h-3.5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
                     <span className="uppercase">{d.company}</span>
                   </div>
                   <span className="text-[11px] font-mono text-primary font-bold">
@@ -213,7 +213,7 @@ export function WarRoomFeature() {
             <Card className="p-4 bg-card border-border rounded-none flex flex-col justify-between space-y-2.5 hover:border-primary transition-none">
               <div>
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#00E5FF]" />
+                  <TrendingUp className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                   ACCOUNT VALUATION &amp; ARR
                 </span>
                 <div className="text-2xl font-black font-mono text-primary mt-0.5">
@@ -221,7 +221,7 @@ export function WarRoomFeature() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-foreground/80 font-mono bg-background p-2 rounded-none border border-border uppercase text-[10px]">
+              <div className="flex items-center justify-between text-xs text-foreground font-mono bg-background p-2 rounded-none border border-border uppercase text-[10px]">
                 <span>CLOSING WINDOW: ~18 DAYS</span>
                 <span className="text-purple-400 font-bold">ENTERPRISE TIER</span>
               </div>
@@ -268,7 +268,7 @@ export function WarRoomFeature() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-3.5 py-1.5 rounded-none text-xs font-bold transition-none flex items-center gap-1.5 whitespace-nowrap uppercase font-mono ${isActive
                       ? 'bg-primary text-primary-foreground border border-primary'
-                      : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
+                      : 'bg-card text-foreground border border-border hover:border-primary hover:text-foreground'
                     }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -310,7 +310,7 @@ export function WarRoomFeature() {
                       ROLE: {agent.role}
                     </span>
 
-                    <p className="text-xs text-foreground/80 leading-relaxed bg-background p-3 rounded-none border border-border uppercase">
+                    <p className="text-xs text-foreground leading-relaxed bg-background p-3 rounded-none border border-border uppercase">
                       {agent.insight}
                     </p>
                   </div>
@@ -336,7 +336,7 @@ export function WarRoomFeature() {
                       <span className="w-2 h-2 rounded-none bg-primary" />
                       STRENGTHS
                     </span>
-                    <ul className="space-y-1.5 text-xs text-foreground/80 uppercase">
+                    <ul className="space-y-1.5 text-xs text-foreground uppercase">
                       {strategy.swot_analysis.strengths.map((s, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <span className="text-primary font-bold shrink-0">✓</span>
@@ -352,7 +352,7 @@ export function WarRoomFeature() {
                       <span className="w-2 h-2 rounded-none bg-primary" />
                       VULNERABILITIES
                     </span>
-                    <ul className="space-y-1.5 text-xs text-foreground/80 uppercase">
+                    <ul className="space-y-1.5 text-xs text-foreground uppercase">
                       {strategy.swot_analysis.weaknesses.map((w, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <span className="text-primary font-bold shrink-0">•</span>
@@ -363,15 +363,15 @@ export function WarRoomFeature() {
                   </div>
 
                   {/* Opportunities */}
-                  <div className="p-3.5 rounded-none bg-card border border-[#00E5FF]/50 space-y-2">
-                    <span className="text-[11px] font-bold text-[#00E5FF] uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-none bg-[#00E5FF]" />
+                  <div className="p-3.5 rounded-none bg-card border border-cyan-500/50 space-y-2">
+                    <span className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-none bg-cyan-500" />
                       OPPORTUNITIES
                     </span>
-                    <ul className="space-y-1.5 text-xs text-foreground/80 uppercase">
+                    <ul className="space-y-1.5 text-xs text-foreground uppercase">
                       {strategy.swot_analysis.opportunities.map((o, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-[#00E5FF] font-bold shrink-0">↗</span>
+                          <span className="text-cyan-600 dark:text-cyan-400 font-bold shrink-0">↗</span>
                           <span>{o}</span>
                         </li>
                       ))}
@@ -384,7 +384,7 @@ export function WarRoomFeature() {
                       <span className="w-2 h-2 rounded-none bg-destructive" />
                       INCUMBENT THREATS
                     </span>
-                    <ul className="space-y-1.5 text-xs text-foreground/80 uppercase">
+                    <ul className="space-y-1.5 text-xs text-foreground uppercase">
                       {strategy.swot_analysis.threats.map((t, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <span className="text-destructive font-bold shrink-0">×</span>
@@ -443,14 +443,14 @@ export function WarRoomFeature() {
                           <span className="text-[10px] font-bold text-muted-foreground uppercase">
                             VULNERABILITIES:
                           </span>
-                          <p className="text-xs text-foreground/80 uppercase">{card.vulnerabilities}</p>
+                          <p className="text-xs text-foreground uppercase">{card.vulnerabilities}</p>
                         </div>
 
                         <div className="space-y-0.5">
                           <span className="text-[10px] font-bold text-primary uppercase">
                             COUNTER-OBJECTION PLAYBOOK:
                           </span>
-                          <p className="text-xs text-foreground/80 leading-relaxed uppercase">
+                          <p className="text-xs text-foreground leading-relaxed uppercase">
                             {card.counter_objection}
                           </p>
                         </div>
@@ -472,7 +472,7 @@ export function WarRoomFeature() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#00E5FF]" />
+                  <Users className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                   <span>BUYING COMMITTEE &amp; STAKEHOLDER ALIGNMENT</span>
                 </h2>
                 <span className="text-[10px] text-primary font-mono uppercase">
@@ -507,7 +507,7 @@ export function WarRoomFeature() {
                       <span className="text-primary font-bold">INFLUENCE: {stakeholder.influence}</span>
                     </div>
 
-                    <p className="text-xs text-foreground/80 bg-background p-2.5 rounded-none border border-border leading-relaxed uppercase">
+                    <p className="text-xs text-foreground bg-background p-2.5 rounded-none border border-border leading-relaxed uppercase">
                       <strong className="text-muted-foreground font-bold">TARGET STRATEGY: </strong>
                       {stakeholder.strategy}
                     </p>
@@ -539,7 +539,7 @@ export function WarRoomFeature() {
                       key={idx}
                       onClick={() => toggleActionItem(act)}
                       className={`p-3.5 rounded-none border cursor-pointer transition-none flex items-center justify-between gap-3 ${isDone
-                          ? 'bg-background border-primary/40 text-muted-foreground/60 line-through'
+                          ? 'bg-background border-primary/40 text-muted-foreground line-through'
                           : 'bg-card border-border hover:border-primary text-foreground'
                         }`}
                     >
@@ -556,7 +556,7 @@ export function WarRoomFeature() {
                         <span className="text-xs uppercase font-medium">{act}</span>
                       </div>
 
-                      <ChevronRight className="w-4 h-4 text-muted-foreground/60 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                     </div>
                   );
                 })}
@@ -565,7 +565,7 @@ export function WarRoomFeature() {
           )}
         </div>
       ) : isLoadingStrategy ? (
-        <div className="py-24 text-center text-muted-foreground/60 text-xs uppercase font-mono">
+        <div className="py-24 text-center text-muted-foreground text-xs uppercase font-mono">
           LOADING WAR ROOM CONSENSUS STRATEGY...
         </div>
       ) : null}

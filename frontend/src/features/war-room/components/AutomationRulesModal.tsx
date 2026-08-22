@@ -195,7 +195,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     RULE NAME
                   </label>
                   <input
@@ -209,7 +209,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TRIGGER EVENT
                   </label>
                   <select
@@ -225,7 +225,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TRIGGER THRESHOLD / MATCH
                   </label>
                   <input
@@ -239,7 +239,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TARGET AGENT
                   </label>
                   <select
@@ -256,7 +256,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     ACTION DISPATCH TYPE
                   </label>
                   <input
@@ -322,7 +322,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
               </div>
 
-              <p className="text-xs text-foreground/80 uppercase">{executionResult.message}</p>
+              <p className="text-xs text-foreground uppercase">{executionResult.message}</p>
 
               {executionResult.ai_generated_payload && (
                 <div className="p-2.5 rounded-none bg-card border border-border font-mono text-[11px] text-primary whitespace-pre-wrap">
@@ -335,9 +335,9 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
           {/* Rules List */}
           <div className="space-y-2.5">
             {isLoading ? (
-              <div className="p-8 text-center text-xs text-muted-foreground/60 uppercase font-mono">LOADING RULES...</div>
+              <div className="p-8 text-center text-xs text-muted-foreground uppercase font-mono">LOADING RULES...</div>
             ) : rules?.length === 0 ? (
-              <div className="p-8 text-center text-xs text-muted-foreground/60 uppercase font-mono">NO AUTOMATION RULES CONFIGURED.</div>
+              <div className="p-8 text-center text-xs text-muted-foreground uppercase font-mono">NO AUTOMATION RULES CONFIGURED.</div>
             ) : (
               rules?.map((r) => {
                 const isActive = r.status === 'active';
@@ -364,7 +364,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         </span>
                       </div>
 
-                      <span className="text-[9px] font-mono text-muted-foreground/60 block uppercase">
+                      <span className="text-[9px] font-mono text-muted-foreground block uppercase">
                         FIRED {r.executions_count || 0} TIMES
                       </span>
                     </div>
@@ -407,7 +407,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteMutation.mutate(r.id)}
-                        className="h-7 px-2 text-muted-foreground/60 hover:text-destructive"
+                        className="h-7 px-2 text-muted-foreground hover:text-destructive"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>

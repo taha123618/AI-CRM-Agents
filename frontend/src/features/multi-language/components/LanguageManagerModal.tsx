@@ -226,7 +226,7 @@ export function LanguageManagerModal({
                         <div>
                           <div className="font-bold text-foreground flex items-center gap-1.5 uppercase">
                             <span>{lang.name}</span>
-                            <span className="text-[10px] text-muted-foreground/60 font-mono">({lang.code})</span>
+                            <span className="text-[10px] text-muted-foreground font-mono">({lang.code})</span>
                             {lang.is_default && (
                               <Badge variant="success" className="text-[8px] uppercase font-mono">
                                 PRIMARY
@@ -250,7 +250,7 @@ export function LanguageManagerModal({
                         onClick={() => handleToggleEnable(lang)}
                         className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-none border transition-none ${lang.is_enabled
                             ? 'bg-background text-primary border-primary'
-                            : 'bg-background text-muted-foreground/60 border-border'
+                            : 'bg-background text-muted-foreground border-border'
                           }`}
                       >
                         {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
@@ -262,7 +262,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => setLanguage(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-foreground/80 hover:text-foreground border border-border hover:border-primary transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-foreground hover:text-foreground border border-border hover:border-primary transition-none"
                         >
                           SWITCH
                         </button>
@@ -293,7 +293,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => handleDelete(lang.code)}
-                          className="p-1 rounded-none text-muted-foreground/60 hover:text-destructive transition-none"
+                          className="p-1 rounded-none text-muted-foreground hover:text-destructive transition-none"
                           title="Delete Locale"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -309,7 +309,7 @@ export function LanguageManagerModal({
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-border">
-          <span className="text-[10px] text-muted-foreground/60 uppercase font-mono">
+          <span className="text-[10px] text-muted-foreground uppercase font-mono">
             RTL LOCALES AUTOMATICALLY MIRROR THE ENTIRE APPLICATION DOM TREE
           </span>
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
