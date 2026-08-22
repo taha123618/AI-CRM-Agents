@@ -117,7 +117,7 @@ export function LanguageManagerModal({
         <div className="flex items-center justify-between p-3 bg-background border border-border rounded-none">
           <div className="flex items-center gap-2">
             <Globe className="w-4 h-4 text-primary" />
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
+            <span className="text-xs font-bold text-foreground uppercase tracking-wider">
               CONFIGURED LOCALES ({availableLanguages.length})
             </span>
           </div>
@@ -142,11 +142,11 @@ export function LanguageManagerModal({
             className="p-4 rounded-none bg-background border border-border space-y-3 animate-in fade-in"
           >
             <div className="flex items-center justify-between border-b border-border pb-2">
-              <span className="text-xs font-bold text-white uppercase">ADD NEW LOCALE</span>
+              <span className="text-xs font-bold text-foreground uppercase">ADD NEW LOCALE</span>
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="text-muted-foreground hover:text-white text-xs"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
                 CANCEL
               </button>
@@ -215,7 +215,7 @@ export function LanguageManagerModal({
                 <th className="py-2.5 px-3 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552] text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {availableLanguages.map((lang) => {
                 const isCurrent = lang.code === currentLanguage;
                 return (
@@ -224,7 +224,7 @@ export function LanguageManagerModal({
                       <div className="flex items-center gap-2">
                         <span className="text-base">{lang.flag_emoji}</span>
                         <div>
-                          <div className="font-bold text-white flex items-center gap-1.5 uppercase">
+                          <div className="font-bold text-foreground flex items-center gap-1.5 uppercase">
                             <span>{lang.name}</span>
                             <span className="text-[10px] text-muted-foreground/60 font-mono">({lang.code})</span>
                             {lang.is_default && (
@@ -262,7 +262,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => setLanguage(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-foreground/80 hover:text-white border border-border hover:border-primary transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-foreground/80 hover:text-foreground border border-border hover:border-primary transition-none"
                         >
                           SWITCH
                         </button>

@@ -142,7 +142,7 @@ export function WebhooksStudioTab() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
-          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
             <Globe className="w-4 h-4 text-primary" />
             UNIVERSAL OUTBOUND WEBHOOKS &amp; INGESTION ENGINE
           </h2>
@@ -170,14 +170,14 @@ export function WebhooksStudioTab() {
 
       {/* Endpoints List */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-white uppercase tracking-wider">REGISTERED DESTINATION ENDPOINTS</h3>
+        <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">REGISTERED DESTINATION ENDPOINTS</h3>
 
         {webhooks.map((ep) => (
           <Card key={ep.id} className="bg-card border-border p-4 space-y-3 font-mono">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs font-bold text-white">{ep.url}</span>
+                  <span className="font-mono text-xs font-bold text-foreground">{ep.url}</span>
                   <Badge variant={ep.is_active ? 'success' : 'default'} className="text-[9px] uppercase">
                     {ep.is_active ? 'ACTIVE' : 'INACTIVE'}
                   </Badge>
@@ -246,7 +246,7 @@ export function WebhooksStudioTab() {
       <div className="space-y-3 pt-3 border-t border-border">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
               <RefreshCw className="w-3.5 h-3.5 text-primary" />
               DELIVERY RECEIPTS &amp; DISPATCHES
             </h3>
@@ -294,7 +294,7 @@ export function WebhooksStudioTab() {
                   setDeliveryStatusFilter('all');
                   setPage(1);
                 }}
-                className="text-xs h-7 px-2 text-muted-foreground hover:text-white uppercase flex items-center gap-1"
+                className="text-xs h-7 px-2 text-muted-foreground hover:text-foreground uppercase flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
                 RESET
@@ -315,7 +315,7 @@ export function WebhooksStudioTab() {
                   <th className="px-3 py-2.5 text-right">TIMESTAMP</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#3A4552]">
+              <tbody className="divide-y divide-border">
                 {paginatedDeliveries.map((d) => (
                   <tr key={d.id} className="hover:bg-background transition-none">
                     <td className="px-3 py-2 font-mono text-primary font-bold uppercase text-[11px]">
@@ -371,13 +371,13 @@ export function WebhooksStudioTab() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm font-mono">
           <div className="w-full max-w-lg bg-card border border-border rounded-none shadow-2xl p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <Globe className="w-4 h-4 text-primary" />
                 REGISTER WEBHOOK ENDPOINT
               </h3>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-muted-foreground hover:text-white text-xs"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
                 ✕
               </button>
@@ -394,7 +394,7 @@ export function WebhooksStudioTab() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://api.yourdomain.com/webhooks/crm-events"
-                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
                 />
               </div>
 
@@ -407,7 +407,7 @@ export function WebhooksStudioTab() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="E.G. ZAPIER LEAD NOTIFICATION PIPELINE"
-                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
@@ -421,7 +421,7 @@ export function WebhooksStudioTab() {
                       type="checkbox"
                       checked={selectedEvents.includes('*')}
                       onChange={() => handleToggleEvent('*')}
-                      className="rounded-none border-border text-primary accent-[#FFB800]"
+                      className="rounded-none border-border text-primary accent-primary"
                     />
                     <span className="font-mono text-primary font-bold text-[11px]">* (ALL EVENTS)</span>
                   </label>
@@ -435,7 +435,7 @@ export function WebhooksStudioTab() {
                         checked={selectedEvents.includes(ev)}
                         onChange={() => handleToggleEvent(ev)}
                         disabled={selectedEvents.includes('*')}
-                        className="rounded-none border-border text-primary accent-[#FFB800]"
+                        className="rounded-none border-border text-primary accent-primary"
                       />
                       <span className="font-mono text-[11px] uppercase">{ev}</span>
                     </label>

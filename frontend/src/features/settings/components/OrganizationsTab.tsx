@@ -64,7 +64,7 @@ export function OrganizationsTab() {
         <div>
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">MULTI-TENANT WORKSPACES &amp; ORGANIZATIONS</h2>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">MULTI-TENANT WORKSPACES &amp; ORGANIZATIONS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               MULTI-TENANCY
             </Badge>
@@ -102,7 +102,7 @@ export function OrganizationsTab() {
                   </Badge>
                 </div>
 
-                <h3 className="text-xs font-bold text-white uppercase tracking-wide">{org.name}</h3>
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-wide">{org.name}</h3>
                 <p className="text-[10px] font-mono text-primary mt-0.5">SLUG: {org.slug}</p>
 
                 <div className="mt-3 space-y-1.5 text-xs text-foreground/80">
@@ -123,7 +123,7 @@ export function OrganizationsTab() {
                   size="sm"
                   variant="ghost"
                   onClick={() => handleCopy(org.id)}
-                  className="h-6 px-1.5 text-[10px] text-muted-foreground hover:text-white uppercase"
+                  className="h-6 px-1.5 text-[10px] text-muted-foreground hover:text-foreground uppercase"
                 >
                   {copiedId === org.id ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3" />}
                   <span className="ml-1">{copiedId === org.id ? 'COPIED' : 'COPY ID'}</span>
@@ -139,13 +139,13 @@ export function OrganizationsTab() {
         <div className="fixed inset-0 z-50 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
           <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <Building2 className="w-4 h-4 text-primary" />
                 CREATE ORGANIZATION WORKSPACE
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-muted-foreground hover:text-white text-xs"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
                 ✕
               </button>
@@ -166,7 +166,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEX GLOBAL VENTURES"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
@@ -177,7 +177,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEX-GLOBAL"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary font-mono uppercase"
                 />
               </div>
 
@@ -188,7 +188,7 @@ export function OrganizationsTab() {
                   placeholder="E.G. APEXGLOBAL.COM"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary font-mono uppercase"
                 />
               </div>
 
@@ -197,7 +197,7 @@ export function OrganizationsTab() {
                 <select
                   value={planTier}
                   onChange={(e) => setPlanTier(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="starter">STARTER (SMALL BUSINESS)</option>
                   <option value="growth">GROWTH (SCALE-UP)</option>

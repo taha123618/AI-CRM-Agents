@@ -44,7 +44,7 @@ export function StatusIndicator({
         )}
         <span className={cn('relative inline-flex rounded-none h-2 w-2', colorMap[status])} />
       </span>
-      {label && <span className="text-xs font-semibold text-slate-300 capitalize">{label}</span>}
+      {label && <span className="text-xs font-semibold text-foreground/90 capitalize">{label}</span>}
     </div>
   );
 }

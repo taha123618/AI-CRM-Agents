@@ -343,7 +343,7 @@ export function UserManagementTab() {
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
-          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
             <Shield className="w-4 h-4 text-primary" />
             ROLE-BASED ACCESS CONTROL (RBAC) &amp; USER PERMISSIONS
           </h2>
@@ -412,7 +412,7 @@ export function UserManagementTab() {
             )}
             <span>{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-muted-foreground hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-muted-foreground hover:text-foreground">
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -476,7 +476,7 @@ export function UserManagementTab() {
                 variant="ghost"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-muted-foreground hover:text-white h-7 px-2 uppercase"
+                className="text-xs text-muted-foreground hover:text-foreground h-7 px-2 uppercase"
                 title="Reset Filters"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
@@ -502,11 +502,11 @@ export function UserManagementTab() {
                 <th className="py-2.5 px-3 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552]">
+            <tbody className="divide-y divide-border">
               {paginatedUsers.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-muted-foreground/60 uppercase">
-                    <User className="w-6 h-6 mx-auto mb-1 text-slate-600" />
+                    <User className="w-6 h-6 mx-auto mb-1 text-muted-foreground/60" />
                     NO USERS MATCHING THE ACTIVE SEARCH OR FILTER CRITERIA.
                   </td>
                 </tr>
@@ -520,7 +520,7 @@ export function UserManagementTab() {
                           {u.full_name?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <div>
-                          <span className="font-bold text-white block uppercase text-[11px]">{u.full_name}</span>
+                          <span className="font-bold text-foreground block uppercase text-[11px]">{u.full_name}</span>
                           {currentUser?.id === u.id && (
                             <span className="text-[9px] text-primary font-mono">(YOUR SESSION)</span>
                           )}
@@ -608,7 +608,7 @@ export function UserManagementTab() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleOpenEdit(u)}
-                            className="p-1 text-muted-foreground hover:text-white h-6 w-6"
+                            className="p-1 text-muted-foreground hover:text-foreground h-6 w-6"
                             title="Edit Permissions & User Profile"
                           >
                             <Edit2 className="w-3 h-3 text-primary" />
@@ -620,7 +620,7 @@ export function UserManagementTab() {
                             onClick={() => setDeletingUser(u)}
                             disabled={currentUser?.id === u.id}
                             className={`p-1 h-6 w-6 ${currentUser?.id === u.id
-                                ? 'text-slate-600 cursor-not-allowed'
+                                ? 'text-muted-foreground/60 cursor-not-allowed'
                                 : 'text-muted-foreground hover:text-destructive'
                               }`}
                             title={currentUser?.id === u.id ? 'Cannot delete self' : 'Delete User'}
@@ -657,7 +657,7 @@ export function UserManagementTab() {
       <Card className="p-4 border-border bg-card space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
               <Building className="w-3.5 h-3.5 text-primary" />
               ENTERPRISE SINGLE SIGN-ON (SSO / SAML 2.0 / OIDC)
             </h3>
@@ -675,7 +675,7 @@ export function UserManagementTab() {
             >
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-xs text-white uppercase">{provider.name}</span>
+                  <span className="font-bold text-xs text-foreground uppercase">{provider.name}</span>
                   <Badge variant="success" className="text-[8px] uppercase">
                     ENABLED
                   </Badge>
@@ -713,13 +713,13 @@ export function UserManagementTab() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm animate-in fade-in font-mono">
           <div className="border border-border rounded-none w-full max-w-2xl p-5 bg-card shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <UserPlus className="w-4 h-4 text-primary" />
                 PROVISION NEW CRM USER &amp; ASSIGN RBAC SCOPES
               </h3>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-muted-foreground hover:text-white transition-none"
+                className="text-muted-foreground hover:text-foreground transition-none"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -739,7 +739,7 @@ export function UserManagementTab() {
                       value={createName}
                       onChange={(e) => setCreateName(e.target.value)}
                       placeholder="MORGAN LEE"
-                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
                     />
                   </div>
                 </div>
@@ -756,7 +756,7 @@ export function UserManagementTab() {
                       value={createEmail}
                       onChange={(e) => setCreateEmail(e.target.value)}
                       placeholder="MORGAN.LEE@COMPANY.COM"
-                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
                     />
                   </div>
                 </div>
@@ -775,7 +775,7 @@ export function UserManagementTab() {
                       value={createPassword}
                       onChange={(e) => setCreatePassword(e.target.value)}
                       placeholder="MIN 6 CHARS"
-                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
+                      className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
                     />
                   </div>
                 </div>
@@ -787,7 +787,7 @@ export function UserManagementTab() {
                   <select
                     value={createRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, false)}
-                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
                     <option value="support">SUPPORT (SUCCESS &amp; CS)</option>
@@ -803,7 +803,7 @@ export function UserManagementTab() {
                   <select
                     value={createActive ? 'active' : 'suspended'}
                     onChange={(e) => setCreateActive(e.target.value === 'active')}
-                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="active">ACTIVE &amp; VERIFIED</option>
                     <option value="suspended">SUSPENDED</option>
@@ -814,7 +814,7 @@ export function UserManagementTab() {
               {/* Fine-grained Permissions Grid */}
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
+                  <label className="text-xs font-bold text-foreground flex items-center gap-1.5 uppercase">
                     <Layers className="w-3.5 h-3.5 text-primary" />
                     GRANULAR PERMISSION SCOPES ({createPermissions.length} SELECTED)
                   </label>
@@ -827,19 +827,19 @@ export function UserManagementTab() {
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
                     </button>
-                    <span className="text-slate-600">|</span>
+                    <span className="text-muted-foreground/60">|</span>
                     <button
                       type="button"
                       onClick={() => setCreatePermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-foreground"
                     >
                       ALL
                     </button>
-                    <span className="text-slate-600">|</span>
+                    <span className="text-muted-foreground/60">|</span>
                     <button
                       type="button"
                       onClick={() => setCreatePermissions([])}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-foreground"
                     >
                       NONE
                     </button>
@@ -849,7 +849,7 @@ export function UserManagementTab() {
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
                     <div key={group.category} className="bg-background p-2.5 rounded-none border border-border space-y-1.5">
-                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-border pb-1 uppercase">
+                      <div className="text-[10px] font-bold text-foreground flex items-center gap-1.5 border-b border-border pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
@@ -867,7 +867,7 @@ export function UserManagementTab() {
                                   setCreatePermissions(createPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-border bg-card text-primary accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-border bg-card text-primary accent-primary mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
@@ -911,13 +911,13 @@ export function UserManagementTab() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-sm animate-in fade-in font-mono">
           <div className="border border-border rounded-none w-full max-w-2xl p-5 bg-card shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <Edit2 className="w-4 h-4 text-primary" />
                 EDIT RBAC SCOPES: {editingUser.email}
               </h3>
               <button
                 onClick={() => setEditingUser(null)}
-                className="text-muted-foreground hover:text-white transition-none"
+                className="text-muted-foreground hover:text-foreground transition-none"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -934,7 +934,7 @@ export function UserManagementTab() {
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
@@ -947,7 +947,7 @@ export function UserManagementTab() {
                     required
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
-                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
               </div>
@@ -962,7 +962,7 @@ export function UserManagementTab() {
                     value={editPassword}
                     onChange={(e) => setEditPassword(e.target.value)}
                     placeholder="OPTIONAL NEW PASSWORD"
-                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
                   />
                 </div>
 
@@ -973,7 +973,7 @@ export function UserManagementTab() {
                   <select
                     value={editRole}
                     onChange={(e) => applyRolePreset(e.target.value as any, true)}
-                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary cursor-pointer uppercase font-mono"
                   >
                     <option value="admin">ADMIN (SUPERUSER)</option>
                     <option value="sales">SALES (PIPELINE &amp; SDR)</option>
@@ -990,7 +990,7 @@ export function UserManagementTab() {
                     value={editActive ? 'active' : 'suspended'}
                     onChange={(e) => setEditActive(e.target.value === 'active')}
                     disabled={currentUser?.id === editingUser.id}
-                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary cursor-pointer uppercase font-mono disabled:opacity-60"
+                    className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary cursor-pointer uppercase font-mono disabled:opacity-60"
                   >
                     <option value="active">ACTIVE</option>
                     <option value="suspended">SUSPENDED</option>
@@ -1001,7 +1001,7 @@ export function UserManagementTab() {
               {/* Fine-grained Permissions Grid */}
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-white flex items-center gap-1.5 uppercase">
+                  <label className="text-xs font-bold text-foreground flex items-center gap-1.5 uppercase">
                     <Layers className="w-3.5 h-3.5 text-primary" />
                     GRANULAR PERMISSION SCOPES ({editPermissions.length} SELECTED)
                   </label>
@@ -1014,19 +1014,19 @@ export function UserManagementTab() {
                       <Sparkles className="w-3 h-3" />
                       ROLE PRESET
                     </button>
-                    <span className="text-slate-600">|</span>
+                    <span className="text-muted-foreground/60">|</span>
                     <button
                       type="button"
                       onClick={() => setEditPermissions(PERMISSION_TAXONOMY.flatMap((c) => c.items.map((i) => i.id)))}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-foreground"
                     >
                       ALL
                     </button>
-                    <span className="text-slate-600">|</span>
+                    <span className="text-muted-foreground/60">|</span>
                     <button
                       type="button"
                       onClick={() => setEditPermissions([])}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-foreground"
                     >
                       NONE
                     </button>
@@ -1036,7 +1036,7 @@ export function UserManagementTab() {
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {PERMISSION_TAXONOMY.map((group) => (
                     <div key={group.category} className="bg-background p-2.5 rounded-none border border-border space-y-1.5">
-                      <div className="text-[10px] font-bold text-white flex items-center gap-1.5 border-b border-border pb-1 uppercase">
+                      <div className="text-[10px] font-bold text-foreground flex items-center gap-1.5 border-b border-border pb-1 uppercase">
                         <span>{group.icon}</span>
                         <span>{group.category}</span>
                       </div>
@@ -1054,7 +1054,7 @@ export function UserManagementTab() {
                                   setEditPermissions(editPermissions.filter((p) => p !== item.id));
                                 }
                               }}
-                              className="rounded-none border-border bg-card text-primary accent-[#FFB800] mt-0.5 shrink-0"
+                              className="rounded-none border-border bg-card text-primary accent-primary mt-0.5 shrink-0"
                             />
                             <div className="leading-tight">
                               <span className="font-bold text-foreground block uppercase text-[10px]">{item.label}</span>
@@ -1102,9 +1102,9 @@ export function UserManagementTab() {
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">PERMANENTLY DELETE USER?</h3>
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">PERMANENTLY DELETE USER?</h3>
               <p className="text-[10px] text-muted-foreground uppercase leading-relaxed">
-                ARE YOU SURE YOU WANT TO REMOVE <strong className="text-white">{deletingUser.email}</strong>? THIS WILL REVOKE ALL SESSION TOKENS AND REMOVE ROLE ASSIGNMENTS. THIS ACTION CANNOT BE UNDONE.
+                ARE YOU SURE YOU WANT TO REMOVE <strong className="text-foreground">{deletingUser.email}</strong>? THIS WILL REVOKE ALL SESSION TOKENS AND REMOVE ROLE ASSIGNMENTS. THIS ACTION CANNOT BE UNDONE.
               </p>
             </div>
 

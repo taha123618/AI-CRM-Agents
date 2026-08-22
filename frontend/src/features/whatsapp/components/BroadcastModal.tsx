@@ -62,7 +62,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
       <div className="w-full max-w-lg bg-card border border-border rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border bg-background shrink-0">
-          <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h2 className="text-xs font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <div className="p-1.5 rounded-none bg-background border border-primary/50 text-primary">
               <Megaphone className="w-3.5 h-3.5" />
             </div>
@@ -71,7 +71,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-none text-muted-foreground hover:text-white transition-none"
+            className="p-1 rounded-none text-muted-foreground hover:text-foreground transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -95,7 +95,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                   }}
                   className={`p-2.5 rounded-none text-left text-xs uppercase font-mono border transition-none ${selectedTemplate.name === tmpl.name
                       ? 'bg-background border-primary text-primary'
-                      : 'bg-background border-border text-muted-foreground hover:text-white'
+                      : 'bg-background border-border text-muted-foreground hover:text-foreground'
                     }`}
                 >
                   {tmpl.name}
@@ -113,7 +113,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
               rows={4}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
-              className="w-full bg-background border border-border rounded-none px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-primary resize-none"
+              className="w-full bg-background border border-border rounded-none px-3 py-2 text-xs font-mono text-foreground focus:outline-none focus:border-primary resize-none"
             />
           </div>
 
@@ -146,7 +146,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                 onChange={(e) => setNewPhone(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addPhone()}
                 placeholder="+1 (555) 000-0000"
-                className="flex-1 bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-primary"
+                className="flex-1 bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-primary"
               />
               <Button
                 type="button"

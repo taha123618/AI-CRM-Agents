@@ -96,7 +96,7 @@ export function ThemeToggle() {
         type="button"
         aria-expanded={isOpen}
         aria-haspopup="menu"
-        aria-label={`Theme: ${theme}. Click to change.`}
+        aria-label="Toggle theme"
         title={`Theme: ${theme}`}
         onClick={() => setIsOpen((v) => !v)}
         className={[

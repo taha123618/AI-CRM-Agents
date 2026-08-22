@@ -60,6 +60,6 @@ export function getStatusBadgeClass(status: string): string {
       return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
 
     default:
-      return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+      return 'bg-slate-500/10 text-muted-foreground border-slate-500/20';
   }
 }

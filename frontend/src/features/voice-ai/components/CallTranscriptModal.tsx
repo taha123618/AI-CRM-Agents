@@ -75,7 +75,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-border">
           <div>
-            <h2 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
               <div className="p-1 rounded-none bg-background border border-border text-primary">
                 <Mic className="w-3.5 h-3.5" />
               </div>
@@ -89,7 +89,7 @@ export function CallTranscriptModal({ call, onClose }: CallTranscriptModalProps)
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:bg-background hover:text-white transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:bg-background hover:text-foreground transition-none"
           >
             <X className="w-4 h-4" />
           </button>

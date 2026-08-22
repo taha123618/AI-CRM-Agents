@@ -115,7 +115,7 @@ E-Signature Link: ${proposal.esign_url}
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <span>1-CLICK SMART PROPOSAL STUDIO</span>
                 <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   {deal.company}
@@ -129,7 +129,7 @@ E-Signature Link: ${proposal.esign_url}
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -146,7 +146,7 @@ E-Signature Link: ${proposal.esign_url}
               <select
                 value={tier}
                 onChange={(e) => setTier(e.target.value as any)}
-                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
               >
                 <option value="starter">STARTER DECK</option>
                 <option value="growth">GROWTH FLEET</option>
@@ -164,7 +164,7 @@ E-Signature Link: ${proposal.esign_url}
                 max="50"
                 value={discountPct}
                 onChange={(e) => setDiscountPct(Number(e.target.value))}
-                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
               />
             </div>
 
@@ -208,7 +208,7 @@ E-Signature Link: ${proposal.esign_url}
               rows={2}
               value={customTerms}
               onChange={(e) => setCustomTerms(e.target.value)}
-              className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+              className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
             />
           </div>
 
@@ -266,7 +266,7 @@ E-Signature Link: ${proposal.esign_url}
               {/* Proposal Document Body */}
               <div className="p-4 rounded-none bg-background border border-border space-y-3">
                 <div>
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">
+                  <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                     EXECUTIVE SUMMARY
                   </h3>
                   <p className="text-xs text-foreground/80 leading-relaxed uppercase">
@@ -275,7 +275,7 @@ E-Signature Link: ${proposal.esign_url}
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">
+                  <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                     INCLUDED AI AGENT MODULES
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -313,7 +313,7 @@ E-Signature Link: ${proposal.esign_url}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-primary" />
-                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                       DISPATCH PROPOSAL VIA SECURE TASK QUEUE
                     </h3>
                   </div>
@@ -343,7 +343,7 @@ E-Signature Link: ${proposal.esign_url}
                     value={recipientEmail}
                     onChange={(e) => setRecipientEmail(e.target.value)}
                     placeholder="recipient@company.com"
-                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                   <Button
                     type="button"

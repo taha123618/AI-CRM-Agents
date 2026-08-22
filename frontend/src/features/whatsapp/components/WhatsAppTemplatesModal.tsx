@@ -76,7 +76,7 @@ export function WhatsAppTemplatesModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">WHATSAPP CLOUD API STUDIO</h3>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">WHATSAPP CLOUD API STUDIO</h3>
                 <Badge variant="success" className="text-[8px] font-mono">
                   CLOUD API V20.0
                 </Badge>
@@ -99,7 +99,7 @@ export function WhatsAppTemplatesModal({
               <span>SYNC META</span>
             </Button>
 
-            <button onClick={onClose} className="p-1 rounded-none text-muted-foreground hover:text-white">
+            <button onClick={onClose} className="p-1 rounded-none text-muted-foreground hover:text-foreground">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -111,7 +111,7 @@ export function WhatsAppTemplatesModal({
             onClick={() => setActiveTab('templates')}
             className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'templates'
                 ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-white'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
           >
             APPROVED TEMPLATES ({templates?.length || 0})
@@ -120,7 +120,7 @@ export function WhatsAppTemplatesModal({
             onClick={() => setActiveTab('media')}
             className={`px-3 py-2 text-xs font-mono font-bold uppercase transition-none border-b-2 ${activeTab === 'media'
                 ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-white'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
           >
             MEDIA UPLOAD &amp; ASSETS
@@ -144,7 +144,7 @@ export function WhatsAppTemplatesModal({
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold text-white uppercase">{tpl.name}</h4>
+                          <h4 className="text-xs font-bold text-foreground uppercase">{tpl.name}</h4>
                           <Badge variant="success" className="text-[8px]">
                             {tpl.status}
                           </Badge>
@@ -182,7 +182,7 @@ export function WhatsAppTemplatesModal({
           {activeTab === 'media' && (
             <div className="max-w-lg mx-auto space-y-4 py-4 font-mono">
               <div className="p-4 rounded-none bg-background border border-border space-y-3">
-                <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
+                <div className="flex items-center gap-2 text-xs font-bold text-foreground uppercase">
                   <Upload className="w-4 h-4 text-primary" />
                   <span>UPLOAD OUTBOUND MEDIA ATTACHMENT</span>
                 </div>
@@ -193,7 +193,7 @@ export function WhatsAppTemplatesModal({
                     <select
                       value={mediaType}
                       onChange={(e) => setMediaType(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-white text-xs font-mono"
+                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-foreground text-xs font-mono"
                     >
                       <option value="document">PDF DOCUMENT</option>
                       <option value="image">PNG / JPEG IMAGE</option>
@@ -208,7 +208,7 @@ export function WhatsAppTemplatesModal({
                       type="text"
                       value={filename}
                       onChange={(e) => setFilename(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-white text-xs font-mono uppercase"
+                      className="w-full px-3 py-1.5 rounded-none bg-card border border-border text-foreground text-xs font-mono uppercase"
                     />
                   </div>
 

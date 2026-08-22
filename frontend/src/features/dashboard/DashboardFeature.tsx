@@ -38,9 +38,9 @@ export function DashboardFeature() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Leads */}
-        <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-brand">
+        <Card className="hover:border-brand-500/50 hover:scale-[1.02] transition-none  bg-card/40 glow-card-brand">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {t('dashboard.total_leads', 'Total Monitored Leads')}
             </span>
             <div className="p-2.5 rounded-none bg-brand-500/10 text-brand-400 border border-brand-500/20">
@@ -51,10 +51,10 @@ export function DashboardFeature() {
             <Skeleton className="h-8 w-24 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-extrabold text-foreground tracking-tight font-mono">
                 {formatNumber(metrics?.leads.total || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+              <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
                 <span className="text-emerald-400 font-bold">{metrics?.leads.qualified || 0} Qualified</span> by AI Agent
               </p>
             </div>
@@ -62,9 +62,9 @@ export function DashboardFeature() {
         </Card>
 
         {/* Pipeline Value */}
-        <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-brand">
+        <Card className="hover:border-blue-500/50 hover:scale-[1.02] transition-none  bg-card/40 glow-card-brand">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {t('dashboard.active_pipeline', 'Active Pipeline Value')}
             </span>
             <div className="p-2.5 rounded-none bg-blue-500/10 text-blue-400 border border-blue-500/20">
@@ -75,10 +75,10 @@ export function DashboardFeature() {
             <Skeleton className="h-8 w-28 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-extrabold text-foreground tracking-tight font-mono">
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+              <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
                 <span className="text-blue-400 font-bold">{formatNumber(metrics?.deals.total || 0)} Deals</span> in progress
               </p>
             </div>
@@ -86,9 +86,9 @@ export function DashboardFeature() {
         </Card>
 
         {/* Total Customers */}
-        <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-emerald">
+        <Card className="hover:border-emerald-500/50 hover:scale-[1.02] transition-none  bg-card/40 glow-card-emerald">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {t('dashboard.active_customers', 'Active Accounts')}
             </span>
             <div className="p-2.5 rounded-none bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -99,10 +99,10 @@ export function DashboardFeature() {
             <Skeleton className="h-8 w-24 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-extrabold text-foreground tracking-tight font-mono">
                 {formatNumber(metrics?.customers.total || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+              <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
                 <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                 <span className="text-emerald-400 font-bold">100% Health Monitored</span>
               </p>
@@ -111,9 +111,9 @@ export function DashboardFeature() {
         </Card>
 
         {/* Monthly Recurring Revenue */}
-        <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-none  bg-slate-900/40 glow-card-purple">
+        <Card className="hover:border-purple-500/50 hover:scale-[1.02] transition-none  bg-card/40 glow-card-purple">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {t('dashboard.monthly_revenue', 'Monthly Recurring Revenue (MRR)')}
             </span>
             <div className="p-2.5 rounded-none bg-purple-500/10 text-purple-400 border border-purple-500/20">
@@ -124,10 +124,10 @@ export function DashboardFeature() {
             <Skeleton className="h-8 w-28 mt-3" />
           ) : (
             <div className="mt-3">
-              <div className="text-2xl font-extrabold text-white tracking-tight font-mono">
+              <div className="text-2xl font-extrabold text-foreground tracking-tight font-mono">
                 {formatCurrency(metrics?.customers.mrr || 0)}
               </div>
-              <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+              <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
                 <span className="text-purple-400 font-bold">ARR: {formatCurrency(metrics?.customers.arr || 0)}</span>
               </p>
             </div>
@@ -142,7 +142,7 @@ export function DashboardFeature() {
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
               <CardTitle>{t('deals.title', 'Sales Pipeline Distribution')}</CardTitle>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {t('deals.subtitle', 'Real-time opportunity values across stages managed by SalesPipelineAgent')}
               </p>
             </div>
@@ -163,27 +163,27 @@ export function DashboardFeature() {
                 <Zap className="w-4 h-4 text-brand-400 animate-pulse" />
                 {t('dashboard.agent_telemetry', 'Live Agent Telemetry')}
               </CardTitle>
-              <p className="text-xs text-slate-400 mt-1">Real-time WebSocket event stream</p>
+              <p className="text-xs text-muted-foreground mt-1">Real-time WebSocket event stream</p>
             </div>
           </CardHeader>
           <CardContent className="pt-2">
             <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
               {events.length === 0 ? (
-                <div className="text-center py-8 text-slate-500 text-xs">Waiting for agent events...</div>
+                <div className="text-center py-8 text-muted-foreground/70 text-xs">Waiting for agent events...</div>
               ) : (
                 events.map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-3 rounded-none bg-slate-900/80 border border-slate-800 text-xs space-y-1 hover:border-slate-700 transition-none"
+                    className="p-3 rounded-none bg-card/80 border border-border text-xs space-y-1 hover:border-border transition-none"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-brand-400 font-mono">{evt.agent}</span>
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      <span className="text-[10px] text-muted-foreground/70 font-mono">
                         {new Date(evt.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <p className="text-slate-300 font-medium">{evt.type.replace('_', ' ')}</p>
-                    {evt.data?.message && <p className="text-[11px] text-slate-400">{evt.data.message}</p>}
+                    <p className="text-foreground/90 font-medium">{evt.type.replace('_', ' ')}</p>
+                    {evt.data?.message && <p className="text-[11px] text-muted-foreground">{evt.data.message}</p>}
                   </div>
                 ))
               )}
@@ -200,8 +200,8 @@ export function DashboardFeature() {
               <Bot className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-base font-bold text-white">Trigger Autonomous Workflows</h4>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <h4 className="text-base font-bold text-foreground">Trigger Autonomous Workflows</h4>
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Run lead qualification, analyze emails, monitor churn risk, or schedule calendar prep automatically.
               </p>
             </div>

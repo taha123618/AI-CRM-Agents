@@ -54,7 +54,7 @@ export function ObservabilityMetricsTab() {
         <div>
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">PROMETHEUS &amp; OPENTELEMETRY OBSERVABILITY</h2>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">PROMETHEUS &amp; OPENTELEMETRY OBSERVABILITY</h2>
             <Badge variant="success" className="text-[9px] uppercase font-mono">
               LIVE 10S SCRAPE
             </Badge>
@@ -96,7 +96,7 @@ export function ObservabilityMetricsTab() {
             <span className="text-[10px] font-bold uppercase">ACTIVE WEBSOCKETS</span>
             <Network className="w-3.5 h-3.5 text-cyan-400" />
           </div>
-          <p className="text-xl font-bold text-white font-mono">{wsActive}</p>
+          <p className="text-xl font-bold text-foreground font-mono">{wsActive}</p>
           <span className="text-[9px] text-primary uppercase">REAL-TIME BROADCAST CHANNELS</span>
         </div>
 
@@ -105,7 +105,7 @@ export function ObservabilityMetricsTab() {
             <span className="text-[10px] font-bold uppercase">TOTAL API CALLS</span>
             <Database className="w-3.5 h-3.5 text-primary" />
           </div>
-          <p className="text-xl font-bold text-white font-mono">{totalApiRequests}</p>
+          <p className="text-xl font-bold text-foreground font-mono">{totalApiRequests}</p>
           <span className="text-[9px] text-muted-foreground uppercase">SERVER-SIDE TELEMETRY</span>
         </div>
 
@@ -114,7 +114,7 @@ export function ObservabilityMetricsTab() {
             <span className="text-[10px] font-bold uppercase">AGENT EXECUTIONS</span>
             <Cpu className="w-3.5 h-3.5 text-primary" />
           </div>
-          <p className="text-xl font-bold text-white font-mono">{agentExecs}</p>
+          <p className="text-xl font-bold text-foreground font-mono">{agentExecs}</p>
           <span className="text-[9px] text-primary uppercase">AUTONOMOUS ORCHESTRATIONS</span>
         </div>
 
@@ -123,7 +123,7 @@ export function ObservabilityMetricsTab() {
             <span className="text-[10px] font-bold uppercase">TASK QUEUE JOBS</span>
             <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
           </div>
-          <p className="text-xl font-bold text-white font-mono">{taskJobs}</p>
+          <p className="text-xl font-bold text-foreground font-mono">{taskJobs}</p>
           <span className="text-[9px] text-muted-foreground uppercase">REDIS QUEUE PROCESSED</span>
         </div>
       </div>
@@ -133,7 +133,7 @@ export function ObservabilityMetricsTab() {
         <div className="p-3 bg-card border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-bold text-white uppercase">/API/METRICS EXPOSITION STREAM</span>
+            <span className="text-xs font-bold text-foreground uppercase">/API/METRICS EXPOSITION STREAM</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -158,7 +158,7 @@ export function ObservabilityMetricsTab() {
               <LoadingSpinner />
             </div>
           ) : filteredLines.length === 0 ? (
-            <div className="text-center py-12 text-slate-600 uppercase">NO METRICS MATCHING '{filterText}'</div>
+            <div className="text-center py-12 text-muted-foreground/60 uppercase">NO METRICS MATCHING '{filterText}'</div>
           ) : (
             filteredLines.map((line, idx) => {
               if (line.startsWith('# HELP')) {

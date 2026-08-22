@@ -184,7 +184,7 @@ export function VisualWorkflowCanvas() {
         <div>
           <div className="flex items-center gap-2">
             <Workflow className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               NODE PIPELINE
             </Badge>
@@ -234,7 +234,7 @@ export function VisualWorkflowCanvas() {
               }}
               className={`px-3 py-1.5 rounded-none text-[11px] font-bold uppercase whitespace-nowrap transition-none flex items-center gap-2 ${activeWf?.id === wf.id
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-background text-muted-foreground hover:text-white border border-border'
+                  : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               <Zap className="w-3 h-3" />
@@ -283,7 +283,7 @@ export function VisualWorkflowCanvas() {
           {/* Visual Interactive Graph Stage */}
           <div className="relative min-h-[300px] rounded-none bg-background border border-border p-6 overflow-x-auto flex items-center justify-between gap-6">
             {/* Background Grid Accent */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#121212_1px,transparent_1px),linear-gradient(to_bottom,#121212_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--card))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--card))_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
 
             {/* Nodes Pipeline */}
             <div className="relative z-10 flex items-center gap-4 mx-auto font-mono">
@@ -306,7 +306,7 @@ export function VisualWorkflowCanvas() {
                       <span className="text-[10px] font-mono text-muted-foreground">STEP #{index + 1}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-white group-hover:text-primary transition-none uppercase">
+                    <h4 className="text-xs font-bold text-foreground group-hover:text-primary transition-none uppercase">
                       {node.label}
                     </h4>
 
@@ -320,7 +320,7 @@ export function VisualWorkflowCanvas() {
 
                   {/* Flow Arrow */}
                   {index < activeWf.nodes.length - 1 && (
-                    <div className="text-[#3A4552] flex items-center">
+                    <div className="text-border flex items-center">
                       <ArrowRight className="w-4 h-4 text-primary" />
                     </div>
                   )}
@@ -335,7 +335,7 @@ export function VisualWorkflowCanvas() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
+                  <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
                   <Badge variant="success" className="text-[9px] uppercase">
                     {simulationTrace.nodes_processed} NODES EXECUTED
                   </Badge>
@@ -372,11 +372,11 @@ export function VisualWorkflowCanvas() {
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
           <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <Plus className="w-4 h-4 text-primary" />
                 APPEND WORKFLOW STEP NODE
               </h3>
-              <button onClick={() => setIsAddNodeOpen(false)} className="text-muted-foreground hover:text-white">
+              <button onClick={() => setIsAddNodeOpen(false)} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>
             </div>
@@ -387,7 +387,7 @@ export function VisualWorkflowCanvas() {
                 <select
                   value={nodeType}
                   onChange={(e) => setNodeType(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                 >
                   <option value="agent">AUTONOMOUS AI AGENT</option>
                   <option value="action">OUTBOUND CRM ACTION</option>
@@ -403,7 +403,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="E.G. EMAIL INTELLIGENCE CADENCE STEP"
                   value={nodeLabel}
                   onChange={(e) => setNodeLabel(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
@@ -413,7 +413,7 @@ export function VisualWorkflowCanvas() {
                   <select
                     value={nodeAgent}
                     onChange={(e) => setNodeAgent(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase"
+                    className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                   >
                     {AVAILABLE_AGENTS.map((ag) => (
                       <option key={ag.id} value={ag.id}>
@@ -449,11 +449,11 @@ export function VisualWorkflowCanvas() {
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
           <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <Workflow className="w-4 h-4 text-primary" />
                 CREATE NEW WORKFLOW PIPELINE
               </h3>
-              <button onClick={() => setIsCreateModalOpen(false)} className="text-muted-foreground hover:text-white">
+              <button onClick={() => setIsCreateModalOpen(false)} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>
             </div>
@@ -467,7 +467,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="E.G. ENTERPRISE CHURN DEFENSE PIPELINE"
                   value={newWfName}
                   onChange={(e) => setNewWfName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
@@ -478,7 +478,7 @@ export function VisualWorkflowCanvas() {
                   placeholder="SUMMARIZE MULTI-AGENT CADENCE GOALS..."
                   value={newWfDesc}
                   onChange={(e) => setNewWfDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono resize-none"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono resize-none"
                 />
               </div>
 
@@ -487,7 +487,7 @@ export function VisualWorkflowCanvas() {
                 <select
                   value={newWfTrigger}
                   onChange={(e) => setNewWfTrigger(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                 >
                   <option value="event">REAL-TIME CRM EVENT TRIGGER</option>
                   <option value="manual">MANUAL 1-CLICK TRIGGER</option>

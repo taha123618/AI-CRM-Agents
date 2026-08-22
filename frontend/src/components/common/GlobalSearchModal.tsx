@@ -153,7 +153,7 @@ export function GlobalSearchModal() {
               onClick={() => setMode('search')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${mode === 'search'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-white'
+                  : 'text-muted-foreground hover:text-foreground'
                 }`}
             >
               <Search className="w-3 h-3" />
@@ -164,7 +164,7 @@ export function GlobalSearchModal() {
               onClick={() => setMode('rag')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${mode === 'rag'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-white'
+                  : 'text-muted-foreground hover:text-foreground'
                 }`}
             >
               <Sparkles className="w-3 h-3" />
@@ -178,7 +178,7 @@ export function GlobalSearchModal() {
             </kbd>
             <button
               onClick={() => setGlobalSearchOpen(false)}
-              className="p-1 rounded-none text-muted-foreground hover:text-white hover:bg-background"
+              className="p-1 rounded-none text-muted-foreground hover:text-foreground hover:bg-background"
             >
               <X className="w-4 h-4" />
             </button>
@@ -261,12 +261,12 @@ export function GlobalSearchModal() {
                     <div
                       key={res.id}
                       onClick={() => handleNavigate(res.entity_type)}
-                      className="p-3 rounded-none bg-background border border-border hover:border-primary hover:bg-[#0E0E0E] transition-none cursor-pointer group"
+                      className="p-3 rounded-none bg-background border border-border hover:border-primary hover:bg-background/70 transition-none cursor-pointer group"
                     >
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <div className="flex items-center gap-2">
                           {getEntityIcon(res.entity_type)}
-                          <span className="text-xs font-bold font-mono text-white group-hover:text-primary uppercase">
+                          <span className="text-xs font-bold font-mono text-foreground group-hover:text-primary uppercase">
                             {res.title}
                           </span>
                         </div>
@@ -298,9 +298,9 @@ export function GlobalSearchModal() {
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground/60 text-xs space-y-1 font-mono uppercase">
-                  <Layers className="w-6 h-6 mx-auto text-slate-600 mb-1" />
+                  <Layers className="w-6 h-6 mx-auto text-muted-foreground/60 mb-1" />
                   <p>INPUT QUERY FOR DENSE VECTOR SIMILARITY SEARCH.</p>
-                  <p className="text-[9px] text-slate-600 font-mono">
+                  <p className="text-[9px] text-muted-foreground/60 font-mono">
                     SCANS TRANSCRIPTS, MEETING NOTES, EMAIL THREADS, PIPELINES.
                   </p>
                 </div>

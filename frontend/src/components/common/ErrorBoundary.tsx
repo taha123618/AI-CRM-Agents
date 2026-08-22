@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">SYSTEM EXECUTION EXCEPTION</h3>
+              <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">SYSTEM EXECUTION EXCEPTION</h3>
               <p className="text-[11px] text-muted-foreground leading-relaxed uppercase">
                 AN UNEXPECTED RUNTIME EXCEPTION OCCURRED IN THIS MODULE. RELOAD APPLICATION TO RESTORE TELEMETRY.
               </p>

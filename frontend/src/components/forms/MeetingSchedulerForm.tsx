@@ -81,7 +81,7 @@ export function MeetingSchedulerForm({ onSuccess, onCancel }: MeetingSchedulerFo
         <label className="text-[10px] font-bold uppercase text-foreground/80">MEETING FOCUS NOTES (OPTIONAL)</label>
         <textarea
           rows={3}
-          className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
+          className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
           placeholder="E.G. FOCUS ON SOC2 COMPLIANCE, POSTGRESQL ENCRYPTION, AND API INTEGRATIONS"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}

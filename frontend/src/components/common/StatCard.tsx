@@ -45,7 +45,7 @@ export function StatCard({
         <Skeleton className="h-7 w-24 mt-2" />
       ) : (
         <div className="mt-2">
-          <div className="text-xl sm:text-2xl font-black text-white tracking-tight font-mono">
+          <div className="text-xl sm:text-2xl font-black text-foreground tracking-tight font-mono">
             {value}
           </div>
           {subtitle && <div className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1 font-mono uppercase">{subtitle}</div>}

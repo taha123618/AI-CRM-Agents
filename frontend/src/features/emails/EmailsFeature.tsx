@@ -182,7 +182,7 @@ export function EmailsFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <Mail className="w-5 h-5 text-primary" />
             <span>{t('emails.title', 'AUTONOMOUS EMAIL INTELLIGENCE')}</span>
           </h1>
@@ -225,7 +225,7 @@ export function EmailsFeature() {
               onClick={() => setPriorityFilter(p)}
               className={`px-2.5 py-0.5 text-[9px] font-bold uppercase transition-none ${priorityFilter === p
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-background text-muted-foreground hover:text-white border border-border'
+                  : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               {p.toUpperCase()}
@@ -252,7 +252,7 @@ export function EmailsFeature() {
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <h3 className="font-bold text-xs text-white group-hover:text-primary transition-none uppercase">
+                    <h3 className="font-bold text-xs text-foreground group-hover:text-primary transition-none uppercase">
                       {email.subject}
                     </h3>
                     <Badge statusValue={email.priority}>{email.priority} PRIORITY</Badge>

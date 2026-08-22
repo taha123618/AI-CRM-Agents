@@ -202,7 +202,7 @@ export function MeetingsFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-primary" />
             <span>{t('meetings.title', 'MEETING SCHEDULER & BRIEFING STUDIO')}</span>
           </h1>
@@ -241,7 +241,7 @@ export function MeetingsFeature() {
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <Badge variant="purple" className="text-[8px] uppercase">{meeting.meeting_type}</Badge>
-                  <h3 className="font-bold text-xs text-white mt-1 group-hover:text-primary transition-none uppercase">
+                  <h3 className="font-bold text-xs text-foreground mt-1 group-hover:text-primary transition-none uppercase">
                     {meeting.title}
                   </h3>
                 </div>
@@ -251,7 +251,7 @@ export function MeetingsFeature() {
                     variant="ghost"
                     size="sm"
                     onClick={(e) => handleOpenEdit(e, meeting)}
-                    className="text-muted-foreground hover:text-white p-1 h-6 w-6"
+                    className="text-muted-foreground hover:text-foreground p-1 h-6 w-6"
                     title="Edit Meeting Details"
                   >
                     <Pencil className="w-3 h-3" />
@@ -314,7 +314,7 @@ export function MeetingsFeature() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0">
               <div className="p-2.5 bg-background border border-border min-w-0">
                 <span className="text-[9px] text-muted-foreground uppercase font-bold block">SCHEDULED TIME</span>
-                <div className="text-xs font-mono text-white mt-0.5 break-words">
+                <div className="text-xs font-mono text-foreground mt-0.5 break-words">
                   {new Date(selectedMeeting.scheduled_at).toLocaleString()} ({selectedMeeting.duration_minutes || 30} MINS)
                 </div>
               </div>
@@ -360,7 +360,7 @@ export function MeetingsFeature() {
 
             {/* Agenda section */}
             <div className="p-3 bg-background border border-border space-y-1.5 min-w-0">
-              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+              <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1">
                 <FileText className="w-3 h-3 text-primary shrink-0" />
                 PROPOSED MEETING AGENDA
               </h4>
@@ -393,7 +393,7 @@ export function MeetingsFeature() {
             {/* Prep Materials from MeetingSchedulerAgent */}
             {selectedMeeting.prep_materials && typeof selectedMeeting.prep_materials === 'object' && (
               <div className="p-3 bg-background border border-border space-y-1.5 min-w-0 font-mono">
-                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1">
                   <Bot className="w-3 h-3 text-primary shrink-0" />
                   MEETINGSCHEDULERAGENT — PREP MATERIALS
                 </h4>
@@ -429,7 +429,7 @@ export function MeetingsFeature() {
             {/* Attendees */}
             {selectedMeeting.attendees && (
               <div className="p-2.5 bg-background border border-border space-y-1 min-w-0 font-mono">
-                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1">
                   <Users className="w-3 h-3 text-primary shrink-0" />
                   ATTENDEES
                 </h4>

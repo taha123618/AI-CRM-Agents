@@ -133,7 +133,7 @@ export function TaskQueueMonitorTab() {
         <div>
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">ASYNC TASK QUEUE &amp; WORKER MONITOR</h2>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">ASYNC TASK QUEUE &amp; WORKER MONITOR</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               WORKER.PY ACTIVE
             </Badge>
@@ -178,7 +178,7 @@ export function TaskQueueMonitorTab() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+            <span className="text-xs font-bold text-foreground uppercase flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-cyan-400" />
               MONTE CARLO SIMULATION
             </span>
@@ -194,7 +194,7 @@ export function TaskQueueMonitorTab() {
               step={100}
               value={simCount}
               onChange={(e) => setSimCount(Number(e.target.value))}
-              className="w-20 bg-background border border-border rounded-none px-2 py-1 text-xs text-white font-mono"
+              className="w-20 bg-background border border-border rounded-none px-2 py-1 text-xs text-foreground font-mono"
             />
             <Button
               size="sm"
@@ -211,7 +211,7 @@ export function TaskQueueMonitorTab() {
 
         <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+            <span className="text-xs font-bold text-foreground uppercase flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-primary" />
               BULK LEAD ENRICHMENT
             </span>
@@ -233,7 +233,7 @@ export function TaskQueueMonitorTab() {
 
         <Card className="p-4 bg-card border-border space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+            <span className="text-xs font-bold text-foreground uppercase flex items-center gap-1.5">
               <Mic className="w-4 h-4 text-primary" />
               AUDIO CALL SYNTHESIS
             </span>
@@ -268,7 +268,7 @@ export function TaskQueueMonitorTab() {
                 setTaskSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
+              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
             />
           </div>
 
@@ -299,7 +299,7 @@ export function TaskQueueMonitorTab() {
                   setTaskStatusFilter('all');
                   setPage(1);
                 }}
-                className="text-xs h-7 px-2 text-muted-foreground hover:text-white uppercase"
+                className="text-xs h-7 px-2 text-muted-foreground hover:text-foreground uppercase"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
                 RESET
@@ -320,7 +320,7 @@ export function TaskQueueMonitorTab() {
                 <th className="py-2.5 px-3 text-right">ACTION</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552] text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {isLoading ? (
                 <tr>
                   <td colSpan={5} className="py-10 text-center text-muted-foreground/60">
@@ -339,7 +339,7 @@ export function TaskQueueMonitorTab() {
                   return (
                     <tr key={task.task_id} className="hover:bg-background transition-none">
                       <td className="py-2.5 px-3 space-y-0.5">
-                        <div className="flex items-center gap-1.5 font-bold text-white uppercase text-[11px]">
+                        <div className="flex items-center gap-1.5 font-bold text-foreground uppercase text-[11px]">
                           {getTaskIcon(taskType)}
                           <span>{taskType.replace(/_/g, ' ')}</span>
                         </div>

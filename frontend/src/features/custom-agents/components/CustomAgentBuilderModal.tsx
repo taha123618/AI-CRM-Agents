@@ -178,7 +178,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
               onClick={() => setStep(s.num as any)}
               className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 p-1.5 rounded-none text-[11px] font-bold uppercase transition-none ${step === s.num
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-background text-muted-foreground border border-border hover:text-white'
+                  : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                 }`}
             >
               <s.icon className="w-3.5 h-3.5" />
@@ -254,7 +254,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 <select
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
-                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="lead.created">ON NEW LEAD CREATED</option>
                   <option value="lead.qualified">ON LEAD QUALIFIED (SCORE &gt; 70)</option>
@@ -278,7 +278,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 <select
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
-                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="smart-fallback">SMARTFALLBACK (AUTO-ROUTING)</option>
                   <option value="gpt-4o">OPENAI GPT-4O</option>
@@ -299,7 +299,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                   step="0.1"
                   value={temperature}
                   onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                  className="w-full accent-[#FFB800] mt-2"
+                  className="w-full accent-primary mt-2"
                 />
               </div>
             </div>
@@ -329,7 +329,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
                 placeholder="DESCRIBE HOW THE AGENT SHOULD REASON AND WHAT STRUCTURED OUTPUT TO PRODUCE..."
-                className="w-full bg-background border border-border rounded-none p-2.5 text-xs font-mono text-white focus:outline-none focus:border-primary resize-none leading-relaxed uppercase"
+                className="w-full bg-background border border-border rounded-none p-2.5 text-xs font-mono text-foreground focus:outline-none focus:border-primary resize-none leading-relaxed uppercase"
                 required
               />
             </div>
@@ -340,7 +340,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         {step === 3 && (
           <div className="space-y-3 font-mono">
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-0.5">
                 {t('custom_agents.authorized_tools') || 'AUTHORIZED CRM CAPABILITY TOOLS'}
               </h4>
               <p className="text-[10px] text-muted-foreground uppercase">
@@ -356,7 +356,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                     key={tool.id}
                     onClick={() => handleToolToggle(tool.id)}
                     className={`p-2.5 rounded-none border cursor-pointer transition-none flex items-start gap-2.5 ${isSelected
-                        ? 'border-primary bg-background text-white'
+                        ? 'border-primary bg-background text-foreground'
                         : 'border-border bg-background text-muted-foreground hover:border-slate-500'
                       }`}
                   >
@@ -365,7 +365,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-white uppercase truncate">{tool.name}</span>
+                        <span className="text-xs font-bold text-foreground uppercase truncate">{tool.name}</span>
                         <Badge variant={isSelected ? 'success' : 'default'} className="text-[8px] uppercase">
                           {isSelected ? 'ENABLED' : 'DISABLED'}
                         </Badge>
@@ -387,7 +387,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
             <div className="p-3.5 rounded-none bg-background border border-border space-y-2.5">
               <div className="flex items-center justify-between border-b border-border pb-2">
                 <div>
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2 uppercase">
+                  <h4 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase">
                     <Sparkles className="w-3.5 h-3.5 text-primary" />
                     <span>{name || 'UNTITLED CUSTOM AGENT'}</span>
                   </h4>
@@ -401,11 +401,11 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs uppercase">
                 <div>
                   <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">{t('custom_agents.trigger_mode') || 'TRIGGER'}</span>
-                  <span className="font-bold text-white">{triggerType}</span>
+                  <span className="font-bold text-foreground">{triggerType}</span>
                 </div>
                 <div>
                   <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">{t('custom_agents.llm_model') || 'MODEL ENGINE'}</span>
-                  <span className="font-bold text-white">{modelName}</span>
+                  <span className="font-bold text-foreground">{modelName}</span>
                 </div>
                 <div>
                   <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
@@ -436,7 +436,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 id="activeToggle"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-3.5 h-3.5 rounded-none accent-[#FFB800]"
+                className="w-3.5 h-3.5 rounded-none accent-primary"
               />
               <label htmlFor="activeToggle" className="text-xs font-bold text-foreground/80 uppercase cursor-pointer">
                 {t('custom_agents.enable_immediately') || 'ENABLE AGENT IMMEDIATELY UPON CREATION'}

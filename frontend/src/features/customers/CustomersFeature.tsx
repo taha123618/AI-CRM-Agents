@@ -42,7 +42,7 @@ function EngagementBar({ label, value, max = 100, unit = '' }: { label: string; 
     <div className="space-y-1 font-mono">
       <div className="flex justify-between text-xs font-mono">
         <span className="text-muted-foreground uppercase text-[10px]">{label}</span>
-        <span className="text-white font-bold">{value}{unit}</span>
+        <span className="text-foreground font-bold">{value}{unit}</span>
       </div>
       <div className="h-1.5 bg-background rounded-none border border-border overflow-hidden">
         <div className={`h-full ${color} rounded-none transition-none`} style={{ width: `${pct}%` }} />
@@ -121,7 +121,7 @@ export function CustomersFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <Building2 className="w-5 h-5 text-primary" />
             <span>{t('customers.title', 'ACCOUNT HEALTH & CHURN RISK INTELLIGENCE')}</span>
           </h1>
@@ -144,10 +144,10 @@ export function CustomersFeature() {
         return (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: t('customers.all_accounts', 'TOTAL ACCOUNTS'), value: formatNumber(customers.length), icon: Users, color: 'text-white' },
+              { label: t('customers.all_accounts', 'TOTAL ACCOUNTS'), value: formatNumber(customers.length), icon: Users, color: 'text-foreground' },
               { label: t('customers.churn_risk', 'HIGH CHURN RISK'), value: formatNumber(highRisk), icon: AlertTriangle, color: 'text-destructive', warn: highRisk > 0 },
               { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-primary' },
-              { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-white' },
+              { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-foreground' },
             ].map(({ label, value, icon: Icon, color, warn }) => (
               <div key={label} className={`p-3 border font-mono ${warn ? 'bg-background border-destructive' : 'bg-card border-border'}`}>
                 <div className="flex items-center gap-1.5 mb-1">
@@ -191,7 +191,7 @@ export function CustomersFeature() {
               <TableBody>
                 {customers.map((cust) => (
                   <TableRow key={cust.id} className="cursor-pointer" onClick={() => handleViewHealth(cust)}>
-                    <TableCell className="font-bold text-white uppercase">
+                    <TableCell className="font-bold text-foreground uppercase">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-background border border-border text-[10px] font-mono">
                           <Zap className="w-3 h-3 text-primary" />
@@ -231,7 +231,7 @@ export function CustomersFeature() {
                           {cust.churn_probability}%
                         </span>
                       ) : (
-                        <span className="text-slate-600 text-xs font-mono">—</span>
+                        <span className="text-muted-foreground/60 text-xs font-mono">—</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -293,7 +293,7 @@ export function CustomersFeature() {
               <Skeleton className="h-20 w-full" />
             ) : (healthData || activeAgentData?.engagement) ? (
               <div className="p-3 bg-background border border-border space-y-2 font-mono">
-                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1">
                   <Activity className="w-3 h-3 text-primary" />
                   ENGAGEMENT TELEMETRY
                 </h4>

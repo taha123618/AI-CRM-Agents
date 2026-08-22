@@ -81,7 +81,7 @@ export function WarRoomFeature() {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground uppercase">
                 AI DEAL WAR ROOM & STRATEGY COMMAND
               </h1>
               <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase tracking-wider flex items-center gap-1.5">
@@ -157,8 +157,8 @@ export function WarRoomFeature() {
                   type="button"
                   onClick={() => setSelectedDeal(d)}
                   className={`px-3.5 py-2 rounded-none text-xs font-bold whitespace-nowrap transition-none flex items-center gap-2.5 border shrink-0 ${isSelected
-                      ? 'bg-background border-primary text-white shadow-lg'
-                      : 'bg-background/60 border-border text-muted-foreground hover:text-white hover:border-slate-500'
+                      ? 'bg-background border-primary text-foreground shadow-lg'
+                      : 'bg-background/60 border-border text-muted-foreground hover:text-foreground hover:border-slate-500'
                     }`}
                 >
                   <div className="flex items-center gap-1.5">
@@ -192,7 +192,7 @@ export function WarRoomFeature() {
                   <Award className="w-3.5 h-3.5 text-primary" />
                   CONSENSUS VERDICT
                 </span>
-                <div className="text-base font-black text-white leading-tight uppercase truncate">
+                <div className="text-base font-black text-foreground leading-tight uppercase truncate">
                   {strategy.cross_agent_verdict}
                 </div>
                 <Badge variant="success" className="text-[9px] uppercase font-mono">
@@ -268,7 +268,7 @@ export function WarRoomFeature() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-3.5 py-1.5 rounded-none text-xs font-bold transition-none flex items-center gap-1.5 whitespace-nowrap uppercase font-mono ${isActive
                       ? 'bg-primary text-primary-foreground border border-primary'
-                      : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
+                      : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
                     }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -298,7 +298,7 @@ export function WarRoomFeature() {
                     className="p-4 rounded-none bg-card border border-border hover:border-primary transition-none space-y-2.5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-white uppercase truncate">
+                      <span className="text-xs font-black text-foreground uppercase truncate">
                         {agent.agent_name}
                       </span>
                       <span className="text-xs font-mono font-bold text-primary bg-background px-2 py-0.5 rounded-none border border-border">
@@ -424,7 +424,7 @@ export function WarRoomFeature() {
                                   `Competitor: ${card.competitor}\nVulnerabilities: ${card.vulnerabilities}\nCounter: ${card.counter_objection}\nKill-Shot: ${card.kill_shot}`
                                 )
                               }
-                              className="p-1.5 rounded-none bg-background text-muted-foreground hover:text-white border border-border transition-none"
+                              className="p-1.5 rounded-none bg-background text-muted-foreground hover:text-foreground border border-border transition-none"
                               title="Copy battle-card"
                             >
                               {isCopied ? (
@@ -487,7 +487,7 @@ export function WarRoomFeature() {
                     className="p-4 rounded-none bg-card border border-border hover:border-primary transition-none space-y-2.5"
                   >
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold text-white uppercase truncate">{stakeholder.name}</h4>
+                      <h4 className="text-xs font-bold text-foreground uppercase truncate">{stakeholder.name}</h4>
                       <Badge
                         variant={
                           stakeholder.stance === 'Champion'
@@ -540,7 +540,7 @@ export function WarRoomFeature() {
                       onClick={() => toggleActionItem(act)}
                       className={`p-3.5 rounded-none border cursor-pointer transition-none flex items-center justify-between gap-3 ${isDone
                           ? 'bg-background border-primary/40 text-muted-foreground/60 line-through'
-                          : 'bg-card border-border hover:border-primary text-white'
+                          : 'bg-card border-border hover:border-primary text-foreground'
                         }`}
                     >
                       <div className="flex items-center gap-3">

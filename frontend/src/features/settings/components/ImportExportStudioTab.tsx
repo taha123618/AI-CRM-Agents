@@ -54,7 +54,7 @@ export function ImportExportStudioTab() {
       {/* 1-Click Exporters */}
       <div className="space-y-3">
         <div className="p-4 rounded-none bg-card border border-border">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
             <Download className="w-4 h-4 text-primary" />
             1-CLICK DATA EXPORTERS
           </h2>
@@ -66,7 +66,7 @@ export function ImportExportStudioTab() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Card className="bg-card border-border p-4 space-y-3 hover:border-primary transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
+              <div className="flex items-center gap-2 text-foreground font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-primary" />
                 ALL CONTACTS &amp; LEADS
               </div>
@@ -87,7 +87,7 @@ export function ImportExportStudioTab() {
 
           <Card className="bg-card border-border p-4 space-y-3 hover:border-primary transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
+              <div className="flex items-center gap-2 text-foreground font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-primary" />
                 ACTIVE DEALS PIPELINE
               </div>
@@ -108,7 +108,7 @@ export function ImportExportStudioTab() {
 
           <Card className="bg-card border-border p-4 space-y-3 hover:border-primary transition-none flex flex-col justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase">
+              <div className="flex items-center gap-2 text-foreground font-bold text-xs uppercase">
                 <FileSpreadsheet className="w-4 h-4 text-purple-400" />
                 COMPLIANCE AUDIT TRAIL
               </div>
@@ -132,7 +132,7 @@ export function ImportExportStudioTab() {
       {/* CSV Importer */}
       <div className="space-y-3 pt-3 border-t border-border">
         <div className="p-4 rounded-none bg-card border border-border">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
             <Upload className="w-4 h-4 text-primary" />
             BULK CSV INGESTION STUDIO
           </h2>
@@ -150,7 +150,7 @@ export function ImportExportStudioTab() {
                 onClick={() => setImportType('leads')}
                 className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'leads'
                     ? 'bg-primary text-primary-foreground border border-primary'
-                    : 'bg-background text-muted-foreground border border-border hover:text-white'
+                    : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                   }`}
               >
                 CONTACTS &amp; LEADS
@@ -160,7 +160,7 @@ export function ImportExportStudioTab() {
                 onClick={() => setImportType('deals')}
                 className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${importType === 'deals'
                     ? 'bg-primary text-primary-foreground border border-primary'
-                    : 'bg-background text-muted-foreground border border-border hover:text-white'
+                    : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                   }`}
               >
                 SALES DEALS
@@ -207,7 +207,7 @@ export function ImportExportStudioTab() {
 
         {importResult && (
           <Card className="bg-background border border-primary p-3.5 space-y-2 animate-in fade-in font-mono">
-            <div className="flex items-center gap-2 text-xs font-bold text-white uppercase">
+            <div className="flex items-center gap-2 text-xs font-bold text-foreground uppercase">
               {importResult.success ? (
                 <CheckCircle2 className="w-4 h-4 text-primary" />
               ) : (

@@ -122,7 +122,7 @@ export function SequencesFeature() {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground uppercase">
                 AI SDR OUTREACH CADENCE STUDIO
               </h1>
               <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase tracking-wider">
@@ -165,7 +165,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('cadence')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'cadence'
               ? 'bg-primary text-primary-foreground border border-primary'
-              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
+              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
             }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export function SequencesFeature() {
           onClick={() => setActiveTab('workflow_canvas')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold uppercase transition-none ${activeTab === 'workflow_canvas'
               ? 'bg-primary text-primary-foreground border border-primary'
-              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
+              : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
             }`}
         >
           <Workflow className="w-3.5 h-3.5" />
@@ -207,14 +207,14 @@ export function SequencesFeature() {
                     key={seq.id}
                     onClick={() => setSelectedSequence(seq)}
                     className={`p-4 rounded-none border cursor-pointer transition-none ${isSelected
-                        ? 'bg-card border-primary text-white shadow-xl'
+                        ? 'bg-card border-primary text-foreground shadow-xl'
                         : 'bg-card border-border hover:border-primary text-foreground/80'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-xs font-bold text-white uppercase">{seq.name}</h3>
+                          <h3 className="text-xs font-bold text-foreground uppercase">{seq.name}</h3>
                           <Badge variant={isPaused ? 'warning' : 'success'} className="text-[9px] uppercase font-mono">
                             {seq.status}
                           </Badge>
@@ -229,7 +229,7 @@ export function SequencesFeature() {
                     <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-border text-center">
                       <div className="bg-background p-1.5 rounded-none border border-border">
                         <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">STEPS</span>
-                        <span className="text-xs font-bold font-mono text-white">{seq.steps.length} STEPS</span>
+                        <span className="text-xs font-bold font-mono text-foreground">{seq.steps.length} STEPS</span>
                       </div>
                       <div className="bg-background p-1.5 rounded-none border border-border">
                         <span className="text-[8px] text-muted-foreground/60 uppercase font-bold block">ENROLLED</span>
@@ -253,7 +253,7 @@ export function SequencesFeature() {
                 {/* Cadence Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                   <div>
-                    <h2 className="text-base font-black text-white uppercase">{activeSeq.name}</h2>
+                    <h2 className="text-base font-black text-foreground uppercase">{activeSeq.name}</h2>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant={activeSeq.status === 'paused' ? 'warning' : 'success'} className="text-[9px] uppercase font-mono">
                         {activeSeq.status}
@@ -320,7 +320,7 @@ export function SequencesFeature() {
                     value={testPainPoint}
                     onChange={(e) => setTestPainPoint(e.target.value)}
                     placeholder="ENTER PROSPECT PAIN POINT TO INJECT..."
-                    className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
@@ -381,7 +381,7 @@ export function SequencesFeature() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {getChannelIcon(step.channel)}
-                            <span className="text-xs font-black text-white uppercase">
+                            <span className="text-xs font-black text-foreground uppercase">
                               STEP #{step.step_number}: {step.subject}
                             </span>
                           </div>

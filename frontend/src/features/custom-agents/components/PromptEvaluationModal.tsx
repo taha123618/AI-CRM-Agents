@@ -69,7 +69,7 @@ export function PromptEvaluationModal({
           <div>
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider">LLM PROMPT EVALUATION &amp; BENCHMARKING STUDIO</h2>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">LLM PROMPT EVALUATION &amp; BENCHMARKING STUDIO</h2>
               <Badge variant="purple" className="text-[9px] uppercase font-mono">
                 A/B BENCHMARK
               </Badge>
@@ -81,7 +81,7 @@ export function PromptEvaluationModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -159,7 +159,7 @@ export function PromptEvaluationModal({
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-white uppercase">
+                    <h3 className="text-xs font-bold text-foreground uppercase">
                       RECOMMENDED WINNER: {benchmarkData.winner === 'variant_b' ? 'VARIANT B (CHALLENGER)' : 'VARIANT A (BASELINE)'}
                     </h3>
                     <p className="text-[10px] text-muted-foreground uppercase mt-0.5">
@@ -196,11 +196,11 @@ export function PromptEvaluationModal({
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">SCHEMA COMPLIANCE</span>
-                      <span className="text-xs font-bold text-white">{metricsA?.schema_compliance ?? 0}%</span>
+                      <span className="text-xs font-bold text-foreground">{metricsA?.schema_compliance ?? 0}%</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">AVG LATENCY</span>
-                      <span className="text-xs font-bold text-white">{metricsA?.avg_latency_ms ?? 0}MS</span>
+                      <span className="text-xs font-bold text-foreground">{metricsA?.avg_latency_ms ?? 0}MS</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">QUALITY RATING</span>
@@ -220,11 +220,11 @@ export function PromptEvaluationModal({
                   <div className="grid grid-cols-3 gap-2 text-[10px] uppercase font-mono">
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">SCHEMA COMPLIANCE</span>
-                      <span className="text-xs font-bold text-white">{metricsB?.schema_compliance ?? 0}%</span>
+                      <span className="text-xs font-bold text-foreground">{metricsB?.schema_compliance ?? 0}%</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">AVG LATENCY</span>
-                      <span className="text-xs font-bold text-white">{metricsB?.avg_latency_ms ?? 0}MS</span>
+                      <span className="text-xs font-bold text-foreground">{metricsB?.avg_latency_ms ?? 0}MS</span>
                     </div>
                     <div className="p-2 rounded-none bg-card border border-border">
                       <span className="text-muted-foreground/60 block">QUALITY RATING</span>

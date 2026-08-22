@@ -49,7 +49,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <span>AUTONOMOUS CHURN RESCUE INTERVENTION</span>
                 <Badge variant="danger" className="text-[9px] uppercase font-mono">
                   TARGET: {customer.name}
@@ -63,7 +63,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -84,7 +84,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
             </div>
             <div>
               <span className="text-[9px] text-muted-foreground uppercase font-bold block">ANNUAL CONTRACT (ARR)</span>
-              <span className="text-sm font-bold font-mono text-white">
+              <span className="text-sm font-bold font-mono text-foreground">
                 ${customer.arr.toLocaleString()}
               </span>
             </div>
@@ -100,7 +100,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
             <div className="p-4 rounded-none bg-background border border-primary space-y-3 animate-in fade-in font-mono">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-primary" />
-                <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                   AI RETENTION PLAYBOOK DISPATCHED
                 </h3>
               </div>
@@ -128,7 +128,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                 <select
                   value={interventionType}
                   onChange={(e) => setInterventionType(e.target.value)}
-                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="executive_check_in">EXECUTIVE SPONSOR HEALTH CHECK-IN</option>
                   <option value="technical_audit">TECHNICAL AUDIT &amp; OPTIMIZATION DECK</option>
@@ -146,7 +146,7 @@ export function InterventionModal({ customer, onClose }: InterventionModalProps)
                   required
                   value={customNotes}
                   onChange={(e) => setCustomNotes(e.target.value)}
-                  className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none p-2.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 

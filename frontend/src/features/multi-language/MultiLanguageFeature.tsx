@@ -53,7 +53,7 @@ export function MultiLanguageFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <Globe className="w-5 h-5 text-primary" />
             <span>{t('languages.title', 'MULTI-LANGUAGE & LOCALIZATION CONSOLE')}</span>
           </h1>
@@ -84,7 +84,7 @@ export function MultiLanguageFeature() {
           <div className="flex items-center gap-2 pt-0.5">
             <span className="text-2xl">{activeLang.flag_emoji || '🌐'}</span>
             <div>
-              <div className="text-sm font-black text-white uppercase">{activeLang.name}</div>
+              <div className="text-sm font-black text-foreground uppercase">{activeLang.name}</div>
               <div className="text-[10px] text-muted-foreground font-mono uppercase">ISO: {activeLang.code}</div>
             </div>
           </div>
@@ -95,7 +95,7 @@ export function MultiLanguageFeature() {
             {t('languages.direction', 'TEXT DIRECTION')}
           </span>
           <div className="flex items-center gap-2 pt-0.5">
-            <div className="text-sm font-black text-white uppercase">{currentDirection}</div>
+            <div className="text-sm font-black text-foreground uppercase">{currentDirection}</div>
             <Badge variant={isRTL ? 'info' : 'purple'} className="text-[8px] font-mono">
               {isRTL ? 'RIGHT-TO-LEFT (RTL)' : 'LEFT-TO-RIGHT (LTR)'}
             </Badge>
@@ -106,7 +106,7 @@ export function MultiLanguageFeature() {
           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             INSTALLED LOCALES
           </span>
-          <div className="text-sm font-black text-white pt-0.5 font-mono">
+          <div className="text-sm font-black text-foreground pt-0.5 font-mono">
             {availableLanguages.length} LOCALES
           </div>
           <span className="text-[10px] text-primary font-bold uppercase">
@@ -129,7 +129,7 @@ export function MultiLanguageFeature() {
       {/* Languages Directory Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
+          <h3 className="text-xs font-bold text-foreground uppercase flex items-center gap-2">
             <Languages className="w-3.5 h-3.5 text-primary" />
             CONFIGURED SYSTEM LANGUAGES
           </h3>
@@ -149,7 +149,7 @@ export function MultiLanguageFeature() {
                     <div className="flex items-center gap-2.5">
                       <span className="text-2xl">{lang.flag_emoji || '🌐'}</span>
                       <div>
-                        <h4 className="font-bold text-xs text-white uppercase">{lang.name}</h4>
+                        <h4 className="font-bold text-xs text-foreground uppercase">{lang.name}</h4>
                         <span className="text-[10px] text-muted-foreground uppercase">{lang.english_name}</span>
                       </div>
                     </div>
@@ -206,7 +206,7 @@ export function MultiLanguageFeature() {
 
       {/* Locale Format Preview Card */}
       <Card className="p-4 bg-card border-border space-y-3 font-mono">
-        <h3 className="text-xs font-bold text-white uppercase flex items-center gap-2">
+        <h3 className="text-xs font-bold text-foreground uppercase flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-primary" />
           LOCALE-AWARE FORMATTING SANDBOX ({activeLang.name.toUpperCase()})
         </h3>
@@ -229,7 +229,7 @@ export function MultiLanguageFeature() {
 
           <div className="p-2.5 bg-background rounded-none border border-border space-y-0.5">
             <span className="text-[9px] uppercase font-bold text-muted-foreground block">DATE FORMATTER</span>
-            <div className="text-sm font-black text-white">{formatDate(new Date())}</div>
+            <div className="text-sm font-black text-foreground">{formatDate(new Date())}</div>
             <span className="text-[9px] text-muted-foreground/60 font-mono">SHORT MONTH, DAY, YEAR</span>
           </div>
 

@@ -46,7 +46,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-2.5 py-1 rounded-none bg-card border border-border text-xs text-foreground hover:text-white hover:border-primary transition-none group font-mono uppercase"
+        className="flex items-center gap-2 px-2.5 py-1 rounded-none bg-card border border-border text-xs text-foreground hover:text-foreground hover:border-primary transition-none group font-mono uppercase"
         title="Switch Application Language"
       >
         <span className="text-xs leading-none">{activeLang.flag_emoji || <Globe className="w-3.5 h-3.5 text-primary" />}</span>
@@ -56,7 +56,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
             RTL
           </span>
         )}
-        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground group-hover:text-white transition-none ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-none ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -78,7 +78,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
                     onClick={() => handleSelectLanguage(lang)}
                     className={`w-full flex items-center justify-between px-3 py-1.5 text-xs uppercase transition-none ${isSelected
                         ? 'bg-background text-primary font-bold border-l-2 border-primary'
-                        : 'text-foreground/80 hover:bg-background hover:text-white'
+                        : 'text-foreground/80 hover:bg-background hover:text-foreground'
                       }`}
                   >
                     <div className="flex items-center gap-2">
@@ -102,7 +102,7 @@ export function LanguageSelector({ onOpenSettings, className = '' }: LanguageSel
                   setIsOpen(false);
                   onOpenSettings();
                 }}
-                className="w-full flex items-center gap-2 px-2 py-1.5 text-[10px] text-muted-foreground hover:text-white hover:bg-background rounded-none uppercase transition-none font-mono"
+                className="w-full flex items-center gap-2 px-2 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-background rounded-none uppercase transition-none font-mono"
               >
                 <Settings className="w-3.5 h-3.5 text-muted-foreground" />
                 <span>MANAGE ALL LANGUAGES</span>

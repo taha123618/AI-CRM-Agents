@@ -74,7 +74,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
               <Users className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <span>ENROLL CRM CONTACTS IN CADENCE</span>
                 <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   {sequence.name}
@@ -88,7 +88,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -101,7 +101,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
               <div className="w-10 h-10 rounded-none bg-card text-primary border border-border flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
-              <h3 className="text-xs font-bold text-white uppercase">ENROLLMENT DISPATCHED</h3>
+              <h3 className="text-xs font-bold text-foreground uppercase">ENROLLMENT DISPATCHED</h3>
               <p className="text-[10px] text-foreground/80 uppercase">{enrolledSuccess}</p>
               <Button variant="primary" size="sm" onClick={onClose} className="mt-2 text-xs uppercase">
                 RETURN TO SEQUENCES
@@ -118,7 +118,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="SEARCH BY NAME, COMPANY, OR EMAIL..."
-                    className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-background border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
                 {filtered.length > 0 && (
@@ -148,7 +148,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                         key={p.id}
                         onClick={() => toggleSelect(p.id)}
                         className={`p-2.5 rounded-none border cursor-pointer flex items-center justify-between transition-none ${isSelected
-                            ? 'bg-card border-primary text-white'
+                            ? 'bg-card border-primary text-foreground'
                             : 'bg-background border-border hover:border-slate-500 text-foreground/80'
                           }`}
                       >
@@ -160,7 +160,7 @@ export function EnrollLeadsModal({ sequence, onClose }: EnrollLeadsModalProps) {
                             className="rounded-none border-border bg-background text-primary focus:ring-0"
                           />
                           <div>
-                            <div className="text-xs font-bold text-white flex items-center gap-1 uppercase">
+                            <div className="text-xs font-bold text-foreground flex items-center gap-1 uppercase">
                               <span>{p.name}</span>
                               <span className="text-[9px] text-muted-foreground font-normal">({p.title})</span>
                             </div>

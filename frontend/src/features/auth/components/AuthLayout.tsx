@@ -17,12 +17,12 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
           <div className="w-8 h-8 rounded-none bg-card border border-primary flex items-center justify-center text-primary">
             <ShieldAlert className="w-4 h-4" />
           </div>
-          <span className="text-base font-black tracking-wider text-white uppercase group-hover:text-primary transition-none">
+          <span className="text-base font-black tracking-wider text-foreground uppercase group-hover:text-primary transition-none">
             AI-POWERED CRM // TACTICAL
           </span>
         </Link>
 
-        <h1 className="text-base font-black tracking-wider text-white uppercase mt-3">{title}</h1>
+        <h1 className="text-base font-black tracking-wider text-foreground uppercase mt-3">{title}</h1>
         {subtitle && <p className="text-xs text-muted-foreground uppercase">{subtitle}</p>}
       </div>
 

@@ -34,7 +34,7 @@ export function SettingsFeature() {
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <Sliders className="w-5 h-5 text-primary" />
             <span>PLATFORM GOVERNANCE, INTEGRATIONS &amp; SECURITY</span>
           </h1>
@@ -68,7 +68,7 @@ export function SettingsFeature() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-mono font-bold uppercase transition-none ${isActive
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-card text-muted-foreground hover:text-white border border-border'
+                  : 'bg-card text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               <Icon className="w-3.5 h-3.5" />

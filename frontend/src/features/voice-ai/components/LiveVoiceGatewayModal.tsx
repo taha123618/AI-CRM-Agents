@@ -116,18 +116,18 @@ export function LiveVoiceGatewayModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">LIVE VOICE AI GATEWAY</h3>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">LIVE VOICE AI GATEWAY</h3>
                 <Badge variant="success" className="text-[8px] font-mono">
                   SIP TRUNK
                 </Badge>
               </div>
               <p className="text-[10px] text-muted-foreground uppercase">
-                CALLING <span className="text-white font-bold">{contactName}</span> ({phoneNumber})
+                CALLING <span className="text-foreground font-bold">{contactName}</span> ({phoneNumber})
               </p>
             </div>
           </div>
 
-          <button onClick={onClose} className="p-1 rounded-none text-muted-foreground hover:text-white">
+          <button onClick={onClose} className="p-1 rounded-none text-muted-foreground hover:text-foreground">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -145,7 +145,7 @@ export function LiveVoiceGatewayModal({
               <PhoneCall className="w-5 h-5" />
             </div>
 
-            <h4 className="text-sm font-bold text-white uppercase">{contactName}</h4>
+            <h4 className="text-sm font-bold text-foreground uppercase">{contactName}</h4>
             <p className="text-[10px] font-mono text-muted-foreground mt-0.5">{phoneNumber}</p>
 
             {/* Audio Waveform Animation */}
@@ -205,7 +205,7 @@ export function LiveVoiceGatewayModal({
               onClick={() => setIsMuted(!isMuted)}
               className={`p-2.5 border transition-none font-mono ${isMuted
                   ? 'bg-background border-destructive text-destructive'
-                  : 'bg-background border-border text-foreground/80 hover:text-white'
+                  : 'bg-background border-border text-foreground/80 hover:text-foreground'
                 }`}
               title={isMuted ? 'Unmute' : 'Mute'}
             >
@@ -225,7 +225,7 @@ export function LiveVoiceGatewayModal({
 
             <button
               onClick={handleEndCall}
-              className="p-2.5 px-4 bg-destructive hover:bg-destructive/90 text-white font-bold font-mono text-xs uppercase flex items-center gap-1.5 border border-destructive transition-none"
+              className="p-2.5 px-4 bg-destructive hover:bg-destructive/90 text-foreground font-bold font-mono text-xs uppercase flex items-center gap-1.5 border border-destructive transition-none"
             >
               <PhoneOff className="w-4 h-4" />
               <span>END CALL</span>

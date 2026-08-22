@@ -84,7 +84,7 @@ export function AgentsFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <Bot className="w-5 h-5 text-primary" />
             <span>{t('agents.title', 'AUTONOMOUS AGENT FLEET CONTROL')}</span>
           </h1>
@@ -109,7 +109,7 @@ export function AgentsFeature() {
                   {agent.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-xs text-white uppercase">{agent.name}</h3>
+                  <h3 className="font-bold text-xs text-foreground uppercase">{agent.name}</h3>
                   <span className="text-[9px] font-mono text-muted-foreground uppercase">LLM: {agent.model}</span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ export function AgentsFeature() {
         <CardContent className="pt-2">
           <div className="bg-background p-3 rounded-none border border-border font-mono text-xs max-h-96 overflow-y-auto space-y-2">
             {events.length === 0 ? (
-              <p className="text-slate-600 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
+              <p className="text-muted-foreground/60 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
             ) : (
               events.map((evt) => (
                 <div key={evt.id} className="p-2 bg-card border border-border space-y-1">

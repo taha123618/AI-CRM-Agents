@@ -36,16 +36,16 @@ export function HealthDistributionChart({
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B0C10',
-              borderColor: '#3A4552',
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
               borderRadius: '0px',
-              color: '#F1F5F9',
+              color: 'hsl(var(--foreground))',
               fontFamily: 'monospace',
               fontSize: '11px',
             }}
           />
           <Legend
-            wrapperStyle={{ fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace' }}
+            wrapperStyle={{ fontSize: '11px', color: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
             verticalAlign="bottom"
             height={36}
           />

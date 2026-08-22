@@ -54,7 +54,7 @@ export function EmailAnalyzerForm({ onSuccess, onCancel }: EmailAnalyzerFormProp
         <label className="text-[10px] font-bold uppercase text-foreground/80">EMAIL BODY TEXT</label>
         <textarea
           rows={4}
-          className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
+          className="w-full rounded-none bg-background border border-border p-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono"
           placeholder="PASTE INCOMING CUSTOMER EMAIL CONTENTS HERE FOR AI SENTIMENT & AUTO-DRAFTING..."
           value={body}
           onChange={(e) => setBody(e.target.value)}

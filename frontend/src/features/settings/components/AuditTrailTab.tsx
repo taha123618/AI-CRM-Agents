@@ -78,7 +78,7 @@ export function AuditTrailTab() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
-          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
             <History className="w-4 h-4 text-primary" />
             COMPLIANCE AUDIT TRAIL &amp; FORENSIC LEDGER
           </h2>
@@ -152,7 +152,7 @@ export function AuditTrailTab() {
                   setActionFilter('all');
                   setPage(1);
                 }}
-                className="text-xs h-7 px-2 text-muted-foreground hover:text-white uppercase flex items-center gap-1"
+                className="text-xs h-7 px-2 text-muted-foreground hover:text-foreground uppercase flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
                 RESET
@@ -180,7 +180,7 @@ export function AuditTrailTab() {
                 <th className="px-3 py-2.5 text-right">IP ADDRESS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552]">
+            <tbody className="divide-y divide-border">
               {paginatedLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-background transition-none">
                   <td className="px-3 py-2 text-muted-foreground whitespace-nowrap text-[10px]">
@@ -196,7 +196,7 @@ export function AuditTrailTab() {
                       {log.action}
                     </Badge>
                   </td>
-                  <td className="px-3 py-2 font-bold text-white flex items-center gap-1.5 uppercase text-[11px]">
+                  <td className="px-3 py-2 font-bold text-foreground flex items-center gap-1.5 uppercase text-[11px]">
                     <UserCheck className="w-3 h-3 text-muted-foreground" />
                     {log.actor}
                   </td>

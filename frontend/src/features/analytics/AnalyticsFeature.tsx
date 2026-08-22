@@ -41,7 +41,7 @@ export function AnalyticsFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
             <span>{t('analytics.title', 'ARR & PREDICTIVE ANALYTICS')}</span>
           </h1>
@@ -126,7 +126,7 @@ export function AnalyticsFeature() {
             <Skeleton className="h-8 w-24 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatNumber(metrics?.leads.total || 0)} LEADS
               </div>
               <p className="text-[10px] font-mono text-primary">
@@ -145,11 +145,11 @@ export function AnalyticsFeature() {
             <Skeleton className="h-8 w-32 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatCurrency(metrics?.customers.arr || 0)}
               </div>
               <p className="text-[10px] font-mono text-muted-foreground">
-                MRR: <span className="text-white font-bold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
+                MRR: <span className="text-foreground font-bold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
               </p>
             </div>
           )}
@@ -164,11 +164,11 @@ export function AnalyticsFeature() {
             <Skeleton className="h-8 w-32 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
               <p className="text-[10px] font-mono text-muted-foreground">
-                TOTAL DEALS: <span className="text-white font-bold">{metrics?.deals.total || 0}</span>
+                TOTAL DEALS: <span className="text-foreground font-bold">{metrics?.deals.total || 0}</span>
               </p>
             </div>
           )}
@@ -228,7 +228,7 @@ export function AnalyticsFeature() {
               </div>
               <div className="p-2.5 bg-background border border-border">
                 <span className="text-[9px] text-muted-foreground uppercase font-bold block">MRR</span>
-                <span className="text-xs font-black font-mono text-white">
+                <span className="text-xs font-black font-mono text-foreground">
                   {formatCurrency(forecastResult.kpis?.mrr || 50000)}
                 </span>
               </div>
@@ -242,7 +242,7 @@ export function AnalyticsFeature() {
 
             {/* Quick Insights */}
             <div className="p-3 bg-background border border-border space-y-1.5">
-              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-primary" />
                 STRATEGIC AI INSIGHTS
               </h4>

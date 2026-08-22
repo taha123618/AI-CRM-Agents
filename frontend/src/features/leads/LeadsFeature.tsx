@@ -125,11 +125,11 @@ export function LeadsFeature() {
       {/* Header Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <Users className="w-6 h-6 text-brand-400" />
             {t('leads.title', 'Lead Qualification Console')}
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {t('leads.subtitle', 'Enriched contact profiles scored automatically by LeadQualificationAgent')}
           </p>
         </div>
@@ -150,7 +150,7 @@ export function LeadsFeature() {
       <Card className="p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               {t('common.status', 'Status')}:
             </span>
             {['all', 'qualified', 'contacted', 'new', 'unqualified'].map((status) => (
@@ -159,15 +159,15 @@ export function LeadsFeature() {
                 onClick={() => setFilterStatus(status)}
                 className={`px-3 py-1 rounded-none text-xs font-medium transition-none ${
                   filterStatus === status
-                    ? 'bg-brand-600 text-white shadow-md'
-                    : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-brand-600 text-foreground shadow-md'
+                    : 'bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
                 {status.toUpperCase()}
               </button>
             ))}
           </div>
-          <span className="text-xs text-slate-500 font-mono">
+          <span className="text-xs text-muted-foreground/70 font-mono">
             {filteredLeads.length} / {formatNumber(leads?.length || 0)}
           </span>
         </div>
@@ -186,7 +186,7 @@ export function LeadsFeature() {
               ))}
             </div>
           ) : filteredLeads.length === 0 ? (
-            <div className="text-center py-12 text-slate-500 text-sm">
+            <div className="text-center py-12 text-muted-foreground/70 text-sm">
               No leads match your filter criteria.
             </div>
           ) : (
@@ -206,7 +206,7 @@ export function LeadsFeature() {
               <TableBody>
                 {filteredLeads.map((lead) => (
                   <TableRow key={lead.id}>
-                    <TableCell className="font-semibold text-white">
+                    <TableCell className="font-semibold text-foreground">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span>
                           {lead.first_name || lead.last_name
@@ -220,16 +220,16 @@ export function LeadsFeature() {
                           </span>
                         )}
                       </div>
-                      {lead.job_title && <div className="text-xs text-slate-400 font-normal">{lead.job_title}</div>}
+                      {lead.job_title && <div className="text-xs text-muted-foreground font-normal">{lead.job_title}</div>}
                     </TableCell>
-                    <TableCell className="font-mono text-xs text-slate-300">{lead.email}</TableCell>
+                    <TableCell className="font-mono text-xs text-foreground/90">{lead.email}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1 min-w-[80px]">
                         <div className="flex items-center gap-1">
                           <Sparkles className="w-3 h-3 text-brand-400" />
                           <span className={`text-xs font-bold ${getScoreColor(lead.lead_score).split(' ')[0]}`}>{lead.lead_score}/100</span>
                         </div>
-                        <div className="w-full h-1 bg-slate-800 rounded-none overflow-hidden">
+                        <div className="w-full h-1 bg-muted rounded-none overflow-hidden">
                           <div
                             className={`h-full rounded-none ${lead.lead_score >= 70 ? 'bg-emerald-500' : lead.lead_score >= 40 ? 'bg-amber-500' : 'bg-rose-500'}`}
                             style={{ width: `${lead.lead_score}%` }}
@@ -249,25 +249,25 @@ export function LeadsFeature() {
                             </span>
                           ))}
                           {lead.buying_signals.length > 2 && (
-                            <span className="text-[10px] text-slate-500">+{lead.buying_signals.length - 2}</span>
+                            <span className="text-[10px] text-muted-foreground/70">+{lead.buying_signals.length - 2}</span>
                           )}
                         </div>
-                      ) : <span className="text-slate-600 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
                     </TableCell>
                     <TableCell>
                       {lead.routing_team ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-none text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
                           <Target className="w-2.5 h-2.5" />{lead.routing_team}
                         </span>
-                      ) : <span className="text-slate-600 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
                     </TableCell>
                     <TableCell>
                       {lead.recommended_action ? (
                         <div className="flex items-start gap-1 max-w-[160px]">
                           <ArrowRight className="w-3 h-3 text-amber-400 mt-0.5 shrink-0" />
-                          <span className="text-xs text-slate-300 leading-tight">{lead.recommended_action}</span>
+                          <span className="text-xs text-foreground/90 leading-tight">{lead.recommended_action}</span>
                         </div>
-                      ) : <span className="text-slate-600 text-xs">—</span>}
+                      ) : <span className="text-muted-foreground/60 text-xs">—</span>}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1.5">
@@ -285,7 +285,7 @@ export function LeadsFeature() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleOpenEdit(lead)}
-                          className="text-slate-500 hover:text-brand-400 p-1.5 h-8 w-8"
+                          className="text-muted-foreground/70 hover:text-brand-400 p-1.5 h-8 w-8"
                           title="Edit Lead Details"
                         >
                           <Pencil className="w-4 h-4" />
@@ -295,7 +295,7 @@ export function LeadsFeature() {
                           variant="ghost"
                           size="sm"
                           onClick={() => deleteLeadMutation.mutate(lead.id)}
-                          className="text-slate-500 hover:text-rose-400 p-1.5 h-8 w-8"
+                          className="text-muted-foreground/70 hover:text-rose-400 p-1.5 h-8 w-8"
                           title="Delete Lead"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -366,7 +366,7 @@ export function LeadsFeature() {
               onChange={(e) => setEditJobTitle(e.target.value)}
             />
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
               <Button type="button" variant="outline" onClick={() => setEditingLead(null)}>
                 Cancel
               </Button>

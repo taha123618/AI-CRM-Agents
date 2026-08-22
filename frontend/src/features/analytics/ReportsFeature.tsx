@@ -233,7 +233,7 @@ export function ReportsFeature() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
             <FileText className="w-5 h-5 text-primary" />
             <span>{t('reports.title', 'EXECUTIVE AI REPORTS & SYNTHESIS')}</span>
           </h1>
@@ -265,7 +265,7 @@ export function ReportsFeature() {
                 onClick={() => setActiveCategory(tab.id)}
                 className={`px-2.5 py-1 text-[10px] font-bold uppercase transition-none ${activeCategory === tab.id
                     ? 'bg-primary text-primary-foreground border border-primary'
-                    : 'bg-background text-muted-foreground hover:text-white border border-border'
+                    : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                   }`}
               >
                 {tab.label}
@@ -316,7 +316,7 @@ export function ReportsFeature() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-xs font-bold text-white uppercase group-hover:text-primary transition-none">
+                    <h3 className="text-xs font-bold text-foreground uppercase group-hover:text-primary transition-none">
                       {report.title}
                     </h3>
                   </div>
@@ -389,14 +389,14 @@ export function ReportsFeature() {
               {Object.entries(selectedReport.metricsData).map(([key, val]) => (
                 <div key={key} className="p-2.5 bg-background border border-border text-center">
                   <span className="text-[9px] text-muted-foreground uppercase font-bold block">{key}</span>
-                  <span className="text-xs font-black font-mono text-white mt-0.5 block">{String(val)}</span>
+                  <span className="text-xs font-black font-mono text-foreground mt-0.5 block">{String(val)}</span>
                 </div>
               ))}
             </div>
 
             {/* Complete Highlights */}
             <div className="p-3 bg-background border border-border space-y-1.5">
-              <span className="text-[10px] font-bold text-white uppercase tracking-wider">DETAILED OBSERVATIONS</span>
+              <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">DETAILED OBSERVATIONS</span>
               <ul className="space-y-1 text-xs text-foreground/80 font-mono">
                 {selectedReport.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-1.5">

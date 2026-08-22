@@ -140,7 +140,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <span>MULTI-AGENT WORKFLOW AUTOMATION TRIGGERS</span>
                 <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   ACTIVE STUDIO
@@ -154,7 +154,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -185,10 +185,10 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
           {showForm && (
             <div className="p-4 rounded-none bg-background border border-border space-y-3">
               <div className="flex items-center justify-between border-b border-border pb-2">
-                <span className="text-xs font-bold text-white uppercase">
+                <span className="text-xs font-bold text-foreground uppercase">
                   {editingRuleId ? 'EDIT AUTOMATION TRIGGER' : 'CREATE AUTOMATION TRIGGER'}
                 </span>
-                <button onClick={resetForm} className="text-muted-foreground hover:text-white text-xs">
+                <button onClick={resetForm} className="text-muted-foreground hover:text-foreground text-xs">
                   CANCEL
                 </button>
               </div>
@@ -204,7 +204,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={ruleName}
                     onChange={(e) => setRuleName(e.target.value)}
                     placeholder="E.G. HIGH-INTENT LEAD WHATSAPP AUTO-DISPATCH"
-                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
@@ -215,7 +215,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={triggerEvent}
                     onChange={(e) => setTriggerEvent(e.target.value)}
-                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   >
                     <option value="lead_score_above">LEAD SCORE &gt; THRESHOLD</option>
                     <option value="deal_stage_changed">DEAL STAGE CHANGED</option>
@@ -234,7 +234,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={triggerThreshold}
                     onChange={(e) => setTriggerThreshold(e.target.value)}
                     placeholder="E.G. 80 OR 'PROPOSAL_SENT'"
-                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
@@ -245,7 +245,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   <select
                     value={actionAgent}
                     onChange={(e) => setActionAgent(e.target.value)}
-                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   >
                     <option value="whatsapp_agent">WHATSAPP AUTO-PILOT AGENT</option>
                     <option value="email_intelligence">EMAIL INTELLIGENCE AGENT</option>
@@ -265,7 +265,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={actionType}
                     onChange={(e) => setActionType(e.target.value)}
                     placeholder="E.G. SEND_WELCOME_TEMPLATE"
-                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
               </div>
@@ -295,7 +295,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-primary" />
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                  <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">
                     SIMULATED LIVE AGENT EXECUTION
                   </h4>
                   {executionResult.llm_engine && (
@@ -316,7 +316,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                       {copiedResult ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3" />}
                     </Button>
                   )}
-                  <button onClick={() => setExecutionResult(null)} className="text-muted-foreground hover:text-white text-xs">
+                  <button onClick={() => setExecutionResult(null)} className="text-muted-foreground hover:text-foreground text-xs">
                     ✕
                   </button>
                 </div>
@@ -349,7 +349,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-white uppercase">{r.name}</span>
+                        <span className="text-xs font-bold text-foreground uppercase">{r.name}</span>
                         <Badge variant={isActive ? 'success' : 'default'} className="text-[9px] uppercase font-mono">
                           {isActive ? 'ACTIVE' : 'PAUSED'}
                         </Badge>
@@ -387,7 +387,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleMutation.mutate(r.id)}
-                        className="h-7 px-2 text-muted-foreground hover:text-white"
+                        className="h-7 px-2 text-muted-foreground hover:text-foreground"
                       >
                         {isActive ? <Pause className="w-3.5 h-3.5 text-primary" /> : <Play className="w-3.5 h-3.5 text-primary" />}
                       </Button>
@@ -397,7 +397,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEdit(r)}
-                        className="h-7 px-2 text-muted-foreground hover:text-white"
+                        className="h-7 px-2 text-muted-foreground hover:text-foreground"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </Button>

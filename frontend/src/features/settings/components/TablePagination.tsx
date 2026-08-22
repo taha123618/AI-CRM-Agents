@@ -29,9 +29,9 @@ export function TablePagination({
     <div className="p-3 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground bg-background font-mono uppercase">
       <div className="flex items-center gap-3">
         <span className="text-[10px]">
-          SHOWING <strong className="text-white">{startItem}</strong> TO{' '}
-          <strong className="text-white">{endItem}</strong> OF{' '}
-          <strong className="text-white">{totalItems}</strong> ENTRIES
+          SHOWING <strong className="text-foreground">{startItem}</strong> TO{' '}
+          <strong className="text-foreground">{endItem}</strong> OF{' '}
+          <strong className="text-foreground">{totalItems}</strong> ENTRIES
         </span>
 
         {onPageSizeChange && (

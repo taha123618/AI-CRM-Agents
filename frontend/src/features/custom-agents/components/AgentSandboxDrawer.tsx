@@ -83,7 +83,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-none bg-background border border-border text-xs">
           <div>
             <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">MODEL ENGINE</span>
-            <span className="font-bold text-white uppercase">{agent.model_name || 'smart-fallback'}</span>
+            <span className="font-bold text-foreground uppercase">{agent.model_name || 'smart-fallback'}</span>
           </div>
           <div>
             <span className="text-[9px] text-muted-foreground/60 uppercase font-bold block">TEMPERATURE</span>
@@ -104,7 +104,7 @@ export function AgentSandboxDrawer({ isOpen, onClose, agent }: Props) {
           <button
             type="button"
             onClick={() => setShowPromptPreview(!showPromptPreview)}
-            className="w-full flex items-center justify-between p-3 text-xs font-bold text-foreground/80 hover:text-white uppercase"
+            className="w-full flex items-center justify-between p-3 text-xs font-bold text-foreground/80 hover:text-foreground uppercase"
           >
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-primary" />

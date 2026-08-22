@@ -95,7 +95,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
               <Send className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <span>CREATE AI SDR OUTREACH CADENCE</span>
                 <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   {channel}
@@ -109,7 +109,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-muted-foreground hover:text-white hover:bg-background transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -129,7 +129,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="E.G. ENTERPRISE REVOPS HIGH-CONVERSION SEQUENCE"
-                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
               />
             </div>
 
@@ -140,7 +140,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
               >
                 <option value="multichannel">OMNICHANNEL FLEET</option>
                 <option value="email">EMAIL INTELLIGENCE</option>
@@ -159,7 +159,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                 value={targetPersona}
                 onChange={(e) => setTargetPersona(e.target.value)}
                 placeholder="E.G. VP OF SALES / CRO"
-                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
               />
             </div>
           </div>
@@ -196,7 +196,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       <select
                         value={step.channel}
                         onChange={(e) => updateStep(idx, 'channel', e.target.value)}
-                        className="bg-card border border-border rounded-none px-2 py-1 text-xs text-white focus:outline-none uppercase"
+                        className="bg-card border border-border rounded-none px-2 py-1 text-xs text-foreground focus:outline-none uppercase"
                       >
                         <option value="email">EMAIL</option>
                         <option value="whatsapp">WHATSAPP</option>
@@ -212,7 +212,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                           max="30"
                           value={step.delay_days}
                           onChange={(e) => updateStep(idx, 'delay_days', Number(e.target.value))}
-                          className="w-12 bg-card border border-border rounded-none px-1.5 py-0.5 text-xs text-white text-center focus:outline-none"
+                          className="w-12 bg-card border border-border rounded-none px-1.5 py-0.5 text-xs text-foreground text-center focus:outline-none"
                         />
                         <span>DAYS</span>
                       </div>
@@ -236,7 +236,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.subject}
                       onChange={(e) => updateStep(idx, 'subject', e.target.value)}
                       placeholder="SUBJECT LINE"
-                      className="w-full bg-card border border-border rounded-none px-2.5 py-1 text-xs text-white focus:outline-none focus:border-primary font-bold"
+                      className="w-full bg-card border border-border rounded-none px-2.5 py-1 text-xs text-foreground focus:outline-none focus:border-primary font-bold"
                     />
                     <textarea
                       rows={3}
@@ -244,7 +244,7 @@ export function CreateSequenceModal({ onClose }: CreateSequenceModalProps) {
                       value={step.template}
                       onChange={(e) => updateStep(idx, 'template', e.target.value)}
                       placeholder="Template copy with {{first_name}}, {{company_name}} tags..."
-                      className="w-full bg-card border border-border rounded-none p-2.5 text-xs text-white focus:outline-none focus:border-primary leading-relaxed font-mono"
+                      className="w-full bg-card border border-border rounded-none p-2.5 text-xs text-foreground focus:outline-none focus:border-primary leading-relaxed font-mono"
                     />
                   </div>
                 </div>

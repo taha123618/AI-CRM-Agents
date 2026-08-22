@@ -55,7 +55,7 @@ function StatCard({
   label,
   value,
   sub,
-  color = 'text-white',
+  color = 'text-foreground',
   icon,
   glowClass = '',
 }: {
@@ -642,7 +642,7 @@ export function VoiceAIFeature() {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground uppercase flex items-center gap-2">
                 <span>VOICE AI INTELLIGENCE STUDIO</span>
                 <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase">
                   V2.4 LIVE ENGINE
@@ -707,7 +707,7 @@ export function VoiceAIFeature() {
           label="TOTAL RECORDED CALLS"
           value={stats?.total_calls ?? 0}
           sub={`${stats?.calls_this_week ?? 0} RECORDED THIS WEEK`}
-          color="text-white"
+          color="text-foreground"
           icon={<PhoneCall className="w-4 h-4 text-primary" />}
         />
         <StatCard
@@ -750,7 +750,7 @@ export function VoiceAIFeature() {
               <div className="w-3 h-3 rounded-none bg-primary shadow-md" />
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-black text-white uppercase">
+                  <h3 className="text-sm font-black text-foreground uppercase">
                     LIVE CALL: {contactName}
                   </h3>
                   <Badge variant="success" className="text-[9px] uppercase font-mono">
@@ -826,7 +826,7 @@ export function VoiceAIFeature() {
                     key={idx}
                     className={`p-3 rounded-none border text-xs space-y-1.5 transition-none uppercase ${isRep
                         ? 'bg-background border-border text-foreground'
-                        : 'bg-background border-primary/50 text-white'
+                        : 'bg-background border-primary/50 text-foreground'
                       }`}
                   >
                     <div className="flex items-center justify-between text-[10px] text-muted-foreground">
@@ -888,7 +888,7 @@ export function VoiceAIFeature() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder={`SPEAK OR TYPE AS ${activeSpeaker === 'rep' ? 'SALES REP' : contactName}...`}
-                  className="w-full bg-card border border-border rounded-none p-2 text-xs text-white focus:outline-none focus:border-primary resize-none uppercase font-mono"
+                  className="w-full bg-card border border-border rounded-none p-2 text-xs text-foreground focus:outline-none focus:border-primary resize-none uppercase font-mono"
                 />
 
                 {/* 1-Click Objection Triggers */}
@@ -907,7 +907,7 @@ export function VoiceAIFeature() {
                       }
                       className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-primary">
+                      <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
                         <DollarSign className="w-3 h-3 text-primary" />
                         PRICING
                       </span>
@@ -924,7 +924,7 @@ export function VoiceAIFeature() {
                       }
                       className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-primary">
+                      <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
                         <Shield className="w-3 h-3 text-[#00E5FF]" />
                         SECURITY
                       </span>
@@ -941,7 +941,7 @@ export function VoiceAIFeature() {
                       }
                       className="p-2 text-left rounded-none bg-card hover:border-primary border border-border text-[10px] text-foreground/80 transition-none group uppercase font-mono"
                     >
-                      <span className="flex items-center gap-1 font-bold text-white group-hover:text-primary">
+                      <span className="flex items-center gap-1 font-bold text-foreground group-hover:text-primary">
                         <Zap className="w-3 h-3 text-purple-400" />
                         GONG STACK
                       </span>
@@ -1001,7 +1001,7 @@ export function VoiceAIFeature() {
               onClick={() => setActiveTab(tab)}
               className={`px-3.5 py-1.5 text-xs font-bold uppercase rounded-none transition-none ${activeTab === tab
                   ? 'bg-primary text-primary-foreground border border-primary'
-                  : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-white'
+                  : 'bg-card text-foreground/80 border border-border hover:border-primary hover:text-foreground'
                 }`}
             >
               {tab === 'overview' ? 'CALL RECORDS & AUDIO' : 'INTELLIGENCE ANALYTICS'}
@@ -1017,7 +1017,7 @@ export function VoiceAIFeature() {
               placeholder="SEARCH CONTACTS, PHONES..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-primary w-56 uppercase font-mono"
+              className="bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground focus:outline-none focus:border-primary w-56 uppercase font-mono"
             />
           </div>
 
@@ -1081,7 +1081,7 @@ export function VoiceAIFeature() {
                         setCallDirection(c.direction);
                       }}
                       className={`p-3.5 rounded-none border cursor-pointer transition-none space-y-2 ${isSelected
-                          ? 'bg-card border-primary text-white shadow-xl'
+                          ? 'bg-card border-primary text-foreground shadow-xl'
                           : 'bg-card border-border hover:border-primary text-foreground/80'
                         }`}
                     >
@@ -1094,7 +1094,7 @@ export function VoiceAIFeature() {
                               <PhoneIncoming className="w-3.5 h-3.5" />
                             )}
                           </div>
-                          <span className="text-xs font-bold text-white uppercase">{c.contact_name}</span>
+                          <span className="text-xs font-bold text-foreground uppercase">{c.contact_name}</span>
                           {hasCustomAudio && (
                             <span className="px-1.5 py-0.2 rounded-none bg-background text-primary text-[8px] font-mono font-bold border border-border">
                               AUDIO
@@ -1136,7 +1136,7 @@ export function VoiceAIFeature() {
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-border pb-3.5">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-black text-white uppercase">{activeCallRecord.contact_name}</h2>
+                      <h2 className="text-base font-black text-foreground uppercase">{activeCallRecord.contact_name}</h2>
                       <Badge variant="default" className="text-[9px] uppercase font-mono">
                         {activeCallRecord.direction}
                       </Badge>
@@ -1207,7 +1207,7 @@ export function VoiceAIFeature() {
                     <div key={item.label} className="p-2.5 rounded-none bg-background border border-border space-y-1.5">
                       <div className="flex items-center justify-between text-[10px]">
                         <span className="text-muted-foreground font-bold uppercase">{item.label}</span>
-                        <span className="text-white font-mono font-bold">{item.value}%</span>
+                        <span className="text-foreground font-mono font-bold">{item.value}%</span>
                       </div>
                       <div className="h-1.5 rounded-none bg-card overflow-hidden">
                         <div
@@ -1237,7 +1237,7 @@ export function VoiceAIFeature() {
                       </button>
 
                       <div>
-                        <div className="text-xs font-bold text-white uppercase flex items-center gap-2">
+                        <div className="text-xs font-bold text-foreground uppercase flex items-center gap-2">
                           <span>SPEECH INTELLIGENCE AUDIO PLAYER</span>
                           {isPlayingAudio && (
                             <span className="w-2 h-2 rounded-none bg-primary" />
@@ -1276,7 +1276,7 @@ export function VoiceAIFeature() {
                         <button
                           type="button"
                           onClick={handleToggleMute}
-                          className="p-1 rounded-none text-muted-foreground hover:text-white transition-none"
+                          className="p-1 rounded-none text-muted-foreground hover:text-foreground transition-none"
                           title={isMuted ? 'Unmute' : 'Mute'}
                         >
                           {isMuted ? <VolumeX className="w-3.5 h-3.5 text-destructive" /> : <Volume2 className="w-3.5 h-3.5" />}
@@ -1294,7 +1294,7 @@ export function VoiceAIFeature() {
                             if (audioElementRef.current) audioElementRef.current.volume = val;
                             if (speechUtteranceRef.current) speechUtteranceRef.current.volume = val;
                           }}
-                          className="w-12 h-1 bg-card accent-[#FFB800] rounded-none cursor-pointer"
+                          className="w-12 h-1 bg-card accent-primary rounded-none cursor-pointer"
                           title={`Volume: ${Math.round(audioVolume * 100)}%`}
                         />
                       </div>
@@ -1328,7 +1328,7 @@ export function VoiceAIFeature() {
                         (h, i) => (
                           <div
                             key={i}
-                            className={`flex-1 rounded-none transition-none ${isPlayingAudio ? 'bg-primary' : 'bg-[#3A4552]'
+                            className={`flex-1 rounded-none transition-none ${isPlayingAudio ? 'bg-primary' : 'bg-border'
                               }`}
                             style={{
                               height: `${h}%`,
@@ -1437,7 +1437,7 @@ export function VoiceAIFeature() {
           {/* Objections Breakdown */}
           <Card className="p-4 bg-card border-border rounded-none space-y-3 font-mono">
             <div>
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <Shield className="w-4 h-4 text-primary" />
                 <span>TOP OBJECTION TYPES</span>
               </h3>
@@ -1449,11 +1449,11 @@ export function VoiceAIFeature() {
               {objectionChartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={objectionChartData} layout="vertical" margin={{ left: 15, right: 15 }}>
-                    <XAxis type="number" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
+                    <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} fontFamily="monospace" />
                     <YAxis
                       type="category"
                       dataKey="name"
-                      stroke="#94a3b8"
+                      stroke="hsl(var(--muted-foreground))"
                       fontSize={10}
                       tickLine={false}
                       width={100}
@@ -1461,12 +1461,12 @@ export function VoiceAIFeature() {
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#0B0C10',
-                        borderColor: '#3A4552',
+                        backgroundColor: 'hsl(var(--background))',
+                        borderColor: 'hsl(var(--border))',
                         borderRadius: '0px',
                         fontSize: '11px',
                         fontFamily: 'monospace',
-                        color: '#F1F5F9',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
                     <Bar dataKey="count" radius={[0, 0, 0, 0]} fill="#FFB800" />
@@ -1483,7 +1483,7 @@ export function VoiceAIFeature() {
           {/* Sentiment Distribution */}
           <Card className="p-4 bg-card border-border rounded-none space-y-3 font-mono">
             <div>
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <Sliders className="w-4 h-4 text-primary" />
                 <span>SENTIMENT CLASSIFICATION</span>
               </h3>
@@ -1494,16 +1494,16 @@ export function VoiceAIFeature() {
             <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={sentimentData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
-                  <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
+                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} fontFamily="monospace" />
+                  <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} fontFamily="monospace" />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0B0C10',
-                      borderColor: '#3A4552',
+                      backgroundColor: 'hsl(var(--background))',
+                      borderColor: 'hsl(var(--border))',
                       borderRadius: '0px',
                       fontSize: '11px',
                       fontFamily: 'monospace',
-                      color: '#F1F5F9',
+                      color: 'hsl(var(--foreground))',
                     }}
                   />
                   <Bar dataKey="value" radius={[0, 0, 0, 0]}>
@@ -1527,14 +1527,14 @@ export function VoiceAIFeature() {
                 <div className="p-1.5 rounded-none bg-background text-primary border border-border">
                   <Mail className="w-4 h-4" />
                 </div>
-                <h3 className="text-xs font-bold text-white uppercase">
+                <h3 className="text-xs font-bold text-foreground uppercase">
                   AUTO-GENERATED FOLLOW-UP EMAIL
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowEmailDraftModal(false)}
-                className="text-muted-foreground hover:text-white text-xs"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
                 ✕
               </button>
@@ -1543,13 +1543,13 @@ export function VoiceAIFeature() {
             <div className="space-y-2.5 text-xs">
               <div>
                 <label className="text-muted-foreground font-bold uppercase block mb-1">TO:</label>
-                <div className="p-2 rounded-none bg-background border border-border text-white font-mono uppercase">
+                <div className="p-2 rounded-none bg-background border border-border text-foreground font-mono uppercase">
                   {activeCallRecord.contact_name} &lt;{activeCallRecord.contact_name.toLowerCase().replace(/\s+/g, '.')}@enterprise.com&gt;
                 </div>
               </div>
               <div>
                 <label className="text-muted-foreground font-bold uppercase block mb-1">SUBJECT:</label>
-                <div className="p-2 rounded-none bg-background border border-border text-white font-bold uppercase">
+                <div className="p-2 rounded-none bg-background border border-border text-foreground font-bold uppercase">
                   FOLLOW-UP: NEXT STEPS FOR AI CRM AUTOMATION &amp; PRICING REVIEW
                 </div>
               </div>

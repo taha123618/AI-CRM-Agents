@@ -93,7 +93,7 @@ export function JourneyFeature() {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground uppercase">
                 CUSTOMER JOURNEY &amp; CHURN RADAR STUDIO
               </h1>
               <span className="px-2 py-0.5 rounded-none text-[9px] font-mono font-bold bg-background text-primary border border-primary/50 uppercase tracking-wider">
@@ -190,7 +190,7 @@ export function JourneyFeature() {
                 onClick={() => setActiveStageFilter('all')}
                 className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === 'all'
                     ? 'bg-primary text-primary-foreground border border-primary'
-                    : 'bg-background text-muted-foreground border border-border hover:text-white'
+                    : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                   }`}
               >
                 ALL ({allCustomers.length})
@@ -202,7 +202,7 @@ export function JourneyFeature() {
                   onClick={() => setActiveStageFilter(st.id)}
                   className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeStageFilter === st.id
                       ? 'bg-primary text-primary-foreground border border-primary'
-                      : 'bg-background text-muted-foreground border border-border hover:text-white'
+                      : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                     }`}
                 >
                   {st.label} ({journeyData.distribution[st.id]?.count || 0})
@@ -267,7 +267,7 @@ export function JourneyFeature() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH ACCOUNTS BY NAME..."
-              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
+              className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary font-mono uppercase"
             />
           </div>
 
@@ -280,14 +280,14 @@ export function JourneyFeature() {
                   key={customer.id}
                   onClick={() => setSelectedCustomer(customer)}
                   className={`p-3.5 rounded-none border cursor-pointer transition-none ${isSelected
-                      ? 'bg-card border-primary text-white shadow-xl'
+                      ? 'bg-card border-primary text-foreground shadow-xl'
                       : 'bg-card border-border hover:border-primary text-foreground/80'
                     }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <Briefcase className="w-3.5 h-3.5 text-primary" />
-                      <h4 className="text-xs font-bold text-white uppercase truncate">{customer.name}</h4>
+                      <h4 className="text-xs font-bold text-foreground uppercase truncate">{customer.name}</h4>
                     </div>
                     <Badge
                       variant={isAtRisk ? 'danger' : customer.health_score >= 75 ? 'success' : 'warning'}
@@ -336,7 +336,7 @@ export function JourneyFeature() {
               {/* Account Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                 <div>
-                  <h3 className="text-base font-black text-white uppercase">{customerDetails.customer_name}</h3>
+                  <h3 className="text-base font-black text-foreground uppercase">{customerDetails.customer_name}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="info" className="text-[9px] uppercase font-mono">
                       STAGE: {customerDetails.lifecycle_stage}
@@ -379,7 +379,7 @@ export function JourneyFeature() {
                                 ? 'text-[#00E5FF]'
                                 : t.status === 'flagged'
                                   ? 'text-destructive'
-                                  : 'text-slate-600'
+                                  : 'text-muted-foreground/60'
                             }`}
                         />
                         <span className="text-foreground font-medium">{t.event}</span>
@@ -406,7 +406,7 @@ export function JourneyFeature() {
                       >
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-white uppercase font-mono text-[10px]">
+                            <span className="font-bold text-foreground uppercase font-mono text-[10px]">
                               {intv.intervention_type}
                             </span>
                             <Badge variant={intv.status === 'completed' ? 'success' : 'warning'} className="text-[8px] uppercase font-mono">

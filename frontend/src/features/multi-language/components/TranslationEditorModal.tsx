@@ -191,7 +191,7 @@ export function TranslationEditorModal({
                 placeholder="SEARCH TRANSLATION KEYS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
               />
             </div>
 
@@ -253,7 +253,7 @@ export function TranslationEditorModal({
                 <th className="py-2 px-3 text-right w-16">SAVE</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552] text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {translationRows.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="py-8 text-center text-muted-foreground/60 uppercase">
@@ -287,7 +287,7 @@ export function TranslationEditorModal({
                           value={editingValues[row.namespace]?.[row.key] || ''}
                           onChange={(e) => handleValueChange(row.namespace, row.key, e.target.value)}
                           placeholder={row.englishFallback}
-                          className="w-full bg-background border border-border rounded-none px-2 py-1 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                          className="w-full bg-background border border-border rounded-none px-2 py-1 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
                         />
                       </td>
 
@@ -297,7 +297,7 @@ export function TranslationEditorModal({
                           onClick={() => handleSaveRow(row.namespace, row.key)}
                           className={`p-1 rounded-none border transition-none ${isSaved
                               ? 'bg-primary text-primary-foreground border-primary'
-                              : 'bg-card text-muted-foreground border-border hover:text-white hover:border-primary'
+                              : 'bg-card text-muted-foreground border-border hover:text-foreground hover:border-primary'
                             }`}
                           title="Save Key"
                         >

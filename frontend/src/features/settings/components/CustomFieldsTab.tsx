@@ -116,7 +116,7 @@ export function CustomFieldsTab() {
         <div>
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="w-4 h-4 text-primary" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">DYNAMIC CUSTOM FIELDS &amp; METADATA SCHEMA</h2>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">DYNAMIC CUSTOM FIELDS &amp; METADATA SCHEMA</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               NO-CODE ETL
             </Badge>
@@ -145,7 +145,7 @@ export function CustomFieldsTab() {
             onClick={() => setActiveEntity(tab.id)}
             className={`px-3 py-1 rounded-none text-xs font-bold uppercase transition-none ${activeEntity === tab.id
                 ? 'bg-primary text-primary-foreground border border-primary'
-                : 'bg-card text-muted-foreground border border-border hover:text-white'
+                : 'bg-card text-muted-foreground border border-border hover:text-foreground'
               }`}
           >
             {tab.label}
@@ -179,7 +179,7 @@ export function CustomFieldsTab() {
                   )}
                 </div>
 
-                <h3 className="text-xs font-bold text-white uppercase">{f.name}</h3>
+                <h3 className="text-xs font-bold text-foreground uppercase">{f.name}</h3>
                 <p className="text-[10px] font-mono text-primary mt-0.5">KEY: {f.field_key}</p>
 
                 {f.options && f.options.length > 0 && (
@@ -213,7 +213,7 @@ export function CustomFieldsTab() {
         </div>
       ) : (
         <div className="text-center py-12 rounded-none bg-card/50 border border-border p-6 space-y-2 font-mono">
-          <Tag className="w-8 h-8 mx-auto text-slate-600 mb-1" />
+          <Tag className="w-8 h-8 mx-auto text-muted-foreground/60 mb-1" />
           <p className="text-xs font-bold text-foreground/80 uppercase">NO CUSTOM FIELDS FOR {activeEntity.toUpperCase()}S YET</p>
           <p className="text-[10px] text-muted-foreground/60 max-w-sm mx-auto uppercase">
             CLICK &quot;ADD CUSTOM FIELD&quot; TO DEFINE CUSTOM PROPERTIES AND START CAPTURING DYNAMIC ATTRIBUTES.
@@ -226,11 +226,11 @@ export function CustomFieldsTab() {
         <div className="fixed inset-0 z-50 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
           <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
                 <SlidersHorizontal className="w-4 h-4 text-primary" />
                 ADD DYNAMIC CUSTOM FIELD
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-white text-xs">
+              <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-foreground text-xs">
                 ✕
               </button>
             </div>
@@ -247,7 +247,7 @@ export function CustomFieldsTab() {
                 <select
                   value={activeEntity}
                   onChange={(e) => setActiveEntity(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="contact">CONTACTS &amp; LEADS</option>
                   <option value="deal">DEALS &amp; OPPORTUNITIES</option>
@@ -264,7 +264,7 @@ export function CustomFieldsTab() {
                   placeholder="E.G. SECURITY CLEARANCE TIER"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
@@ -275,7 +275,7 @@ export function CustomFieldsTab() {
                   placeholder="E.G. SECURITY_CLEARANCE_TIER"
                   value={fieldKey}
                   onChange={(e) => setFieldKey(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary font-mono uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary font-mono uppercase"
                 />
               </div>
 
@@ -284,7 +284,7 @@ export function CustomFieldsTab() {
                 <select
                   value={fieldType}
                   onChange={(e) => setFieldType(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="text">TEXT (STRING)</option>
                   <option value="number">NUMBER (INTEGER / DECIMAL)</option>
@@ -310,7 +310,7 @@ export function CustomFieldsTab() {
                           handleAddOption();
                         }
                       }}
-                      className="flex-1 px-3 py-1.5 rounded-none bg-background border border-border text-xs text-white focus:outline-none focus:border-primary uppercase font-mono"
+                      className="flex-1 px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                     />
                     <Button type="button" size="sm" variant="secondary" onClick={handleAddOption} className="text-xs uppercase">
                       ADD
@@ -343,7 +343,7 @@ export function CustomFieldsTab() {
                   id="is_required"
                   checked={isRequired}
                   onChange={(e) => setIsRequired(e.target.checked)}
-                  className="rounded-none bg-background border-border text-primary accent-[#FFB800]"
+                  className="rounded-none bg-background border-border text-primary accent-primary"
                 />
                 <label htmlFor="is_required" className="text-xs font-bold text-foreground/80 cursor-pointer uppercase">
                   MANDATORY REQUIRED FIELD

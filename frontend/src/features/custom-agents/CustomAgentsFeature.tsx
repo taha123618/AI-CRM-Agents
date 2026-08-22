@@ -91,7 +91,7 @@ export function CustomAgentsFeature() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black tracking-wider text-white uppercase flex items-center gap-2">
+          <h1 className="text-base font-black tracking-wider text-foreground uppercase flex items-center gap-2">
             <Bot className="w-5 h-5 text-primary" />
             <span>{t('custom_agents.title') || 'NO-CODE AGENT STUDIO'}</span>
           </h1>
@@ -136,7 +136,7 @@ export function CustomAgentsFeature() {
             <span>{t('custom_agents.total_agents') || 'TOTAL AGENTS'}</span>
             <Bot className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-2xl font-black text-white mt-1 font-mono">{agents?.length || 0}</div>
+          <div className="text-2xl font-black text-foreground mt-1 font-mono">{agents?.length || 0}</div>
         </Card>
 
         <Card className="p-3 bg-card border-border">
@@ -183,7 +183,7 @@ export function CustomAgentsFeature() {
             onClick={() => setFilterType(tab.id)}
             className={`px-3 py-1 rounded-none text-xs font-mono font-bold uppercase transition-none ${filterType === tab.id
                 ? 'bg-primary text-primary-foreground border border-primary'
-                : 'bg-background text-muted-foreground hover:text-white border border-border'
+                : 'bg-background text-muted-foreground hover:text-foreground border border-border'
               }`}
           >
             {t(tab.labelKey) || tab.defaultLabel}
@@ -196,8 +196,8 @@ export function CustomAgentsFeature() {
         <div className="py-20 text-center text-muted-foreground/60 text-xs font-mono uppercase">LOADING AGENT FLEET...</div>
       ) : filteredAgents.length === 0 ? (
         <div className="py-16 text-center rounded-none bg-background border border-border space-y-2.5 font-mono">
-          <Bot className="w-10 h-10 text-slate-600 mx-auto" />
-          <h3 className="text-xs font-bold text-white uppercase">{t('custom_agents.no_agents_found') || 'NO CUSTOM AGENTS FOUND'}</h3>
+          <Bot className="w-10 h-10 text-muted-foreground/60 mx-auto" />
+          <h3 className="text-xs font-bold text-foreground uppercase">{t('custom_agents.no_agents_found') || 'NO CUSTOM AGENTS FOUND'}</h3>
           <p className="text-[10px] text-muted-foreground/60 max-w-sm mx-auto uppercase">
             {t('custom_agents.no_agents_desc') || 'DESIGN YOUR FIRST CUSTOM AUTONOMOUS AGENT TO AUTOMATE SPECIALIZED CRM WORKFLOWS.'}
           </p>
@@ -220,7 +220,7 @@ export function CustomAgentsFeature() {
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold text-white uppercase group-hover:text-primary transition-none">
+                      <h3 className="text-xs font-bold text-foreground uppercase group-hover:text-primary transition-none">
                         {agent.name}
                       </h3>
                       <div className="flex items-center gap-1.5 mt-0.5">
@@ -297,7 +297,7 @@ export function CustomAgentsFeature() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setHistoryAgent(agent)}
-                      className="h-6 px-1.5 text-xs text-muted-foreground hover:text-white"
+                      className="h-6 px-1.5 text-xs text-muted-foreground hover:text-foreground"
                       title={t('custom_agents.view_history') || 'View Run History & Telemetry'}
                     >
                       <History className="w-3 h-3" />
@@ -309,7 +309,7 @@ export function CustomAgentsFeature() {
                       variant="ghost"
                       size="sm"
                       onClick={(e) => handleOpenEdit(e, agent)}
-                      className="h-6 w-6 p-0 text-muted-foreground hover:text-white"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
                       title={t('custom_agents.edit_agent') || 'Edit Agent Configuration'}
                     >
                       <Pencil className="w-3 h-3" />

@@ -31,7 +31,7 @@ export function EmptyState({
         {icon || <Inbox className="w-6 h-6" />}
       </div>
 
-      <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-1">{title}</h3>
+      <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-1">{title}</h3>
       <p className="text-[11px] text-muted-foreground max-w-sm mb-6 leading-relaxed uppercase">{description}</p>
 
       {actionLabel && onAction && (
