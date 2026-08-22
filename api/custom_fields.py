@@ -95,6 +95,20 @@ def create_custom_field(
         CustomFieldDefinition.field_key == key,
     ).first()
 
+    valid_entities = {"contact", "deal", "customer", "company"}
+    if payload.entity_type not in valid_entities:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid entity_type. Allowed: {sorted(list(valid_entities))}",
+        )
+
+    valid_types = {"text", "number", "select", "boolean", "date", "currency"}
+    if payload.field_type not in valid_types:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid field_type. Allowed: {sorted(list(valid_types))}",
+        )
+
     if existing:
         key = f"{key}_{uuid.uuid4().hex[:4]}"
 

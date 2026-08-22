@@ -3,106 +3,159 @@ name: devops-infrastructure
 description: Standards, workflows, and best practices for Docker, CI/CD, PostgreSQL migrations, Redis pub/sub, production deployment, and observability.
 ---
 
-# DevOps, Infrastructure & Deployment Guidelines
+# DevOps, Infrastructure & Production Operations Skill
 
-This skill defines the operational, containerization, CI/CD, and infrastructure standards for the AI-Powered CRM platform.
-
----
-
-## 🏗️ Architecture & Deployment Stack
-
-- **Containerization**: Multi-stage Docker builds (`Dockerfile` for FastAPI & Background Worker, `frontend/Dockerfile` for Vite + Nginx)
-- **Local / Dev Compose**: `docker-compose.dev.yml` (hot-reloading, volume binds, `web`, `worker`, `db`, `redis`, `frontend`)
-- **Production Compose**: `docker-compose.yml` (hardened, non-root users, healthchecks, standalone `worker` daemon)
-- **CI/CD Automation**: GitHub Actions (`.github/workflows/ci.yml`, `.github/workflows/docker-build.yml`)
-- **Database**: PostgreSQL 14+ with Alembic migrations (`alembic upgrade head`)
-- **Message Broker & Cache**: Redis 7 Alpine (Pub/Sub for agent telemetry + `/ws` broadcasting + background task state)
-- **Background Worker Daemon**: Async worker process (`worker.py`) executing queued background jobs
-- **Process Manager**: Gunicorn with Uvicorn worker threads (`uvicorn.workers.UvicornWorker`)
+This skill serves as the comprehensive operational runbook and architectural guideline for containerization, CI/CD, database management, Redis message queues, security hardening, disaster recovery, and observability.
 
 ---
 
-## 🛠️ Essential Operational Commands
+## 🏗️ Architecture & Deployment Topology
 
-### 1. Production Docker Commands
+```
+             ┌─────────────────────────────────────────────────────────┐
+             │                     INTERNET CLIENTS                    │
+             └───────────────────────────┬─────────────────────────────┘
+                                         │ HTTPS (Port 443 / 80)
+                                         ▼
+             ┌─────────────────────────────────────────────────────────┐
+             │            Nginx Edge Reverse Proxy (Frontend)          │
+             │       - Static SPA Assets Cache (Cache-Control 1y)      │
+             │       - Security Headers (nosniff, SAMEORIGIN, XSS)     │
+             │       - Reverse Proxy Routes (/api, /ws, /health, /metrics)│
+             └───────┬───────────────────────────────┬─────────────────┘
+                     │ Proxy Pass (:8000)            │ Proxy Pass WebSocket
+                     ▼                               ▼
+             ┌─────────────────────────────────────────────────────────┐
+             │              FastAPI Application Server (Web)           │
+             │       - Gunicorn + Uvicorn Async Workers                │
+             │       - JWT Auth & Role-Based Access Control            │
+             │       - Rate Limiting Middleware (Sliding Window)       │
+             └───────┬───────────────────────────────┬─────────────────┘
+                     │ SQL Connections               │ Pub/Sub & Task Queue
+                     ▼                               ▼
+             ┌───────────────────┐           ┌───────────────────┐
+             │   PostgreSQL 14   │           │      Redis 7      │
+             │  (Persistent DB)  │           │  (Broker & Cache) │
+             └───────────────────┘           └─────────┬─────────┘
+                                                       │ Async Job Consumer
+                                                       ▼
+                                             ┌───────────────────┐
+                                             │ Task Worker Daemon│
+                                             │   (`worker.py`)   │
+                                             └───────────────────┘
+```
+
+---
+
+## 🛠️ Production Runbooks & Essential Commands
+
+### 1. Production Deployment & Lifecycle
 ```bash
-# Build and launch production stack in background
+# Build and start all production services in the background
 docker-compose up -d --build
 
-# View real-time container logs (app, worker, frontend)
+# Verify health status of all running containers
+docker-compose ps
+
+# Stream logs with log-driver rotation
 docker-compose logs -f web
 docker-compose logs -f worker
 docker-compose logs -f frontend
-
-# Verify container health status
-docker-compose ps
 
 # Execute database migrations inside running container
 docker-compose exec web alembic upgrade head
 
 # Seed initial CRM dataset and default admin/role users inside container
 docker-compose exec web python3 database/seed.py
-```
 
-### 2. SMTP & Transactional Email Environment
-```env
-# Gmail SMTP / STARTTLS Configuration
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=true
-EMAIL_USER=saad@devteampro.com
-EMAIL_PASSWORD=<GOOGLE_APP_PASSWORD>
-EMAIL_FROM="AI Social Media Automation <saad@devteampro.com>"
-FRONTEND_URL=http://localhost:3000
-```
-
-# Tear down stack (preserve volumes)
+# Stop production stack (data preserved in named volumes)
 docker-compose down
 
-# Tear down and wipe all persistent volumes
+# Stop and wipe all persistent database and cache volumes (Destructive!)
 docker-compose down -v
 ```
 
-### 2. Development Mode with Hot-Reloading
+### 2. Local Development with Hot-Reloading
 ```bash
-# Start dev containers with source code bind-mounts
+# Launch development stack with source bind-mounts and hot-reloading
 docker-compose -f docker-compose.dev.yml up --build
+
+# View dev logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Open interactive bash terminal inside dev web container
+docker-compose -f docker-compose.dev.yml exec web bash
 ```
 
 ---
 
-## 🗄️ Database Management & Migrations
+## 🗄️ Database Management, Migrations & Disaster Recovery
 
-- **Never modify database schema manually** in production.
-- Always generate migrations via Alembic:
-  ```bash
-  alembic revision --autogenerate -m "Add new column or table"
-  alembic upgrade head
-  ```
-- **Disaster Recovery & Backups**:
-  ```bash
-  # Take compressed PostgreSQL dump
-  docker-compose exec db pg_dump -U crm_user -d ai_crm | gzip > backups/crm_backup_$(date +%Y%m%d_%H%M%S).sql.gz
+### Database Migration Policy
+1. **Never modify PostgreSQL tables manually** in production.
+2. Always generate version-controlled Alembic migrations:
+   ```bash
+   # Generate migration script from models.py changes
+   alembic revision --autogenerate -m "Add custom_field_definitions table"
 
-  # Restore from backup dump
-  gunzip < backups/crm_backup_YYYYMMDD_HHMMSS.sql.gz | docker-compose exec -T db psql -U crm_user -d ai_crm
-  ```
+   # Apply migrations to head
+   alembic upgrade head
+
+   # Check current migration revision
+   alembic current
+
+   # Rollback one migration revision
+   alembic downgrade -1
+   ```
+
+### Disaster Recovery & Backup Procedures
+- **Recovery Point Objective (RPO)**: < 1 hour (Automated hourly snapshots / continuous WAL archiving).
+- **Recovery Time Objective (RTO)**: < 15 minutes.
+
+```bash
+# 1. Create a compressed PostgreSQL backup
+mkdir -p backups
+docker-compose exec db pg_dump -U crm_user -d ai_crm | gzip > backups/crm_backup_$(date +%Y%m%d_%H%M%S).sql.gz
+
+# 2. Restore database from backup archive
+gunzip < backups/crm_backup_YYYYMMDD_HHMMSS.sql.gz | docker-compose exec -T db psql -U crm_user -d ai_crm
+
+# 3. Verify database integrity after restore
+docker-compose exec web python3 -c "from database.connection import SessionLocal; from database.models import User, Deal; db=SessionLocal(); print(f'Users: {db.query(User).count()}, Deals: {db.query(Deal).count()}'); db.close()"
+```
 
 ---
 
-## 🔒 Container Security & Hardening Rules
+## 🔒 Security Hardening & DevSecOps Standards
 
-1. **Non-Root Execution**: Backend containers must execute under `appuser` (UID 1001), not `root`.
-2. **Minimal Base Images**: Use `python:3.10-slim` and `nginx:alpine` to minimize vulnerability surface.
-3. **No Secrets in Images**: Do not bake `.env` or API credentials into Docker images. Use `env_file` or runtime secret managers.
-4. **Health Check Probes**: All services must declare Docker `healthcheck` directives with sensible intervals and retries.
-5. **JSON-File Log Rotation**: Configure `max-size: "10m"` and `max-file: "3"` in `docker-compose.yml` to prevent disk exhaustion.
+1. **Non-Root Execution**: Backend and worker containers run as `appuser` (UID 1001), never as root.
+2. **Minimal Base Images**: Multi-stage Docker builds based on `python:3.10-slim` and `nginx:alpine` to eliminate build compilers and reduce attack surfaces.
+3. **No Secrets in Images**: All credentials (`SECRET_KEY`, `DATABASE_URL`, `OPENAI_API_KEY`, `EMAIL_PASSWORD`) are passed at runtime via `.env` or container environment variables.
+4. **Health Check Probes**: All containers define active health checks with 10s intervals and 3–5 retries.
+5. **SSRF Defense**: All outbound webhooks validated through `is_safe_webhook_url()` blocking loopback, cloud metadata (`169.254.169.254`), and private RFC 1918 subnets.
+6. **CSV Formula Injection**: All outbound CSV exports sanitize dangerous calculation triggers (`=`, `+`, `-`, `@`, `\t`, `\r`) via `sanitize_csv_cell()`.
 
 ---
 
-## 🩺 Monitoring & Observability Runbook
+## 📈 Observability, Metrics & Health Monitoring
 
-- **Liveness Endpoint**: `GET /health` returns JSON containing server timestamp and database connection status.
-- **WebSocket Health**: Verify handshake on `/ws` with message `ping`.
-- **Redis Health**: `docker-compose exec redis redis-cli ping` returns `PONG`.
-- **Database Readiness**: `docker-compose exec db pg_isready -U crm_user -d ai_crm`.
+### Health Check Endpoints
+- `GET /health` or `GET /ready`: Returns `{ "status": "healthy", "service": "ai-crm", "database": "connected" }`.
+- `GET /metrics`: Standard Prometheus text exposition format exposing request counters, agent execution latencies, token consumption, task queue status, and active WebSocket connections.
+
+### Prometheus Alerting Thresholds
+| Metric | Threshold | Severity | Recommended Action |
+|---|---|---|---|
+| `crm_request_duration_seconds{quantile="0.95"}` | > 2.0s for 5m | Warning | Check database connection pool and slow query logs. |
+| `crm_task_queue_depth` | > 500 for 10m | High | Scale worker instances (`docker-compose up -d --scale worker=3`). |
+| `crm_agent_errors_total` | Rate > 5/min | High | Inspect LLM fallback chain and external provider API quotas. |
+| `crm_database_connectivity` | == 0 for 1m | Critical | Check PostgreSQL container health and disk space. |
+
+---
+
+## 🚀 CI/CD Automation Pipeline
+
+Automated via GitHub Actions in `.github/workflows/ci.yml`:
+1. **Backend QA**: PostgreSQL 14 + Redis 7 service containers, pip dependency caching, `flake8` & `black` linting, and Pytest coverage suite (**190 tests**).
+2. **Frontend QA**: Node 20 runtime, npm caching, TypeScript type-check (`tsc --noEmit`), Vitest suite (**86 tests**), and production SPA bundle build.
+3. **Container Build**: Docker Buildx verification with GitHub Actions layer caching.

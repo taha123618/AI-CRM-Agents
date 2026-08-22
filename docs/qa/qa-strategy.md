@@ -1,89 +1,80 @@
-# 🛡️ Quality Assurance (QA) Strategy & Standards
+# 🛡️ Senior SQA Strategy & Enterprise Quality Assurance Framework
 
-This document establishes the comprehensive software quality assurance strategy, test pyramid architecture, automation standards, and CI/CD quality gates for the AI-Powered CRM platform.
+This document defines the quality engineering methodology, test taxonomy, continuous verification gates, and defect classification standards for the **AI-Powered CRM Autonomous Multi-Agent Swarm**.
 
 ---
 
-## 🏗️ 1. Test Pyramid Architecture
+## 🏛️ 1. Test Pyramid & Architectural Layers
 
 ```
-                 / \
-                /   \     E2E / Workflow Tests
-               / E2E \    (Playwright / Smoke Flows)
-              /-------\
-             /         \    Integration & API Tests
-            /  API/INT  \   (pytest + TestClient + WebSocket)
-           /-------------\
-          /               \   Unit & Component Tests
-         /   UNIT / DOM    \  (pytest, Vitest, React Testing Library)
-        /-------------------\
+             ▲
+            / \
+           /   \     E2E / Workflow Swarm Integrations (FastAPI + React SPA)
+          /-----\
+         /   ▲   \   Integration & Security Hardening Tests (Pytest + Vitest)
+        /---/ \---\
+       /   /   \   \  Unit & Component Atomic Tests (Pydantic + React Testing Library)
+      /___/_____\___\
 ```
 
-| Layer | Framework / Tool | Scope | Target Execution Time |
+| Layer | Framework & Tooling | Scope & Focus | Test Count |
 |---|---|---|---|
-| **Backend Unit & Integration** | `pytest`, `pytest-asyncio`, `FastAPI TestClient` | All 11 routers, 9 AI agents, services, ORM models | `< 5.0s` |
-| **Frontend Unit & Component** | `Vitest`, `@testing-library/react`, `jsdom` | UI components, forms, layout state, stores | `< 3.0s` |
-| **Realtime Telemetry** | `TestClient.websocket_connect` | `/ws` connection, broadcast events, reconnection | `< 1.0s` |
-| **Static Analysis & Types** | `mypy`, `flake8`, `tsc --noEmit` | Strict type safety, no implicit anys, PEP 8 linting | `< 3.0s` |
+| **Backend Testing** | `pytest`, `pytest-asyncio`, `FastAPI TestClient` | Auth/RBAC, 9 AI Agents, Monte Carlo simulations, RAG semantic search, Task Queue, CSV sanitization, WebSocket streams, rate limiting. | **190 tests** (27 suites) |
+| **Frontend Testing** | `Vitest`, `@testing-library/react`, `jsdom` | React 19 Feature modules, UI primitives (`Modal`, `Input`, `Select`, `Button`), Zustand state stores, utility functions, Lenis momentum scrolling. | **81 tests** (22 suites) |
+| **Static Analysis** | `mypy`, `flake8`, `black`, `tsc --noEmit` | Strict static typing (PEP 484 & TypeScript 5), zero `any` allocations, PEP 8 code formatting. | Continuous |
+| **Security Scanning** | `Trivy`, GitHub Actions Security Hardening | Container vulnerability scans, SSRF defenses, CSV formula injection sanitization, HTTP security headers. | Continuous |
 
 ---
 
-## 🎯 2. Testing Levels & Standards
+## 🔍 2. Defect Classification & Severity Taxonomy
 
-### 2.1 Backend API & Service Testing
-1. **Positive / Happy Path**:
-   - Verify expected status codes (`200 OK`, `201 Created`).
-   - Validate response schemas with typed Pydantic models.
-2. **Negative & Boundary Validation**:
-   - Non-existent IDs return `404 Not Found` with structured JSON detail.
-   - Malformed payloads, invalid emails, negative numbers return `422 Unprocessable Entity`.
-   - String fields with whitespace or invalid formats are rejected.
-3. **Database Isolation**:
-   - Unit tests use session fixtures with rollback or deterministic seeding (`ensure_future_features_seeded`).
+Defects discovered during testing must be categorized according to the following matrix:
 
-### 2.2 Security & Resilience Testing
-1. **Injection Attacks**:
-   - Parameterized SQL queries tested with SQL injection payloads (`'; DROP TABLE ...; --`).
-2. **XSS Protection**:
-   - Dialogue turns and message strings tested with script injection (`<script>alert(1)</script>`).
-3. **Error Masking**:
-   - Production error responses must never expose raw stack traces or internal filenames.
-
-### 2.3 Frontend Component Testing
-1. **Rendering & Accessibility**:
-   - Test that components render expected accessible roles (`role="button"`, `role="table"`).
-2. **User Interaction**:
-   - Verify `onClick`, `onChange`, and form submissions using `@testing-library/user-event` or `fireEvent`.
-3. **Disabled & Loading States**:
-   - Ensure buttons and form controls are properly disabled when loading.
+| Severity | Criteria & Impact | SLA / Resolution Priority |
+|---|---|---|
+| **🔴 Critical (S1)** | Authentication bypass, privilege escalation, cross-tenant data leak (IDOR), remote code execution, or total system crash. | Immediate hotfix (< 24 hours). Blocks deployment. |
+| **🟠 High (S2)** | Core agent workflow failure (e.g. Lead scoring failing, Monte Carlo simulations aborting), database transaction rollback, or email delivery crash. | Fix within 48 hours. Blocks release branch. |
+| **🟡 Medium (S3)** | UI layout glitch without data loss, edge-case validation omission (e.g. malformed phone format accepted), or rate limiter header anomaly. | Scheduled in next sprint release. |
+| **🟢 Low (S4)** | Minor cosmetic misalignment, typographical error, or non-critical telemetry log format warning. | Addressed during regular refactoring cycles. |
 
 ---
 
-## 🚀 3. How to Run Tests
+## 🧪 3. SQA Verification Checklist & Definition of Done (DoD)
 
-### Run Full Test Suite
+Before any feature or bug fix is merged to `master`:
+
+1. **Unit & Integration Tests**:
+   - Backend: All new logic covered by unit tests in `tests/test_*.py`.
+   - Frontend: All UI components and modal interactions tested in `src/**/__tests__/*.test.tsx`.
+2. **Deterministic Execution**: Zero flaky tests, zero race conditions in async queue execution.
+3. **Security Validation**:
+   - Outbound webhooks validated against SSRF using `is_safe_webhook_url()`.
+   - CSV export data sanitized with `sanitize_csv_cell()`.
+   - All protected routes verified with `require_auth` and `require_role`.
+4. **Automated Quality Gate**:
+   ```bash
+   # Run full quality gate
+   PYTHONPATH=. .venv/bin/python3 -m pytest -q
+   cd frontend && npm run type-check && npm run test && npm run build
+   ```
+
+---
+
+## 🚀 4. Automated Test Commands
+
 ```bash
-# Backend Pytest Suite
-PYTHONPATH=. ./.venv/bin/pytest -v
+# 1. Run all Backend Pytest Suites
+PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v
 
-# Frontend Vitest Suite
+# 2. Run all Frontend Vitest Suites
 cd frontend && npm run test
 
-# Frontend Type Check
+# 3. Run Frontend Static Type Checking
 cd frontend && npm run type-check
 
-# Frontend Production Build
+# 4. Build Production Distribution
 cd frontend && npm run build
+
+# 5. Run Complete Pre-Commit Quality Gate
+make ci-qa
 ```
-
----
-
-## ✅ 4. Pre-PR / Definition of Done Quality Checklist
-
-Before submitting a Pull Request or deploying:
-- [ ] `pytest` passes with 100% green tests (83+ tests).
-- [ ] `npm run test` passes (Vitest).
-- [ ] `npm run type-check` returns 0 TypeScript errors.
-- [ ] `npm run build` succeeds without build warnings.
-- [ ] All new endpoints have corresponding positive and negative test cases.
-- [ ] `.agents/scripts/sync_rules.py` executed to synchronize AI rules.

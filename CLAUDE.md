@@ -127,8 +127,8 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Strict Type Safety**: Run `npm run type-check`, `npm run test`, and `npm run build` after changes to verify zero errors.
 
 ### 6. Testing Guidelines
-* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (182 tests across 26 suites).
-* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (63 tests across 17 suites).
+* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (190 tests across 27 suites).
+* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (86 tests across 24 suites).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
 * **Directory**: Place backend tests in `tests/` and frontend tests in `frontend/src/**/__tests__/`.
 
