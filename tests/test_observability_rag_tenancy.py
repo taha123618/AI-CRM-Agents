@@ -54,6 +54,7 @@ from datetime import datetime, timezone
 import uuid
 from tests.conftest import get_authenticated_client
 
+
 def test_semantic_search_and_rag_endpoints():
     """Verify semantic vector search and RAG Q&A retrieval."""
     db = SessionLocal()
@@ -71,7 +72,9 @@ def test_semantic_search_and_rag_endpoints():
             title="Q4 Enterprise Security Alignment Briefing",
             scheduled_at=datetime.now(timezone.utc),
             notes="Reviewed multi-region data sovereignty and disaster recovery SLA.",
-            prep_materials={"summary": "Ensure compliance documentation is shared with CISO."},
+            prep_materials={
+                "summary": "Ensure compliance documentation is shared with CISO."
+            },
         )
         db.add(test_call)
         db.add(test_meeting)

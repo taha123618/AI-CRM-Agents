@@ -26,7 +26,9 @@ class WebhookCreate(BaseModel):
         default=["*"],
         description="Subscribed events, e.g. ['lead.created', 'deal.won', 'intervention.triggered'] or ['*']",
     )
-    secret: Optional[str] = Field(None, description="Optional custom secret key (auto-generated if omitted)")
+    secret: Optional[str] = Field(
+        None, description="Optional custom secret key (auto-generated if omitted)"
+    )
 
 
 class WebhookResponse(BaseModel):
@@ -60,7 +62,9 @@ async def list_webhooks(
     current_user: User = Depends(require_auth),
 ):
     """List all registered outbound webhook subscriptions."""
-    endpoints = db.query(WebhookEndpoint).order_by(WebhookEndpoint.created_at.desc()).all()
+    endpoints = (
+        db.query(WebhookEndpoint).order_by(WebhookEndpoint.created_at.desc()).all()
+    )
     return [
         WebhookResponse(
             id=str(ep.id),
@@ -164,7 +168,12 @@ async def list_deliveries(
     current_user: User = Depends(require_auth),
 ):
     """List recent webhook delivery audit attempts with status codes."""
-    deliveries = db.query(WebhookDelivery).order_by(WebhookDelivery.created_at.desc()).limit(limit).all()
+    deliveries = (
+        db.query(WebhookDelivery)
+        .order_by(WebhookDelivery.created_at.desc())
+        .limit(limit)
+        .all()
+    )
     return [
         WebhookDeliveryResponse(
             id=str(d.id),

@@ -35,7 +35,9 @@ def test_list_war_room_deals():
     assert all(d["stage"] == "proposal" for d in stage_res.json())
 
     # 4. Sorting and pagination
-    sorted_res = client.get("/api/war-room/deals?sort_by=value&order=desc&skip=0&limit=2")
+    sorted_res = client.get(
+        "/api/war-room/deals?sort_by=value&order=desc&skip=0&limit=2"
+    )
     assert sorted_res.status_code == 200
     data = sorted_res.json()
     assert len(data) <= 2
@@ -176,14 +178,18 @@ def test_automation_rules_crud_and_toggle():
     assert del_res.json()["deleted_rule_id"] == rule_id
 
     # 7. Confirm deletion
-    get_deleted = client.put(f"/api/war-room/automations/{rule_id}", json=update_payload)
+    get_deleted = client.put(
+        f"/api/war-room/automations/{rule_id}", json=update_payload
+    )
     assert get_deleted.status_code == 404
 
 
 def test_automation_rules_negative_and_validation():
     fake_id = str(uuid.uuid4())
     # 404 for non-existent execute, toggle, delete
-    assert client.post(f"/api/war-room/automations/{fake_id}/execute").status_code == 404
+    assert (
+        client.post(f"/api/war-room/automations/{fake_id}/execute").status_code == 404
+    )
     assert client.post(f"/api/war-room/automations/{fake_id}/toggle").status_code == 404
     assert client.delete(f"/api/war-room/automations/{fake_id}").status_code == 404
 

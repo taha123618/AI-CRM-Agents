@@ -86,15 +86,17 @@ class EvalService:
         # Case-by-case execution simulation
         cases_breakdown = []
         for tc in test_cases:
-            cases_breakdown.append({
-                "test_case_id": tc["id"],
-                "scenario": tc["scenario"],
-                "input": tc["input"],
-                "output_a": f"[Variant A Output] Evaluated scenario with focus on instructions in Prompt A. Intent categorized as '{tc['expected_intent']}'.",
-                "output_b": f"[Variant B Output] Rigorously synthesized response adhering to Prompt B constraints. Intent mapped to '{tc['expected_intent']}'.",
-                "match_a": True,
-                "match_b": True,
-            })
+            cases_breakdown.append(
+                {
+                    "test_case_id": tc["id"],
+                    "scenario": tc["scenario"],
+                    "input": tc["input"],
+                    "output_a": f"[Variant A Output] Evaluated scenario with focus on instructions in Prompt A. Intent categorized as '{tc['expected_intent']}'.",
+                    "output_b": f"[Variant B Output] Rigorously synthesized response adhering to Prompt B constraints. Intent mapped to '{tc['expected_intent']}'.",
+                    "match_a": True,
+                    "match_b": True,
+                }
+            )
 
         metrics_breakdown = {
             "variant_a": {

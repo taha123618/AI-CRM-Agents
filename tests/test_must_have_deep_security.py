@@ -28,7 +28,12 @@ def test_http_only_cookie_session_and_logout():
     # 1. Register with cookies
     reg_resp = client.post(
         "/api/auth/register",
-        json={"email": email, "password": password, "full_name": "Security User", "role": "sales"},
+        json={
+            "email": email,
+            "password": password,
+            "full_name": "Security User",
+            "role": "sales",
+        },
     )
     assert reg_resp.status_code == 201
     assert "access_token" in reg_resp.cookies

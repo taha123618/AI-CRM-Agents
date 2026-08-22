@@ -168,8 +168,11 @@ def list_global_executions(
 
 
 @router.get("/{agent_id}", response_model=Dict[str, Any])
-def get_custom_agent(agent_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_custom_agent(
+    agent_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get single custom agent configuration."""
     agent = CustomAgentService.get_custom_agent(db, agent_id)
     if not agent:
@@ -227,8 +230,11 @@ def update_custom_agent(
 
 
 @router.delete("/{agent_id}", response_model=Dict[str, Any])
-def delete_custom_agent(agent_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def delete_custom_agent(
+    agent_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Delete a custom agent and all its execution history."""
     deleted = CustomAgentService.delete_custom_agent(db, agent_id)
     if not deleted:

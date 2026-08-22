@@ -40,10 +40,13 @@ client = get_authenticated_client()
 def test_secret_key_not_hardcoded_default():
     """Verify SECRET_KEY does not fall back to the known insecure default."""
     from services import auth_service
-    assert auth_service.SECRET_KEY != "ai-crm-enterprise-super-secret-production-key-2026", (
-        "SECRET_KEY must not use the hardcoded default value!"
-    )
-    assert len(auth_service.SECRET_KEY) >= 32, "SECRET_KEY should be at least 32 characters"
+
+    assert (
+        auth_service.SECRET_KEY != "ai-crm-enterprise-super-secret-production-key-2026"
+    ), "SECRET_KEY must not use the hardcoded default value!"
+    assert (
+        len(auth_service.SECRET_KEY) >= 32
+    ), "SECRET_KEY should be at least 32 characters"
 
 
 def test_secret_key_generates_ephemeral_when_unset():
@@ -53,6 +56,7 @@ def test_secret_key_generates_ephemeral_when_unset():
         # Re-import to test the fallback
         import importlib
         from services import auth_service
+
         # The module-level SECRET_KEY should have been set at import time
         assert auth_service.SECRET_KEY is not None
 
@@ -124,7 +128,10 @@ def test_registration_rejects_weak_password():
             "full_name": "Weak User",
         },
     )
-    assert res.status_code in [400, 422]  # Both 400 (complexity) and 422 (schema) are valid rejections
+    assert res.status_code in [
+        400,
+        422,
+    ]  # Both 400 (complexity) and 422 (schema) are valid rejections
 
 
 def test_password_reset_rejects_weak_password():
@@ -166,7 +173,9 @@ def test_customers_requires_auth():
 def test_agent_qualify_lead_requires_auth():
     """Verify agent trigger endpoints require authentication."""
     unauth_client = TestClient(app)
-    res = unauth_client.post("/api/agents/qualify-lead", json={"email": "test@test.com"})
+    res = unauth_client.post(
+        "/api/agents/qualify-lead", json={"email": "test@test.com"}
+    )
     assert res.status_code == 401
 
 
@@ -227,6 +236,7 @@ def test_account_lockout_after_failed_attempts():
 def test_websocket_sanitize_script_tags():
     """Verify WebSocket messages strip HTML/script tags."""
     from main import _sanitize_ws_message
+
     result = _sanitize_ws_message("<script>alert('xss')</script>Hello")
     assert "<script>" not in result
     assert "Hello" in result
@@ -235,6 +245,7 @@ def test_websocket_sanitize_script_tags():
 def test_websocket_sanitize_truncation():
     """Verify WebSocket messages are truncated to max length."""
     from main import _sanitize_ws_message
+
     long_msg = "A" * 10000
     result = _sanitize_ws_message(long_msg, max_len=4096)
     assert len(result) == 4096
@@ -243,6 +254,7 @@ def test_websocket_sanitize_truncation():
 def test_websocket_sanitize_null_bytes():
     """Verify null bytes are removed from WebSocket messages."""
     from main import _sanitize_ws_message
+
     result = _sanitize_ws_message("Hello\x00World")
     assert "\x00" not in result
     assert "HelloWorld" in result
@@ -258,6 +270,7 @@ def test_cors_wildcard_blocked_in_production():
     # The _is_prod flag is computed at module load time; verify the logic is correct
     # by checking that the middleware config was properly set
     from main import _origins, _is_prod
+
     # In dev mode (current), _is_prod should be False
     assert isinstance(_origins, list)
 
@@ -270,8 +283,11 @@ def test_cors_wildcard_blocked_in_production():
 def test_dns_rebinding_protection_active():
     """Verify DNS rebinding protection resolves hostname before IP check."""
     from services.webhook_service import is_safe_webhook_url
+
     # metadata.google.internal should be blocked
-    safe, reason = is_safe_webhook_url("http://metadata.google.internal/computeMetadata/v1/")
+    safe, reason = is_safe_webhook_url(
+        "http://metadata.google.internal/computeMetadata/v1/"
+    )
     assert not safe
     assert "restricted" in reason.lower()
 
@@ -279,6 +295,7 @@ def test_dns_rebinding_protection_active():
 def test_ssrf_blocks_private_ip_ranges():
     """Verify private RFC-1918 IP ranges are blocked."""
     from services.webhook_service import is_safe_webhook_url
+
     for ip in ["10.0.0.1", "172.16.0.1", "192.168.1.1"]:
         safe, _ = is_safe_webhook_url(f"http://{ip}/admin", allow_local=False)
         assert not safe, f"Private IP {ip} should be blocked"

@@ -49,10 +49,13 @@ class EmailThreadResponse(BaseModel):
 
 
 @router.get("/accounts", response_model=List[SyncAccountResponse])
-def list_connected_accounts(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def list_connected_accounts(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """List all connected 2-way sync email mailboxes."""
-    accounts = db.query(EmailSyncAccount).order_by(desc(EmailSyncAccount.created_at)).all()
+    accounts = (
+        db.query(EmailSyncAccount).order_by(desc(EmailSyncAccount.created_at)).all()
+    )
     if not accounts:
         # Seed default connected account for demonstration
         default_acc = EmailSyncService.connect_account(
@@ -77,9 +80,14 @@ def list_connected_accounts(db: Session = Depends(get_db),
     ]
 
 
-@router.post("/accounts", response_model=SyncAccountResponse, status_code=status.HTTP_201_CREATED)
-def connect_email_account(payload: ConnectAccountRequest, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+@router.post(
+    "/accounts", response_model=SyncAccountResponse, status_code=status.HTTP_201_CREATED
+)
+def connect_email_account(
+    payload: ConnectAccountRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Connect a new Google Workspace, Microsoft Graph, or IMAP mailbox."""
     account = EmailSyncService.connect_account(
         provider=payload.provider,
@@ -93,19 +101,26 @@ def connect_email_account(payload: ConnectAccountRequest, db: Session = Depends(
         email_address=account.email_address,
         display_name=account.display_name,
         sync_status=account.sync_status,
-        last_synced_at=account.last_synced_at.isoformat() if account.last_synced_at else None,
+        last_synced_at=account.last_synced_at.isoformat()
+        if account.last_synced_at
+        else None,
         created_at=account.created_at.isoformat() if account.created_at else None,
     )
 
 
 @router.post("/accounts/{account_id}/sync")
-def trigger_account_sync(account_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def trigger_account_sync(
+    account_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Trigger an immediate 2-way IMAP/OAuth synchronization poll."""
     try:
         val_id = uuid.UUID(account_id) if isinstance(account_id, str) else account_id
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid account UUID.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid account UUID."
+        )
 
     count = EmailSyncService.sync_account_threads(val_id, db)
     return {
@@ -116,14 +131,17 @@ def trigger_account_sync(account_id: str, db: Session = Depends(get_db),
 
 
 @router.get("/threads", response_model=List[EmailThreadResponse])
-def list_email_threads(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def list_email_threads(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """List conversation threads with sentiment and unread status."""
     threads = db.query(EmailThread).order_by(desc(EmailThread.last_message_at)).all()
     if not threads:
         # If empty, ensure default account & threads seeded
         list_connected_accounts(db)
-        threads = db.query(EmailThread).order_by(desc(EmailThread.last_message_at)).all()
+        threads = (
+            db.query(EmailThread).order_by(desc(EmailThread.last_message_at)).all()
+        )
 
     return [
         EmailThreadResponse(
@@ -135,24 +153,33 @@ def list_email_threads(db: Session = Depends(get_db),
             snippet=t.snippet,
             is_unread=bool(t.is_unread),
             sentiment=t.sentiment or "neutral",
-            last_message_at=t.last_message_at.isoformat() if t.last_message_at else None,
+            last_message_at=t.last_message_at.isoformat()
+            if t.last_message_at
+            else None,
         )
         for t in threads
     ]
 
 
 @router.get("/threads/{thread_id}/messages")
-def get_thread_messages(thread_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_thread_messages(
+    thread_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Retrieve full chronological conversation timeline for a given thread."""
     try:
         val_id = uuid.UUID(thread_id) if isinstance(thread_id, str) else thread_id
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid thread UUID.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid thread UUID."
+        )
 
     thread = db.query(EmailThread).filter(EmailThread.id == val_id).first()
     if not thread:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Thread not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Thread not found."
+        )
 
     return {
         "id": str(thread.id),
@@ -160,5 +187,7 @@ def get_thread_messages(thread_id: str, db: Session = Depends(get_db),
         "participant_emails": thread.participant_emails or [],
         "sentiment": thread.sentiment,
         "messages": thread.messages or [],
-        "last_message_at": thread.last_message_at.isoformat() if thread.last_message_at else None,
+        "last_message_at": thread.last_message_at.isoformat()
+        if thread.last_message_at
+        else None,
     }

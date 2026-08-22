@@ -79,7 +79,10 @@ def test_api_emails_send_response():
         email_id = emails[0]["id"]
         res = client.post(
             f"/api/emails/{email_id}/send",
-            json={"reply_text": "Thank you for reaching out! Here is your requested information.", "to_email": "prospect@customer.com"},
+            json={
+                "reply_text": "Thank you for reaching out! Here is your requested information.",
+                "to_email": "prospect@customer.com",
+            },
         )
         assert res.status_code == 200
         data = res.json()
@@ -128,7 +131,10 @@ def test_api_send_meeting_invite():
         meeting_id = meetings[0]["id"]
         res = client.post(
             f"/api/meetings/{meeting_id}/send-invite",
-            json={"attendee_emails": ["executive@enterprise.org"], "custom_note": "Please review architecture deck"},
+            json={
+                "attendee_emails": ["executive@enterprise.org"],
+                "custom_note": "Please review architecture deck",
+            },
         )
         assert res.status_code == 200
         assert res.json()["status"] == "sent"

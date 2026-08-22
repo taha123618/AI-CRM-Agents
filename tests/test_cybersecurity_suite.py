@@ -134,12 +134,16 @@ def test_csv_import_payload_size_limit_rejection():
 def test_ssrf_webhook_url_validation():
     """Verify that private, loopback, and metadata target URLs are rejected."""
     # Cloud Metadata (AWS, GCP, Azure, OpenStack)
-    safe, reason = is_safe_webhook_url("http://169.254.169.254/latest/meta-data", allow_local=False)
+    safe, reason = is_safe_webhook_url(
+        "http://169.254.169.254/latest/meta-data", allow_local=False
+    )
     assert not safe
     assert "restricted" in reason.lower()
 
     # Localhost / Loopback
-    safe, reason = is_safe_webhook_url("http://127.0.0.1:8000/internal", allow_local=False)
+    safe, reason = is_safe_webhook_url(
+        "http://127.0.0.1:8000/internal", allow_local=False
+    )
     assert not safe
 
     safe, reason = is_safe_webhook_url("http://localhost:5432/api", allow_local=False)
@@ -157,11 +161,15 @@ def test_ssrf_webhook_url_validation():
     assert not safe
     assert "scheme" in reason.lower()
 
-    safe, reason = is_safe_webhook_url("gopher://127.0.0.1:6379/_flushall", allow_local=False)
+    safe, reason = is_safe_webhook_url(
+        "gopher://127.0.0.1:6379/_flushall", allow_local=False
+    )
     assert not safe
 
     # Legitimate external webhook destination
-    safe, reason = is_safe_webhook_url("https://hooks.slack.com/services/T00/B00/X00", allow_local=False)
+    safe, reason = is_safe_webhook_url(
+        "https://hooks.slack.com/services/T00/B00/X00", allow_local=False
+    )
     assert safe
 
 
@@ -189,10 +197,13 @@ def test_auth_cookies_secure_flag_in_production():
     """Verify set_auth_cookies attaches Secure flag when COOKIE_SECURE is enabled."""
     with patch.dict(os.environ, {"COOKIE_SECURE": "true"}):
         from api import auth
+
         auth.COOKIE_SECURE = True
 
         response = Response()
-        set_auth_cookies(response, access_token="fake-access", refresh_token="fake-refresh")
+        set_auth_cookies(
+            response, access_token="fake-access", refresh_token="fake-refresh"
+        )
 
         # Inspect cookies
         cookies_header = response.headers.getlist("set-cookie")

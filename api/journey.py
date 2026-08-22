@@ -8,7 +8,14 @@ from datetime import datetime, timezone
 import uuid
 
 from database.connection import get_db
-from database.models import Customer, Deal, Contact, Activity, CustomerIntervention, User
+from database.models import (
+    Customer,
+    Deal,
+    Contact,
+    Activity,
+    CustomerIntervention,
+    User,
+)
 from services.auth_service import require_auth
 from workflows.orchestrator import AgentOrchestrator
 
@@ -27,7 +34,10 @@ LIFECYCLE_STAGES = [
 
 class TriggerInterventionSchema(BaseModel):
     customer_id: str
-    intervention_type: str = Field(..., description="e.g. executive_check_in, feature_adoption_nudge, nps_outreach, contract_rescue")
+    intervention_type: str = Field(
+        ...,
+        description="e.g. executive_check_in, feature_adoption_nudge, nps_outreach, contract_rescue",
+    )
     custom_notes: Optional[str] = None
 
 
@@ -39,7 +49,7 @@ def get_customer_journey_stages(
 ):
     """Retrieve customer counts and ARR aggregated dynamically across lifecycle stages from PostgreSQL."""
     customers = db.query(Customer).all()
-    
+
     stage_buckets: Dict[str, Dict[str, Any]] = {
         "onboarding": {"count": 0, "total_arr": 0.0, "customers": []},
         "adoption": {"count": 0, "total_arr": 0.0, "customers": []},
@@ -52,7 +62,9 @@ def get_customer_journey_stages(
         health = float(c.health_score) if c.health_score is not None else 75.0
         mrr = float(c.mrr) if c.mrr is not None else 3500.0
         arr = float(c.arr) if (c.arr is not None and float(c.arr) > 0) else (mrr * 12.0)
-        raw_prob = float(c.churn_probability) if c.churn_probability is not None else 15.0
+        raw_prob = (
+            float(c.churn_probability) if c.churn_probability is not None else 15.0
+        )
         churn_risk = (raw_prob / 100.0) if raw_prob > 1.0 else raw_prob
         company_name = c.company.name if c.company else f"Client {str(c.id)[:6]}"
 
@@ -78,15 +90,17 @@ def get_customer_journey_stages(
 
         stage_buckets[stage_id]["count"] += 1
         stage_buckets[stage_id]["total_arr"] += arr
-        stage_buckets[stage_id]["customers"].append({
-            "id": str(c.id),
-            "name": company_name,
-            "health_score": round(health, 1),
-            "mrr": round(mrr, 2),
-            "arr": round(arr, 2),
-            "churn_risk_pct": round(churn_risk * 100.0, 1),
-            "status": c.churn_risk or "active",
-        })
+        stage_buckets[stage_id]["customers"].append(
+            {
+                "id": str(c.id),
+                "name": company_name,
+                "health_score": round(health, 1),
+                "mrr": round(mrr, 2),
+                "arr": round(arr, 2),
+                "churn_risk_pct": round(churn_risk * 100.0, 1),
+                "status": c.churn_risk or "active",
+            }
+        )
 
     # Summary metrics
     total_customers = sum(b["count"] for b in stage_buckets.values())
@@ -107,8 +121,11 @@ def get_customer_journey_stages(
 
 
 @router.get("/customers/{customer_id}", response_model=Dict[str, Any])
-def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_customer_journey_details(
+    customer_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get detailed lifecycle journey history, telemetry timeline, and recommended interventions from PostgreSQL."""
     customer = None
     try:
@@ -122,17 +139,47 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
 
     health = float(customer.health_score) if customer.health_score is not None else 75.0
     mrr = float(customer.mrr) if customer.mrr is not None else 4500.0
-    arr = float(customer.arr) if (customer.arr is not None and float(customer.arr) > 0) else (mrr * 12.0)
-    raw_prob = float(customer.churn_probability) if customer.churn_probability is not None else 20.0
+    arr = (
+        float(customer.arr)
+        if (customer.arr is not None and float(customer.arr) > 0)
+        else (mrr * 12.0)
+    )
+    raw_prob = (
+        float(customer.churn_probability)
+        if customer.churn_probability is not None
+        else 20.0
+    )
     churn_prob = (raw_prob / 100.0) if raw_prob > 1.0 else raw_prob
-    company_name = customer.company.name if customer.company else f"Client {str(customer.id)[:6]}"
+    company_name = (
+        customer.company.name if customer.company else f"Client {str(customer.id)[:6]}"
+    )
 
     timeline = [
-        {"event": "Contract Signed & Onboarding Initiated", "date": "Day 1", "status": "completed"},
-        {"event": "Core CRM Agent Fleet Configured", "date": "Day 7", "status": "completed"},
-        {"event": "First 1,000 WhatsApp AI Conversations Processed", "date": "Day 24", "status": "completed"},
-        {"event": "Mid-Term Strategic Health Review", "date": "Day 60", "status": "in_progress" if health >= 60 else "flagged"},
-        {"event": "Annual Renewal & Expansion Lock-in", "date": "Day 330", "status": "pending"},
+        {
+            "event": "Contract Signed & Onboarding Initiated",
+            "date": "Day 1",
+            "status": "completed",
+        },
+        {
+            "event": "Core CRM Agent Fleet Configured",
+            "date": "Day 7",
+            "status": "completed",
+        },
+        {
+            "event": "First 1,000 WhatsApp AI Conversations Processed",
+            "date": "Day 24",
+            "status": "completed",
+        },
+        {
+            "event": "Mid-Term Strategic Health Review",
+            "date": "Day 60",
+            "status": "in_progress" if health >= 60 else "flagged",
+        },
+        {
+            "event": "Annual Renewal & Expansion Lock-in",
+            "date": "Day 330",
+            "status": "pending",
+        },
     ]
 
     # Query customer interventions from database
@@ -144,17 +191,22 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
     )
     interventions_data = []
     for intv in db_interventions:
-        interventions_data.append({
-            "id": str(intv.id),
-            "customer_id": str(intv.customer_id),
-            "customer_name": intv.customer_name or company_name,
-            "intervention_type": intv.intervention_type,
-            "status": intv.status,
-            "target_agent": intv.target_agent,
-            "triggered_reason": intv.triggered_reason or "Proactive churn mitigation",
-            "action_summary": intv.action_summary or "Retention play dispatched.",
-            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.now(timezone.utc).isoformat(),
-        })
+        interventions_data.append(
+            {
+                "id": str(intv.id),
+                "customer_id": str(intv.customer_id),
+                "customer_name": intv.customer_name or company_name,
+                "intervention_type": intv.intervention_type,
+                "status": intv.status,
+                "target_agent": intv.target_agent,
+                "triggered_reason": intv.triggered_reason
+                or "Proactive churn mitigation",
+                "action_summary": intv.action_summary or "Retention play dispatched.",
+                "created_at": intv.created_at.isoformat()
+                if intv.created_at
+                else datetime.now(timezone.utc).isoformat(),
+            }
+        )
 
     return {
         "customer_id": str(customer.id),
@@ -163,7 +215,11 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
         "mrr": round(mrr, 2),
         "arr": round(arr, 2),
         "churn_probability": round(churn_prob, 2),
-        "lifecycle_stage": "at_risk" if (churn_prob >= 0.4 or health < 50) else "expansion" if health >= 80 else "adoption",
+        "lifecycle_stage": "at_risk"
+        if (churn_prob >= 0.4 or health < 50)
+        else "expansion"
+        if health >= 80
+        else "adoption",
         "timeline": timeline,
         "active_interventions": interventions_data,
         "recommended_plays": [
@@ -175,8 +231,11 @@ def get_customer_journey_details(customer_id: str, db: Session = Depends(get_db)
 
 
 @router.post("/interventions/trigger", response_model=Dict[str, Any])
-async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+async def trigger_journey_intervention(
+    payload: TriggerInterventionSchema,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Trigger an autonomous retention intervention, execute AI playbook, save to PostgreSQL, and boost DB health score."""
     customer = None
     try:
@@ -185,7 +244,11 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
     except (ValueError, AttributeError):
         customer = db.query(Customer).filter(Customer.id == payload.customer_id).first()
 
-    customer_name = customer.company.name if (customer and customer.company) else "Enterprise Client"
+    customer_name = (
+        customer.company.name
+        if (customer and customer.company)
+        else "Enterprise Client"
+    )
 
     prompt = (
         f"You are the Customer Success Autonomous Agent. "
@@ -223,13 +286,17 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
     db.refresh(new_intv)
 
     from services.audit_service import record_audit_log
+
     record_audit_log(
         db=db,
         entity_type="customer_intervention",
         entity_id=str(new_intv.id),
         action="trigger",
         actor="CustomerSuccessAgent",
-        details={"customer_id": str(new_intv.customer_id), "type": new_intv.intervention_type},
+        details={
+            "customer_id": str(new_intv.customer_id),
+            "type": new_intv.intervention_type,
+        },
     )
 
     intervention_dict = {
@@ -241,7 +308,9 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
         "target_agent": new_intv.target_agent,
         "triggered_reason": new_intv.triggered_reason,
         "action_summary": new_intv.action_summary,
-        "created_at": new_intv.created_at.isoformat() if new_intv.created_at else datetime.now(timezone.utc).isoformat(),
+        "created_at": new_intv.created_at.isoformat()
+        if new_intv.created_at
+        else datetime.now(timezone.utc).isoformat(),
     }
 
     # Dispatched retention intervention email to customer's contact via centralized email service
@@ -253,6 +322,7 @@ async def trigger_journey_intervention(payload: TriggerInterventionSchema, db: S
 
     if target_email:
         from services.task_queue_service import task_queue
+
         try:
             job = await task_queue.enqueue_email(
                 to_email=target_email,
@@ -302,31 +372,46 @@ def list_journey_interventions(
             if q not in name and q not in reason:
                 continue
 
-        results.append({
-            "id": str(i.id),
-            "customer_id": str(i.customer_id),
-            "customer_name": i.customer_name,
-            "intervention_type": i.intervention_type,
-            "status": i.status,
-            "target_agent": i.target_agent,
-            "triggered_reason": i.triggered_reason,
-            "action_summary": i.action_summary,
-            "created_at": i.created_at.isoformat() if i.created_at else datetime.now(timezone.utc).isoformat(),
-        })
+        results.append(
+            {
+                "id": str(i.id),
+                "customer_id": str(i.customer_id),
+                "customer_name": i.customer_name,
+                "intervention_type": i.intervention_type,
+                "status": i.status,
+                "target_agent": i.target_agent,
+                "triggered_reason": i.triggered_reason,
+                "action_summary": i.action_summary,
+                "created_at": i.created_at.isoformat()
+                if i.created_at
+                else datetime.now(timezone.utc).isoformat(),
+            }
+        )
 
     return results[skip : skip + limit]
 
 
 @router.post("/interventions/{intervention_id}/resolve", response_model=Dict[str, Any])
-def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def resolve_journey_intervention(
+    intervention_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Mark an intervention as resolved/completed in PostgreSQL database."""
     intv = None
     try:
         val_uuid = uuid.UUID(intervention_id)
-        intv = db.query(CustomerIntervention).filter(CustomerIntervention.id == val_uuid).first()
+        intv = (
+            db.query(CustomerIntervention)
+            .filter(CustomerIntervention.id == val_uuid)
+            .first()
+        )
     except (ValueError, AttributeError):
-        intv = db.query(CustomerIntervention).filter(CustomerIntervention.id == intervention_id).first()
+        intv = (
+            db.query(CustomerIntervention)
+            .filter(CustomerIntervention.id == intervention_id)
+            .first()
+        )
 
     if not intv:
         raise HTTPException(status_code=404, detail="Intervention not found")
@@ -336,6 +421,7 @@ def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get
     db.refresh(intv)
 
     from services.audit_service import record_audit_log
+
     record_audit_log(
         db=db,
         entity_type="customer_intervention",
@@ -355,6 +441,8 @@ def resolve_journey_intervention(intervention_id: str, db: Session = Depends(get
             "status": intv.status,
             "target_agent": intv.target_agent,
             "action_summary": intv.action_summary,
-            "created_at": intv.created_at.isoformat() if intv.created_at else datetime.now(timezone.utc).isoformat(),
+            "created_at": intv.created_at.isoformat()
+            if intv.created_at
+            else datetime.now(timezone.utc).isoformat(),
         },
     }

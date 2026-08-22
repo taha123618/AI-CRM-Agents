@@ -1,7 +1,15 @@
 """FastAPI Main Application - AI-Powered CRM"""
 
 # pyrefly: ignore [missing-import]
-from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect, Response, Query
+from fastapi import (
+    FastAPI,
+    Depends,
+    BackgroundTasks,
+    WebSocket,
+    WebSocketDisconnect,
+    Response,
+    Query,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import Dict, Any, List
@@ -216,7 +224,10 @@ app = FastAPI(
 
 # CORS middleware
 # SECURITY: In production, NEVER allow wildcard origins with credentials.
-_is_prod = os.getenv("APP_ENV", "").lower() == "production" or os.getenv("ENVIRONMENT", "").lower() == "production"
+_is_prod = (
+    os.getenv("APP_ENV", "").lower() == "production"
+    or os.getenv("ENVIRONMENT", "").lower() == "production"
+)
 _allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
 _origins = (
     [o.strip() for o in _allowed_origins.split(",")]
@@ -228,6 +239,7 @@ _origins = (
 if _is_prod and "*" in _origins:
     _origins = ["http://localhost:3000"]  # safe fallback for production
     import warnings
+
     warnings.warn(
         "CORS: Wildcard origin with credentials is insecure in production. "
         "Set ALLOWED_ORIGINS to your actual frontend domain.",
@@ -244,6 +256,7 @@ app.add_middleware(
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitingMiddleware)
 
+
 # SECURITY: Limit request body size to prevent memory exhaustion attacks
 @app.middleware("http")
 async def limit_request_body(request, call_next):
@@ -251,11 +264,13 @@ async def limit_request_body(request, call_next):
     content_length = request.headers.get("content-length")
     if content_length and int(content_length) > 10 * 1024 * 1024:  # 10MB limit
         from starlette.responses import JSONResponse
+
         return JSONResponse(
             status_code=413,
             content={"detail": "Request body too large. Maximum allowed size is 10MB."},
         )
     return await call_next(request)
+
 
 # Initialize agent orchestrator
 orchestrator = AgentOrchestrator()
@@ -294,9 +309,10 @@ def _sanitize_ws_message(data: str, max_len: int = 4096) -> str:
     data = data[:max_len]
     # Strip any HTML/script tags
     import re
-    data = re.sub(r'<[^>]+>', '', data)
+
+    data = re.sub(r"<[^>]+>", "", data)
     # Remove null bytes
-    data = data.replace('\x00', '')
+    data = data.replace("\x00", "")
     return data
 
 
@@ -306,7 +322,7 @@ async def websocket_endpoint(
     token: str = Query(default=""),
 ):
     """Real-time event stream WebSocket endpoint.
-    
+
     SECURITY: Accepts optional token query param for authentication.
     Unauthenticated connections receive read-only public events.
     """
@@ -316,15 +332,20 @@ async def websocket_endpoint(
         try:
             from services.auth_service import decode_token, SECRET_KEY
             from jose import jwt as jose_jwt
+
             payload = jose_jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
             user_id = payload.get("sub")
             if user_id:
                 from database.connection import SessionLocal
                 from database.models import User
+
                 db_session = SessionLocal()
                 try:
                     from uuid import UUID
-                    ws_user = db_session.query(User).filter(User.id == UUID(user_id)).first()
+
+                    ws_user = (
+                        db_session.query(User).filter(User.id == UUID(user_id)).first()
+                    )
                 finally:
                     db_session.close()
         except Exception:
@@ -385,35 +406,25 @@ app.include_router(whatsapp.router, prefix="/api/whatsapp", tags=["WhatsApp Busi
 app.include_router(
     forecasting.router, prefix="/api/forecasting", tags=["Advanced Forecasting"]
 )
-app.include_router(
-    war_room.router, prefix="/api/war-room", tags=["AI Deal War Room"]
-)
+app.include_router(war_room.router, prefix="/api/war-room", tags=["AI Deal War Room"])
 app.include_router(
     journey.router, prefix="/api/journey", tags=["Customer Journey & Churn Prevention"]
 )
-app.include_router(
-    sequences.router, prefix="/api/sequences", tags=["AI SDR Cadences"]
-)
-app.include_router(
-    audit_logs.router, prefix="/api/audit-logs", tags=["Audit Logs"]
-)
-app.include_router(
-    tasks.router, prefix="/api/tasks", tags=["Background Tasks Queue"]
-)
-app.include_router(
-    webhooks.router, prefix="/api/webhooks", tags=["Universal Webhooks"]
-)
+app.include_router(sequences.router, prefix="/api/sequences", tags=["AI SDR Cadences"])
+app.include_router(audit_logs.router, prefix="/api/audit-logs", tags=["Audit Logs"])
+app.include_router(tasks.router, prefix="/api/tasks", tags=["Background Tasks Queue"])
+app.include_router(webhooks.router, prefix="/api/webhooks", tags=["Universal Webhooks"])
 app.include_router(
     import_export.router, prefix="/api/import-export", tags=["Bulk Import & Export"]
 )
 app.include_router(
     metrics.router, prefix="/api/metrics", tags=["Prometheus Observability"]
 )
+app.include_router(search.router, prefix="/api/search", tags=["Semantic Search & RAG"])
 app.include_router(
-    search.router, prefix="/api/search", tags=["Semantic Search & RAG"]
-)
-app.include_router(
-    organizations.router, prefix="/api/organizations", tags=["Multi-Tenant Organizations"]
+    organizations.router,
+    prefix="/api/organizations",
+    tags=["Multi-Tenant Organizations"],
 )
 app.include_router(
     custom_fields.router, prefix="/api/custom-fields", tags=["Dynamic Custom Fields"]
@@ -433,6 +444,7 @@ app.include_router(
 async def get_prometheus_metrics_root():
     """Direct root Prometheus scraper endpoint."""
     from services.metrics_service import MetricsService
+
     return Response(
         content=MetricsService.get_prometheus_metrics_text(),
         media_type="text/plain; version=0.0.4; charset=utf-8",

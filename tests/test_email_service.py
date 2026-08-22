@@ -108,7 +108,11 @@ async def test_email_service_send_crm_email_async():
     )
 
     assert res["delivered"] is True
-    assert "customer.lead@tech.io" in res["recipient"] or "c***o@tech.io" in res["recipient"] or "c***d@tech.io" in res["recipient"]
+    assert (
+        "customer.lead@tech.io" in res["recipient"]
+        or "c***o@tech.io" in res["recipient"]
+        or "c***d@tech.io" in res["recipient"]
+    )
 
 
 def test_smtp_connection_verification_placeholder_check():

@@ -43,6 +43,7 @@ async def enqueue_monte_carlo_task(
     current_user: User = Depends(require_auth),
 ):
     """Enqueue a long-running stochastic Monte Carlo simulation in the background queue."""
+
     async def _run_sim(job: TaskJob) -> Dict[str, Any]:
         job.progress = 30
         res = ForecastingService.run_monte_carlo_simulation(
@@ -61,6 +62,7 @@ async def enqueue_sequence_cohort_task(
     payload: SequenceCohortTaskRequest,
 ):
     """Enqueue an AI SDR multi-lead sequence outreach dispatch job."""
+
     async def _run_sequence(job: TaskJob) -> Dict[str, Any]:
         job.progress = 40
         await asyncio.sleep(0.05)
@@ -81,6 +83,7 @@ async def enqueue_audio_synthesis_task(
     payload: AudioSynthesisTaskRequest,
 ):
     """Enqueue real-time audio intelligence synthesis and transcript extraction."""
+
     async def _run_audio(job: TaskJob) -> Dict[str, Any]:
         job.progress = 50
         await asyncio.sleep(0.05)
@@ -88,7 +91,10 @@ async def enqueue_audio_synthesis_task(
             "call_id": payload.call_id,
             "transcript_length": len(payload.transcript),
             "sentiment": "positive",
-            "action_items_extracted": ["Schedule technical demo", "Send enterprise SLA pricing"],
+            "action_items_extracted": [
+                "Schedule technical demo",
+                "Send enterprise SLA pricing",
+            ],
         }
 
     job = await task_queue.enqueue("audio_intelligence_synthesis", _run_audio)
@@ -102,6 +108,7 @@ async def enqueue_bulk_enrichment_task(
     current_user: User = Depends(require_auth),
 ):
     """Enqueue asynchronous bulk lead enrichment with external OSINT & company data."""
+
     async def _run_enrichment(job: TaskJob) -> Dict[str, Any]:
         leads = db.query(Contact).limit(50).all()
         job.progress = 50

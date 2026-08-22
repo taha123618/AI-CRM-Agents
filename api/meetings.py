@@ -56,19 +56,38 @@ class MeetingUpdate(BaseModel):
 
 
 class MeetingInviteRequest(BaseModel):
-    attendee_emails: Optional[List[str]] = Field(None, description="Optional override list of attendee email addresses")
-    custom_note: Optional[str] = Field(None, description="Optional custom preparation note")
+    attendee_emails: Optional[List[str]] = Field(
+        None, description="Optional override list of attendee email addresses"
+    )
+    custom_note: Optional[str] = Field(
+        None, description="Optional custom preparation note"
+    )
 
 
 @router.get("/", response_model=List[MeetingResponse])
-async def list_meetings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+async def list_meetings(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """List meetings with attendee and prep information."""
-    meetings = db.query(Meeting).order_by(Meeting.scheduled_at.desc()).offset(skip).limit(limit).all()
+    meetings = (
+        db.query(Meeting)
+        .order_by(Meeting.scheduled_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
     return meetings
 
 
 @router.get("/{meeting_id}", response_model=MeetingResponse)
-async def get_meeting(meeting_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+async def get_meeting(
+    meeting_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get single meeting details by ID."""
     meeting = None
     try:
@@ -160,7 +179,12 @@ async def send_meeting_invite_email(
         elif isinstance(meeting.attendees, str) and "@" in meeting.attendees:
             recipients.append(meeting.attendees)
 
-    if not recipients and meeting.deal and meeting.deal.contact and meeting.deal.contact.email:
+    if (
+        not recipients
+        and meeting.deal
+        and meeting.deal.contact
+        and meeting.deal.contact.email
+    ):
         recipients.append(meeting.deal.contact.email)
 
     if not recipients:
@@ -170,7 +194,11 @@ async def send_meeting_invite_email(
         )
 
     # Format email content
-    scheduled_str = meeting.scheduled_at.isoformat() if hasattr(meeting.scheduled_at, "isoformat") else str(meeting.scheduled_at)
+    scheduled_str = (
+        meeting.scheduled_at.isoformat()
+        if hasattr(meeting.scheduled_at, "isoformat")
+        else str(meeting.scheduled_at)
+    )
     agenda_str = ""
     if isinstance(meeting.agenda, list) and meeting.agenda:
         agenda_str = "\n".join([f"• {item}" for item in meeting.agenda])
@@ -233,7 +261,11 @@ Please let us know if you need any adjustments."""
 
 
 @router.delete("/{meeting_id}")
-async def delete_meeting(meeting_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+async def delete_meeting(
+    meeting_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Delete meeting by ID."""
     meeting = None
     try:

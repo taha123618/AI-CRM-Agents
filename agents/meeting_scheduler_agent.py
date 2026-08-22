@@ -41,8 +41,14 @@ class MeetingSchedulerAgent(BaseAgent):
             return await self.schedule_meeting(task)
         elif action in ("send_invite", "send_email", "dispatch_invite"):
             meeting_data = task.get("meeting_data") or task
-            recipient = task.get("to") or task.get("recipient") or task.get("attendee_email")
-            if not recipient and isinstance(meeting_data.get("attendees"), list) and meeting_data.get("attendees"):
+            recipient = (
+                task.get("to") or task.get("recipient") or task.get("attendee_email")
+            )
+            if (
+                not recipient
+                and isinstance(meeting_data.get("attendees"), list)
+                and meeting_data.get("attendees")
+            ):
                 recipient = meeting_data.get("attendees")[0]
             if not recipient or "@" not in str(recipient):
                 raise ValueError(f"Invalid recipient email provided: '{recipient}'")
@@ -71,8 +77,16 @@ class MeetingSchedulerAgent(BaseAgent):
         from services.email_service import email_service
         from services.task_queue_service import task_queue
 
-        title = meeting_data.get("title") or meeting_data.get("subject") or "Scheduled CRM Architecture Briefing"
-        scheduled_time = meeting_data.get("scheduled_time") or meeting_data.get("scheduled_at") or "Upcoming"
+        title = (
+            meeting_data.get("title")
+            or meeting_data.get("subject")
+            or "Scheduled CRM Architecture Briefing"
+        )
+        scheduled_time = (
+            meeting_data.get("scheduled_time")
+            or meeting_data.get("scheduled_at")
+            or "Upcoming"
+        )
         duration = meeting_data.get("duration_minutes") or 30
         location = meeting_data.get("location") or "Google Meet (auto-generated)"
         agenda_items = meeting_data.get("agenda") or []
@@ -106,11 +120,14 @@ Proposed Agenda:
 
 Please let us know if you need to adjust the timing."""
 
-        await self.log_activity("dispatching_meeting_invite_email", {
-            "to": recipient_email,
-            "title": title,
-            "async": enqueue_in_background,
-        })
+        await self.log_activity(
+            "dispatching_meeting_invite_email",
+            {
+                "to": recipient_email,
+                "title": title,
+                "async": enqueue_in_background,
+            },
+        )
 
         if enqueue_in_background:
             job = await task_queue.enqueue_email(
@@ -120,7 +137,9 @@ Please let us know if you need to adjust the timing."""
                 recipient_name=recipient_name,
                 metadata={
                     "agent": "MeetingSchedulerAgent",
-                    "meeting_id": str(meeting_data.get("meeting_id") or meeting_data.get("id") or ""),
+                    "meeting_id": str(
+                        meeting_data.get("meeting_id") or meeting_data.get("id") or ""
+                    ),
                     "email_type": "meeting_invitation",
                 },
             )
@@ -210,7 +229,9 @@ Please let us know if you need to adjust the timing."""
                         )
                         invites_sent.append(invite_res)
                     except Exception as e:
-                        invites_sent.append({"recipient": str(attendee), "error": str(e)})
+                        invites_sent.append(
+                            {"recipient": str(attendee), "error": str(e)}
+                        )
 
         meeting["invites_dispatched"] = invites_sent
 

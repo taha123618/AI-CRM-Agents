@@ -14,7 +14,11 @@ from sqlalchemy.orm import Session
 
 from database.models import WebhookEndpoint, WebhookDelivery
 
-ALLOW_LOCAL_WEBHOOKS = os.getenv("ALLOW_LOCAL_WEBHOOKS", "false").lower() in ("true", "1", "yes")
+ALLOW_LOCAL_WEBHOOKS = os.getenv("ALLOW_LOCAL_WEBHOOKS", "false").lower() in (
+    "true",
+    "1",
+    "yes",
+)
 
 
 def _is_private_ip(ip: Any) -> bool:
@@ -29,9 +33,11 @@ def _is_private_ip(ip: Any) -> bool:
     )
 
 
-def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[bool, str]:
+def is_safe_webhook_url(
+    url: str, allow_local: Optional[bool] = None
+) -> Tuple[bool, str]:
     """Validate webhook URL against SSRF (Server-Side Request Forgery) attacks.
-    
+
     Rejects:
     - Non-HTTP(S) schemes (file://, gopher://, ftp://, etc.)
     - Loopback addresses (127.0.0.1, localhost, ::1)
@@ -48,7 +54,10 @@ def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[b
         return False, "Invalid URL structure."
 
     if parsed.scheme not in ("http", "https"):
-        return False, f"Invalid scheme '{parsed.scheme}'. Only HTTP and HTTPS are permitted."
+        return (
+            False,
+            f"Invalid scheme '{parsed.scheme}'. Only HTTP and HTTPS are permitted.",
+        )
 
     hostname = parsed.hostname
     if not hostname:
@@ -58,13 +67,21 @@ def is_safe_webhook_url(url: str, allow_local: Optional[bool] = None) -> Tuple[b
 
     # Block well-known loopback names and cloud metadata endpoints
     blocked_hosts = {
-        "localhost", "127.0.0.1", "::1", "0.0.0.0",
-        "169.254.169.254", "metadata.google.internal",
-        "metadata.google", "metadata.gcp.internal",
+        "localhost",
+        "127.0.0.1",
+        "::1",
+        "0.0.0.0",
+        "169.254.169.254",
+        "metadata.google.internal",
+        "metadata.google",
+        "metadata.gcp.internal",
         "169.254.169.254.nip.io",
     }
     if lower_host in blocked_hosts and not allow_local:
-        return False, f"Destination host '{hostname}' is a restricted local or metadata address."
+        return (
+            False,
+            f"Destination host '{hostname}' is a restricted local or metadata address.",
+        )
 
     # SECURITY: DNS Rebinding Protection — resolve hostname to IP and validate
     if not allow_local:
@@ -98,7 +115,9 @@ def sign_payload(payload_bytes: bytes, secret: str) -> str:
     return f"sha256={mac.hexdigest()}"
 
 
-def verify_inbound_signature(payload_bytes: bytes, signature_header: str, secret: str) -> bool:
+def verify_inbound_signature(
+    payload_bytes: bytes, signature_header: str, secret: str
+) -> bool:
     """Verify incoming webhook signature against shared secret."""
     if not signature_header or not secret:
         return False
@@ -112,9 +131,12 @@ async def dispatch_webhook_event(
     db: Session,
 ) -> List[Dict[str, Any]]:
     """Dispatch an event asynchronously to all active subscribed webhook endpoints with SSRF guards."""
-    endpoints = db.query(WebhookEndpoint).filter(WebhookEndpoint.is_active == True).all()  # noqa: E712
+    endpoints = (
+        db.query(WebhookEndpoint).filter(WebhookEndpoint.is_active == True).all()
+    )  # noqa: E712
     matching = [
-        ep for ep in endpoints
+        ep
+        for ep in endpoints
         if ("*" in (ep.events or [])) or (event_type in (ep.events or []))
     ]
 
@@ -143,13 +165,15 @@ async def dispatch_webhook_event(
                     success=False,
                 )
                 db.add(delivery)
-                results.append({
-                    "webhook_id": str(ep.id),
-                    "url": ep.url,
-                    "status_code": 400,
-                    "success": False,
-                    "error": f"SSRF Blocked: {reason}",
-                })
+                results.append(
+                    {
+                        "webhook_id": str(ep.id),
+                        "url": ep.url,
+                        "status_code": 400,
+                        "success": False,
+                        "error": f"SSRF Blocked: {reason}",
+                    }
+                )
                 continue
 
             sig = sign_payload(payload_bytes, ep.secret)
@@ -184,12 +208,14 @@ async def dispatch_webhook_event(
                 success=success,
             )
             db.add(delivery)
-            results.append({
-                "webhook_id": str(ep.id),
-                "url": ep.url,
-                "status_code": status_code,
-                "success": success,
-            })
+            results.append(
+                {
+                    "webhook_id": str(ep.id),
+                    "url": ep.url,
+                    "status_code": status_code,
+                    "success": success,
+                }
+            )
 
     db.commit()
     return results

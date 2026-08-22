@@ -24,13 +24,16 @@ Base = declarative_base()
 
 class Organization(Base):
     """Multi-tenant Workspace Organization."""
+
     __tablename__ = "organizations"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(255), nullable=False)
     slug = Column(String(100), unique=True, index=True, nullable=False)
     domain = Column(String(255), nullable=True)
-    plan_tier = Column(String(50), default="enterprise")  # 'starter', 'growth', 'enterprise'
+    plan_tier = Column(
+        String(50), default="enterprise"
+    )  # 'starter', 'growth', 'enterprise'
     is_active = Column(Boolean, default=True)
     settings = Column(JSONB, default=dict)
     created_at = Column(DateTime, server_default=func.now())
@@ -727,7 +730,9 @@ class AuditLog(Base):
     actor = Column(String(100), default="system", index=True)
     user_id = Column(String(100), nullable=True, index=True)
     details = Column(JSONB, default=dict)
-    payload_diff = Column(JSONB, default=dict)  # {"before": {...}, "after": {...}, "changes": [...]}
+    payload_diff = Column(
+        JSONB, default=dict
+    )  # {"before": {...}, "after": {...}, "changes": [...]}
     ip_address = Column(String(50), nullable=True)
     created_at = Column(DateTime, server_default=func.now(), index=True)
 
@@ -736,18 +741,27 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
+    organization_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     email = Column(String(255), unique=True, nullable=False, index=True)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(150), nullable=False)
-    role = Column(String(50), default="sales", nullable=False, index=True)  # 'admin', 'sales', 'support', 'auditor'
+    role = Column(
+        String(50), default="sales", nullable=False, index=True
+    )  # 'admin', 'sales', 'support', 'auditor'
     is_active = Column(Boolean, default=True, nullable=False)
     is_verified = Column(Boolean, default=True, nullable=False)
     login_attempts = Column(Integer, default=0, nullable=False)
     locked_until = Column(DateTime, nullable=True)
     oauth_provider = Column(String(50), nullable=True)  # 'google', 'microsoft', or None
     oauth_id = Column(String(255), nullable=True)
-    permissions = Column(JSONB, default=list)  # list of permission strings e.g. ["leads:read", "deals:write"]
+    permissions = Column(
+        JSONB, default=list
+    )  # list of permission strings e.g. ["leads:read", "deals:write"]
     last_login_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, server_default=func.now(), index=True)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
@@ -760,7 +774,12 @@ class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     token_hash = Column(String(255), nullable=False, unique=True, index=True)
     expires_at = Column(DateTime, nullable=False, index=True)
     revoked = Column(Boolean, default=False, nullable=False)
@@ -771,7 +790,12 @@ class PasswordResetToken(Base):
     __tablename__ = "password_reset_tokens"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     token_hash = Column(String(255), nullable=False, unique=True, index=True)
     expires_at = Column(DateTime, nullable=False, index=True)
     used = Column(Boolean, default=False, nullable=False)
@@ -782,7 +806,12 @@ class EmailVerificationToken(Base):
     __tablename__ = "email_verification_tokens"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     token_hash = Column(String(255), nullable=False, unique=True, index=True)
     expires_at = Column(DateTime, nullable=False, index=True)
     used = Column(Boolean, default=False, nullable=False)
@@ -807,7 +836,9 @@ class WebhookEndpoint(Base):
     url = Column(String(500), nullable=False)
     description = Column(String(255), nullable=True)
     secret = Column(String(255), nullable=False)
-    events = Column(JSONB, default=list)  # list of event strings, e.g. ["lead.created", "deal.won"]
+    events = Column(
+        JSONB, default=list
+    )  # list of event strings, e.g. ["lead.created", "deal.won"]
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, server_default=func.now(), index=True)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
@@ -817,7 +848,12 @@ class WebhookDelivery(Base):
     __tablename__ = "webhook_deliveries"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    webhook_id = Column(UUID(as_uuid=True), ForeignKey("webhook_endpoints.id", ondelete="CASCADE"), nullable=False, index=True)
+    webhook_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("webhook_endpoints.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     event_type = Column(String(100), nullable=False, index=True)
     payload = Column(JSONB, default=dict)
     response_status = Column(Integer, nullable=True)
@@ -828,15 +864,27 @@ class WebhookDelivery(Base):
 
 class CustomFieldDefinition(Base):
     """Dynamic User-Defined Metadata Field for CRM entities."""
+
     __tablename__ = "custom_field_definitions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
-    entity_type = Column(String(50), nullable=False, index=True)  # 'contact', 'deal', 'customer', 'company'
+    organization_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    entity_type = Column(
+        String(50), nullable=False, index=True
+    )  # 'contact', 'deal', 'customer', 'company'
     name = Column(String(100), nullable=False)
     field_key = Column(String(100), nullable=False, index=True)
-    field_type = Column(String(50), default="text", nullable=False)  # 'text', 'number', 'select', 'boolean', 'date', 'currency'
-    options = Column(JSONB, default=list)  # for select dropdown options e.g. ["Tier 1", "Tier 2"]
+    field_type = Column(
+        String(50), default="text", nullable=False
+    )  # 'text', 'number', 'select', 'boolean', 'date', 'currency'
+    options = Column(
+        JSONB, default=list
+    )  # for select dropdown options e.g. ["Tier 1", "Tier 2"]
     is_required = Column(Boolean, default=False)
     default_value = Column(JSONB, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
@@ -845,6 +893,7 @@ class CustomFieldDefinition(Base):
 
 class LLMEvaluationRun(Base):
     """Benchmark and Evaluation Run for Custom Prompts and Models."""
+
     __tablename__ = "llm_evaluation_runs"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -865,12 +914,15 @@ class LLMEvaluationRun(Base):
 
 class WorkflowDefinition(Base):
     """Visual Multi-Agent Workflow Automation Pipeline."""
+
     __tablename__ = "workflow_definitions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(150), nullable=False)
     description = Column(Text, nullable=True)
-    trigger_type = Column(String(50), default="event")  # 'event', 'manual', 'schedule', 'webhook'
+    trigger_type = Column(
+        String(50), default="event"
+    )  # 'event', 'manual', 'schedule', 'webhook'
     trigger_config = Column(JSONB, default=dict)
     nodes = Column(JSONB, default=list)  # Visual workflow nodes
     edges = Column(JSONB, default=list)  # Node connections
@@ -883,11 +935,22 @@ class WorkflowDefinition(Base):
 
 class EmailSyncAccount(Base):
     """Connected Mailbox Account for 2-Way IMAP/OAuth Sync (Google Workspace, Microsoft Graph, IMAP)."""
+
     __tablename__ = "email_sync_accounts"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="SET NULL"), nullable=True, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    organization_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     provider = Column(String(50), nullable=False)  # 'gmail', 'outlook_365', 'imap'
     email_address = Column(String(255), nullable=False, index=True)
     display_name = Column(String(150), nullable=True)
@@ -901,10 +964,16 @@ class EmailSyncAccount(Base):
 
 class EmailThread(Base):
     """Aggregated Email Conversation Thread with Chronological Message History."""
+
     __tablename__ = "email_threads"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    account_id = Column(UUID(as_uuid=True), ForeignKey("email_sync_accounts.id", ondelete="CASCADE"), nullable=True, index=True)
+    account_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("email_sync_accounts.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     thread_key = Column(String(255), nullable=False, index=True)
     subject = Column(String(255), nullable=False)
     participant_emails = Column(JSONB, default=list)
@@ -920,20 +989,20 @@ class EmailThread(Base):
 
 class WhatsAppTemplate(Base):
     """Meta WhatsApp Business Pre-Approved Message Template."""
+
     __tablename__ = "whatsapp_templates"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(100), nullable=False, index=True)
-    category = Column(String(50), default="MARKETING")  # 'MARKETING', 'UTILITY', 'AUTHENTICATION'
+    category = Column(
+        String(50), default="MARKETING"
+    )  # 'MARKETING', 'UTILITY', 'AUTHENTICATION'
     language = Column(String(10), default="en_US")
     status = Column(String(50), default="APPROVED")  # 'APPROVED', 'PENDING', 'REJECTED'
     body_text = Column(Text, nullable=False)
     variables = Column(JSONB, default=list)  # e.g. ["{{1}}", "{{2}}"]
-    header_type = Column(String(50), default="NONE")  # 'NONE', 'TEXT', 'IMAGE', 'DOCUMENT'
+    header_type = Column(
+        String(50), default="NONE"
+    )  # 'NONE', 'TEXT', 'IMAGE', 'DOCUMENT'
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
-
-
-
-
-

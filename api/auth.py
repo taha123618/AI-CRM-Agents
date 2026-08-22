@@ -78,7 +78,9 @@ class UserRegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, description="Password min 8 characters")
     full_name: str = Field(..., min_length=2, max_length=150)
-    role: Optional[str] = Field("sales", description="'admin', 'sales', 'support', 'auditor'")
+    role: Optional[str] = Field(
+        "sales", description="'admin', 'sales', 'support', 'auditor'"
+    )
 
 
 class UserLoginRequest(BaseModel):
@@ -87,7 +89,9 @@ class UserLoginRequest(BaseModel):
 
 
 class SsoLoginRequest(BaseModel):
-    token: str = Field(..., description="OAuth2 ID token or authorization code from SSO provider")
+    token: str = Field(
+        ..., description="OAuth2 ID token or authorization code from SSO provider"
+    )
     email_hint: Optional[EmailStr] = None
     name_hint: Optional[str] = None
 
@@ -156,7 +160,9 @@ class RefreshTokenRequest(BaseModel):
     refresh_token: Optional[str] = None
 
 
-@router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
+)
 async def register(
     payload: UserRegisterRequest,
     request: Request,
@@ -172,7 +178,9 @@ async def register(
             detail=pw_error,
         )
 
-    existing = db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    existing = (
+        db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    )
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -203,7 +211,11 @@ async def register(
     db.commit()
     db.refresh(new_user)
 
-    token_payload = {"sub": str(new_user.id), "email": new_user.email, "role": new_user.role}
+    token_payload = {
+        "sub": str(new_user.id),
+        "email": new_user.email,
+        "role": new_user.role,
+    }
     access_token = create_access_token(token_payload)
     refresh_token = create_refresh_token(token_payload)
     store_refresh_token(db, new_user.id, refresh_token)
@@ -234,7 +246,9 @@ async def register(
             is_active=new_user.is_active,
             is_verified=new_user.is_verified,
             permissions=new_user.permissions or [],
-            last_login_at=new_user.last_login_at.isoformat() if new_user.last_login_at else None,
+            last_login_at=new_user.last_login_at.isoformat()
+            if new_user.last_login_at
+            else None,
             created_at=new_user.created_at.isoformat() if new_user.created_at else None,
         ),
     )
@@ -304,7 +318,9 @@ async def login(
             is_active=user.is_active,
             is_verified=user.is_verified,
             permissions=user.permissions or [],
-            last_login_at=user.last_login_at.isoformat() if user.last_login_at else None,
+            last_login_at=user.last_login_at.isoformat()
+            if user.last_login_at
+            else None,
             created_at=user.created_at.isoformat() if user.created_at else None,
         ),
     )
@@ -318,7 +334,9 @@ async def refresh_token_endpoint(
     db: Session = Depends(get_db),
 ):
     """Rotate JWT refresh token, issue fresh access token, and renew HTTP-only cookies."""
-    token_str = (payload.refresh_token if payload and payload.refresh_token else None) or request.cookies.get("refresh_token")
+    token_str = (
+        payload.refresh_token if payload and payload.refresh_token else None
+    ) or request.cookies.get("refresh_token")
     if not token_str:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -340,7 +358,9 @@ async def refresh_token_endpoint(
             is_active=user.is_active,
             is_verified=user.is_verified,
             permissions=user.permissions or [],
-            last_login_at=user.last_login_at.isoformat() if user.last_login_at else None,
+            last_login_at=user.last_login_at.isoformat()
+            if user.last_login_at
+            else None,
             created_at=user.created_at.isoformat() if user.created_at else None,
         ),
     )
@@ -355,7 +375,9 @@ async def logout(
 ):
     """Invalidate session cookies, revoke refresh token in database, and record audit log."""
     rf_token = request.cookies.get("refresh_token") or (
-        request.json().get("refresh_token") if request.headers.get("content-type", "").startswith("application/json") else None
+        request.json().get("refresh_token")
+        if request.headers.get("content-type", "").startswith("application/json")
+        else None
     )
     if rf_token:
         revoke_refresh_token(db, rf_token)
@@ -391,8 +413,12 @@ async def get_current_user_profile(
         is_active=current_user.is_active,
         is_verified=current_user.is_verified,
         permissions=current_user.permissions or [],
-        last_login_at=current_user.last_login_at.isoformat() if current_user.last_login_at else None,
-        created_at=current_user.created_at.isoformat() if current_user.created_at else None,
+        last_login_at=current_user.last_login_at.isoformat()
+        if current_user.last_login_at
+        else None,
+        created_at=current_user.created_at.isoformat()
+        if current_user.created_at
+        else None,
     )
 
 
@@ -456,7 +482,10 @@ async def reset_password(
         user_id=str(user.id),
         details={"email": user.email},
     )
-    return {"status": "success", "message": "Password updated successfully. Please log in with your new credentials."}
+    return {
+        "status": "success",
+        "message": "Password updated successfully. Please log in with your new credentials.",
+    }
 
 
 @router.post("/verify-email")
@@ -466,7 +495,10 @@ async def verify_email(
 ):
     """Verify user email address using single-use verification token."""
     user = verify_email_token(db, payload.token)
-    return {"status": "success", "message": f"Email {user.email} verified successfully."}
+    return {
+        "status": "success",
+        "message": f"Email {user.email} verified successfully.",
+    }
 
 
 @router.get("/sso/providers")
@@ -572,7 +604,9 @@ async def sso_login(
             is_active=user.is_active,
             is_verified=user.is_verified,
             permissions=user.permissions or [],
-            last_login_at=user.last_login_at.isoformat() if user.last_login_at else None,
+            last_login_at=user.last_login_at.isoformat()
+            if user.last_login_at
+            else None,
             created_at=user.created_at.isoformat() if user.created_at else None,
         ),
     )
@@ -609,7 +643,9 @@ async def create_user_admin(
     db: Session = Depends(get_db),
 ):
     """Create a new user account (Admin only)."""
-    existing = db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    existing = (
+        db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    )
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -626,7 +662,9 @@ async def create_user_admin(
         role=role_val,
         is_active=payload.is_active,
         is_verified=True,
-        permissions=payload.permissions if payload.permissions is not None else ["leads:read", "deals:read", "customers:read"],
+        permissions=payload.permissions
+        if payload.permissions is not None
+        else ["leads:read", "deals:read", "customers:read"],
     )
     db.add(new_user)
     db.commit()
@@ -640,7 +678,11 @@ async def create_user_admin(
         action="admin_create_user",
         actor=current_user.email,
         user_id=str(current_user.id),
-        details={"created_user_id": str(new_user.id), "email": new_user.email, "role": new_user.role},
+        details={
+            "created_user_id": str(new_user.id),
+            "email": new_user.email,
+            "role": new_user.role,
+        },
         ip_address=client_ip,
     )
 
@@ -652,7 +694,9 @@ async def create_user_admin(
         is_active=new_user.is_active,
         is_verified=new_user.is_verified,
         permissions=new_user.permissions or [],
-        last_login_at=new_user.last_login_at.isoformat() if new_user.last_login_at else None,
+        last_login_at=new_user.last_login_at.isoformat()
+        if new_user.last_login_at
+        else None,
         created_at=new_user.created_at.isoformat() if new_user.created_at else None,
     )
 
@@ -805,7 +849,11 @@ async def update_user_status(
         action="update_user_status",
         actor=current_user.email,
         user_id=str(current_user.id),
-        details={"user_id": str(user.id), "old_status": old_status, "new_status": user.is_active},
+        details={
+            "user_id": str(user.id),
+            "old_status": old_status,
+            "new_status": user.is_active,
+        },
         ip_address=client_ip,
     )
 
@@ -850,7 +898,9 @@ async def delete_user(
 
     # If deleting an admin, ensure at least one active admin remains
     if user.role == "admin":
-        admin_count = db.query(User).filter(User.role == "admin", User.is_active == True).count()
+        admin_count = (
+            db.query(User).filter(User.role == "admin", User.is_active == True).count()
+        )
         if admin_count <= 1:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -871,11 +921,18 @@ async def delete_user(
         action="admin_delete_user",
         actor=current_user.email,
         user_id=str(current_user.id),
-        details={"deleted_user_id": user_id, "deleted_email": deleted_email, "role": deleted_role},
+        details={
+            "deleted_user_id": user_id,
+            "deleted_email": deleted_email,
+            "role": deleted_role,
+        },
         ip_address=client_ip,
     )
 
-    return {"status": "success", "message": f"User {deleted_email} has been permanently deleted"}
+    return {
+        "status": "success",
+        "message": f"User {deleted_email} has been permanently deleted",
+    }
 
 
 @router.put("/users/{user_id}/role", response_model=UserResponse)

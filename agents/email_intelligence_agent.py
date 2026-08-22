@@ -47,12 +47,27 @@ class EmailIntelligenceAgent(BaseAgent):
                 or email_data.get("from")
                 or email_data.get("sender")
             )
-            subject = task.get("subject") or email_data.get("subject") or "Response from AI CRM Intelligence"
-            body = task.get("body") or task.get("reply_text") or email_data.get("draft_response") or ""
-            recipient_name = task.get("recipient_name") or email_data.get("recipient_name") or email_data.get("from_name")
+            subject = (
+                task.get("subject")
+                or email_data.get("subject")
+                or "Response from AI CRM Intelligence"
+            )
+            body = (
+                task.get("body")
+                or task.get("reply_text")
+                or email_data.get("draft_response")
+                or ""
+            )
+            recipient_name = (
+                task.get("recipient_name")
+                or email_data.get("recipient_name")
+                or email_data.get("from_name")
+            )
 
             if not to_email or "@" not in to_email:
-                raise ValueError(f"Invalid recipient email provided for dispatch: '{to_email}'")
+                raise ValueError(
+                    f"Invalid recipient email provided for dispatch: '{to_email}'"
+                )
 
             delivery_res = await self.dispatch_email(
                 to_email=to_email,
@@ -119,11 +134,14 @@ class EmailIntelligenceAgent(BaseAgent):
         from services.email_service import email_service
         from services.task_queue_service import task_queue
 
-        await self.log_activity("dispatching_outbound_email", {
-            "to": to_email,
-            "subject": subject,
-            "async": enqueue_in_background,
-        })
+        await self.log_activity(
+            "dispatching_outbound_email",
+            {
+                "to": to_email,
+                "subject": subject,
+                "async": enqueue_in_background,
+            },
+        )
 
         if enqueue_in_background:
             job = await task_queue.enqueue_email(

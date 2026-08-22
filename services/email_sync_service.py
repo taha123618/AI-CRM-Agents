@@ -110,7 +110,9 @@ class EmailSyncService:
     @classmethod
     def sync_account_threads(cls, account_id: uuid.UUID, db: Session) -> int:
         """Poll and ingest latest messages into structured conversation threads."""
-        account = db.query(EmailSyncAccount).filter(EmailSyncAccount.id == account_id).first()
+        account = (
+            db.query(EmailSyncAccount).filter(EmailSyncAccount.id == account_id).first()
+        )
         if not account:
             return 0
 

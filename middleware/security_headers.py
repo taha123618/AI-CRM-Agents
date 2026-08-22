@@ -6,7 +6,10 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 # Security header configuration
-IS_PRODUCTION = os.getenv("APP_ENV", "").lower() == "production" or os.getenv("ENVIRONMENT", "").lower() == "production"
+IS_PRODUCTION = (
+    os.getenv("APP_ENV", "").lower() == "production"
+    or os.getenv("ENVIRONMENT", "").lower() == "production"
+)
 
 # Default Content Security Policy
 CSP_POLICY = os.getenv(
@@ -42,15 +45,21 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
         # Permissions Policy (restrict sensitive browser APIs)
-        response.headers["Permissions-Policy"] = (
-            "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
-        )
+        response.headers[
+            "Permissions-Policy"
+        ] = "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
 
         # Content Security Policy
         response.headers["Content-Security-Policy"] = CSP_POLICY
 
         # HTTP Strict Transport Security (HSTS) - Enforced in production or when explicitly configured
-        if IS_PRODUCTION or os.getenv("FORCE_HSTS", "false").lower() in ["true", "1", "yes"]:
-            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
+        if IS_PRODUCTION or os.getenv("FORCE_HSTS", "false").lower() in [
+            "true",
+            "1",
+            "yes",
+        ]:
+            response.headers[
+                "Strict-Transport-Security"
+            ] = "max-age=31536000; includeSubDomains; preload"
 
         return response

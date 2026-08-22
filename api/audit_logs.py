@@ -37,9 +37,15 @@ class AuditLogStatsSchema(BaseModel):
 
 @router.get("", response_model=List[AuditLogSchema])
 def list_audit_logs(
-    entity_type: Optional[str] = Query(None, description="Filter by entity type (lead, deal, customer, etc.)"),
-    action: Optional[str] = Query(None, description="Filter by action (create, update, delete, etc.)"),
-    actor: Optional[str] = Query(None, description="Filter by actor (system, user, agent)"),
+    entity_type: Optional[str] = Query(
+        None, description="Filter by entity type (lead, deal, customer, etc.)"
+    ),
+    action: Optional[str] = Query(
+        None, description="Filter by action (create, update, delete, etc.)"
+    ),
+    actor: Optional[str] = Query(
+        None, description="Filter by actor (system, user, agent)"
+    ),
     search: Optional[str] = Query(None, description="Search keyword"),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
@@ -80,8 +86,9 @@ def list_audit_logs(
 
 
 @router.get("/stats", response_model=AuditLogStatsSchema)
-def get_audit_log_stats(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_audit_log_stats(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Get audit activity summary metrics."""
     total_logs = db.query(func.count(AuditLog.id)).scalar() or 0
 
@@ -102,12 +109,7 @@ def get_audit_log_stats(db: Session = Depends(get_db),
     by_action = {str(act): int(cnt) for act, cnt in action_counts}
 
     # Recent distinct actors
-    actors = (
-        db.query(AuditLog.actor)
-        .distinct()
-        .limit(10)
-        .all()
-    )
+    actors = db.query(AuditLog.actor).distinct().limit(10).all()
     recent_actors = [str(a[0]) for a in actors if a[0]]
 
     return AuditLogStatsSchema(

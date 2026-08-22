@@ -15,7 +15,9 @@ _lock = Lock()
 _counters: Dict[Tuple[str, Tuple[Tuple[str, str], ...]], float] = defaultdict(float)
 
 # Summaries/Histograms: (metric_name, labels_tuple) -> (count, sum_val)
-_summaries: Dict[Tuple[str, Tuple[Tuple[str, str], ...]], Tuple[int, float]] = defaultdict(lambda: (0, 0.0))
+_summaries: Dict[
+    Tuple[str, Tuple[Tuple[str, str], ...]], Tuple[int, float]
+] = defaultdict(lambda: (0, 0.0))
 
 # Gauges: (metric_name, labels_tuple) -> value
 _gauges: Dict[Tuple[str, Tuple[Tuple[str, str], ...]], float] = defaultdict(float)
@@ -25,7 +27,9 @@ class MetricsService:
     """Thread-safe Prometheus metrics collector and formatter for CRM multi-agent architecture."""
 
     @classmethod
-    def inc_counter(cls, name: str, value: float = 1.0, labels: Dict[str, str] = None) -> None:
+    def inc_counter(
+        cls, name: str, value: float = 1.0, labels: Dict[str, str] = None
+    ) -> None:
         """Increment a Prometheus counter."""
         label_tuple = tuple(sorted((labels or {}).items()))
         with _lock:
@@ -39,7 +43,9 @@ class MetricsService:
             _gauges[(name, label_tuple)] = value
 
     @classmethod
-    def observe_summary(cls, name: str, value: float, labels: Dict[str, str] = None) -> None:
+    def observe_summary(
+        cls, name: str, value: float, labels: Dict[str, str] = None
+    ) -> None:
         """Record an observation in a Prometheus summary."""
         label_tuple = tuple(sorted((labels or {}).items()))
         with _lock:
@@ -47,30 +53,61 @@ class MetricsService:
             _summaries[(name, label_tuple)] = (count + 1, total + value)
 
     @classmethod
-    def record_agent_execution(cls, agent: str, duration_seconds: float, status: str = "success") -> None:
+    def record_agent_execution(
+        cls, agent: str, duration_seconds: float, status: str = "success"
+    ) -> None:
         """Track AI agent run frequency, status, and execution latency."""
-        cls.inc_counter("crm_agent_executions_total", 1.0, {"agent": agent, "status": status})
-        cls.observe_summary("crm_agent_execution_seconds", duration_seconds, {"agent": agent})
+        cls.inc_counter(
+            "crm_agent_executions_total", 1.0, {"agent": agent, "status": status}
+        )
+        cls.observe_summary(
+            "crm_agent_execution_seconds", duration_seconds, {"agent": agent}
+        )
 
     @classmethod
-    def record_llm_tokens(cls, model: str, prompt_tokens: int, completion_tokens: int) -> None:
+    def record_llm_tokens(
+        cls, model: str, prompt_tokens: int, completion_tokens: int
+    ) -> None:
         """Track LLM token consumption by model and token type."""
         if prompt_tokens > 0:
-            cls.inc_counter("crm_llm_tokens_consumed_total", float(prompt_tokens), {"model": model, "type": "prompt"})
+            cls.inc_counter(
+                "crm_llm_tokens_consumed_total",
+                float(prompt_tokens),
+                {"model": model, "type": "prompt"},
+            )
         if completion_tokens > 0:
-            cls.inc_counter("crm_llm_tokens_consumed_total", float(completion_tokens), {"model": model, "type": "completion"})
+            cls.inc_counter(
+                "crm_llm_tokens_consumed_total",
+                float(completion_tokens),
+                {"model": model, "type": "completion"},
+            )
 
     @classmethod
     def record_task_job(cls, job_type: str, status: str = "completed") -> None:
         """Track background queue job completions and failures."""
-        cls.inc_counter("crm_task_queue_jobs_total", 1.0, {"type": job_type, "status": status})
+        cls.inc_counter(
+            "crm_task_queue_jobs_total", 1.0, {"type": job_type, "status": status}
+        )
 
     @classmethod
-    def record_api_request(cls, method: str, endpoint: str, status_code: int, duration_seconds: float) -> None:
+    def record_api_request(
+        cls, method: str, endpoint: str, status_code: int, duration_seconds: float
+    ) -> None:
         """Track HTTP request throughput and endpoint latency."""
         status_family = f"{status_code // 100}xx"
-        cls.inc_counter("crm_api_requests_total", 1.0, {"method": method, "endpoint": endpoint, "status": str(status_code), "status_family": status_family})
-        cls.observe_summary("crm_api_request_duration_seconds", duration_seconds, {"endpoint": endpoint})
+        cls.inc_counter(
+            "crm_api_requests_total",
+            1.0,
+            {
+                "method": method,
+                "endpoint": endpoint,
+                "status": str(status_code),
+                "status_family": status_family,
+            },
+        )
+        cls.observe_summary(
+            "crm_api_request_duration_seconds", duration_seconds, {"endpoint": endpoint}
+        )
 
     @classmethod
     def set_active_ws_connections(cls, count: int) -> None:

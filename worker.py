@@ -30,7 +30,9 @@ class TaskWorker:
 
     def setup_signal_handlers(self):
         def _stop_signal(sig, frame):
-            logger.info("Termination signal received. Shutting down worker gracefully...")
+            logger.info(
+                "Termination signal received. Shutting down worker gracefully..."
+            )
             self.is_running = False
 
         signal.signal(signal.SIGINT, _stop_signal)
@@ -40,11 +42,14 @@ class TaskWorker:
         logger.info(f"Connecting worker to Redis at {REDIS_URL}...")
         try:
             import redis
+
             self._redis = redis.from_url(REDIS_URL, socket_timeout=3)
             self._redis.ping()
             logger.info("Redis connection established successfully.")
         except Exception as e:
-            logger.warning(f"Redis unavailable or connection failed: {e}. Worker will run in in-memory mode.")
+            logger.warning(
+                f"Redis unavailable or connection failed: {e}. Worker will run in in-memory mode."
+            )
 
         # Test SMTP readiness
         smtp_check = email_service.verify_smtp_connection()
@@ -58,9 +63,15 @@ class TaskWorker:
         while self.is_running:
             try:
                 # Check for active running tasks and maintain queue health
-                active_tasks = [t for t in task_queue.list_tasks(limit=100) if t.status in ("pending", "running")]
+                active_tasks = [
+                    t
+                    for t in task_queue.list_tasks(limit=100)
+                    if t.status in ("pending", "running")
+                ]
                 if active_tasks:
-                    logger.debug(f"Worker tracking {len(active_tasks)} active background tasks.")
+                    logger.debug(
+                        f"Worker tracking {len(active_tasks)} active background tasks."
+                    )
                 await asyncio.sleep(2)
             except asyncio.CancelledError:
                 break

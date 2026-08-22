@@ -46,7 +46,9 @@ class VoiceTurnAnalyzeSchema(BaseModel):
 
 
 @router.get("/stats", response_model=Dict[str, Any])
-def get_call_stats(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def get_call_stats(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Aggregate call intelligence metrics: totals, avg intent, sentiment split, top objections."""
     calls = db.query(VoiceCall).all()
 
@@ -172,7 +174,11 @@ def create_voice_call(
 
 
 @router.get("/{call_id}", response_model=Dict[str, Any])
-def get_voice_call(call_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def get_voice_call(
+    call_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Fetch call details and associated dialogue transcripts."""
     try:
         val_uuid = uuid.UUID(call_id)
@@ -213,7 +219,11 @@ def get_voice_call(call_id: str, db: Session = Depends(get_db), current_user: Us
 
 
 @router.delete("/{call_id}", response_model=Dict[str, Any])
-def delete_voice_call(call_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def delete_voice_call(
+    call_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Permanently delete a voice call record."""
     try:
         val_uuid = uuid.UUID(call_id)
@@ -230,7 +240,9 @@ def delete_voice_call(call_id: str, db: Session = Depends(get_db), current_user:
 
 
 @router.post("/analyze-turn", response_model=Dict[str, Any])
-async def analyze_realtime_turn(payload: VoiceTurnAnalyzeSchema, current_user: User = Depends(require_auth)):
+async def analyze_realtime_turn(
+    payload: VoiceTurnAnalyzeSchema, current_user: User = Depends(require_auth)
+):
     """Analyze real-time speech turn, detect objections, and generate rep coaching battle-cards."""
     res = await voice_agent.analyze_turn(
         speaker=payload.speaker,
@@ -256,6 +268,7 @@ class TwiMLRequest(BaseModel):
 def generate_voice_gateway_token(payload: GatewayTokenRequest):
     """Generate WebRTC client session token for live browser-to-phone calling."""
     from services.voice_gateway_service import VoiceGatewayService
+
     return VoiceGatewayService.generate_webrtc_token(
         identity=payload.identity,
         room_name=payload.room_name,
@@ -268,10 +281,10 @@ def generate_twilio_twiml(payload: TwiMLRequest):
     """Generate XML TwiML instructions for Twilio SIP voice trunking."""
     from services.voice_gateway_service import VoiceGatewayService
     from fastapi.responses import Response
+
     twiml_xml = VoiceGatewayService.generate_twiml(
         to_number=payload.to_number,
         caller_id=payload.caller_id or "+18005550199",
         enable_recording=bool(payload.record),
     )
     return Response(content=twiml_xml, media_type="application/xml")
-

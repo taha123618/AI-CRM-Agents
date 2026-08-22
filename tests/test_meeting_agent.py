@@ -48,16 +48,20 @@ async def test_meeting_scheduler_agent_dispatch_email_delegation():
         "agenda": ["Security Audit", "RBAC Matrix", "Q&A"],
     }
 
-    with patch("services.task_queue_service.task_queue.enqueue_email", new_callable=AsyncMock) as mock_enqueue:
+    with patch(
+        "services.task_queue_service.task_queue.enqueue_email", new_callable=AsyncMock
+    ) as mock_enqueue:
         mock_job = MagicMock()
         mock_job.task_id = "task-meet-email-777"
         mock_enqueue.return_value = mock_job
 
-        res = await agent.execute({
-            "action": "send_invite",
-            "to": "security-lead@enterprise.com",
-            "meeting_data": meeting_data,
-        })
+        res = await agent.execute(
+            {
+                "action": "send_invite",
+                "to": "security-lead@enterprise.com",
+                "meeting_data": meeting_data,
+            }
+        )
 
         assert res["status"] == "queued"
         assert res["task_id"] == "task-meet-email-777"

@@ -141,7 +141,9 @@ def test_whatsapp_cloud_api_media_and_templates():
 def test_custom_llm_finetuning_export_and_job():
     """Verify JSONL dataset formatting and model fine-tuning job launching."""
     # 1. Export JSONL dataset
-    res_export = client.get("/api/evaluations/finetuning/export?target_agent=lead_qualification")
+    res_export = client.get(
+        "/api/evaluations/finetuning/export?target_agent=lead_qualification"
+    )
     assert res_export.status_code == 200
     export_data = res_export.json()
     assert export_data["agent"] == "lead_qualification"

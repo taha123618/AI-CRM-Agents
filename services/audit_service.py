@@ -7,7 +7,9 @@ import uuid
 from loguru import logger
 
 
-def compute_payload_diff(before: Optional[Dict[str, Any]], after: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+def compute_payload_diff(
+    before: Optional[Dict[str, Any]], after: Optional[Dict[str, Any]]
+) -> Dict[str, Any]:
     """Calculate structured field-level diffs between before and after payloads."""
     if not before and not after:
         return {}
@@ -19,11 +21,13 @@ def compute_payload_diff(before: Optional[Dict[str, Any]], after: Optional[Dict[
         v_before = before.get(k)
         v_after = after.get(k)
         if v_before != v_after:
-            changes.append({
-                "field": k,
-                "old": v_before,
-                "new": v_after,
-            })
+            changes.append(
+                {
+                    "field": k,
+                    "old": v_before,
+                    "new": v_after,
+                }
+            )
     return {
         "before": before,
         "after": after,
@@ -46,7 +50,11 @@ def record_audit_log(
 ) -> AuditLog:
     """Synchronously record an audit log entry with payload diffs for GDPR/SOC2 compliance."""
     try:
-        diff = compute_payload_diff(before_payload, after_payload) if (before_payload or after_payload) else {}
+        diff = (
+            compute_payload_diff(before_payload, after_payload)
+            if (before_payload or after_payload)
+            else {}
+        )
         log_entry = AuditLog(
             id=uuid.uuid4(),
             entity_type=str(entity_type),
