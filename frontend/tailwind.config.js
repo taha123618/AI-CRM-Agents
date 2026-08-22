@@ -7,12 +7,12 @@ export default {
       borderRadius: {
         none: '0px',
         DEFAULT: '0px',
-        sm: '0px',
-        md: '0px',
-        lg: '0px',
-        xl: '0px',
-        '2xl': '0px',
-        '3xl': '0px',
+        sm: '4px',
+        md: '8px',
+        lg: '16px',
+        xl: '24px',
+        '2xl': '32px',
+        '3xl': '40px',
         full: '0px',
       },
       fontFamily: {

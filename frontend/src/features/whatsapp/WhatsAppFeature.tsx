@@ -58,16 +58,16 @@ function StatCard({
   glowClass?: string;
 }) {
   return (
-    <Card className={`p-4 bg-card/60 backdrop-blur-xl border-border/80 hover:border-border/80 transition-none  flex items-start gap-3.5 group ${glowClass}`}>
-      <div className="p-2.5 rounded-none bg-muted/90 text-foreground border border-border/50 group-hover:scale-105 transition-none ">
+    <Card className={`p-4 bg-card border border-border hover:border-primary transition-none flex items-start gap-3.5 group font-mono ${glowClass}`}>
+      <div className="p-2.5 rounded-none bg-background text-foreground border border-border group-hover:border-primary transition-none">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block truncate">
+        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block truncate font-mono">
           {label}
         </span>
         <div className={`text-2xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
-        {sub && <span className="text-[10px] text-muted-foreground mt-0.5 block truncate">{sub}</span>}
+        {sub && <span className="text-[10px] text-muted-foreground mt-0.5 block truncate font-mono uppercase">{sub}</span>}
       </div>
     </Card>
   );
@@ -94,16 +94,16 @@ function TagsEditor({
   });
 
   return (
-    <div className="p-3 bg-background border border-border rounded-none space-y-2.5 shadow-xl">
+    <div className="p-3 bg-card border border-border rounded-none space-y-2.5 shadow-xl font-mono">
       <div className="flex flex-wrap gap-1.5">
         {tags.map((t) => (
           <span
             key={t}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold font-mono"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-background border border-border text-foreground text-[10px] font-bold font-mono uppercase"
           >
             #{t}
             <button type="button" onClick={() => setTags(tags.filter((x) => x !== t))}>
-              <X className="w-3 h-3 hover:text-foreground" />
+              <X className="w-3 h-3 text-muted-foreground hover:text-destructive" />
             </button>
           </span>
         ))}
@@ -120,18 +120,18 @@ function TagsEditor({
               setInput('');
             }
           }}
-          placeholder="Type tag and press Enter..."
-          className="flex-1 bg-card border border-border rounded-none px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-emerald-500"
+          placeholder="TYPE TAG AND PRESS ENTER..."
+          className="flex-1 bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono uppercase"
         />
         <Button
           type="button"
           variant="primary"
           size="sm"
-          className="text-xs bg-emerald-600 hover:bg-emerald-500 px-3"
+          className="text-xs px-3 font-mono uppercase"
           isLoading={tagMutation.isPending}
           onClick={() => tagMutation.mutate()}
         >
-          Save
+          SAVE
         </Button>
         <button
           type="button"
@@ -193,7 +193,6 @@ function VoiceNoteBubble({
 
     setIsPlaying(true);
 
-    // 1. Play real microphone recording if audioUrl exists
     if (audioUrl) {
       try {
         const audio = new Audio(audioUrl);
@@ -221,7 +220,6 @@ function VoiceNoteBubble({
       }
     }
 
-    // 2. Fallback to Web Speech Synthesis speaking transcribed audio
     playFallbackSpeech();
   };
 
@@ -258,12 +256,12 @@ function VoiceNoteBubble({
     `0:${Math.floor(secs).toString().padStart(2, '0')}`;
 
   return (
-    <div className="p-3.5 rounded-none bg-emerald-950/50 border border-emerald-500/40 space-y-2.5 w-72 shadow-lg">
+    <div className="p-3.5 rounded-none bg-background border border-border space-y-2.5 w-72 shadow-md font-mono">
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={togglePlay}
-          className="p-3 rounded-none bg-emerald-500 text-foreground hover:bg-emerald-400 transition-none shadow-md shadow-emerald-500/30 flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
+          className="p-3 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 transition-none flex items-center justify-center shrink-0"
         >
           {isPlaying ? (
             <Pause className="w-4 h-4 fill-current" />
@@ -278,9 +276,8 @@ function VoiceNoteBubble({
             (h, i) => (
               <div
                 key={i}
-                className={`flex-1 rounded-none transition-none  ${
-                  progress > (i / 18) * 100 ? 'bg-emerald-400 scale-y-110' : 'bg-muted'
-                }`}
+                className={`flex-1 rounded-none transition-none ${progress > (i / 18) * 100 ? 'bg-primary scale-y-110' : 'bg-muted'
+                  }`}
                 style={{ height: `${h}%` }}
               />
             )
@@ -295,15 +292,15 @@ function VoiceNoteBubble({
             setPlaybackRate(nextRate);
             if (audioRef.current) audioRef.current.playbackRate = nextRate;
           }}
-          className="px-2 py-1 rounded-none bg-card border border-border text-[10px] font-mono font-bold text-foreground hover:text-foreground"
+          className="px-2 py-1 rounded-none bg-card border border-border text-[10px] font-mono font-bold text-foreground hover:border-primary"
         >
           {playbackRate}x
         </button>
       </div>
 
       <div className="flex items-center justify-between text-[11px] text-muted-foreground font-mono">
-        <span className="flex items-center gap-1.5 text-emerald-300 font-sans font-medium truncate max-w-[170px]">
-          <Mic className="w-3.5 h-3.5 text-emerald-400 shrink-0 animate-pulse" />
+        <span className="flex items-center gap-1.5 text-foreground font-sans font-medium truncate max-w-[170px]">
+          <Mic className="w-3.5 h-3.5 text-primary shrink-0" />
           <span className="truncate">"{cleanText}"</span>
         </span>
         <span className="font-bold text-foreground">
@@ -383,9 +380,9 @@ export function WhatsAppFeature() {
   });
 
   // Scroll to bottom on new messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isBotThinking]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages, isBotThinking]);
 
   // Voice Note Recording Handlers with Real Speech Recognition & Audio Blob
   const startVoiceRecording = async () => {
@@ -444,7 +441,7 @@ export function WhatsAppFeature() {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch {}
+      } catch { }
       recognitionRef.current = null;
     }
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
@@ -465,7 +462,7 @@ export function WhatsAppFeature() {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch {}
+      } catch { }
       recognitionRef.current = null;
     }
 
@@ -728,11 +725,10 @@ export function WhatsAppFeature() {
                   <div
                     key={conv.id}
                     onClick={() => setSelectedConv(conv)}
-                    className={`p-3.5 cursor-pointer transition-none  space-y-1.5 ${
-                      isSelected
+                    className={`p-3.5 cursor-pointer transition-none  space-y-1.5 ${isSelected
                         ? 'bg-emerald-950/30 border-l-4 border-l-emerald-500 text-foreground shadow-lg'
                         : 'hover:bg-card/60 text-foreground'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-foreground truncate">{conv.contact_name}</span>
@@ -745,9 +741,9 @@ export function WhatsAppFeature() {
                         <span className="text-[10px] text-muted-foreground font-mono">
                           {conv.last_message_at
                             ? new Date(conv.last_message_at).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
                             : ''}
                         </span>
                       </div>
@@ -863,11 +859,10 @@ export function WhatsAppFeature() {
                         autoPilot: !activeConv.ai_auto_pilot,
                       })
                     }
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-bold border transition-none ${
-                      activeConv.ai_auto_pilot
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-bold border transition-none ${activeConv.ai_auto_pilot
                         ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-lg shadow-emerald-500/10'
                         : 'bg-muted text-muted-foreground border-border'
-                    }`}
+                      }`}
                   >
                     <Bot className="w-3.5 h-3.5" />
                     <span>AI Auto: {activeConv.ai_auto_pilot ? 'ON' : 'OFF'}</span>
@@ -937,13 +932,12 @@ export function WhatsAppFeature() {
 
                           {/* Message Bubble */}
                           <div
-                            className={`max-w-[85%] sm:max-w-[75%] p-3.5 rounded-none text-xs space-y-1.5 shadow-xl transition-none ${
-                              isBot
+                            className={`max-w-[85%] sm:max-w-[75%] p-3.5 rounded-none text-xs space-y-1.5 shadow-xl transition-none ${isBot
                                 ? 'bg-gradient-to-br from-purple-950/90 to-slate-900 border border-purple-500/50 text-purple-100 rounded-none-tr-none'
                                 : isAgent
-                                ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-foreground rounded-none-tr-none'
-                                : 'bg-card border border-border text-foreground rounded-none-tl-none'
-                            }`}
+                                  ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-foreground rounded-none-tr-none'
+                                  : 'bg-card border border-border text-foreground rounded-none-tl-none'
+                              }`}
                           >
                             {/* Sender Header */}
                             <div className="flex items-center gap-1.5 text-[10px] font-bold mb-1 border-b border-border pb-1">
@@ -982,9 +976,8 @@ export function WhatsAppFeature() {
 
                             {/* Time & Read Receipts */}
                             <div
-                              className={`flex items-center justify-end gap-1 text-[9px] font-mono pt-1 ${
-                                isProspect ? 'text-muted-foreground' : 'text-emerald-200/70'
-                              }`}
+                              className={`flex items-center justify-end gap-1 text-[9px] font-mono pt-1 ${isProspect ? 'text-muted-foreground' : 'text-emerald-200/70'
+                                }`}
                             >
                               <span>
                                 {new Date(msg.created_at).toLocaleTimeString([], {
@@ -994,9 +987,8 @@ export function WhatsAppFeature() {
                               </span>
                               {!isProspect && (
                                 <CheckCheck
-                                  className={`w-3.5 h-3.5 ${
-                                    msg.status === 'read' ? 'text-emerald-300' : 'text-muted-foreground'
-                                  }`}
+                                  className={`w-3.5 h-3.5 ${msg.status === 'read' ? 'text-emerald-300' : 'text-muted-foreground'
+                                    }`}
                                 />
                               )}
                             </div>
@@ -1005,9 +997,8 @@ export function WhatsAppFeature() {
                           {/* Reaction badge on bubble */}
                           {reaction && (
                             <div
-                              className={`absolute -bottom-2 ${
-                                isProspect ? 'left-2' : 'right-2'
-                              } px-1.5 py-0.5 rounded-none bg-card border border-border text-[11px] shadow-lg flex items-center gap-0.5`}
+                              className={`absolute -bottom-2 ${isProspect ? 'left-2' : 'right-2'
+                                } px-1.5 py-0.5 rounded-none bg-card border border-border text-[11px] shadow-lg flex items-center gap-0.5`}
                             >
                               <span>{reaction}</span>
                             </div>
@@ -1188,9 +1179,8 @@ export function WhatsAppFeature() {
                     <button
                       type="button"
                       onClick={() => setShowAttachmentMenu(!showAttachmentMenu)}
-                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${
-                        showAttachmentMenu ? 'bg-muted text-emerald-400' : ''
-                      }`}
+                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${showAttachmentMenu ? 'bg-muted text-emerald-400' : ''
+                        }`}
                       title="Attach Document / Media"
                     >
                       <Paperclip className="w-4 h-4" />
@@ -1200,9 +1190,8 @@ export function WhatsAppFeature() {
                     <button
                       type="button"
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${
-                        showEmojiPicker ? 'bg-muted text-amber-400' : ''
-                      }`}
+                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${showEmojiPicker ? 'bg-muted text-amber-400' : ''
+                        }`}
                       title="Add Emoji"
                     >
                       <Smile className="w-4 h-4" />
@@ -1213,11 +1202,10 @@ export function WhatsAppFeature() {
                       <button
                         type="button"
                         onClick={() => setSenderMode('agent')}
-                        className={`px-2 py-1 rounded-none transition-none ${
-                          senderMode === 'agent'
+                        className={`px-2 py-1 rounded-none transition-none ${senderMode === 'agent'
                             ? 'bg-emerald-600 text-foreground'
                             : 'text-muted-foreground hover:text-foreground'
-                        }`}
+                          }`}
                         title="Send as Sales Rep"
                       >
                         Rep
@@ -1225,11 +1213,10 @@ export function WhatsAppFeature() {
                       <button
                         type="button"
                         onClick={() => setSenderMode('prospect')}
-                        className={`px-2 py-1 rounded-none transition-none ${
-                          senderMode === 'prospect'
+                        className={`px-2 py-1 rounded-none transition-none ${senderMode === 'prospect'
                             ? 'bg-blue-600 text-foreground'
                             : 'text-muted-foreground hover:text-foreground'
-                        }`}
+                          }`}
                         title="Send as Inbound Prospect (triggers AI Bot reply)"
                       >
                         Lead
@@ -1237,11 +1224,10 @@ export function WhatsAppFeature() {
                       <button
                         type="button"
                         onClick={() => setSenderMode('bot')}
-                        className={`px-2 py-1 rounded-none transition-none ${
-                          senderMode === 'bot'
+                        className={`px-2 py-1 rounded-none transition-none ${senderMode === 'bot'
                             ? 'bg-purple-600 text-foreground'
                             : 'text-muted-foreground hover:text-foreground'
-                        }`}
+                          }`}
                         title="Send directly as AI Bot"
                       >
                         AI Bot
@@ -1256,8 +1242,8 @@ export function WhatsAppFeature() {
                         senderMode === 'prospect'
                           ? `Speak as ${activeConv.contact_name} (triggers AI Auto-Pilot)...`
                           : senderMode === 'bot'
-                          ? 'Send as AI Auto-Pilot Bot...'
-                          : 'Type a WhatsApp message...'
+                            ? 'Send as AI Auto-Pilot Bot...'
+                            : 'Type a WhatsApp message...'
                       }
                       className="flex-1 bg-background border border-border rounded-none px-4 py-2 text-xs text-foreground focus:outline-none focus:border-emerald-500 transition-none"
                     />
