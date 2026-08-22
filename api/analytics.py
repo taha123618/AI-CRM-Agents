@@ -4,13 +4,14 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from database.connection import get_db
-from database.models import Deal, Contact, Customer
+from database.models import Deal, Contact, Customer, User
+from services.auth_service import require_auth
 
 router = APIRouter()
 
 
 @router.get("/dashboard")
-async def get_dashboard(db: Session = Depends(get_db)):
+async def get_dashboard(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Get dashboard metrics"""
 
     total_leads = db.query(Contact).count()
@@ -55,7 +56,7 @@ async def get_dashboard(db: Session = Depends(get_db)):
 
 
 @router.get("/pipeline")
-async def get_pipeline_metrics(db: Session = Depends(get_db)):
+async def get_pipeline_metrics(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Get pipeline breakdown by stage"""
 
     stages = [
@@ -83,7 +84,7 @@ async def get_pipeline_metrics(db: Session = Depends(get_db)):
 
 
 @router.get("/insights")
-async def get_analytics_insights(db: Session = Depends(get_db)):
+async def get_analytics_insights(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
     """Get AI-generated analytics insights from AnalyticsAgent"""
 
     # Collect live DB metrics for the agent to reason over
@@ -225,4 +226,38 @@ async def get_analytics_insights(db: Session = Depends(get_db)):
             f"and {db.query(Customer).count()} customers. "
             f"Pipeline health is {'strong' if avg_hs >= 70 else 'moderate' if avg_hs >= 50 else 'critical'}."
         ),
+    }
+
+
+@router.get("/system-metrics")
+async def get_system_metrics(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+    """Get real-time operational telemetry, database row counts, and agent fleet health."""
+    import time
+    from database.models import Meeting, Email, AuditLog, OutreachSequence, AutomationRule
+
+    # Measure DB query latency
+    t0 = time.perf_counter()
+    db.execute(func.now())
+    latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+
+    return {
+        "status": "operational",
+        "database": {
+            "status": "connected",
+            "latency_ms": latency_ms,
+            "row_counts": {
+                "leads": db.query(Contact).count(),
+                "deals": db.query(Deal).count(),
+                "customers": db.query(Customer).count(),
+                "meetings": db.query(Meeting).count(),
+                "emails": db.query(Email).count(),
+                "audit_logs": db.query(AuditLog).count(),
+                "outreach_sequences": db.query(OutreachSequence).count(),
+                "automation_rules": db.query(AutomationRule).count(),
+            },
+        },
+        "agents": {
+            "registered_count": 9,
+            "orchestrator_status": "active",
+        },
     }

@@ -1,9 +1,10 @@
 """Unit tests for FastAPI endpoints in main.py"""
 
 from main import app
+from tests.conftest import get_authenticated_client
 from fastapi.testclient import TestClient
 
-client = TestClient(app)
+client = get_authenticated_client()
 
 
 def test_root():

@@ -45,7 +45,6 @@ export function LeadModal() {
   const onSubmit = async (data: LeadFormData) => {
     try {
       await createLeadMutation.mutateAsync(data);
-      // Automatically trigger LeadQualificationAgent
       await qualifyLeadMutation.mutateAsync(data);
       reset();
       setLeadModalOpen(false);
@@ -58,21 +57,22 @@ export function LeadModal() {
     <Modal
       isOpen={isLeadModalOpen}
       onClose={() => setLeadModalOpen(false)}
-      title="Create New Lead"
-      description="Add a new lead to the CRM. Lead Qualification Agent will automatically enrich and score it."
+      title="CREATE NEW LEAD RECORD"
+      description="ADD A LEAD. LEAD QUALIFICATION AGENT WILL ENRICH AND SCORE AUTOMATICALLY."
+      className="font-mono"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 font-mono">
+        <div className="grid grid-cols-2 gap-2">
           <Input
-            label="First Name"
-            placeholder="Alice"
+            label="FIRST NAME"
+            placeholder="ALICE"
             required
             {...register('first_name')}
             error={errors.first_name?.message}
           />
           <Input
-            label="Last Name"
-            placeholder="Smith"
+            label="LAST NAME"
+            placeholder="SMITH"
             required
             {...register('last_name')}
             error={errors.last_name?.message}
@@ -80,43 +80,45 @@ export function LeadModal() {
         </div>
 
         <Input
-          label="Email Address"
+          label="EMAIL ADDRESS"
           type="email"
-          placeholder="alice@acme.com"
+          placeholder="ALICE@ACME.COM"
           required
           {...register('email')}
           error={errors.email?.message}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <Input
-            label="Company"
-            placeholder="Acme Corp"
+            label="COMPANY"
+            placeholder="ACME CORP"
             {...register('company_name')}
           />
           <Input
-            label="Job Title"
-            placeholder="VP of Engineering"
+            label="JOB TITLE"
+            placeholder="VP OF ENGINEERING"
             {...register('job_title')}
           />
         </div>
 
         <Input
-          label="Lead Source"
-          placeholder="Website Form / Inbound / Demo"
+          label="LEAD SOURCE"
+          placeholder="WEBSITE FORM / INBOUND"
           {...register('lead_source')}
         />
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <Button type="button" variant="outline" onClick={() => setLeadModalOpen(false)}>
-            Cancel
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
+          <Button type="button" variant="outline" onClick={() => setLeadModalOpen(false)} className="text-xs">
+            CANCEL
           </Button>
           <Button
             type="submit"
+            variant="primary"
             isLoading={createLeadMutation.isPending || qualifyLeadMutation.isPending}
+            className="text-xs"
           >
-            <Sparkles className="w-4 h-4" />
-            <span>Create & Qualify Lead</span>
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            <span>CREATE &amp; QUALIFY</span>
           </Button>
         </div>
       </form>

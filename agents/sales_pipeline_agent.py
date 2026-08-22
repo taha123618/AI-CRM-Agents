@@ -1,6 +1,6 @@
 """Sales Pipeline Agent - Tracks deals and predicts close probability"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent
 from datetime import datetime, timedelta
 
@@ -39,12 +39,60 @@ class SalesPipelineAgent(BaseAgent):
 
         if action == "analyze":
             return await self.analyze_deal(deal_id)
+        elif action in ("send_deal_email", "send_followup", "send_email"):
+            recipient = task.get("to") or task.get("recipient") or task.get("email")
+            subject = task.get("subject", f"Follow-up regarding Deal #{deal_id}")
+            body = task.get("body") or task.get("message") or "Following up on our latest proposal and project milestones."
+            if not recipient or "@" not in str(recipient):
+                raise ValueError(f"Invalid recipient email: '{recipient}'")
+            return await self.dispatch_deal_email(
+                recipient_email=str(recipient),
+                subject=subject,
+                body=body,
+                deal_id=deal_id,
+            )
         elif action == "update_stage":
             return await self.update_deal_stage(deal_id, task.get("new_stage"))
         elif action == "check_stalled":
             return await self.check_stalled_deals()
         else:
             return {"error": "Unknown action"}
+
+    async def dispatch_deal_email(
+        self,
+        recipient_email: str,
+        subject: str,
+        body: str,
+        deal_id: Optional[str] = None,
+        recipient_name: str = "",
+    ) -> Dict[str, Any]:
+        """Dispatch deal follow-up email via centralized email task queue."""
+        from services.task_queue_service import task_queue
+
+        await self.log_activity("dispatching_deal_email", {
+            "to": recipient_email,
+            "subject": subject,
+            "deal_id": deal_id,
+        })
+
+        job = await task_queue.enqueue_email(
+            to_email=recipient_email,
+            subject=subject,
+            body=body,
+            recipient_name=recipient_name,
+            metadata={
+                "agent": "SalesPipelineAgent",
+                "deal_id": str(deal_id or ""),
+                "email_type": "deal_followup",
+            },
+        )
+        return {
+            "status": "queued",
+            "task_id": job.task_id,
+            "recipient": recipient_email,
+            "subject": subject,
+            "message": f"Deal follow-up email queued for delivery to {recipient_email}",
+        }
 
     async def analyze_deal(self, deal_id: str) -> Dict[str, Any]:
         """Comprehensive deal analysis"""
@@ -156,7 +204,7 @@ class SalesPipelineAgent(BaseAgent):
 
         days_in_stage = deal_data.get("days_in_stage", 0)
         last_contact_days = deal_data.get("last_contact_days_ago", 0)
-        stage = deal_data.get("stage")
+        stage = str(deal_data.get("stage") or "")
 
         # Stalled criteria
         if last_contact_days > 14:  # No contact in 2 weeks
@@ -336,7 +384,7 @@ class SalesPipelineAgent(BaseAgent):
         # Placeholder
         return []
 
-    def _get_stage_close_rate(self, stage: str) -> int:
+    def _get_stage_close_rate(self, stage: Optional[str]) -> int:
         """Get historical close rate for stage"""
         rates = {
             "prospecting": 10,
@@ -346,7 +394,7 @@ class SalesPipelineAgent(BaseAgent):
             "closed_won": 100,
             "closed_lost": 0,
         }
-        return rates.get(stage, 30)
+        return rates.get(str(stage) if stage else "", 30)
 
     def _get_avg_deal_cycle(self) -> int:
         """Get average deal cycle in days"""

@@ -1,6 +1,6 @@
 """Meeting Scheduler Agent - Smart calendar management and scheduling"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent
 from datetime import datetime, timedelta
 import json
@@ -39,6 +39,18 @@ class MeetingSchedulerAgent(BaseAgent):
 
         if action == "schedule":
             return await self.schedule_meeting(task)
+        elif action in ("send_invite", "send_email", "dispatch_invite"):
+            meeting_data = task.get("meeting_data") or task
+            recipient = task.get("to") or task.get("recipient") or task.get("attendee_email")
+            if not recipient and isinstance(meeting_data.get("attendees"), list) and meeting_data.get("attendees"):
+                recipient = meeting_data.get("attendees")[0]
+            if not recipient or "@" not in str(recipient):
+                raise ValueError(f"Invalid recipient email provided: '{recipient}'")
+            return await self.dispatch_meeting_invite_email(
+                meeting_data=meeting_data,
+                recipient_email=str(recipient),
+                enqueue_in_background=task.get("async", True),
+            )
         elif action == "prepare":
             return await self.prepare_meeting(task.get("meeting_id"))
         elif action == "suggest_times":
@@ -48,8 +60,93 @@ class MeetingSchedulerAgent(BaseAgent):
         else:
             return {"error": "Unknown action"}
 
+    async def dispatch_meeting_invite_email(
+        self,
+        meeting_data: Dict[str, Any],
+        recipient_email: str,
+        recipient_name: str = "",
+        enqueue_in_background: bool = True,
+    ) -> Dict[str, Any]:
+        """Format and dispatch meeting invitation & AI prep briefing email via centralized email service."""
+        from services.email_service import email_service
+        from services.task_queue_service import task_queue
+
+        title = meeting_data.get("title") or meeting_data.get("subject") or "Scheduled CRM Architecture Briefing"
+        scheduled_time = meeting_data.get("scheduled_time") or meeting_data.get("scheduled_at") or "Upcoming"
+        duration = meeting_data.get("duration_minutes") or 30
+        location = meeting_data.get("location") or "Google Meet (auto-generated)"
+        agenda_items = meeting_data.get("agenda") or []
+
+        agenda_text = ""
+        if isinstance(agenda_items, list) and agenda_items:
+            agenda_text = "\n".join([f"• {item}" for item in agenda_items])
+        elif isinstance(agenda_items, str):
+            agenda_text = agenda_items
+        else:
+            agenda_text = "• Welcome & Alignment\n• Technical Architecture & Security\n• Custom Pricing & Timeline"
+
+        prep_notes = ""
+        prep_mat = meeting_data.get("prep_materials")
+        if isinstance(prep_mat, dict) and prep_mat.get("prep_notes"):
+            prep_notes = f"\n\nPreparation Briefing:\n{prep_mat.get('prep_notes')}"
+        elif meeting_data.get("notes"):
+            prep_notes = f"\n\nContext Notes:\n{meeting_data.get('notes')}"
+
+        subject = f"Meeting Invitation & Briefing: {title}"
+        body_content = f"""You have a confirmed meeting scheduled on our calendar.
+
+Meeting Details:
+• Title: {title}
+• Date & Time: {scheduled_time}
+• Duration: {duration} minutes
+• Location / Video Link: {location}
+
+Proposed Agenda:
+{agenda_text}{prep_notes}
+
+Please let us know if you need to adjust the timing."""
+
+        await self.log_activity("dispatching_meeting_invite_email", {
+            "to": recipient_email,
+            "title": title,
+            "async": enqueue_in_background,
+        })
+
+        if enqueue_in_background:
+            job = await task_queue.enqueue_email(
+                to_email=recipient_email,
+                subject=subject,
+                body=body_content,
+                recipient_name=recipient_name,
+                metadata={
+                    "agent": "MeetingSchedulerAgent",
+                    "meeting_id": str(meeting_data.get("meeting_id") or meeting_data.get("id") or ""),
+                    "email_type": "meeting_invitation",
+                },
+            )
+            return {
+                "status": "queued",
+                "task_id": job.task_id,
+                "recipient": recipient_email,
+                "subject": subject,
+                "message": f"Meeting invitation queued for delivery to {recipient_email}",
+            }
+        else:
+            delivery = await email_service.send_crm_email(
+                to_email=recipient_email,
+                subject=subject,
+                body=body_content,
+                recipient_name=recipient_name,
+            )
+            return {
+                "status": "delivered" if delivery.get("delivered") else "failed",
+                "recipient": recipient_email,
+                "subject": subject,
+                "details": delivery,
+            }
+
     async def schedule_meeting(self, request: Dict[str, Any]) -> Dict[str, Any]:
-        """Schedule a new meeting intelligently"""
+        """Schedule a new meeting intelligently and dispatch attendee invitations"""
         await self.log_activity(
             "scheduling_meeting", {"type": request.get("meeting_type")}
         )
@@ -57,7 +154,12 @@ class MeetingSchedulerAgent(BaseAgent):
         # Extract meeting details
         meeting_type = request.get("meeting_type", "general")
         attendees = request.get("attendees", [])
-        subject = request.get("subject", "")
+        if not attendees and request.get("attendee_email"):
+            attendees = [request.get("attendee_email")]
+        elif isinstance(attendees, str):
+            attendees = [attendees]
+
+        subject = request.get("title") or request.get("subject") or ""
         preferred_time = request.get("preferred_time")
 
         # Determine optimal duration
@@ -95,6 +197,23 @@ class MeetingSchedulerAgent(BaseAgent):
             "context": context,
         }
 
+        # Automatically dispatch meeting invitation email to attendees via centralized email service
+        invites_sent = []
+        if request.get("dispatch_email", True) and attendees:
+            for attendee in attendees:
+                if attendee and "@" in str(attendee):
+                    try:
+                        invite_res = await self.dispatch_meeting_invite_email(
+                            meeting_data=meeting,
+                            recipient_email=str(attendee),
+                            enqueue_in_background=True,
+                        )
+                        invites_sent.append(invite_res)
+                    except Exception as e:
+                        invites_sent.append({"recipient": str(attendee), "error": str(e)})
+
+        meeting["invites_dispatched"] = invites_sent
+
         # Publish event
         await self.publish_event(
             "meeting_scheduled",
@@ -102,6 +221,7 @@ class MeetingSchedulerAgent(BaseAgent):
                 "meeting_id": meeting["meeting_id"],
                 "type": meeting_type,
                 "time": best_slot,
+                "invites_count": len(invites_sent),
             },
         )
 
@@ -110,7 +230,7 @@ class MeetingSchedulerAgent(BaseAgent):
         return meeting
 
     async def find_available_slots(
-        self, attendees: List[str], duration: int, preferred_time: str = None
+        self, attendees: List[str], duration: int, preferred_time: Optional[str] = None
     ) -> List[str]:
         """Find available time slots for all attendees"""
 

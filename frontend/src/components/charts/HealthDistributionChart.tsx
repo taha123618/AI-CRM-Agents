@@ -12,13 +12,13 @@ export function HealthDistributionChart({
   highRiskCount = 2,
 }: HealthDistributionProps) {
   const data = [
-    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#10b981' },
-    { name: 'Medium Risk', value: mediumRiskCount, color: '#f59e0b' },
-    { name: 'High Risk (Churn Warning)', value: highRiskCount, color: '#f43f5e' },
+    { name: 'Low Risk (Healthy)', value: lowRiskCount, color: '#FFB800' },
+    { name: 'Medium Risk', value: mediumRiskCount, color: '#FFB800' },
+    { name: 'High Risk (Churn Warning)', value: highRiskCount, color: '#FF2A54' },
   ];
 
   return (
-    <div className="w-full h-64">
+    <div className="w-full h-64 font-mono">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -36,14 +36,16 @@ export function HealthDistributionChart({
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderColor: '#334155',
-              borderRadius: '0.75rem',
-              color: '#ffffff',
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
+              borderRadius: '0px',
+              color: 'hsl(var(--foreground))',
+              fontFamily: 'monospace',
+              fontSize: '11px',
             }}
           />
           <Legend
-            wrapperStyle={{ fontSize: '12px', color: '#fff' }}
+            wrapperStyle={{ fontSize: '11px', color: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
             verticalAlign="bottom"
             height={36}
           />

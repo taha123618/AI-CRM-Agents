@@ -32,3 +32,16 @@ export function useDeleteMeeting() {
     },
   });
 }
+
+export function useSendMeetingInvite() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload?: { attendee_emails?: string[]; custom_note?: string } }) =>
+      api.sendMeetingInvite(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meetings'] });
+    },
+  });
+}
+

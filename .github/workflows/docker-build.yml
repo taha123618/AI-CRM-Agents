@@ -1,0 +1,52 @@
+name: Container Security & Image Scan
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"  # Every Monday at 04:00 UTC
+  workflow_dispatch:
+
+jobs:
+  trivy-scan:
+    name: Trivy Vulnerability Scanner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Backend Image Locally
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: ai-crm-backend:test
+
+      - name: Run Trivy Vulnerability Scanner on Backend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "ai-crm-backend:test"
+          format: "table"
+          exit-code: "0"
+          ignore-unfixed: true
+          severity: "CRITICAL,HIGH"
+
+      - name: Build Frontend Image Locally
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          load: true
+          tags: ai-crm-frontend:test
+
+      - name: Run Trivy Vulnerability Scanner on Frontend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "ai-crm-frontend:test"
+          format: "table"
+          exit-code: "0"
+          ignore-unfixed: true
+          severity: "CRITICAL,HIGH"

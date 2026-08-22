@@ -3,89 +3,263 @@
 @tailwind utilities;
 
 @layer base {
+
+  /* ═══════════════════════════════════════════════
+     DARK THEME (default) — Tactical Command OS
+     Void Black / Matte Black / Amber Gold
+     ═══════════════════════════════════════════════ */
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 222 14% 7%;
+    /* #0B0C10  Void Black */
+    --foreground: 210 20% 96%;
+    /* #F1F5F9  Near-white */
+
+    --card: 0 0% 7%;
+    /* #121212  Matte Black */
+    --card-foreground: 210 20% 96%;
+
+    --popover: 0 0% 11%;
+    /* #1C1C1C  Overlay Surface */
+    --popover-foreground: 210 20% 96%;
+
+    --primary: 43 100% 50%;
+    /* #FFB800  Tactical Amber */
+    --primary-foreground: 222 14% 7%;
+    /* #0B0C10  Dark text on amber */
+
+    --secondary: 217 19% 15%;
+    /* #1E252F */
+    --secondary-foreground: 210 20% 96%;
+
+    --muted: 217 19% 15%;
+    /* #1E252F */
+    --muted-foreground: 215 16% 57%;
+    /* #8A96A3 */
+
+    --accent: 217 19% 15%;
+    --accent-foreground: 43 100% 50%;
+    /* Amber accent text */
+
+    --destructive: 348 100% 58%;
+    /* #FF2A54  Alert Red */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 19% 25%;
+    /* #3A4552  Steel Border */
+    --input: 215 19% 20%;
+    /* slightly darker than border */
+    --ring: 43 100% 50%;
+    /* Amber focus ring */
+
+    --radius: 0rem;
+
+    /* Chart colors */
+    --chart-1: 43 100% 50%;
+    /* Amber */
+    --chart-2: 199 89% 48%;
+    /* Cyan */
+    --chart-3: 271 91% 65%;
+    /* Purple */
+    --chart-4: 142 72% 42%;
+    /* Emerald */
+    --chart-5: 348 100% 58%;
+    /* Red */
+  }
+
+  /* ═══════════════════════════════════════════════
+     LIGHT THEME — Tactical Field Manual
+     Warm Off-White / Near-Black / Same Amber Primary
+     ═══════════════════════════════════════════════ */
+  .light {
+    --background: 60 11% 96%;
+    /* #F5F5F0  Warm off-white */
+    --foreground: 220 20% 9%;
+    /* #0F1117  Near-black */
+
+    --card: 0 0% 100%;
+    /* #FFFFFF  Pure white */
+    --card-foreground: 220 20% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 9%;
+
+    --primary: 43 100% 48%;
+    /* Tactical Amber */
+    --primary-foreground: 222 14% 7%;
+    /* Dark text on amber (high contrast in both light & dark) */
+
+    --secondary: 210 14% 91%;
+    /* #E4E8ED */
+    --secondary-foreground: 220 20% 9%;
+
+    --muted: 210 15% 91%;
+    /* #E6EAEE */
+    --muted-foreground: 215 19% 34%;
+    /* #465161 Crisp readable text */
+
+    --accent: 210 14% 91%;
+    --accent-foreground: 43 100% 40%;
+
+    --destructive: 348 85% 48%;
+    /* #E0254A */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 18% 75%;
+    /* #B5BFCB Crisp border */
+    --input: 214 18% 82%;
+    --ring: 43 100% 48%;
+    /* Amber focus ring */
+
+    --radius: 0rem;
+
+    /* Chart colors — calibrated for light bg */
+    --chart-1: 43 100% 40%;
+    /* Amber */
+    --chart-2: 199 89% 38%;
+    /* Cyan */
+    --chart-3: 271 91% 55%;
+    /* Purple */
+    --chart-4: 142 72% 35%;
+    /* Emerald */
+    --chart-5: 348 85% 48%;
+    /* Red */
+  }
+
+  /* ═══════════════════════════════════════════════
+     DARK CLASS alias (maps to :root dark values)
+     ═══════════════════════════════════════════════ */
+  .dark {
+    --background: 222 14% 7%;
+    --foreground: 210 20% 96%;
+    --card: 0 0% 7%;
+    --card-foreground: 210 20% 96%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 43 100% 50%;
+    --primary-foreground: 222 14% 7%;
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 217 19% 15%;
+    --muted-foreground: 215 16% 57%;
+    --accent: 217 19% 15%;
+    --accent-foreground: 43 100% 50%;
+    --destructive: 348 100% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 19% 25%;
+    --input: 215 19% 20%;
+    --ring: 43 100% 50%;
+    --radius: 0rem;
+    --chart-1: 43 100% 50%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 271 91% 65%;
+    --chart-4: 142 72% 42%;
+    --chart-5: 348 100% 58%;
+  }
+
+  /* ═══════════════════════════════════════════════
+     GLOBAL DESIGN RULES
+     ═══════════════════════════════════════════════ */
+
+  /* Universal Strict Zero-Radius Enforcement */
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+  }
+
+  /* Universal Instant State Transitions (Zero Easing / Zero Latency) */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
   }
 
   body {
-    @apply bg-slate-950 text-slate-100 antialiased font-sans;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    background-image: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 600px),
-                      radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.05), transparent 600px);
+    @apply bg-background text-foreground antialiased font-sans;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   }
 }
 
-/* Custom Scrollbars */
+/* ═══════════════════════════════════════════════
+   SCROLLBARS — Tactical Squared Style & Theme-Aware Width
+   ═══════════════════════════════════════════════ */
+:root {
+  --scrollbar-thumb: #0B0C10;
+  --scrollbar-thumb-hover: #1f2937;
+  --scrollbar-track: hsl(var(--background));
+}
+
+.dark {
+  --scrollbar-thumb: hsl(var(--primary));
+  --scrollbar-thumb-hover: #f59e0b;
+  --scrollbar-track: hsl(var(--background));
+}
+
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.6);
-  border-radius: 9999px;
+  background: var(--scrollbar-thumb);
+  border: 1px solid var(--scrollbar-track);
+  border-radius: 0 !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(71, 85, 105, 0.8);
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Glassmorphism premium styles */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* ═══════════════════════════════════════════════
+   TABLE STRIPES — Theme-aware Semantic
+   ═══════════════════════════════════════════════ */
+table {
+  border-collapse: collapse;
+  width: 100%;
 }
 
-.glass-panel-premium {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+table tbody tr:nth-child(even) {
+  background-color: hsl(var(--card));
 }
 
-.glass-card {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+table tbody tr:nth-child(odd) {
+  background-color: hsl(var(--background));
 }
 
-/* Glow effects and modern animations */
-.glow-card-brand {
-  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.15);
+table tbody tr:hover {
+  outline: 1px solid hsl(var(--primary));
+  background-color: hsl(var(--muted)) !important;
 }
 
-.glow-card-emerald {
-  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.15);
+/* ═══════════════════════════════════════════════
+   RTL LAYOUT UTILITIES
+   ═══════════════════════════════════════════════ */
+[dir="rtl"] {
+  text-align: right;
 }
 
-.glow-card-purple {
-  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.15);
+[dir="rtl"] .ltr-only {
+  display: none;
 }
 
-.glow-text-brand {
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+[dir="ltr"] .rtl-only {
+  display: none;
 }
 
-.animate-pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: .8;
-    transform: scale(0.98);
-  }
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
 }

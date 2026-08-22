@@ -19,12 +19,12 @@ const dealSchema = z.object({
 type DealFormData = z.infer<typeof dealSchema>;
 
 const STAGE_OPTIONS = [
-  { value: 'prospecting', label: 'Prospecting' },
-  { value: 'qualification', label: 'Qualification' },
-  { value: 'proposal', label: 'Proposal Sent' },
-  { value: 'negotiation', label: 'In Negotiation' },
-  { value: 'closed_won', label: 'Closed Won' },
-  { value: 'closed_lost', label: 'Closed Lost' },
+  { value: 'prospecting', label: 'PROSPECTING' },
+  { value: 'qualification', label: 'QUALIFICATION' },
+  { value: 'proposal', label: 'PROPOSAL SENT' },
+  { value: 'negotiation', label: 'IN NEGOTIATION' },
+  { value: 'closed_won', label: 'CLOSED WON' },
+  { value: 'closed_lost', label: 'CLOSED LOST' },
 ];
 
 export function DealModal() {
@@ -62,21 +62,22 @@ export function DealModal() {
     <Modal
       isOpen={isDealModalOpen}
       onClose={() => setDealModalOpen(false)}
-      title="Create New Deal"
-      description="Add a new deal opportunity to the sales pipeline."
+      title="CREATE NEW DEAL OPPORTUNITY"
+      description="ADD A NEW REVENUE OPPORTUNITY TO THE SALES PIPELINE."
+      className="font-mono"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 font-mono">
         <Input
-          label="Deal Name"
-          placeholder="Acme Corp - Enterprise Renewal"
+          label="DEAL NAME"
+          placeholder="ACME CORP - ENTERPRISE LICENSE"
           required
           {...register('name')}
           error={errors.name?.message}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <Input
-            label="Deal Value ($)"
+            label="DEAL VALUE ($)"
             type="number"
             step="1000"
             required
@@ -85,20 +86,20 @@ export function DealModal() {
           />
 
           <Select
-            label="Pipeline Stage"
+            label="PIPELINE STAGE"
             options={STAGE_OPTIONS}
             required
             {...register('stage')}
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <Button type="button" variant="outline" onClick={() => setDealModalOpen(false)}>
-            Cancel
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
+          <Button type="button" variant="outline" onClick={() => setDealModalOpen(false)} className="text-xs">
+            CANCEL
           </Button>
-          <Button type="submit" isLoading={createDealMutation.isPending}>
-            <Briefcase className="w-4 h-4" />
-            <span>Create Opportunity</span>
+          <Button type="submit" variant="primary" isLoading={createDealMutation.isPending} className="text-xs">
+            <Briefcase className="w-3.5 h-3.5 mr-1" />
+            <span>CREATE DEAL</span>
           </Button>
         </div>
       </form>

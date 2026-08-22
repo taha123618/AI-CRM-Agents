@@ -9,7 +9,16 @@ export type ActivePage =
   | 'meetings'
   | 'analytics'
   | 'reports'
-  | 'agents';
+  | 'forecasting'
+  | 'war-room'
+  | 'journey'
+  | 'sequences'
+  | 'voice-ai'
+  | 'whatsapp'
+  | 'agents'
+  | 'custom-agents'
+  | 'languages'
+  | 'settings';
 
 interface UIState {
   activePage: ActivePage;
@@ -20,6 +29,7 @@ interface UIState {
   isDealModalOpen: boolean;
   isEmailModalOpen: boolean;
   isMeetingModalOpen: boolean;
+  isGlobalSearchOpen: boolean;
   setActivePage: (page: ActivePage) => void;
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
@@ -29,6 +39,7 @@ interface UIState {
   setDealModalOpen: (open: boolean) => void;
   setEmailModalOpen: (open: boolean) => void;
   setMeetingModalOpen: (open: boolean) => void;
+  setGlobalSearchOpen: (open: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -40,6 +51,7 @@ export const useUIStore = create<UIState>((set) => ({
   isDealModalOpen: false,
   isEmailModalOpen: false,
   isMeetingModalOpen: false,
+  isGlobalSearchOpen: false,
   setActivePage: (page) => set({ activePage: page }),
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
@@ -49,4 +61,5 @@ export const useUIStore = create<UIState>((set) => ({
   setDealModalOpen: (open) => set({ isDealModalOpen: open }),
   setEmailModalOpen: (open) => set({ isEmailModalOpen: open }),
   setMeetingModalOpen: (open) => set({ isMeetingModalOpen: open }),
+  setGlobalSearchOpen: (open) => set({ isGlobalSearchOpen: open }),
 }));

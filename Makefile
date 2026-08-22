@@ -89,11 +89,18 @@ PYTHON := $(shell if [ -f .venv/bin/python3 ]; then echo .venv/bin/python3; else
 # ─────────────────────────────────────────────────────────────────────────────
 # TESTING & CODE QUALITY
 # ─────────────────────────────────────────────────────────────────────────────
-test: ## Run all tests
-	$(PYTHON) -m pytest -v
+test: ## Run all automated tests (backend pytest + frontend vitest)
+	PYTHONPATH=. $(PYTHON) -m pytest -v
+	cd frontend && npm run test
 
-test-cov: ## Run tests with coverage report
-	$(PYTHON) -m pytest --cov=. --cov-report=term-missing --cov-report=html -v
+test-backend: ## Run backend pytest tests only
+	PYTHONPATH=. $(PYTHON) -m pytest -v
+
+test-frontend: ## Run frontend Vitest tests only
+	cd frontend && npm run test
+
+test-cov: ## Run backend tests with coverage report
+	PYTHONPATH=. $(PYTHON) -m pytest --cov=. --cov-report=term-missing --cov-report=html -v
 
 lint: ## Run flake8 linter
 	$(PYTHON) -m flake8 .
@@ -117,6 +124,21 @@ setup: ## Run local non-Docker setup (creates .venv, DB, runs migrations)
 
 run: ## Start local dev server without Docker (requires .venv activated)
 	python run.py
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DEVOPS & CI/CD
+# ─────────────────────────────────────────────────────────────────────────────
+ci-qa: quality test ## Run full continuous integration quality pipeline
+	cd frontend && npm run type-check && npm run build
+	@echo "All CI/CD quality checks passed successfully."
+
+db-seed: ## Seed database with realistic initial dataset
+	$(PYTHON) database/seed.py
+
+db-backup: ## Backup PostgreSQL database to compressed archive
+	mkdir -p backups
+	docker-compose exec db pg_dump -U crm_user -d ai_crm | gzip > backups/crm_backup_$(shell date +%Y%m%d_%H%M%S).sql.gz
+	@echo "Database backup created in backups/"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # AI TOOLING

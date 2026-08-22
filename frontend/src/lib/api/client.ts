@@ -14,6 +14,8 @@ import {
   AnalyticsInsight,
 } from '@/types/crm.types';
 
+import { safeStorage } from '@/lib/storage';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const apiClient = axios.create({
@@ -22,15 +24,57 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 15000,
+  withCredentials: true,
+});
+
+apiClient.interceptors.request.use((config) => {
+  const token = safeStorage.getItem('crm_access_token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ detail?: string }>) => {
+  async (error: AxiosError<{ detail?: string }>) => {
+    const status = error.response?.status;
     const message =
       error.response?.data?.detail ||
       error.message ||
       'An unexpected network error occurred';
+
+    // SECURITY: Handle 401 Unauthorized — attempt token refresh once
+    if (status === 401 && !error.config?.url?.includes('/api/auth/')) {
+      const originalRequest = error.config as any;
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshRes = await apiClient.post('/api/auth/refresh');
+          if (refreshRes.data?.access_token) {
+            safeStorage.setItem('crm_access_token', refreshRes.data.access_token);
+            originalRequest.headers.Authorization = `Bearer ${refreshRes.data.access_token}`;
+            return apiClient(originalRequest);
+          }
+        } catch {
+          // Refresh failed — clear session and redirect to login
+          safeStorage.removeItem('crm_access_token');
+          safeStorage.removeItem('crm_user');
+          window.location.href = '/login';
+          return Promise.reject(new Error('Session expired. Please sign in again.'));
+        }
+      }
+    }
+
+    // SECURITY: Handle 403 Forbidden — redirect to unauthorized page
+    if (status === 403) {
+      // Don't redirect for auth endpoints (login/register errors are expected)
+      if (!error.config?.url?.includes('/api/auth/')) {
+        // Store the attempted URL for potential redirect back
+        safeStorage.setItem('crm_unauthorized_url', error.config?.url || '');
+      }
+    }
+
     return Promise.reject(new Error(message));
   }
 );
@@ -117,9 +161,25 @@ export const api = {
   },
   sendEmailResponse: async (
     id: string,
-    replyText: string
-  ): Promise<{ status: string; email_id: string; reply_text: string }> => {
-    const { data } = await apiClient.post(`/api/emails/${id}/send`, { reply_text: replyText });
+    replyText: string,
+    toEmail?: string,
+    subject?: string
+  ): Promise<{ status: string; email_id: string; reply_text: string; recipient?: string; task_id?: string; message?: string }> => {
+    const { data } = await apiClient.post(`/api/emails/${id}/send`, {
+      reply_text: replyText,
+      to_email: toEmail,
+      subject,
+    });
+    return data;
+  },
+  composeEmail: async (payload: {
+    to_email: string;
+    subject: string;
+    body: string;
+    recipient_name?: string;
+    contact_id?: string;
+  }): Promise<{ status: string; email_id: string; recipient: string; task_id: string; message: string }> => {
+    const { data } = await apiClient.post('/api/emails/compose', payload);
     return data;
   },
 
@@ -130,6 +190,13 @@ export const api = {
   },
   updateMeeting: async (id: string, meeting: Partial<Meeting>): Promise<Meeting> => {
     const { data } = await apiClient.put(`/api/meetings/${id}`, meeting);
+    return data;
+  },
+  sendMeetingInvite: async (
+    id: string,
+    payload?: { attendee_emails?: string[]; custom_note?: string }
+  ): Promise<{ status: string; meeting_id: string; dispatched_count: number; message: string }> => {
+    const { data } = await apiClient.post(`/api/meetings/${id}/send-invite`, payload || {});
     return data;
   },
   deleteMeeting: async (id: string): Promise<{ status: string; meeting_id: string }> => {

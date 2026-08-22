@@ -19,10 +19,10 @@ const meetingSchema = z.object({
 type MeetingFormData = z.infer<typeof meetingSchema>;
 
 const TYPE_OPTIONS = [
-  { value: 'Executive Demo', label: 'Executive Demo' },
-  { value: 'Discovery Call', label: 'Discovery Call' },
-  { value: 'Technical Review', label: 'Technical Review' },
-  { value: 'Renewal Discussion', label: 'Renewal Discussion' },
+  { value: 'Executive Demo', label: 'EXECUTIVE DEMO' },
+  { value: 'Discovery Call', label: 'DISCOVERY CALL' },
+  { value: 'Technical Review', label: 'TECHNICAL REVIEW' },
+  { value: 'Renewal Discussion', label: 'RENEWAL DISCUSSION' },
 ];
 
 export function MeetingSchedulerModal() {
@@ -58,27 +58,28 @@ export function MeetingSchedulerModal() {
     <Modal
       isOpen={isMeetingModalOpen}
       onClose={() => setMeetingModalOpen(false)}
-      title="AI Meeting Scheduler"
-      description="Meeting Scheduler Agent will analyze calendar availability, draft meeting prep, and assign follow-ups."
+      title="AI MEETING SCHEDULER"
+      description="MEETINGSCHEDULERAGENT WILL ANALYZE CALENDAR AVAILABILITY AND DRAFT MEETING PREP."
+      className="font-mono"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 font-mono">
         <Input
-          label="Meeting Title"
-          placeholder="Executive Product Demo"
+          label="MEETING TITLE"
+          placeholder="EXECUTIVE PRODUCT DEMO"
           required
           {...register('title')}
           error={errors.title?.message}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <Select
-            label="Meeting Type"
+            label="MEETING TYPE"
             options={TYPE_OPTIONS}
             required
             {...register('meeting_type')}
           />
           <Input
-            label="Attendee Email"
+            label="ATTENDEE EMAIL"
             placeholder="prospect@company.com"
             required
             {...register('attendee_email')}
@@ -86,22 +87,22 @@ export function MeetingSchedulerModal() {
           />
         </div>
 
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-slate-300">Context / Notes</label>
+        <div className="space-y-1">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">CONTEXT / NOTES</label>
           <textarea
             rows={3}
-            className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+            className="w-full bg-background text-foreground border border-border rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-primary"
             {...register('notes')}
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <Button type="button" variant="outline" onClick={() => setMeetingModalOpen(false)}>
-            Cancel
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
+          <Button type="button" variant="outline" onClick={() => setMeetingModalOpen(false)} className="text-xs">
+            CANCEL
           </Button>
-          <Button type="submit" isLoading={scheduleMeetingMutation.isPending}>
-            <Sparkles className="w-4 h-4" />
-            <span>Smart Schedule</span>
+          <Button type="submit" variant="primary" isLoading={scheduleMeetingMutation.isPending} className="text-xs">
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            <span>SMART SCHEDULE</span>
           </Button>
         </div>
       </form>

@@ -3,7 +3,7 @@
 from typing import Dict, List, Any, Optional
 from abc import ABC, abstractmethod
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from .mixins.trace_mixin import TraceMixin
 
@@ -56,7 +56,7 @@ class BaseAgent(ABC, TraceMixin):
             "type": event_type,
             "agent": self.name,
             "data": data,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
         if self.redis:
@@ -88,7 +88,7 @@ class BaseAgent(ABC, TraceMixin):
             "agent": self.name,
             "type": activity_type,
             "details": details,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
         if self.redis:

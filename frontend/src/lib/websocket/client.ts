@@ -1,4 +1,5 @@
 import { AgentEventLog } from '@/types/crm.types';
+import { safeStorage } from '@/lib/storage';
 
 export type ConnectionStatus = 'CONNECTING' | 'OPEN' | 'CLOSED' | 'ERROR';
 export type EventListener = (event: AgentEventLog) => void;
@@ -14,8 +15,28 @@ class RealtimeWebSocketClient {
   private currentStatus: ConnectionStatus = 'CLOSED';
 
   constructor() {
-    const wsBaseUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
-    this.url = wsBaseUrl;
+    if (!import.meta.env.VITE_WS_URL && typeof window !== 'undefined') {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'localhost:8000'
+        : window.location.host;
+      this.url = `${protocol}//${host}/ws`;
+    } else {
+      this.url = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+    }
+  }
+
+  /**
+   * SECURITY: Build WebSocket URL with auth token query parameter.
+   * The backend accepts optional `token` for authenticated connections.
+   */
+  private getAuthenticatedUrl(): string {
+    const token = safeStorage.getItem('crm_access_token');
+    if (token) {
+      const separator = this.url.includes('?') ? '&' : '?';
+      return `${this.url}${separator}token=${encodeURIComponent(token)}`;
+    }
+    return this.url;
   }
 
   public connect() {
@@ -26,7 +47,9 @@ class RealtimeWebSocketClient {
     this.setStatus('CONNECTING');
 
     try {
-      this.socket = new WebSocket(this.url);
+      // SECURITY: Pass auth token for authenticated WebSocket connections
+      const wsUrl = this.getAuthenticatedUrl();
+      this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
         this.setStatus('OPEN');

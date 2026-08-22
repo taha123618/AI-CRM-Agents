@@ -94,6 +94,32 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  # ── Background Task Worker ───────────────────────────────────────────────────
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: crm_worker_dev
+    command: ["python", "worker.py"]
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://crm_user:crm_password@db:5432/ai_crm_dev
+      REDIS_URL:    redis://redis:6379/0
+      DEBUG:        "True"
+      LOG_LEVEL:    debug
+    volumes:
+      - .:/app
+      - /app/.venv
+    networks:
+      - crm_dev_net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
   # ── React + Nginx Frontend ───────────────────────────────────────────────────
   frontend:
     build:

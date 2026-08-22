@@ -6,7 +6,8 @@ from typing import Any, List, Optional, Union
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, field_validator
 from database.connection import get_db
-from database.models import Customer
+from database.models import Customer, User
+from services.auth_service import require_auth
 
 router = APIRouter()
 
@@ -60,7 +61,10 @@ class CustomerUpdate(BaseModel):
 
 @router.get("/", response_model=List[CustomerResponse])
 async def list_customers(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """List all customers"""
     customers = db.query(Customer).offset(skip).limit(limit).all()
@@ -68,7 +72,11 @@ async def list_customers(
 
 
 @router.get("/{customer_id}", response_model=CustomerResponse)
-async def get_customer(customer_id: str, db: Session = Depends(get_db)):
+async def get_customer(
+    customer_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get customer by ID"""
     customer = db.query(Customer).filter(Customer.id == customer_id).first()
     if not customer:
@@ -78,7 +86,10 @@ async def get_customer(customer_id: str, db: Session = Depends(get_db)):
 
 @router.put("/{customer_id}", response_model=CustomerResponse)
 async def update_customer(
-    customer_id: str, payload: CustomerUpdate, db: Session = Depends(get_db)
+    customer_id: str,
+    payload: CustomerUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
 ):
     """Update customer AI metrics"""
     customer = db.query(Customer).filter(Customer.id == customer_id).first()
@@ -102,7 +113,11 @@ async def update_customer(
 
 
 @router.get("/{customer_id}/health")
-async def get_customer_health(customer_id: str, db: Session = Depends(get_db)):
+async def get_customer_health(
+    customer_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get customer health metrics"""
     customer = db.query(Customer).filter(Customer.id == customer_id).first()
     if not customer:

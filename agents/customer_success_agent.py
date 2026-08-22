@@ -1,6 +1,6 @@
 """Customer Success Agent - Monitors health scores and detects churn risk"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent
 
 
@@ -37,12 +37,60 @@ class CustomerSuccessAgent(BaseAgent):
 
         if action == "monitor":
             return await self.monitor_customer(customer_id)
+        elif action in ("send_retention_email", "send_email", "dispatch_retention"):
+            recipient = task.get("to") or task.get("recipient") or task.get("email")
+            subject = task.get("subject", "Executive Partnership Review & Success Update")
+            body = task.get("body") or task.get("message") or "We'd like to schedule an executive review to ensure you're achieving maximum value."
+            if not recipient or "@" not in str(recipient):
+                raise ValueError(f"Invalid recipient email: '{recipient}'")
+            return await self.dispatch_retention_email(
+                recipient_email=str(recipient),
+                subject=subject,
+                body=body,
+                customer_id=customer_id,
+            )
         elif action == "check_churn_risk":
             return await self.check_churn_risk(customer_id)
         elif action == "identify_opportunities":
             return await self.identify_opportunities(customer_id)
         else:
             return {"error": "Unknown action"}
+
+    async def dispatch_retention_email(
+        self,
+        recipient_email: str,
+        subject: str,
+        body: str,
+        customer_id: Optional[str] = None,
+        recipient_name: str = "",
+    ) -> Dict[str, Any]:
+        """Dispatch retention and customer success email via centralized email task queue."""
+        from services.task_queue_service import task_queue
+
+        await self.log_activity("dispatching_retention_email", {
+            "to": recipient_email,
+            "subject": subject,
+            "customer_id": customer_id,
+        })
+
+        job = await task_queue.enqueue_email(
+            to_email=recipient_email,
+            subject=subject,
+            body=body,
+            recipient_name=recipient_name,
+            metadata={
+                "agent": "CustomerSuccessAgent",
+                "customer_id": str(customer_id or ""),
+                "email_type": "retention_intervention",
+            },
+        )
+        return {
+            "status": "queued",
+            "task_id": job.task_id,
+            "recipient": recipient_email,
+            "subject": subject,
+            "message": f"Retention email queued for delivery to {recipient_email}",
+        }
 
     async def monitor_customer(self, customer_id: str) -> Dict[str, Any]:
         """Comprehensive customer health monitoring"""

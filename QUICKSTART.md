@@ -10,7 +10,7 @@ For full documentation, see [README.md](README.md).
 | Method | Requirements |
 |---|---|
 | **Docker** (recommended) | Docker Desktop 24.0+ |
-| **Local / no Docker** | Python 3.9+, PostgreSQL 14+, Redis 7+ |
+| **Local / no Docker** | Python 3.9+, PostgreSQL 14+, Redis 7+, Node.js 18+ |
 
 ---
 
@@ -61,7 +61,16 @@ docker-compose up -d --build
 - 🌐 **Interactive OpenAPI Docs**: http://localhost:8000/docs
 - 🔌 **WebSocket Real-time Stream**: ws://localhost:8000/ws
 
-### 5. Verify Health
+### 5. Default Seeded User Credentials
+
+| Role | Email | Password | Permissions |
+|---|---|---|---|
+| 👑 **Super Admin** | `admin@gmail.com` | `admin123` | Full Wildcard (`*`) |
+| 💼 **Sales Representative** | `sales@gmail.com` | `sales123` | Leads, Deals, Outreach, Meetings, Voice AI |
+| 🎧 **Customer Support** | `support@gmail.com` | `support123` | Customers, Journey, WhatsApp, Tickets |
+| 🔍 **Auditor / Compliance** | `auditor@gmail.com` | `auditor123` | Read-only Audits, SOC2 logs, Forecasts |
+
+### 6. Verify Health
 
 ```bash
 curl http://localhost:8000/health
@@ -114,6 +123,14 @@ alembic upgrade head
 python run.py
 ```
 
+### 5. Start the frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ---
 
 ## 🎯 Try the API
@@ -150,21 +167,90 @@ curl -X POST http://localhost:8000/api/agents/analyze-email \
 curl http://localhost:8000/api/analytics/dashboard
 ```
 
+### Voice AI — Get Call Stats
+
+```bash
+curl http://localhost:8000/api/voice-calls/stats
+```
+
+### WhatsApp — Send a Message
+
+```bash
+curl -X POST http://localhost:8000/api/whatsapp/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "phone_number": "+1234567890",
+    "text": "Hello from AI CRM!",
+    "sender_type": "agent"
+  }'
+```
+
+### Run a Monte Carlo Forecast
+
+```bash
+curl -X POST http://localhost:8000/api/forecasting/simulate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "num_simulations": 1000,
+    "time_horizon_days": 90,
+    "name": "Q3 Forecast"
+  }'
+```
+
+### Deal War Room — Generate AI Proposal
+
+```bash
+curl -X POST http://localhost:8000/api/war-room/deals/1/proposal \
+  -H "Content-Type: application/json" \
+  -d '{
+    "discount_pct": 10,
+    "sla_tier": "Enterprise Premier",
+    "payment_terms": "Annual Upfront"
+  }'
+```
+
+### Customer Journey — Trigger Autonomous Churn Intervention
+
+```bash
+curl -X POST http://localhost:8000/api/journey/interventions/trigger \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": "cust-uuid-here",
+    "intervention_type": "executive_check_in",
+    "custom_notes": "Urgent retention protocol."
+  }'
+```
+
+### AI SDR — Enroll Prospects & Execute Step
+
+```bash
+curl -X POST http://localhost:8000/api/sequences/seq-uuid-here/execute-step \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channel": "email",
+    "step_number": 1,
+    "custom_note": "Initial qualification touchpoint."
+  }'
+```
+
 ---
 
 ## 🏗️ Project Structure
 
 ```
 ai-crm-agents/
-├── agents/                    # 6 AI Agents (BaseAgent subclasses)
-├── api/                       # FastAPI routers (leads, deals, customers…)
-├── database/                  # SQLAlchemy models, connection, schema.sql
+├── agents/                    # 9 AI Agents (BaseAgent subclasses)
+├── api/                       # FastAPI routers (leads, deals, customers, voice-calls, whatsapp, forecasting, custom-agents, i18n, war-room, journey, sequences…)
+├── services/                  # Business services (forecasting, i18n)
+├── database/                  # SQLAlchemy models, connection, seed.py, schema.sql
 ├── workflows/orchestrator.py  # Central agent coordinator
 ├── alembic/                   # Database migration scripts
-├── tests/                     # Unit & integration tests
+├── tests/                     # Unit & integration tests (92+ pytest tests)
+├── frontend/                  # React 19 + TypeScript SPA (16 feature modules)
+├── docs/                      # Feature documentation (war-room, customer-journey, sdr-sequences, voice-ai, forecasting…)
 ├── .agents/                   # AI assistant configuration
 │   ├── AGENTS.md              #   Central rules (single source of truth)
-│   ├── skills/                #   6 modular skill files
+│   ├── skills/                #   7 modular skill files
 │   └── scripts/sync_rules.py #   Generates tool-specific configs
 ├── main.py                    # FastAPI application
 ├── run.py                     # Development server launcher
@@ -187,6 +273,9 @@ ai-crm-agents/
 | 🎉 Customer Success | `POST /api/agents/monitor-customer/{customer_id}` |
 | 📅 Meeting Scheduler | `POST /api/agents/schedule-meeting` |
 | 📊 Analytics | `POST /api/agents/generate-dashboard` |
+| 🎙️ Voice Call Intelligence | `POST /api/voice-calls` |
+| 💬 WhatsApp Hub | `POST /api/whatsapp/send` |
+| 🔧 Custom Agent Builder | `POST /api/custom-agents` |
 
 ---
 
@@ -202,6 +291,28 @@ ai-crm-agents/
 | `GET /api/customers/{id}/health` | Customer health metrics |
 | `GET /api/analytics/dashboard` | Main dashboard |
 | `GET /api/analytics/pipeline` | Pipeline metrics |
+| `GET/POST /api/voice-calls` | List and create voice calls |
+| `GET /api/voice-calls/stats` | Call intelligence stats |
+| `GET/POST /api/whatsapp/conversations` | WhatsApp conversations |
+| `POST /api/whatsapp/send` | Send WhatsApp message |
+| `POST /api/whatsapp/broadcast` | Broadcast template message |
+| `POST /api/forecasting/simulate` | Run Monte Carlo simulation |
+| `GET /api/forecasting/simulations` | List saved scenarios |
+| `GET /api/forecasting/arr-trend` | ARR trend data |
+| `GET /api/forecasting/stage-breakdown` | Pipeline stage breakdown |
+| `GET/POST /api/custom-agents` | Custom agent CRUD |
+| `POST /api/custom-agents/{id}/test` | Test custom agent |
+| `GET /api/i18n/languages` | List languages |
+| `POST /api/i18n/languages` | Create language |
+| `GET /api/i18n/translations/{lang}` | Get translations |
+| `GET /api/war-room/deals` | War Room deal strategies & SWOT |
+| `POST /api/war-room/deals/{id}/proposal` | Smart proposal generator |
+| `GET/POST /api/war-room/automations` | Workflow automation triggers CRUD |
+| `GET /api/journey/stages` | Customer lifecycle ARR aggregation |
+| `POST /api/journey/interventions/trigger` | Trigger autonomous retention play |
+| `GET /api/sequences` | List AI SDR outreach sequences |
+| `POST /api/sequences/{id}/enroll` | Enroll contacts into cadence |
+| `POST /api/sequences/{id}/execute-step` | Live step execution via agent fleet |
 
 ---
 
@@ -403,4 +514,31 @@ Set a real `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env` and update `_init_l
 
 ---
 
+## 📚 Documentation & References
+
+### Agent & Feature Guides
+- 🎯 **Lead Qualification**: [`docs/lead-qualification.md`](docs/lead-qualification.md)
+- 📧 **Email Intelligence**: [`docs/email-intelligence.md`](docs/email-intelligence.md)
+- 💰 **Sales Pipeline**: [`docs/sales-pipeline.md`](docs/sales-pipeline.md)
+- 🎉 **Customer Success**: [`docs/customer-success.md`](docs/customer-success.md)
+- 📅 **Meeting Scheduler**: [`docs/meeting-scheduler.md`](docs/meeting-scheduler.md)
+- 📊 **Analytics**: [`docs/analytics.md`](docs/analytics.md)
+- 🎙️ **Voice AI Call Intelligence**: [`docs/voice-ai.md`](docs/voice-ai.md)
+- 💬 **WhatsApp Business Hub**: [`docs/whatsapp.md`](docs/whatsapp.md)
+- 📈 **Monte Carlo Forecasting**: [`docs/forecasting.md`](docs/forecasting.md)
+- 🔧 **Custom Agent Builder**: [`docs/custom-agents.md`](docs/custom-agents.md)
+- 🌐 **Multi-Language (I18n)**: [`docs/i18n/overview.md`](docs/i18n/overview.md)
+- 🏛️ **System Architecture**: [`docs/architecture/overview.md`](docs/architecture/overview.md)
+
+### Technical Resources
+- **Interactive OpenAPI Docs**: http://localhost:8000/docs
+- **Health Check Endpoint**: http://localhost:8000/health
+- **Main Project README**: [`README.md`](README.md)
+- **Frontend Architecture & Docs**: [`frontend/README.md`](frontend/README.md)
+- **Database Schema**: [`database/schema.sql`](database/schema.sql)
+- **Agent Code**: [`agents/*.py`](agents/)
+
+---
+
 **API Docs**: http://localhost:8000/docs | **Health**: http://localhost:8000/health
+
