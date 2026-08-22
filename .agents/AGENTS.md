@@ -103,14 +103,15 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
   - **Color Palette**: Void Black (`#0B0C10`), Matte Black (`#121212`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Purple (`#A855F7`).
   - **Primary Buttons**: `bg-[#FFB800] text-[#0B0C10] font-bold rounded-none uppercase`.
   - **Typography**: `font-mono` applied to telemetry, tables, timestamps, IDs, financial metrics, currency notations, and charts.
-  - **Transitions**: `transition-none` with 0ms easing globally.
-* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 18 specialized modules.
+  - **Transitions**: `transition-none` with 0ms easing globally for instant tactical feedback.
+  - **Theme-Adaptive Scrollbars**: 6px squared scrollbars driven by CSS variables (`#0B0C10` on light mode, `#FFB800` on dark mode).
+* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 19 specialized modules (including public SaaS Landing Page with Lenis + GSAP momentum scrolling).
 * **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
 * **Strict Type Safety**: Run `npm run type-check`, `npm run test`, and `npm run build` after changes to verify zero errors.
 
 ### 6. Testing Guidelines
-* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (142 tests across 26 suites).
-* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (49 tests across 15 suites).
+* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (182 tests across 26 suites).
+* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (63 tests across 17 suites).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
 * **Directory**: Place backend tests in `tests/` and frontend tests in `frontend/src/**/__tests__/`.
 

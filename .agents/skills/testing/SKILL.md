@@ -61,8 +61,8 @@ Use this skill when designing, writing, executing, or debugging automated test s
    - Use `TestClient(app).websocket_connect("/ws")` to verify stream events and agent status payloads.
 
 6. **Full Test Suite Commands**:
-   - Backend: `PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v` (142 tests across 26 suites, including `tests/test_observability_rag_tenancy.py` and `tests/test_cybersecurity_suite.py`)
-   - Frontend: `cd frontend && npm run test && npm run type-check && npm run build` (49 tests across 15 suites)
+   - Backend: `PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v` (182 tests across 26 suites, including `tests/test_observability_rag_tenancy.py` and `tests/test_cybersecurity_suite.py`)
+   - Frontend: `cd frontend && npm run test && npm run type-check && npm run build` (63 tests across 17 suites)
 
 7. **Mocking External LLMs**:
    - Always mock LLMs in unit tests to prevent network delays and costs:

@@ -154,6 +154,19 @@ This document serves as the **definitive feature checklist and product roadmap**
 
 ---
 
+### 11. 🌐 Modern SaaS Public Landing Page & Smooth Momentum Scrolling
+- [x] **High-Impact Public SaaS Landing Page**: 12 modular sections mounted at `/` and `/home` (`frontend/src/features/landing`).
+- [x] **Lenis + GSAP Momentum Scrolling Engine**: Unified `SmoothScrollProvider` (`SmoothScrollContext.tsx`) syncing Lenis with GSAP's `ScrollTrigger` ticker (`gsap.ticker.add((time) => lenis.raf(time * 1000))`) and `prefers-reduced-motion` compliance.
+- [x] **Top Telemetry Scroll Progress Bar**: Fixed 3px glowing gold progress bar (`ScrollProgressBar.tsx`) tracking live scroll depth.
+- [x] **Floating Tactical Return-to-Top Pill**: Ambient pill (`BackToTopPill.tsx`) with real-time scroll percentage telemetry (`[42%]`).
+- [x] **Direction-Aware Spring-Physics Testimonials Carousel**: Layout-stable (`mode="popLayout"`, `min-h-[320px]`) carousel (`TestimonialsSection.tsx`) with direct selector tabs (`01`, `02`, `03`) and arrow controls.
+- [x] **Interactive ROI & Revenue Value Modeller**: Real-time parameter sliders (`RoiCalculator.tsx`) for Sales Reps, Average Deal ACV, and Inbound Leads calculating ARR lift potential, hours saved, and net ROI multiplier.
+- [x] **Hardened System Architecture Specs & JSON Schema Viewer**: 4 system pillars (`ArchitectureSpecs.tsx`) and interactive RFC-compliant JSON telemetry packet explorer.
+- [x] **Live Simulated CRM Fleet Console**: Real-time agent event resolutions and KPI telemetry cards (`HeroSection.tsx`).
+- [x] **Theme-Adaptive Scrollbars**: 6px squared scrollbars driven by CSS variables in `src/index.css` (`#0B0C10` black on light mode, `#FFB800` amber on dark mode).
+
+---
+
 ## 🔮 Recommended Features & Future Roadmap
 
 The following prioritized roadmap outlines key enhancements for scaling the platform into a high-concurrency, enterprise-grade SaaS solution.

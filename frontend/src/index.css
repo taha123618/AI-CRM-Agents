@@ -3,47 +3,67 @@
 @tailwind utilities;
 
 @layer base {
+
   /* ═══════════════════════════════════════════════
      DARK THEME (default) — Tactical Command OS
      Void Black / Matte Black / Amber Gold
      ═══════════════════════════════════════════════ */
   :root {
-    --background: 222 14% 7%;       /* #0B0C10  Void Black */
-    --foreground: 210 20% 96%;      /* #F1F5F9  Near-white */
+    --background: 222 14% 7%;
+    /* #0B0C10  Void Black */
+    --foreground: 210 20% 96%;
+    /* #F1F5F9  Near-white */
 
-    --card: 0 0% 7%;                /* #121212  Matte Black */
+    --card: 0 0% 7%;
+    /* #121212  Matte Black */
     --card-foreground: 210 20% 96%;
 
-    --popover: 0 0% 11%;            /* #1C1C1C  Overlay Surface */
+    --popover: 0 0% 11%;
+    /* #1C1C1C  Overlay Surface */
     --popover-foreground: 210 20% 96%;
 
-    --primary: 43 100% 50%;         /* #FFB800  Tactical Amber */
-    --primary-foreground: 222 14% 7%; /* #0B0C10  Dark text on amber */
+    --primary: 43 100% 50%;
+    /* #FFB800  Tactical Amber */
+    --primary-foreground: 222 14% 7%;
+    /* #0B0C10  Dark text on amber */
 
-    --secondary: 217 19% 15%;       /* #1E252F */
+    --secondary: 217 19% 15%;
+    /* #1E252F */
     --secondary-foreground: 210 20% 96%;
 
-    --muted: 217 19% 15%;           /* #1E252F */
-    --muted-foreground: 215 16% 57%; /* #8A96A3 */
+    --muted: 217 19% 15%;
+    /* #1E252F */
+    --muted-foreground: 215 16% 57%;
+    /* #8A96A3 */
 
     --accent: 217 19% 15%;
-    --accent-foreground: 43 100% 50%; /* Amber accent text */
+    --accent-foreground: 43 100% 50%;
+    /* Amber accent text */
 
-    --destructive: 348 100% 58%;    /* #FF2A54  Alert Red */
+    --destructive: 348 100% 58%;
+    /* #FF2A54  Alert Red */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 19% 25%;          /* #3A4552  Steel Border */
-    --input: 215 19% 20%;           /* slightly darker than border */
-    --ring: 43 100% 50%;            /* Amber focus ring */
+    --border: 215 19% 25%;
+    /* #3A4552  Steel Border */
+    --input: 215 19% 20%;
+    /* slightly darker than border */
+    --ring: 43 100% 50%;
+    /* Amber focus ring */
 
     --radius: 0rem;
 
     /* Chart colors */
-    --chart-1: 43 100% 50%;         /* Amber */
-    --chart-2: 199 89% 48%;         /* Cyan */
-    --chart-3: 271 91% 65%;         /* Purple */
-    --chart-4: 142 72% 42%;         /* Emerald */
-    --chart-5: 348 100% 58%;        /* Red */
+    --chart-1: 43 100% 50%;
+    /* Amber */
+    --chart-2: 199 89% 48%;
+    /* Cyan */
+    --chart-3: 271 91% 65%;
+    /* Purple */
+    --chart-4: 142 72% 42%;
+    /* Emerald */
+    --chart-5: 348 100% 58%;
+    /* Red */
   }
 
   /* ═══════════════════════════════════════════════
@@ -51,42 +71,58 @@
      Warm Off-White / Near-Black / Same Amber Primary
      ═══════════════════════════════════════════════ */
   .light {
-    --background: 60 11% 96%;       /* #F5F5F0  Warm off-white */
-    --foreground: 220 20% 9%;       /* #0F1117  Near-black */
+    --background: 60 11% 96%;
+    /* #F5F5F0  Warm off-white */
+    --foreground: 220 20% 9%;
+    /* #0F1117  Near-black */
 
-    --card: 0 0% 100%;              /* #FFFFFF  Pure white */
+    --card: 0 0% 100%;
+    /* #FFFFFF  Pure white */
     --card-foreground: 220 20% 9%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 9%;
 
-    --primary: 43 100% 48%;         /* Tactical Amber */
-    --primary-foreground: 222 14% 7%; /* Dark text on amber (high contrast in both light & dark) */
+    --primary: 43 100% 48%;
+    /* Tactical Amber */
+    --primary-foreground: 222 14% 7%;
+    /* Dark text on amber (high contrast in both light & dark) */
 
-    --secondary: 210 14% 91%;       /* #E4E8ED */
+    --secondary: 210 14% 91%;
+    /* #E4E8ED */
     --secondary-foreground: 220 20% 9%;
 
-    --muted: 210 15% 91%;           /* #E6EAEE */
-    --muted-foreground: 215 19% 34%; /* #465161 Crisp readable text */
+    --muted: 210 15% 91%;
+    /* #E6EAEE */
+    --muted-foreground: 215 19% 34%;
+    /* #465161 Crisp readable text */
 
     --accent: 210 14% 91%;
     --accent-foreground: 43 100% 40%;
 
-    --destructive: 348 85% 48%;     /* #E0254A */
+    --destructive: 348 85% 48%;
+    /* #E0254A */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 18% 75%;          /* #B5BFCB Crisp border */
+    --border: 214 18% 75%;
+    /* #B5BFCB Crisp border */
     --input: 214 18% 82%;
-    --ring: 43 100% 48%;            /* Amber focus ring */
+    --ring: 43 100% 48%;
+    /* Amber focus ring */
 
     --radius: 0rem;
 
     /* Chart colors — calibrated for light bg */
-    --chart-1: 43 100% 40%;         /* Amber */
-    --chart-2: 199 89% 38%;         /* Cyan */
-    --chart-3: 271 91% 55%;         /* Purple */
-    --chart-4: 142 72% 35%;         /* Emerald */
-    --chart-5: 348 85% 48%;         /* Red */
+    --chart-1: 43 100% 40%;
+    /* Amber */
+    --chart-2: 199 89% 38%;
+    /* Cyan */
+    --chart-3: 271 91% 55%;
+    /* Purple */
+    --chart-4: 142 72% 35%;
+    /* Emerald */
+    --chart-5: 348 85% 48%;
+    /* Red */
   }
 
   /* ═══════════════════════════════════════════════
@@ -146,24 +182,44 @@
 }
 
 /* ═══════════════════════════════════════════════
-   SCROLLBARS — Tactical Squared Style
+   SCROLLBARS — Tactical Squared Style & Theme-Aware Width
    ═══════════════════════════════════════════════ */
+:root {
+  --scrollbar-thumb: #0B0C10;
+  --scrollbar-thumb-hover: #1f2937;
+  --scrollbar-track: hsl(var(--background));
+}
+
+.dark {
+  --scrollbar-thumb: hsl(var(--primary));
+  --scrollbar-thumb-hover: #f59e0b;
+  --scrollbar-track: hsl(var(--background));
+}
+
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: var(--scrollbar-thumb);
+  border: 1px solid var(--scrollbar-track);
   border-radius: 0 !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* ═══════════════════════════════════════════════

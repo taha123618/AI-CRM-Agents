@@ -11,7 +11,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
-[![Tests](https://img.shields.io/badge/Tests-142%20Passing%20(100%25)-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-182%20Backend%20%7C%2063%20Frontend%20Passing-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Design](https://img.shields.io/badge/Design-Tactical%20Command-FFB800?style=for-the-badge)](design.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
@@ -508,10 +508,10 @@ alembic downgrade -1
 The repository maintains strict **100% passing automated test coverage** across both backend and frontend layers:
 
 ```bash
-# 1. Run all Backend Pytest Suites (96 tests)
+# 1. Run all Backend Pytest Suites (182 tests across 26 suites)
 PYTHONPATH=. .venv/bin/python3 -m pytest tests/ -v
 
-# 2. Run all Frontend Vitest Suites (33 tests)
+# 2. Run all Frontend Vitest Suites (63 tests across 17 suites)
 cd frontend && npm run test
 
 # 3. Run Frontend TypeScript Type Check
@@ -521,7 +521,7 @@ cd frontend && npm run type-check
 cd frontend && npm run build
 ```
 
-**Quality Status:** **129 / 129 Automated Tests Passing (100%)**
+**Quality Status:** **245 / 245 Automated Tests Passing (100%)** Across All Layers.
 
 ---
 
