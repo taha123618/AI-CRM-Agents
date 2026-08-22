@@ -25,10 +25,10 @@ export function RevenueChart({ data }: RevenueChartProps) {
               <stop offset="95%" stopColor="#FFB800" stopOpacity={0.0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
-          <XAxis dataKey="month" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+          <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} fontFamily="monospace" />
           <YAxis
-            stroke="#94a3b8"
+            stroke="hsl(var(--muted-foreground))"
             fontSize={10}
             tickLine={false}
             fontFamily="monospace"
@@ -36,12 +36,12 @@ export function RevenueChart({ data }: RevenueChartProps) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B0C10',
-              borderColor: '#3A4552',
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
               borderRadius: '0px',
               fontSize: '11px',
               fontFamily: 'monospace',
-              color: '#F1F5F9',
+              color: 'hsl(var(--foreground))',
             }}
             formatter={(value: any) => [formatCurrency(Number(value) || 0), 'MRR']}
           />

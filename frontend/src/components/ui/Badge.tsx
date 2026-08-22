@@ -7,20 +7,20 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Badge({ className, variant, statusValue, children, ...props }: BadgeProps) {
-  let styleClass = 'bg-[#0B0C10] text-slate-300 border-[#3A4552]';
+  let styleClass = 'bg-background text-muted-foreground border-border';
 
   if (statusValue) {
     styleClass = getStatusBadgeClass(statusValue);
   } else if (variant === 'success') {
-    styleClass = 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]/50';
+    styleClass = 'bg-background text-primary border-primary/50';
   } else if (variant === 'warning') {
-    styleClass = 'bg-[#0B0C10] text-amber-400 border-amber-400/50';
+    styleClass = 'bg-background text-amber-400 border-amber-400/50';
   } else if (variant === 'danger') {
-    styleClass = 'bg-[#0B0C10] text-[#FF2A54] border-[#FF2A54]/50';
+    styleClass = 'bg-background text-destructive border-destructive/50';
   } else if (variant === 'info') {
-    styleClass = 'bg-[#0B0C10] text-cyan-400 border-cyan-400/50';
+    styleClass = 'bg-background text-cyan-400 border-cyan-400/50';
   } else if (variant === 'purple') {
-    styleClass = 'bg-[#0B0C10] text-purple-400 border-purple-400/50';
+    styleClass = 'bg-background text-purple-400 border-purple-400/50';
   }
 
   return (

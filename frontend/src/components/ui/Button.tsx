@@ -9,25 +9,25 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
-    const variants = {
+    const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
       primary:
-        'bg-[#FFB800] hover:bg-[#FFB800] text-[#0B0C10] font-mono font-bold uppercase tracking-wider border border-[#FFB800] hover:outline hover:outline-1 hover:outline-[#FFB800]',
+        'bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold uppercase tracking-wider border border-primary',
       secondary:
-        'bg-[#1F2833] hover:bg-[#26313F] text-slate-100 font-mono font-bold uppercase border border-[#3A4552] hover:border-[#FFB800]',
+        'bg-card hover:bg-muted text-foreground font-mono font-bold uppercase border border-border hover:border-primary',
       outline:
-        'bg-[#0B0C10] hover:bg-[#1F2833] text-slate-200 font-mono uppercase border border-[#3A4552] hover:border-[#FFB800]',
+        'bg-background hover:bg-muted text-foreground font-mono uppercase border border-border hover:border-primary',
       ghost:
-        'bg-transparent hover:bg-[#1F2833] text-slate-300 hover:text-white font-mono uppercase',
+        'bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground font-mono uppercase',
       danger:
-        'bg-[#FF2A54] hover:bg-[#FF2A54]/90 text-white font-mono font-bold uppercase border border-[#FF2A54]',
+        'bg-destructive hover:bg-destructive/90 text-destructive-foreground font-mono font-bold uppercase border border-destructive',
       orange:
-        'bg-[#FFB800] hover:bg-[#FFB800]/90 text-[#0B0C10] font-mono font-bold uppercase border border-[#FFB800]',
+        'bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold uppercase border border-primary',
     };
 
-    const sizes = {
-      sm: 'px-3 py-1.5 text-xs font-mono font-medium rounded-none',
-      md: 'px-4 py-2 text-sm font-mono font-medium rounded-none',
-      lg: 'px-5 py-2.5 text-base font-mono font-medium rounded-none',
+    const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
+      sm: 'px-3 py-1.5 text-xs font-mono font-medium',
+      md: 'px-4 py-2 text-sm font-mono font-medium',
+      lg: 'px-5 py-2.5 text-base font-mono font-medium',
     };
 
     return (
@@ -35,7 +35,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          'inline-flex items-center justify-center gap-2 transition-none disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-none',
+          'inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-none',
           variants[variant],
           sizes[size],
           className
@@ -44,12 +44,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {isLoading && (
           <svg className="animate-spin h-3.5 w-3.5 text-current" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path
               className="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
+            />
           </svg>
         )}
         {children}

@@ -30,21 +30,21 @@ function ChurnGauge({ probability }: { probability: number }) {
         />
         <text x="40" y="44" textAnchor="middle" fill={color} fontSize="13" fontWeight="900" fontFamily="monospace">{pct}%</text>
       </svg>
-      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider font-mono">CHURN RISK</span>
+      <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider font-mono">CHURN RISK</span>
     </div>
   );
 }
 
 function EngagementBar({ label, value, max = 100, unit = '' }: { label: string; value: number; max?: number; unit?: string }) {
   const pct = Math.min(100, (value / max) * 100);
-  const color = pct >= 60 ? 'bg-[#FFB800]' : pct >= 30 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
+  const color = pct >= 60 ? 'bg-primary' : pct >= 30 ? 'bg-primary' : 'bg-destructive';
   return (
     <div className="space-y-1 font-mono">
       <div className="flex justify-between text-xs font-mono">
-        <span className="text-slate-400 uppercase text-[10px]">{label}</span>
-        <span className="text-white font-bold">{value}{unit}</span>
+        <span className="text-muted-foreground uppercase text-[10px]">{label}</span>
+        <span className="text-foreground font-bold">{value}{unit}</span>
       </div>
-      <div className="h-1.5 bg-[#0B0C10] rounded-none border border-[#3A4552] overflow-hidden">
+      <div className="h-1.5 bg-background rounded-none border border-border overflow-hidden">
         <div className={`h-full ${color} rounded-none transition-none`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -104,9 +104,9 @@ export function CustomersFeature() {
   };
 
   const getRiskClass = (risk: string) => {
-    if (risk === 'high') return 'text-[#FF2A54] bg-[#0B0C10] border-[#FF2A54]';
-    if (risk === 'medium') return 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]';
-    return 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]';
+    if (risk === 'high') return 'text-destructive bg-background border-destructive';
+    if (risk === 'medium') return 'text-primary bg-background border-primary';
+    return 'text-primary bg-background border-primary';
   };
 
   const activeAgentData = monitorResult?.result || monitorResult;
@@ -119,13 +119,13 @@ export function CustomersFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-primary" />
             <span>{t('customers.title', 'ACCOUNT HEALTH & CHURN RISK INTELLIGENCE')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('customers.subtitle', 'CUSTOMER RETENTION TELEMETRY, HEALTH SCORES, AND AUTOMATED INTERVENTIONS')}
           </p>
         </div>
@@ -144,15 +144,15 @@ export function CustomersFeature() {
         return (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: t('customers.all_accounts', 'TOTAL ACCOUNTS'), value: formatNumber(customers.length), icon: Users, color: 'text-white' },
-              { label: t('customers.churn_risk', 'HIGH CHURN RISK'), value: formatNumber(highRisk), icon: AlertTriangle, color: 'text-[#FF2A54]', warn: highRisk > 0 },
-              { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-[#FFB800]' },
-              { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-white' },
+              { label: t('customers.all_accounts', 'TOTAL ACCOUNTS'), value: formatNumber(customers.length), icon: Users, color: 'text-foreground' },
+              { label: t('customers.churn_risk', 'HIGH CHURN RISK'), value: formatNumber(highRisk), icon: AlertTriangle, color: 'text-destructive', warn: highRisk > 0 },
+              { label: t('deals.health_score', 'AVG HEALTH SCORE'), value: `${avgHealth}/100`, icon: Activity, color: 'text-primary' },
+              { label: t('customers.mrr', 'TOTAL MRR'), value: formatCurrency(totalMrr), icon: BarChart3, color: 'text-foreground' },
             ].map(({ label, value, icon: Icon, color, warn }) => (
-              <div key={label} className={`p-3 border font-mono ${warn ? 'bg-[#0B0C10] border-[#FF2A54]' : 'bg-[#1F2833] border-[#3A4552]'}`}>
+              <div key={label} className={`p-3 border font-mono ${warn ? 'bg-background border-destructive' : 'bg-card border-border'}`}>
                 <div className="flex items-center gap-1.5 mb-1">
                   <Icon className={`w-3.5 h-3.5 ${color}`} />
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">{label}</span>
+                  <span className="text-[10px] text-muted-foreground font-bold uppercase">{label}</span>
                 </div>
                 <div className={`text-xl font-black font-mono ${color}`}>{value}</div>
               </div>
@@ -174,7 +174,7 @@ export function CustomersFeature() {
               ))}
             </div>
           ) : !customers || customers.length === 0 ? (
-            <div className="text-center py-10 text-slate-500 text-xs font-mono uppercase">NO CUSTOMERS MONITORED.</div>
+            <div className="text-center py-10 text-muted-foreground text-xs font-mono uppercase">NO CUSTOMERS MONITORED.</div>
           ) : (
             <Table>
               <TableHeader>
@@ -191,26 +191,26 @@ export function CustomersFeature() {
               <TableBody>
                 {customers.map((cust) => (
                   <TableRow key={cust.id} className="cursor-pointer" onClick={() => handleViewHealth(cust)}>
-                    <TableCell className="font-bold text-white uppercase">
+                    <TableCell className="font-bold text-foreground uppercase">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono">
-                          <Zap className="w-3 h-3 text-[#FFB800]" />
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-background border border-border text-[10px] font-mono">
+                          <Zap className="w-3 h-3 text-primary" />
                           {cust.plan}
                         </span>
                         {(Boolean(cust.recommended_actions?.length) || (selectedCustomer?.id === cust.id && Boolean(monitorResult))) && (
-                          <span className="px-1.5 py-0.2 text-[8px] font-black bg-[#0B0C10] text-[#FFB800] border border-[#FFB800] uppercase flex items-center gap-0.5">
+                          <span className="px-1.5 py-0.2 text-[8px] font-black bg-background text-primary border border-primary uppercase flex items-center gap-0.5">
                             <Sparkles className="w-2.5 h-2.5" />
                             AI DATA
                           </span>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="font-mono font-bold text-[#FFB800]">{formatCurrency(cust.mrr)}</TableCell>
+                    <TableCell className="font-mono font-bold text-primary">{formatCurrency(cust.mrr)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
+                        <div className="w-16 h-1.5 bg-background border border-border overflow-hidden">
                           <div
-                            className={`h-full ${cust.health_score >= 70 ? 'bg-[#FFB800]' : cust.health_score >= 40 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]'}`}
+                            className={`h-full ${cust.health_score >= 70 ? 'bg-primary' : cust.health_score >= 40 ? 'bg-primary' : 'bg-destructive'}`}
                             style={{ width: `${cust.health_score}%` }}
                           />
                         </div>
@@ -227,15 +227,15 @@ export function CustomersFeature() {
                     </TableCell>
                     <TableCell>
                       {cust.churn_probability != null ? (
-                        <span className={`text-xs font-black font-mono ${cust.churn_probability >= 70 ? 'text-[#FF2A54]' : cust.churn_probability >= 40 ? 'text-[#FFB800]' : 'text-[#FFB800]'}`}>
+                        <span className={`text-xs font-black font-mono ${cust.churn_probability >= 70 ? 'text-destructive' : cust.churn_probability >= 40 ? 'text-primary' : 'text-primary'}`}>
                           {cust.churn_probability}%
                         </span>
                       ) : (
-                        <span className="text-slate-600 text-xs font-mono">—</span>
+                        <span className="text-muted-foreground text-xs font-mono">—</span>
                       )}
                     </TableCell>
                     <TableCell>
-                      <div className="text-[10px] text-slate-400 font-mono space-y-0.5 uppercase">
+                      <div className="text-[10px] text-muted-foreground font-mono space-y-0.5 uppercase">
                         {cust.logins_per_week != null && <div>{cust.logins_per_week} LOGINS/WK</div>}
                         {cust.features_used != null && <div>{cust.features_used} FEATURES</div>}
                         {cust.license_usage_percent != null && <div>{cust.license_usage_percent}% USAGE</div>}
@@ -249,7 +249,7 @@ export function CustomersFeature() {
                         onClick={() => handleMonitor(cust)}
                         className="text-xs h-7 px-2"
                       >
-                        <Bot className="w-3 h-3 text-[#FFB800]" />
+                        <Bot className="w-3 h-3 text-primary" />
                         <span>MONITOR</span>
                       </Button>
                     </TableCell>
@@ -272,19 +272,19 @@ export function CustomersFeature() {
         >
           <div className="space-y-3">
             {/* Churn probability gauge + health score side by side */}
-            <div className="flex items-center justify-around p-3 bg-[#0B0C10] border border-[#3A4552]">
+            <div className="flex items-center justify-around p-3 bg-background border border-border">
               <ChurnGauge probability={currentChurnProb} />
               <div className="flex flex-col items-center gap-0.5">
                 <div className={`text-3xl font-black font-mono ${getScoreColor(currentHealthScore).split(' ')[0]}`}>
                   {currentHealthScore}
                 </div>
-                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider font-mono">HEALTH SCORE</span>
+                <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider font-mono">HEALTH SCORE</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <span className={`text-xs font-bold px-2 py-0.5 border font-mono ${getRiskClass(currentChurnRisk)}`}>
                   {currentChurnRisk.toUpperCase()}
                 </span>
-                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider font-mono">CHURN RISK</span>
+                <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider font-mono">CHURN RISK</span>
               </div>
             </div>
 
@@ -292,9 +292,9 @@ export function CustomersFeature() {
             {healthLoading ? (
               <Skeleton className="h-20 w-full" />
             ) : (healthData || activeAgentData?.engagement) ? (
-              <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-2 font-mono">
-                <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                  <Activity className="w-3 h-3 text-[#FFB800]" />
+              <div className="p-3 bg-background border border-border space-y-2 font-mono">
+                <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1">
+                  <Activity className="w-3 h-3 text-primary" />
                   ENGAGEMENT TELEMETRY
                 </h4>
                 <EngagementBar
@@ -317,15 +317,15 @@ export function CustomersFeature() {
 
             {/* AI Recommended Actions from CustomerSuccessAgent */}
             {currentActions.length > 0 && (
-              <div className="p-3 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1.5">
-                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
-                  <Bot className="w-3 h-3 text-[#FFB800]" />
+              <div className="p-3 bg-background border border-primary/40 space-y-1.5">
+                <h4 className="text-[10px] font-bold text-primary uppercase tracking-wider flex items-center gap-1">
+                  <Bot className="w-3 h-3 text-primary" />
                   RECOMMENDED ACTIONS
                 </h4>
                 <ul className="space-y-1">
                   {currentActions.map((action: string, i: number) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 font-mono uppercase">
-                      <CheckCircle2 className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground font-mono uppercase">
+                      <CheckCircle2 className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{action}</span>
                     </li>
                   ))}
@@ -335,15 +335,15 @@ export function CustomersFeature() {
 
             {/* Churn risk factors from agent result */}
             {currentRiskFactors.length > 0 && (
-              <div className="p-3 bg-[#0B0C10] border border-[#FF2A54]/40 space-y-1.5">
-                <h4 className="text-[10px] font-bold text-[#FF2A54] uppercase tracking-wider flex items-center gap-1">
-                  <TrendingDown className="w-3 h-3 text-[#FF2A54]" />
+              <div className="p-3 bg-background border border-destructive/40 space-y-1.5">
+                <h4 className="text-[10px] font-bold text-destructive uppercase tracking-wider flex items-center gap-1">
+                  <TrendingDown className="w-3 h-3 text-destructive" />
                   RISK FACTORS DETECTED
                 </h4>
                 <ul className="space-y-1">
                   {currentRiskFactors.map((f: string, i: number) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-[#FF2A54] font-mono uppercase">
-                      <AlertTriangle className="w-3 h-3 text-[#FF2A54] mt-0.5 shrink-0" />
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-destructive font-mono uppercase">
+                      <AlertTriangle className="w-3 h-3 text-destructive mt-0.5 shrink-0" />
                       <span className="break-words flex-1">{f}</span>
                     </li>
                   ))}
@@ -351,7 +351,7 @@ export function CustomersFeature() {
               </div>
             )}
 
-            <div className="flex justify-end pt-1 border-t border-[#3A4552]">
+            <div className="flex justify-end pt-1 border-t border-border">
               <Button variant="outline" onClick={() => { setSelectedCustomer(null); setMonitorResult(null); }} className="text-xs">
                 CLOSE
               </Button>

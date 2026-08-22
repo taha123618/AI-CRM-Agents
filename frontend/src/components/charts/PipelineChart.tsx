@@ -22,10 +22,10 @@ export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
     <div className="w-full h-64 font-mono">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
           <XAxis
             dataKey="stage"
-            stroke="#94a3b8"
+            stroke="hsl(var(--muted-foreground))"
             fontSize={9}
             tickLine={false}
             interval={0}
@@ -34,7 +34,7 @@ export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
             fontFamily="monospace"
           />
           <YAxis
-            stroke="#94a3b8"
+            stroke="hsl(var(--muted-foreground))"
             fontSize={9}
             tickLine={false}
             fontFamily="monospace"
@@ -42,10 +42,10 @@ export function PipelineChart({ metrics }: { metrics?: PipelineMetrics }) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B0C10',
-              borderColor: '#3A4552',
+              backgroundColor: 'hsl(var(--background))',
+              borderColor: 'hsl(var(--border))',
               borderRadius: '0px',
-              color: '#F1F5F9',
+              color: 'hsl(var(--foreground))',
               fontSize: '11px',
               fontFamily: 'monospace',
             }}

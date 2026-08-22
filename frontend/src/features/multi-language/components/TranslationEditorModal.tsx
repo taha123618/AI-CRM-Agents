@@ -181,30 +181,30 @@ export function TranslationEditorModal({
     >
       <div className="space-y-3 font-mono">
         {/* Actions & Filters Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 bg-background border border-border rounded-none">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Search Input */}
             <div className="relative flex-1 sm:w-64">
-              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2" />
+              <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-2" />
               <input
                 type="text"
                 placeholder="SEARCH TRANSLATION KEYS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none pl-8 pr-3 py-1 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase font-mono"
               />
             </div>
 
             {/* Namespace Filter */}
             <div className="flex items-center gap-1">
-              <Filter className="w-3.5 h-3.5 text-slate-500" />
+              <Filter className="w-3.5 h-3.5 text-muted-foreground" />
               <select
                 value={activeNamespace}
                 onChange={(e) => setActiveNamespace(e.target.value)}
-                className="bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 rounded-none px-2 py-1 focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                className="bg-card border border-border text-xs text-foreground rounded-none px-2 py-1 focus:outline-none focus:border-primary uppercase font-mono"
               >
                 {namespaces.map((ns) => (
-                  <option key={ns} value={ns} className="bg-[#0B0C10]">
+                  <option key={ns} value={ns} className="bg-background">
                     {ns.toUpperCase()}
                   </option>
                 ))}
@@ -213,7 +213,7 @@ export function TranslationEditorModal({
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold uppercase rounded-none bg-[#1F2833] hover:bg-[#26313F] text-slate-200 border border-[#3A4552] transition-none h-7">
+            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold uppercase rounded-none bg-card hover:bg-popover text-foreground border border-border transition-none h-7">
               <Upload className="w-3 h-3 text-cyan-400" />
               <span>IMPORT JSON</span>
               <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
@@ -225,7 +225,7 @@ export function TranslationEditorModal({
               onClick={handleExportJson}
               className="text-xs h-7 uppercase flex items-center gap-1"
             >
-              <Download className="w-3 h-3 text-[#FFB800]" />
+              <Download className="w-3 h-3 text-primary" />
               <span>EXPORT</span>
             </Button>
 
@@ -236,27 +236,27 @@ export function TranslationEditorModal({
               isLoading={isSaving}
               className="text-xs h-7 uppercase flex items-center gap-1"
             >
-              <Save className="w-3 h-3 text-[#0B0C10]" />
+              <Save className="w-3 h-3 text-primary-foreground" />
               <span>SAVE ALL</span>
             </Button>
           </div>
         </div>
 
         {/* Translation Keys Table */}
-        <div className="border border-[#3A4552] rounded-none overflow-hidden max-h-[480px] overflow-y-auto">
+        <div className="border border-border rounded-none overflow-hidden max-h-[480px] overflow-y-auto">
           <table className="w-full text-left border-collapse font-mono">
             <thead className="sticky top-0 z-10">
-              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-[10px] uppercase font-bold text-slate-400">
+              <tr className="border-b border-border bg-background text-[10px] uppercase font-bold text-muted-foreground">
                 <th className="py-2 px-3 w-1/4">NAMESPACE &amp; KEY</th>
                 <th className="py-2 px-3 w-1/3">ENGLISH FALLBACK</th>
                 <th className="py-2 px-3 w-1/3">LOCALIZED TRANSLATION</th>
                 <th className="py-2 px-3 text-right w-16">SAVE</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552] text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {translationRows.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-slate-500 uppercase">
+                  <td colSpan={4} className="py-8 text-center text-muted-foreground uppercase">
                     NO TRANSLATION KEYS FOUND FOR CURRENT QUERY.
                   </td>
                 </tr>
@@ -265,17 +265,17 @@ export function TranslationEditorModal({
                   const rowId = `${row.namespace}.${row.key}`;
                   const isSaved = saveSuccessMap[rowId];
                   return (
-                    <tr key={rowId} className="hover:bg-[#0B0C10] transition-none">
+                    <tr key={rowId} className="hover:bg-background transition-none">
                       <td className="py-2 px-3 font-mono space-y-0.5">
                         <Badge variant="default" className="text-[8px] uppercase font-mono px-1 py-0.2">
                           {row.namespace}
                         </Badge>
-                        <span className="block text-[11px] text-[#FFB800] font-bold truncate" title={row.key}>
+                        <span className="block text-[11px] text-primary font-bold truncate" title={row.key}>
                           {row.key}
                         </span>
                       </td>
 
-                      <td className="py-2 px-3 text-slate-400 text-xs">
+                      <td className="py-2 px-3 text-muted-foreground text-xs">
                         <span className="line-clamp-2" title={row.englishFallback}>
                           {row.englishFallback || '—'}
                         </span>
@@ -287,7 +287,7 @@ export function TranslationEditorModal({
                           value={editingValues[row.namespace]?.[row.key] || ''}
                           onChange={(e) => handleValueChange(row.namespace, row.key, e.target.value)}
                           placeholder={row.englishFallback}
-                          className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2 py-1 text-xs text-white focus:outline-none focus:border-[#FFB800] font-mono"
+                          className="w-full bg-background border border-border rounded-none px-2 py-1 text-xs text-foreground focus:outline-none focus:border-primary font-mono"
                         />
                       </td>
 
@@ -296,8 +296,8 @@ export function TranslationEditorModal({
                           type="button"
                           onClick={() => handleSaveRow(row.namespace, row.key)}
                           className={`p-1 rounded-none border transition-none ${isSaved
-                              ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800]'
-                              : 'bg-[#1F2833] text-slate-400 border-[#3A4552] hover:text-white hover:border-[#FFB800]'
+                              ? 'bg-primary text-primary-foreground border-primary'
+                              : 'bg-card text-muted-foreground border-border hover:text-foreground hover:border-primary'
                             }`}
                           title="Save Key"
                         >
@@ -313,8 +313,8 @@ export function TranslationEditorModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-between pt-2 border-t border-[#3A4552]">
-          <span className="text-[10px] text-slate-500 uppercase font-mono">
+        <div className="flex items-center justify-between pt-2 border-t border-border">
+          <span className="text-[10px] text-muted-foreground uppercase font-mono">
             {translationRows.length} STRINGS DISPLAYED • ALL EDITS IMMEDIATELY BROADCAST VIA REACT STATE
           </span>
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">

@@ -10,6 +10,7 @@ import { EmailAnalyzerModal } from '@/components/forms/EmailAnalyzerModal';
 import { MeetingSchedulerModal } from '@/components/forms/MeetingSchedulerModal';
 import { GlobalSearchModal } from '@/components/common/GlobalSearchModal';
 
+import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage';
@@ -78,7 +79,7 @@ function RouteSync() {
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-brand-500 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-brand-500 selection:text-foreground flex flex-col justify-between">
       <div>
         <Sidebar />
         <Header />
@@ -102,7 +103,8 @@ export function AppRouter() {
     <BrowserRouter>
       <RouteSync />
       <Routes>
-        {/* Public Authentication Routes */}
+        {/* Public Landing & Authentication Routes */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />

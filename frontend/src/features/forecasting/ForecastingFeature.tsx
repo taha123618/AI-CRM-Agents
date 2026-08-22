@@ -132,18 +132,18 @@ export function ForecastingFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#FFB800]" />
+            <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
               <span>REVENUE FORECASTING &amp; MONTE CARLO SIMULATION</span>
             </h1>
             <Badge variant="purple" className="text-[8px] font-mono">
               STOCHASTIC ENGINE
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             STOCHASTIC PROBABILITY DISTRIBUTIONS, ARR PREDICTIVE TRAJECTORIES, AND HAZARD CONVERSIONS
           </p>
         </div>
@@ -156,7 +156,7 @@ export function ForecastingFeature() {
             disabled={isRefetching}
             className="text-xs h-7"
           >
-            <RefreshCw className={`w-3.5 h-3.5 mr-1 text-[#FFB800] ${isRefetching ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 mr-1 text-primary ${isRefetching ? 'animate-spin' : ''}`} />
             <span>RE-RUN</span>
           </Button>
 
@@ -175,18 +175,18 @@ export function ForecastingFeature() {
 
       {/* ── KPI Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border">
+          <div className="flex items-center justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             <span>PIPELINE TOTAL</span>
             <Badge variant="purple" className="text-[8px]">ACTIVE</Badge>
           </div>
-          <div className="text-2xl font-black text-white font-mono mt-1">
+          <div className="text-2xl font-black text-foreground font-mono mt-1">
             ${((simulation?.pipeline_total_value || 0) / 1000).toFixed(1)}k
           </div>
-          <span className="text-[9px] text-slate-500 mt-0.5 block uppercase">SUM OF OPEN DEAL VALUE</span>
+          <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase">SUM OF OPEN DEAL VALUE</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-card border-border">
           <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
             <span>P10 CONSERVATIVE</span>
             <Badge variant="purple" className="text-[8px]">FLOOR</Badge>
@@ -194,52 +194,52 @@ export function ForecastingFeature() {
           <div className="text-2xl font-black text-cyan-400 font-mono mt-1">
             ${((simulation?.p10_conservative || 0) / 1000).toFixed(1)}k
           </div>
-          <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">90% PROBABILITY FLOOR</span>
+          <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase">90% PROBABILITY FLOOR</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">
+        <Card className="p-3 bg-card border-border">
+          <div className="flex items-center justify-between text-[10px] font-bold text-primary uppercase tracking-wider">
             <span>P50 EXPECTED</span>
             <Badge variant="warning" className="text-[8px]">BASE CASE</Badge>
           </div>
-          <div className="text-2xl font-black text-[#FFB800] font-mono mt-1">
+          <div className="text-2xl font-black text-primary font-mono mt-1">
             ${((simulation?.p50_expected || 0) / 1000).toFixed(1)}k
           </div>
-          <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">STATISTICAL EXPECTATION</span>
+          <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase">STATISTICAL EXPECTATION</span>
         </Card>
 
-        <Card className="p-3 bg-[#1F2833] border-[#FFB800]">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">
+        <Card className="p-3 bg-card border-primary">
+          <div className="flex items-center justify-between text-[10px] font-bold text-primary uppercase tracking-wider">
             <span>P90 OPTIMISTIC</span>
             <Badge variant="success" className="text-[8px]">CEILING</Badge>
           </div>
-          <div className="text-2xl font-black text-[#FFB800] font-mono mt-1">
+          <div className="text-2xl font-black text-primary font-mono mt-1">
             ${((simulation?.p90_optimistic || 0) / 1000).toFixed(1)}k
           </div>
-          <span className="text-[9px] text-slate-400 mt-0.5 block uppercase">BEST EXECUTION UPSIDE</span>
+          <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase">BEST EXECUTION UPSIDE</span>
         </Card>
       </div>
 
       {/* ── Q3 Target Progress Bar ── */}
       {simulation && (
-        <Card className="p-3 bg-[#1F2833] border-[#3A4552]">
+        <Card className="p-3 bg-card border-border">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
-              <Target className="w-3.5 h-3.5 text-[#FFB800]" />
-              <span className="text-xs font-bold text-white uppercase tracking-wider">
+              <Target className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs font-bold text-foreground uppercase tracking-wider">
                 TARGET REVENUE HORIZON PROGRESS
               </span>
             </div>
             <div className="flex items-center gap-3 text-xs font-mono">
-              <span className="text-slate-400 uppercase text-[10px]">
-                EXPECTED: <span className="text-[#FFB800] font-bold">${(simulation.p50_expected / 1000).toFixed(0)}k</span>
+              <span className="text-muted-foreground uppercase text-[10px]">
+                EXPECTED: <span className="text-primary font-bold">${(simulation.p50_expected / 1000).toFixed(0)}k</span>
               </span>
-              <span className="text-slate-400 uppercase text-[10px]">
-                CEILING: <span className="text-[#FFB800] font-bold">${(simulation.p90_optimistic / 1000).toFixed(0)}k</span>
+              <span className="text-muted-foreground uppercase text-[10px]">
+                CEILING: <span className="text-primary font-bold">${(simulation.p90_optimistic / 1000).toFixed(0)}k</span>
               </span>
             </div>
           </div>
-          <div className="relative h-3 bg-[#0B0C10] border border-[#3A4552] overflow-hidden">
+          <div className="relative h-3 bg-background border border-border overflow-hidden">
             {/* P10 band */}
             <div
               className="absolute top-0 left-0 h-full bg-cyan-500/40"
@@ -252,7 +252,7 @@ export function ForecastingFeature() {
             />
             {/* P50 band */}
             <div
-              className="absolute top-0 left-0 h-full bg-[#FFB800]/50"
+              className="absolute top-0 left-0 h-full bg-primary/50"
               style={{
                 width: `${Math.min(
                   (simulation.p50_expected / simulation.pipeline_total_value) * 100,
@@ -262,7 +262,7 @@ export function ForecastingFeature() {
             />
             {/* P90 band */}
             <div
-              className="absolute top-0 left-0 h-full bg-[#FFB800]/60"
+              className="absolute top-0 left-0 h-full bg-primary/60"
               style={{
                 width: `${Math.min(
                   (simulation.p90_optimistic / simulation.pipeline_total_value) * 100,
@@ -271,7 +271,7 @@ export function ForecastingFeature() {
               }}
             />
           </div>
-          <div className="flex items-center justify-between mt-1 text-[9px] text-slate-500 font-mono uppercase">
+          <div className="flex items-center justify-between mt-1 text-[9px] text-muted-foreground font-mono uppercase">
             <span>$0</span>
             <span>${(simulation.pipeline_total_value / 1000).toFixed(0)}k TOTAL PIPELINE</span>
           </div>
@@ -279,15 +279,15 @@ export function ForecastingFeature() {
       )}
 
       {/* ── Tabs ── */}
-      <div className="flex items-center gap-1 border-b border-[#3A4552] bg-[#0B0C10] px-2 font-mono">
+      <div className="flex items-center gap-1 border-b border-border bg-background px-2 font-mono">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             type="button"
             onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider border-b-2 -mb-px transition-none ${activeTab === tab.key
-                ? 'border-[#FFB800] text-[#FFB800]'
-                : 'border-transparent text-slate-400 hover:text-white'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
           >
             {tab.icon}
@@ -300,18 +300,18 @@ export function ForecastingFeature() {
       {activeTab === 'monte-carlo' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           {/* Controls */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-4">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sliders className="w-3.5 h-3.5 text-[#FFB800]" />
+          <Card className="p-4 bg-card border-border space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-2">
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <Sliders className="w-3.5 h-3.5 text-primary" />
                 SIMULATION CONTROLS
               </h3>
-              <span className="text-[10px] font-mono text-slate-400 uppercase">{iterations.toLocaleString()} RUNS</span>
+              <span className="text-[10px] font-mono text-muted-foreground uppercase">{iterations.toLocaleString()} RUNS</span>
             </div>
 
             {/* Iterations selector */}
             <div>
-              <label className="text-[10px] font-bold uppercase text-slate-300 block mb-1.5">
+              <label className="text-[10px] font-bold uppercase text-foreground block mb-1.5">
                 MONTE CARLO ITERATIONS
               </label>
               <div className="grid grid-cols-2 gap-1.5">
@@ -321,8 +321,8 @@ export function ForecastingFeature() {
                     type="button"
                     onClick={() => setIterations(num)}
                     className={`py-1 text-xs font-mono uppercase border transition-none ${iterations === num
-                        ? 'bg-[#FFB800] text-[#0B0C10] border-[#FFB800] font-bold'
-                        : 'bg-[#0B0C10] text-slate-400 border-[#3A4552] hover:text-white'
+                        ? 'bg-primary text-primary-foreground border-primary font-bold'
+                        : 'bg-background text-muted-foreground border-border hover:text-foreground'
                       }`}
                   >
                     {num.toLocaleString()}
@@ -333,9 +333,9 @@ export function ForecastingFeature() {
 
             {/* Slippage slider */}
             <div>
-              <div className="flex items-center justify-between text-xs font-bold text-slate-300 uppercase mb-1">
+              <div className="flex items-center justify-between text-xs font-bold text-foreground uppercase mb-1">
                 <span>DEAL SLIPPAGE HAZARD</span>
-                <span className="font-mono text-[#FFB800]">{(slippageRate * 100).toFixed(0)}%</span>
+                <span className="font-mono text-primary">{(slippageRate * 100).toFixed(0)}%</span>
               </div>
               <input
                 type="range"
@@ -344,21 +344,21 @@ export function ForecastingFeature() {
                 step="0.05"
                 value={slippageRate}
                 onChange={(e) => setSlippageRate(parseFloat(e.target.value))}
-                className="w-full accent-[#FFB800]"
+                className="w-full accent-primary"
               />
-              <span className="text-[9px] text-slate-500 mt-0.5 block uppercase font-mono">
+              <span className="text-[9px] text-muted-foreground mt-0.5 block uppercase font-mono">
                 SIMULATES MACRO PROCUREMENT DELAYS.
               </span>
             </div>
 
             {/* Per-stage probability editor */}
-            <div className="border-t border-[#3A4552] pt-2.5 space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+            <div className="border-t border-border pt-2.5 space-y-1.5">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 STAGE WIN PROBABILITIES
               </span>
               {Object.entries(customStageProbs).map(([stage, prob]) => (
                 <div key={stage} className="flex items-center gap-2">
-                  <span className="text-[10px] text-slate-400 w-24 uppercase font-mono">{stage}</span>
+                  <span className="text-[10px] text-muted-foreground w-24 uppercase font-mono">{stage}</span>
                   <input
                     type="range"
                     min="0.05"
@@ -371,9 +371,9 @@ export function ForecastingFeature() {
                         [stage]: parseFloat(e.target.value),
                       }))
                     }
-                    className="flex-1 accent-[#FFB800] h-1"
+                    className="flex-1 accent-primary h-1"
                   />
-                  <span className="text-[10px] font-mono text-[#FFB800] w-8 text-right font-bold">
+                  <span className="text-[10px] font-mono text-primary w-8 text-right font-bold">
                     {(prob * 100).toFixed(0)}%
                   </span>
                 </div>
@@ -382,13 +382,13 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Distribution Chart */}
-          <Card className="lg:col-span-2 p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+          <Card className="lg:col-span-2 p-4 bg-card border-border space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2">
               <div>
-                <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                   PROBABILITY FREQUENCY DENSITY
                 </h3>
-                <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                   DISTRIBUTION ACROSS {iterations.toLocaleString()} STOCHASTIC REVENUE RUNS.
                 </p>
               </div>
@@ -399,16 +399,16 @@ export function ForecastingFeature() {
 
             <div className="h-64 w-full">
               {isLoadingSim ? (
-                <div className="flex items-center justify-center h-full text-slate-500 text-xs uppercase font-mono">
+                <div className="flex items-center justify-center h-full text-muted-foreground text-xs uppercase font-mono">
                   COMPUTING MONTE CARLO ITERATIONS...
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis
                       dataKey="name"
-                      stroke="#94a3b8"
+                      stroke="hsl(var(--muted-foreground))"
                       fontSize={9}
                       tickLine={false}
                       interval={0}
@@ -416,15 +416,15 @@ export function ForecastingFeature() {
                       textAnchor="end"
                       fontFamily="monospace"
                     />
-                    <YAxis stroke="#94a3b8" fontSize={9} tickLine={false} fontFamily="monospace" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={9} tickLine={false} fontFamily="monospace" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#0B0C10',
-                        borderColor: '#3A4552',
+                        backgroundColor: 'hsl(var(--background))',
+                        borderColor: 'hsl(var(--border))',
                         borderRadius: '0px',
                         fontSize: '11px',
                         fontFamily: 'monospace',
-                        color: '#F1F5F9',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
                     <Bar dataKey="frequency" fill="#FFB800" radius={[0, 0, 0, 0]} />
@@ -438,14 +438,14 @@ export function ForecastingFeature() {
 
       {/* ── TAB: ARR TREND ── */}
       {activeTab === 'arr-trend' && (
-        <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
-          <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+        <Card className="p-4 bg-card border-border space-y-3">
+          <div className="flex items-center justify-between border-b border-border pb-2">
             <div>
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-[#FFB800]" />
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
                 MONTHLY ARR TREND VS TARGET
               </h3>
-              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                 ACTUAL ARR PROGRESSION COMPARED TO QUARTERLY TARGET TRAJECTORY.
               </p>
             </div>
@@ -453,10 +453,10 @@ export function ForecastingFeature() {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={arrTrend || []} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
-                <XAxis dataKey="month" stroke="#94a3b8" fontSize={10} tickLine={false} fontFamily="monospace" />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} fontFamily="monospace" />
                 <YAxis
-                  stroke="#94a3b8"
+                  stroke="hsl(var(--muted-foreground))"
                   fontSize={10}
                   tickLine={false}
                   fontFamily="monospace"
@@ -464,16 +464,16 @@ export function ForecastingFeature() {
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#0B0C10',
-                    borderColor: '#3A4552',
+                    backgroundColor: 'hsl(var(--background))',
+                    borderColor: 'hsl(var(--border))',
                     borderRadius: '0px',
                     fontSize: '11px',
                     fontFamily: 'monospace',
-                    color: '#F1F5F9',
+                    color: 'hsl(var(--foreground))',
                   }}
                   formatter={(v: number) => [`$${(v / 1000).toFixed(1)}k`]}
                 />
-                <Legend wrapperStyle={{ fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace' }} />
+                <Legend wrapperStyle={{ fontSize: '11px', color: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }} />
                 <Line
                   type="monotone"
                   dataKey="actual_arr"
@@ -505,18 +505,18 @@ export function ForecastingFeature() {
 
           {/* Month-over-month deltas */}
           {arrTrend && (
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2 border-t border-[#3A4552]">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2 border-t border-border">
               {arrTrend.map((point) => (
                 <div
                   key={point.month}
-                  className={`p-2 bg-[#0B0C10] text-center border ${point.delta_pct >= 0
-                      ? 'border-[#FFB800]/40'
-                      : 'border-[#FF2A54]/40'
+                  className={`p-2 bg-background text-center border ${point.delta_pct >= 0
+                      ? 'border-primary/40'
+                      : 'border-destructive/40'
                     }`}
                 >
-                  <div className="text-[9px] text-slate-400 font-mono uppercase">{point.month}</div>
+                  <div className="text-[9px] text-muted-foreground font-mono uppercase">{point.month}</div>
                   <div
-                    className={`text-xs font-bold font-mono ${point.delta_pct >= 0 ? 'text-[#FFB800]' : 'text-[#FF2A54]'
+                    className={`text-xs font-bold font-mono ${point.delta_pct >= 0 ? 'text-primary' : 'text-destructive'
                       }`}
                   >
                     {point.delta_pct >= 0 ? '+' : ''}{point.delta_pct.toFixed(1)}%
@@ -532,12 +532,12 @@ export function ForecastingFeature() {
       {activeTab === 'pipeline' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Stage Bar Chart */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+          <Card className="p-4 bg-card border-border space-y-3">
             <div>
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                 REVENUE BY PIPELINE STAGE
               </h3>
-              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">CURRENT PIPELINE VALUE DISTRIBUTION</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">CURRENT PIPELINE VALUE DISTRIBUTION</p>
             </div>
             <div className="h-60 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -545,10 +545,10 @@ export function ForecastingFeature() {
                   data={stageBreakdown || []}
                   margin={{ top: 10, right: 10, left: -10, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
-                  <XAxis dataKey="stage" stroke="#94a3b8" fontSize={9} tickLine={false} fontFamily="monospace" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="stage" stroke="hsl(var(--muted-foreground))" fontSize={9} tickLine={false} fontFamily="monospace" />
                   <YAxis
-                    stroke="#94a3b8"
+                    stroke="hsl(var(--muted-foreground))"
                     fontSize={9}
                     tickLine={false}
                     fontFamily="monospace"
@@ -556,12 +556,12 @@ export function ForecastingFeature() {
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0B0C10',
-                      borderColor: '#3A4552',
+                      backgroundColor: 'hsl(var(--background))',
+                      borderColor: 'hsl(var(--border))',
                       borderRadius: '0px',
                       fontSize: '11px',
                       fontFamily: 'monospace',
-                      color: '#F1F5F9',
+                      color: 'hsl(var(--foreground))',
                     }}
                     formatter={(v: number) => [`$${(v / 1000).toFixed(1)}k`]}
                   />
@@ -579,8 +579,8 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Stage Table */}
-          <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-2.5">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+          <Card className="p-4 bg-card border-border space-y-2.5">
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
               STAGE BREAKDOWN DETAIL
             </h3>
             <div className="space-y-2">
@@ -591,16 +591,16 @@ export function ForecastingFeature() {
                 return (
                   <div key={s.stage} className="space-y-1">
                     <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="font-bold text-white uppercase">{s.stage}</span>
+                      <span className="font-bold text-foreground uppercase">{s.stage}</span>
                       <div className="flex items-center gap-3 font-mono text-[10px]">
-                        <span className="text-slate-400">{s.deals} DEALS</span>
-                        <span className="font-bold text-white">
+                        <span className="text-muted-foreground">{s.deals} DEALS</span>
+                        <span className="font-bold text-foreground">
                           ${(s.value / 1000).toFixed(0)}k
                         </span>
-                        <span className="text-slate-500">{pct}%</span>
+                        <span className="text-muted-foreground">{pct}%</span>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-[#0B0C10] border border-[#3A4552]">
+                    <div className="h-1.5 bg-background border border-border">
                       <div
                         className="h-full transition-none"
                         style={{ width: `${pct}%`, backgroundColor: color }}
@@ -613,15 +613,15 @@ export function ForecastingFeature() {
 
             {/* Velocity summary */}
             {velocity && (
-              <div className="mt-3 pt-3 border-t border-[#3A4552] grid grid-cols-2 gap-2">
+              <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 gap-2">
                 {[
-                  { label: 'WIN RATE', value: `${velocity.win_rate_percentage}%`, color: 'text-[#FFB800]' },
-                  { label: 'AVG CYCLE', value: `${velocity.avg_sales_cycle_days}D`, color: 'text-[#FFB800]' },
+                  { label: 'WIN RATE', value: `${velocity.win_rate_percentage}%`, color: 'text-primary' },
+                  { label: 'AVG CYCLE', value: `${velocity.avg_sales_cycle_days}D`, color: 'text-primary' },
                   { label: 'MONTHLY VELOCITY', value: `$${(velocity.monthly_velocity_arr / 1000).toFixed(0)}K`, color: 'text-cyan-400' },
-                  { label: 'TOTAL PIPELINE', value: `$${((simulation?.pipeline_total_value || 0) / 1000).toFixed(0)}K`, color: 'text-white' },
+                  { label: 'TOTAL PIPELINE', value: `$${((simulation?.pipeline_total_value || 0) / 1000).toFixed(0)}K`, color: 'text-foreground' },
                 ].map((item) => (
-                  <div key={item.label} className="p-2 bg-[#0B0C10] border border-[#3A4552]">
-                    <span className="text-[9px] text-slate-500 uppercase font-bold block">{item.label}</span>
+                  <div key={item.label} className="p-2 bg-background border border-border">
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold block">{item.label}</span>
                     <span className={`text-sm font-black font-mono ${item.color}`}>{item.value}</span>
                   </div>
                 ))}
@@ -630,27 +630,27 @@ export function ForecastingFeature() {
           </Card>
 
           {/* Stage Velocity Table */}
-          <Card className="lg:col-span-2 p-4 bg-[#1F2833] border-[#3A4552] space-y-2.5">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Activity className="w-4 h-4 text-[#FFB800]" />
+          <Card className="lg:col-span-2 p-4 bg-card border-border space-y-2.5">
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+              <Activity className="w-4 h-4 text-primary" />
               PIPELINE STAGE VELOCITY &amp; CONVERSION MATRIX
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#3A4552] text-slate-400 font-bold uppercase text-[9px] bg-[#0B0C10]">
+                  <tr className="border-b border-border text-muted-foreground font-bold uppercase text-[9px] bg-background">
                     <th className="py-2 px-2.5">STAGE</th>
                     <th className="py-2 px-2.5">AVG DAYS</th>
                     <th className="py-2 px-2.5">CONVERSION RATE</th>
                     <th className="py-2 px-2.5">SLIPPAGE RISK</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#3A4552]">
+                <tbody className="divide-y divide-border">
                   {(velocity?.stages || []).map((s, idx) => (
-                    <tr key={idx} className="odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] transition-none">
-                      <td className="py-2 px-2.5 text-white font-bold uppercase">{s.stage}</td>
-                      <td className="py-2 px-2.5 font-mono text-slate-300">{s.avg_days_in_stage} DAYS</td>
-                      <td className="py-2 px-2.5 font-mono text-[#FFB800]">{s.conversion_rate}%</td>
+                    <tr key={idx} className="odd:bg-background/70 even:bg-card hover:bg-popover transition-none">
+                      <td className="py-2 px-2.5 text-foreground font-bold uppercase">{s.stage}</td>
+                      <td className="py-2 px-2.5 font-mono text-foreground">{s.avg_days_in_stage} DAYS</td>
+                      <td className="py-2 px-2.5 font-mono text-primary">{s.conversion_rate}%</td>
                       <td className="py-2 px-2.5">
                         <Badge
                           variant={
@@ -677,15 +677,15 @@ export function ForecastingFeature() {
       {activeTab === 'scenarios' && (
         <div className="space-y-3">
           {!savedSimulations || savedSimulations.length === 0 ? (
-            <Card className="p-10 text-center text-slate-500 text-xs font-mono uppercase">
+            <Card className="p-10 text-center text-muted-foreground text-xs font-mono uppercase">
               NO SAVED RUNS RECORDED. USE &ldquo;SAVE SCENARIO&rdquo; ABOVE TO PERSIST A RUN.
             </Card>
           ) : (
             <>
               {/* Scenario Table */}
-              <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
-                <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+              <Card className="p-4 bg-card border-border space-y-3">
+                <div className="flex items-center justify-between border-b border-border pb-2">
+                  <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                     PERSISTED MONTE CARLO SIMULATIONS
                   </h3>
                   <Badge variant="purple" className="text-[8px] font-mono">
@@ -696,7 +696,7 @@ export function ForecastingFeature() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs font-mono">
                     <thead>
-                      <tr className="border-b border-[#3A4552] text-slate-400 font-bold uppercase text-[9px] bg-[#0B0C10]">
+                      <tr className="border-b border-border text-muted-foreground font-bold uppercase text-[9px] bg-background">
                         <th className="py-2 px-2.5">SCENARIO NAME</th>
                         <th className="py-2 px-2.5">QUARTER</th>
                         <th className="py-2 px-2.5">P10 (CONSERVATIVE)</th>
@@ -707,33 +707,33 @@ export function ForecastingFeature() {
                         <th className="py-2 px-2.5"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#3A4552]">
+                    <tbody className="divide-y divide-border">
                       {(savedSimulations || []).map((s: ForecastSimulationRecord) => (
-                        <tr key={s.id} className="odd:bg-[#161D26] even:bg-[#1F2833] hover:bg-[#26313F] transition-none">
-                          <td className="py-2 px-2.5 text-white font-bold uppercase max-w-[200px] truncate">
+                        <tr key={s.id} className="odd:bg-background/70 even:bg-card hover:bg-popover transition-none">
+                          <td className="py-2 px-2.5 text-foreground font-bold uppercase max-w-[200px] truncate">
                             {s.name}
                           </td>
-                          <td className="py-2 px-2.5 font-mono text-slate-400 uppercase">{s.target_quarter}</td>
+                          <td className="py-2 px-2.5 font-mono text-muted-foreground uppercase">{s.target_quarter}</td>
                           <td className="py-2 px-2.5 font-mono text-cyan-400">
                             ${(s.p10_conservative / 1000).toFixed(1)}k
                           </td>
-                          <td className="py-2 px-2.5 font-mono text-[#FFB800] font-bold">
+                          <td className="py-2 px-2.5 font-mono text-primary font-bold">
                             ${(s.p50_expected / 1000).toFixed(1)}k
                           </td>
-                          <td className="py-2 px-2.5 font-mono text-[#FFB800]">
+                          <td className="py-2 px-2.5 font-mono text-primary">
                             ${(s.p90_optimistic / 1000).toFixed(1)}k
                           </td>
-                          <td className="py-2 px-2.5 font-mono text-slate-400">
+                          <td className="py-2 px-2.5 font-mono text-muted-foreground">
                             {(s.deal_slippage_rate * 100).toFixed(0)}%
                           </td>
-                          <td className="py-2 px-2.5 text-slate-500 font-mono text-[9px]">
+                          <td className="py-2 px-2.5 text-muted-foreground font-mono text-[9px]">
                             {new Date(s.created_at).toLocaleDateString()}
                           </td>
                           <td className="py-2 px-2.5">
                             <button
                               type="button"
                               onClick={() => deleteMutation.mutate(s.id)}
-                              className="p-1 text-slate-500 hover:text-[#FF2A54] transition-none"
+                              className="p-1 text-muted-foreground hover:text-destructive transition-none"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -747,12 +747,12 @@ export function ForecastingFeature() {
 
               {/* Scenario Comparison Bar Chart */}
               {savedSimulations.length >= 2 && (
-                <Card className="p-4 bg-[#1F2833] border-[#3A4552] space-y-3">
+                <Card className="p-4 bg-card border-border space-y-3">
                   <div>
-                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                       SCENARIO P50 COMPARISON
                     </h3>
-                    <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+                    <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                       SIDE-BY-SIDE P50 EXPECTED ARR ACROSS PERSISTED SCENARIOS
                     </p>
                   </div>
@@ -768,10 +768,10 @@ export function ForecastingFeature() {
                         }))}
                         margin={{ top: 10, right: 10, left: -10, bottom: 30 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#3A4552" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                         <XAxis
                           dataKey="name"
-                          stroke="#94a3b8"
+                          stroke="hsl(var(--muted-foreground))"
                           fontSize={9}
                           tickLine={false}
                           angle={-15}
@@ -779,7 +779,7 @@ export function ForecastingFeature() {
                           fontFamily="monospace"
                         />
                         <YAxis
-                          stroke="#94a3b8"
+                          stroke="hsl(var(--muted-foreground))"
                           fontSize={9}
                           tickLine={false}
                           fontFamily="monospace"
@@ -787,16 +787,16 @@ export function ForecastingFeature() {
                         />
                         <Tooltip
                           contentStyle={{
-                            backgroundColor: '#0B0C10',
-                            borderColor: '#3A4552',
+                            backgroundColor: 'hsl(var(--background))',
+                            borderColor: 'hsl(var(--border))',
                             borderRadius: '0px',
                             fontSize: '11px',
                             fontFamily: 'monospace',
-                            color: '#F1F5F9',
+                            color: 'hsl(var(--foreground))',
                           }}
                           formatter={(v: number) => [`$${(v / 1000).toFixed(1)}k`]}
                         />
-                        <Legend wrapperStyle={{ fontSize: '10px', color: '#94a3b8', fontFamily: 'monospace' }} />
+                        <Legend wrapperStyle={{ fontSize: '10px', color: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }} />
                         <Bar dataKey="p10" name="P10 Conservative" fill="#00E5FF" radius={[0, 0, 0, 0]} />
                         <Bar dataKey="p50" name="P50 Expected" fill="#FFB800" radius={[0, 0, 0, 0]} />
                         <Bar dataKey="p90" name="P90 Optimistic" fill="#FFB800" radius={[0, 0, 0, 0]} />

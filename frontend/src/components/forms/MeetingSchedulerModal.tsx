@@ -88,15 +88,15 @@ export function MeetingSchedulerModal() {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">CONTEXT / NOTES</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">CONTEXT / NOTES</label>
           <textarea
             rows={3}
-            className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-[#FFB800]"
+            className="w-full bg-background text-foreground border border-border rounded-none p-2.5 text-xs font-mono focus:outline-none focus:border-primary"
             {...register('notes')}
           />
         </div>
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#3A4552]">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
           <Button type="button" variant="outline" onClick={() => setMeetingModalOpen(false)} className="text-xs">
             CANCEL
           </Button>

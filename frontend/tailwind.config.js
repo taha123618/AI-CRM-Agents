@@ -1,18 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
+  darkMode: ['class'],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       borderRadius: {
         none: '0px',
         DEFAULT: '0px',
-        sm: '0px',
-        md: '0px',
-        lg: '0px',
-        xl: '0px',
-        '2xl': '0px',
-        '3xl': '0px',
+        sm: '4px',
+        md: '8px',
+        lg: '16px',
+        xl: '24px',
+        '2xl': '32px',
+        '3xl': '40px',
         full: '0px',
       },
       fontFamily: {
@@ -74,8 +74,8 @@ export default {
         ring: 'hsl(var(--ring))',
         tactical: {
           void: '#0B0C10',
-          titanium: '#1F2833',
-          overlay: '#26313F',
+          titanium: '#121212',
+          overlay: '#1C1C1C',
           lime: '#FFB800',
           border: '#3A4552',
           destructive: '#FF2A54',
@@ -91,8 +91,8 @@ export default {
           900: '#14532d',
         },
         slate: {
-          850: '#161D26',
-          900: '#1F2833',
+          850: '#0E0E0E',
+          900: '#121212',
           950: '#0B0C10',
         },
       },

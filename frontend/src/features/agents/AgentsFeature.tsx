@@ -82,13 +82,13 @@ export function AgentsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Bot className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Bot className="w-5 h-5 text-primary" />
             <span>{t('agents.title', 'AUTONOMOUS AGENT FLEET CONTROL')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('agents.subtitle', 'MANAGE, TRIGGER, AND INSPECT MULTI-AGENT EXECUTION LOGS AND EVENT BUS TELEMETRY')}
           </p>
         </div>
@@ -102,26 +102,26 @@ export function AgentsFeature() {
       {/* Agents Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 font-mono">
         {agentsList.map((agent) => (
-          <Card key={agent.name} className="p-4 space-y-3 hover:border-[#FFB800] transition-none">
+          <Card key={agent.name} className="p-4 space-y-3 hover:border-primary transition-none">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#FFB800]/50 flex items-center justify-center font-bold text-xs font-mono">
+                <div className="w-8 h-8 rounded-none bg-background text-primary border border-primary/50 flex items-center justify-center font-bold text-xs font-mono">
                   {agent.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-xs text-white uppercase">{agent.name}</h3>
-                  <span className="text-[9px] font-mono text-slate-400 uppercase">LLM: {agent.model}</span>
+                  <h3 className="font-bold text-xs text-foreground uppercase">{agent.name}</h3>
+                  <span className="text-[9px] font-mono text-muted-foreground uppercase">LLM: {agent.model}</span>
                 </div>
               </div>
               <Badge variant="success" className="text-[8px]">ONLINE</Badge>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed font-mono uppercase">
+            <p className="text-xs text-muted-foreground leading-relaxed font-mono uppercase">
               SUBSCRIBING TO REDIS PUB/SUB EVENT BUS AND FASTAPI ASYNC QUEUES.
             </p>
 
-            <div className="pt-2 border-t border-[#3A4552] flex items-center justify-between">
-              <span className="text-[9px] text-[#FFB800] font-bold flex items-center gap-1 uppercase">
+            <div className="pt-2 border-t border-border flex items-center justify-between">
+              <span className="text-[9px] text-primary font-bold flex items-center gap-1 uppercase">
                 <CheckCircle2 className="w-3 h-3" /> {t('agents.ready', 'READY FOR TASKS')}
               </span>
               <Button
@@ -131,7 +131,7 @@ export function AgentsFeature() {
                 onClick={() => handleRunAgent(agent.name)}
                 className="text-xs h-7 px-2.5"
               >
-                <Play className="w-3 h-3 text-[#0B0C10]" />
+                <Play className="w-3 h-3 text-primary-foreground" />
                 <span>{t('agents.trigger_run', 'DISPATCH')}</span>
               </Button>
             </div>
@@ -143,26 +143,26 @@ export function AgentsFeature() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-[#FFB800]" />
+            <Terminal className="w-4 h-4 text-primary" />
             <span>LIVE EVENT BUS &amp; TELEMETRY CONSOLE</span>
           </CardTitle>
-          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
-            <Zap className="w-3.5 h-3.5 text-[#FFB800]" />
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+            <Zap className="w-3.5 h-3.5 text-primary" />
             <span>{events.length} EVENTS RECORDED</span>
           </div>
         </CardHeader>
         <CardContent className="pt-2">
-          <div className="bg-[#0B0C10] p-3 rounded-none border border-[#3A4552] font-mono text-xs max-h-96 overflow-y-auto space-y-2">
+          <div className="bg-background p-3 rounded-none border border-border font-mono text-xs max-h-96 overflow-y-auto space-y-2">
             {events.length === 0 ? (
-              <p className="text-slate-600 text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
+              <p className="text-muted-foreground text-center py-6 uppercase font-mono">NO EVENT STREAM LOGS RECORDED YET.</p>
             ) : (
               events.map((evt) => (
-                <div key={evt.id} className="p-2 bg-[#1F2833] border border-[#3A4552] space-y-1">
+                <div key={evt.id} className="p-2 bg-card border border-border space-y-1">
                   <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-[#FFB800] font-bold">[{evt.agent}]</span>
-                    <span className="text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
+                    <span className="text-primary font-bold">[{evt.agent}]</span>
+                    <span className="text-muted-foreground font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  <div className="text-slate-300 text-xs font-mono">
+                  <div className="text-foreground text-xs font-mono">
                     <span className="text-cyan-400 uppercase text-[9px] font-bold mr-2">
                       {evt.type}
                     </span>
@@ -185,17 +185,17 @@ export function AgentsFeature() {
           className="font-mono"
         >
           <div className="space-y-3">
-            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#FFB800] uppercase">
+            <div className="p-3 bg-background border border-border space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-primary uppercase">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>EXECUTION RESPONSE PAYLOAD</span>
               </div>
-              <pre className="p-2.5 bg-[#1F2833] border border-[#3A4552] text-xs font-mono text-slate-200 overflow-x-auto whitespace-pre-wrap">
+              <pre className="p-2.5 bg-card border border-border text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap">
                 {JSON.stringify(lastRunOutput.result, null, 2)}
               </pre>
             </div>
 
-            <div className="flex justify-end pt-1 border-t border-[#3A4552]">
+            <div className="flex justify-end pt-1 border-t border-border">
               <Button variant="outline" onClick={() => setLastRunOutput(null)} className="text-xs">
                 CLOSE
               </Button>

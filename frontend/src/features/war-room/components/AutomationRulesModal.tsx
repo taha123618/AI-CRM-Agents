@@ -131,22 +131,22 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0C10]/85 backdrop-blur-md font-mono">
-      <div className="bg-[#1F2833] border border-[#3A4552] rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md font-mono">
+      <div className="bg-card border border-border rounded-none w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-[#3A4552] bg-[#1F2833] flex items-center justify-between shrink-0">
+        <div className="p-4 sm:p-5 border-b border-border bg-card flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-[#0B0C10] text-[#FFB800] border border-[#3A4552]">
+            <div className="p-2 rounded-none bg-background text-primary border border-border">
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                 <span>MULTI-AGENT WORKFLOW AUTOMATION TRIGGERS</span>
                 <Badge variant="purple" className="text-[9px] uppercase font-mono">
                   ACTIVE STUDIO
                 </Badge>
               </h2>
-              <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
                 CONFIGURE EVENT-DRIVEN DISPATCH CHAINS ACROSS CRM AGENTS WITH REAL-TIME TEST SIMULATION.
               </p>
             </div>
@@ -154,7 +154,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-[#0B0C10] transition-none"
+            className="p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-background transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -164,7 +164,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-mono">
           {/* Action Toolbar */}
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
               REGISTERED RULES ({rules?.length || 0})
             </span>
             {!showForm && (
@@ -183,19 +183,19 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
 
           {/* Form */}
           {showForm && (
-            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3">
-              <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
-                <span className="text-xs font-bold text-white uppercase">
+            <div className="p-4 rounded-none bg-background border border-border space-y-3">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <span className="text-xs font-bold text-foreground uppercase">
                   {editingRuleId ? 'EDIT AUTOMATION TRIGGER' : 'CREATE AUTOMATION TRIGGER'}
                 </span>
-                <button onClick={resetForm} className="text-slate-400 hover:text-white text-xs">
+                <button onClick={resetForm} className="text-muted-foreground hover:text-foreground text-xs">
                   CANCEL
                 </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     RULE NAME
                   </label>
                   <input
@@ -204,18 +204,18 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={ruleName}
                     onChange={(e) => setRuleName(e.target.value)}
                     placeholder="E.G. HIGH-INTENT LEAD WHATSAPP AUTO-DISPATCH"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TRIGGER EVENT
                   </label>
                   <select
                     value={triggerEvent}
                     onChange={(e) => setTriggerEvent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   >
                     <option value="lead_score_above">LEAD SCORE &gt; THRESHOLD</option>
                     <option value="deal_stage_changed">DEAL STAGE CHANGED</option>
@@ -225,7 +225,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TRIGGER THRESHOLD / MATCH
                   </label>
                   <input
@@ -234,18 +234,18 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={triggerThreshold}
                     onChange={(e) => setTriggerThreshold(e.target.value)}
                     placeholder="E.G. 80 OR 'PROPOSAL_SENT'"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     TARGET AGENT
                   </label>
                   <select
                     value={actionAgent}
                     onChange={(e) => setActionAgent(e.target.value)}
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   >
                     <option value="whatsapp_agent">WHATSAPP AUTO-PILOT AGENT</option>
                     <option value="email_intelligence">EMAIL INTELLIGENCE AGENT</option>
@@ -256,7 +256,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
+                  <label className="text-[10px] font-bold text-foreground uppercase tracking-wider block">
                     ACTION DISPATCH TYPE
                   </label>
                   <input
@@ -265,12 +265,12 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                     value={actionType}
                     onChange={(e) => setActionType(e.target.value)}
                     placeholder="E.G. SEND_WELCOME_TEMPLATE"
-                    className="w-full bg-[#1F2833] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                    className="w-full bg-card border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+              <div className="flex justify-end gap-2 pt-2 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={resetForm} className="text-xs uppercase">
                   CANCEL
                 </Button>
@@ -291,11 +291,11 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
 
           {/* Test Execution Result Banner */}
           {executionResult && (
-            <div className="p-4 rounded-none bg-[#0B0C10] border border-[#FFB800] space-y-2.5 animate-in fade-in">
+            <div className="p-4 rounded-none bg-background border border-primary space-y-2.5 animate-in fade-in">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#FFB800]" />
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                  <CheckCircle className="w-4 h-4 text-primary" />
+                  <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">
                     SIMULATED LIVE AGENT EXECUTION
                   </h4>
                   {executionResult.llm_engine && (
@@ -313,19 +313,19 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                       onClick={handleCopyPayload}
                       className="text-xs h-6 px-2 uppercase"
                     >
-                      {copiedResult ? <Check className="w-3 h-3 text-[#FFB800]" /> : <Copy className="w-3 h-3" />}
+                      {copiedResult ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3" />}
                     </Button>
                   )}
-                  <button onClick={() => setExecutionResult(null)} className="text-slate-400 hover:text-white text-xs">
+                  <button onClick={() => setExecutionResult(null)} className="text-muted-foreground hover:text-foreground text-xs">
                     ✕
                   </button>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-300 uppercase">{executionResult.message}</p>
+              <p className="text-xs text-foreground uppercase">{executionResult.message}</p>
 
               {executionResult.ai_generated_payload && (
-                <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] font-mono text-[11px] text-[#FFB800] whitespace-pre-wrap">
+                <div className="p-2.5 rounded-none bg-card border border-border font-mono text-[11px] text-primary whitespace-pre-wrap">
                   {executionResult.ai_generated_payload}
                 </div>
               )}
@@ -335,36 +335,36 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
           {/* Rules List */}
           <div className="space-y-2.5">
             {isLoading ? (
-              <div className="p-8 text-center text-xs text-slate-500 uppercase font-mono">LOADING RULES...</div>
+              <div className="p-8 text-center text-xs text-muted-foreground uppercase font-mono">LOADING RULES...</div>
             ) : rules?.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-500 uppercase font-mono">NO AUTOMATION RULES CONFIGURED.</div>
+              <div className="p-8 text-center text-xs text-muted-foreground uppercase font-mono">NO AUTOMATION RULES CONFIGURED.</div>
             ) : (
               rules?.map((r) => {
                 const isActive = r.status === 'active';
                 return (
                   <div
                     key={r.id}
-                    className={`p-3.5 rounded-none border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-none ${isActive ? 'bg-[#0B0C10] border-[#3A4552]' : 'bg-[#0B0C10]/50 border-[#3A4552]/40 opacity-70'
+                    className={`p-3.5 rounded-none border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-none ${isActive ? 'bg-background border-border' : 'bg-background/50 border-border/40 opacity-70'
                       }`}
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-white uppercase">{r.name}</span>
+                        <span className="text-xs font-bold text-foreground uppercase">{r.name}</span>
                         <Badge variant={isActive ? 'success' : 'default'} className="text-[9px] uppercase font-mono">
                           {isActive ? 'ACTIVE' : 'PAUSED'}
                         </Badge>
                       </div>
 
-                      <div className="flex items-center gap-2 text-[10px] text-slate-400 uppercase">
-                        <span>TRIGGER: <strong className="text-slate-200">{r.trigger_event}</strong> ({r.trigger_threshold})</span>
+                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase">
+                        <span>TRIGGER: <strong className="text-foreground">{r.trigger_event}</strong> ({r.trigger_threshold})</span>
                         <span>→</span>
-                        <span className="flex items-center gap-1 text-[#FFB800]">
+                        <span className="flex items-center gap-1 text-primary">
                           <Bot className="w-3 h-3" />
                           {r.action_agent}: {r.action_type}
                         </span>
                       </div>
 
-                      <span className="text-[9px] font-mono text-slate-500 block uppercase">
+                      <span className="text-[9px] font-mono text-muted-foreground block uppercase">
                         FIRED {r.executions_count || 0} TIMES
                       </span>
                     </div>
@@ -378,7 +378,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         isLoading={testExecutionMutation.isPending}
                         className="text-xs h-7 uppercase"
                       >
-                        <Play className="w-3 h-3 mr-1 text-[#FFB800]" />
+                        <Play className="w-3 h-3 mr-1 text-primary" />
                         <span>TEST RUN</span>
                       </Button>
 
@@ -387,9 +387,9 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleMutation.mutate(r.id)}
-                        className="h-7 px-2 text-slate-400 hover:text-white"
+                        className="h-7 px-2 text-muted-foreground hover:text-foreground"
                       >
-                        {isActive ? <Pause className="w-3.5 h-3.5 text-[#FFB800]" /> : <Play className="w-3.5 h-3.5 text-[#FFB800]" />}
+                        {isActive ? <Pause className="w-3.5 h-3.5 text-primary" /> : <Play className="w-3.5 h-3.5 text-primary" />}
                       </Button>
 
                       <Button
@@ -397,7 +397,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEdit(r)}
-                        className="h-7 px-2 text-slate-400 hover:text-white"
+                        className="h-7 px-2 text-muted-foreground hover:text-foreground"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </Button>
@@ -407,7 +407,7 @@ export function AutomationRulesModal({ onClose }: AutomationRulesModalProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteMutation.mutate(r.id)}
-                        className="h-7 px-2 text-slate-500 hover:text-[#FF2A54]"
+                        className="h-7 px-2 text-muted-foreground hover:text-destructive"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>

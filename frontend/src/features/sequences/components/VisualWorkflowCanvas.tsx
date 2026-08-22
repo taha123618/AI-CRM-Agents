@@ -180,16 +180,16 @@ export function VisualWorkflowCanvas() {
   return (
     <div className="space-y-4 font-mono">
       {/* Canvas Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-[#1F2833] border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none bg-card border border-border">
         <div>
           <div className="flex items-center gap-2">
-            <Workflow className="w-4 h-4 text-[#FFB800]" />
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
+            <Workflow className="w-4 h-4 text-primary" />
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">VISUAL AGENT WORKFLOW CANVAS</h2>
             <Badge variant="purple" className="text-[9px] uppercase font-mono">
               NODE PIPELINE
             </Badge>
           </div>
-          <p className="text-[10px] text-slate-400 mt-0.5 uppercase">
+          <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">
             BUILD, CONNECT, AND SIMULATE AUTONOMOUS MULTI-AGENT TRIGGERS ACROSS CADENCES, WAR ROOMS, AND CS PLAYBOOKS.
           </p>
         </div>
@@ -215,7 +215,7 @@ export function VisualWorkflowCanvas() {
             {executeMutation.isPending ? (
               <LoadingSpinner size="sm" />
             ) : (
-              <Play className="w-3 h-3 fill-current text-[#0B0C10]" />
+              <Play className="w-3 h-3 fill-current text-primary-foreground" />
             )}
             <span>{executeMutation.isPending ? 'SIMULATING...' : 'RUN SIMULATION'}</span>
           </Button>
@@ -223,7 +223,7 @@ export function VisualWorkflowCanvas() {
       </div>
 
       {/* Workflow Selector Bar */}
-      <div className="flex items-center justify-between gap-3 border-b border-[#3A4552] pb-2">
+      <div className="flex items-center justify-between gap-3 border-b border-border pb-2">
         <div className="flex items-center gap-2 overflow-x-auto">
           {workflows?.map((wf) => (
             <button
@@ -233,13 +233,13 @@ export function VisualWorkflowCanvas() {
                 setSimulationTrace(null);
               }}
               className={`px-3 py-1.5 rounded-none text-[11px] font-bold uppercase whitespace-nowrap transition-none flex items-center gap-2 ${activeWf?.id === wf.id
-                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                  : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
+                  ? 'bg-primary text-primary-foreground border border-primary'
+                  : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               <Zap className="w-3 h-3" />
               <span>{wf.name}</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-[#1F2833] text-slate-300 font-mono border border-[#3A4552]">
+              <span className="text-[9px] px-1.5 py-0.2 rounded-none bg-card text-foreground font-mono border border-border">
                 {wf.execution_count} RUNS
               </span>
             </button>
@@ -266,7 +266,7 @@ export function VisualWorkflowCanvas() {
                   deleteWfMutation.mutate(activeWf.id);
                 }
               }}
-              className="h-7 px-2 text-slate-500 hover:text-[#FF2A54]"
+              className="h-7 px-2 text-muted-foreground hover:text-destructive"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </Button>
@@ -281,19 +281,19 @@ export function VisualWorkflowCanvas() {
       ) : activeWf ? (
         <div className="space-y-4">
           {/* Visual Interactive Graph Stage */}
-          <div className="relative min-h-[300px] rounded-none bg-[#0B0C10] border border-[#3A4552] p-6 overflow-x-auto flex items-center justify-between gap-6">
+          <div className="relative min-h-[300px] rounded-none bg-background border border-border p-6 overflow-x-auto flex items-center justify-between gap-6">
             {/* Background Grid Accent */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F2833_1px,transparent_1px),linear-gradient(to_bottom,#1F2833_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--card))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--card))_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none" />
 
             {/* Nodes Pipeline */}
             <div className="relative z-10 flex items-center gap-4 mx-auto font-mono">
               {activeWf.nodes?.map((node, index) => (
                 <div key={node.id} className="flex items-center gap-4">
                   {/* Node Card */}
-                  <div className="w-56 p-3.5 rounded-none bg-[#1F2833] border border-[#3A4552] hover:border-[#FFB800] transition-none space-y-2 group relative">
+                  <div className="w-56 p-3.5 rounded-none bg-card border border-border hover:border-primary transition-none space-y-2 group relative">
                     <button
                       onClick={() => handleRemoveNode(node.id)}
-                      className="absolute top-2.5 right-2.5 text-slate-500 hover:text-[#FF2A54] opacity-0 group-hover:opacity-100 transition-none"
+                      className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-none"
                       title="Remove Step"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -303,10 +303,10 @@ export function VisualWorkflowCanvas() {
                       <Badge variant={getNodeBadgeVariant(node.type)} className="text-[9px] uppercase font-mono">
                         {node.type}
                       </Badge>
-                      <span className="text-[10px] font-mono text-slate-400">STEP #{index + 1}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground">STEP #{index + 1}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-white group-hover:text-[#FFB800] transition-none uppercase">
+                    <h4 className="text-xs font-bold text-foreground group-hover:text-primary transition-none uppercase">
                       {node.label}
                     </h4>
 
@@ -320,8 +320,8 @@ export function VisualWorkflowCanvas() {
 
                   {/* Flow Arrow */}
                   {index < activeWf.nodes.length - 1 && (
-                    <div className="text-[#3A4552] flex items-center">
-                      <ArrowRight className="w-4 h-4 text-[#FFB800]" />
+                    <div className="text-border flex items-center">
+                      <ArrowRight className="w-4 h-4 text-primary" />
                     </div>
                   )}
                 </div>
@@ -331,17 +331,17 @@ export function VisualWorkflowCanvas() {
 
           {/* Real-time Simulation Trace */}
           {simulationTrace && (
-            <div className="p-4 rounded-none bg-[#1F2833] border border-[#FFB800] space-y-3 font-mono">
+            <div className="p-4 rounded-none bg-card border border-primary space-y-3 font-mono">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#FFB800]" />
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                  <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">SIMULATION PIPELINE COMPLETE</h3>
                   <Badge variant="success" className="text-[9px] uppercase">
                     {simulationTrace.nodes_processed} NODES EXECUTED
                   </Badge>
                 </div>
 
-                <span className="text-[10px] font-mono text-slate-400 uppercase">
+                <span className="text-[10px] font-mono text-muted-foreground uppercase">
                   EXECUTED AT: {new Date(simulationTrace.executed_at).toLocaleTimeString()}
                 </span>
               </div>
@@ -350,15 +350,15 @@ export function VisualWorkflowCanvas() {
                 {simulationTrace.trace?.map((step: any, idx: number) => (
                   <div
                     key={idx}
-                    className="p-2.5 rounded-none bg-[#0B0C10] border border-[#3A4552] flex items-center justify-between text-xs font-mono"
+                    className="p-2.5 rounded-none bg-background border border-border flex items-center justify-between text-xs font-mono"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] flex items-center justify-center text-[10px] font-bold">
+                      <span className="w-4 h-4 rounded-none bg-card text-primary border border-border flex items-center justify-center text-[10px] font-bold">
                         ✓
                       </span>
-                      <span className="text-slate-200 font-bold text-[11px] uppercase">{step.node}</span>
+                      <span className="text-foreground font-bold text-[11px] uppercase">{step.node}</span>
                     </div>
-                    <span className="font-mono text-[9px] text-[#FFB800]">{step.latency_ms}MS</span>
+                    <span className="font-mono text-[9px] text-primary">{step.latency_ms}MS</span>
                   </div>
                 ))}
               </div>
@@ -369,25 +369,25 @@ export function VisualWorkflowCanvas() {
 
       {/* Add Step Node Modal */}
       {isAddNodeOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Plus className="w-4 h-4 text-[#FFB800]" />
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2.5">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
+                <Plus className="w-4 h-4 text-primary" />
                 APPEND WORKFLOW STEP NODE
               </h3>
-              <button onClick={() => setIsAddNodeOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsAddNodeOpen(false)} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>
             </div>
 
             <div className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">STEP TYPE</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">STEP TYPE</label>
                 <select
                   value={nodeType}
                   onChange={(e) => setNodeType(e.target.value as any)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                 >
                   <option value="agent">AUTONOMOUS AI AGENT</option>
                   <option value="action">OUTBOUND CRM ACTION</option>
@@ -396,24 +396,24 @@ export function VisualWorkflowCanvas() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">STEP NAME / LABEL *</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">STEP NAME / LABEL *</label>
                 <input
                   type="text"
                   required
                   placeholder="E.G. EMAIL INTELLIGENCE CADENCE STEP"
                   value={nodeLabel}
                   onChange={(e) => setNodeLabel(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
               {nodeType === 'agent' && (
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">TARGET AI AGENT</label>
+                  <label className="block text-[10px] font-bold uppercase text-foreground mb-1">TARGET AI AGENT</label>
                   <select
                     value={nodeAgent}
                     onChange={(e) => setNodeAgent(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
+                    className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                   >
                     {AVAILABLE_AGENTS.map((ag) => (
                       <option key={ag.id} value={ag.id}>
@@ -424,7 +424,7 @@ export function VisualWorkflowCanvas() {
                 </div>
               )}
 
-              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+              <div className="pt-2 flex justify-end gap-2 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsAddNodeOpen(false)} className="text-xs uppercase">
                   CANCEL
                 </Button>
@@ -446,48 +446,48 @@ export function VisualWorkflowCanvas() {
 
       {/* Create New Pipeline Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0B0C10]/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
-          <div className="w-full max-w-md bg-[#1F2833] border border-[#3A4552] rounded-none p-5 shadow-2xl space-y-3">
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2.5">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                <Workflow className="w-4 h-4 text-[#FFB800]" />
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-card border border-border rounded-none p-5 shadow-2xl space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2.5">
+              <h3 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
+                <Workflow className="w-4 h-4 text-primary" />
                 CREATE NEW WORKFLOW PIPELINE
               </h3>
-              <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsCreateModalOpen(false)} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleCreateWorkflowSubmit} className="space-y-3 font-mono">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">PIPELINE NAME *</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">PIPELINE NAME *</label>
                 <input
                   type="text"
                   required
                   placeholder="E.G. ENTERPRISE CHURN DEFENSE PIPELINE"
                   value={newWfName}
                   onChange={(e) => setNewWfName(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">DESCRIPTION</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">DESCRIPTION</label>
                 <textarea
                   rows={3}
                   placeholder="SUMMARIZE MULTI-AGENT CADENCE GOALS..."
                   value={newWfDesc}
                   onChange={(e) => setNewWfDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono resize-none"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-slate-300 mb-1">TRIGGER EXECUTION MODE</label>
+                <label className="block text-[10px] font-bold uppercase text-foreground mb-1">TRIGGER EXECUTION MODE</label>
                 <select
                   value={newWfTrigger}
                   onChange={(e) => setNewWfTrigger(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase"
+                  className="w-full px-3 py-1.5 rounded-none bg-background border border-border text-xs text-foreground focus:outline-none focus:border-primary uppercase"
                 >
                   <option value="event">REAL-TIME CRM EVENT TRIGGER</option>
                   <option value="manual">MANUAL 1-CLICK TRIGGER</option>
@@ -496,7 +496,7 @@ export function VisualWorkflowCanvas() {
                 </select>
               </div>
 
-              <div className="pt-2 flex justify-end gap-2 border-t border-[#3A4552]">
+              <div className="pt-2 flex justify-end gap-2 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateModalOpen(false)} className="text-xs uppercase">
                   CANCEL
                 </Button>

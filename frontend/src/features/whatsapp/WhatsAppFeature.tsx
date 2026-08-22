@@ -47,7 +47,7 @@ function StatCard({
   value,
   sub,
   icon,
-  color = 'text-white',
+  color = 'text-foreground',
   glowClass = '',
 }: {
   label: string;
@@ -58,16 +58,16 @@ function StatCard({
   glowClass?: string;
 }) {
   return (
-    <Card className={`p-4 bg-slate-900/60 backdrop-blur-xl border-slate-800/80 hover:border-slate-700/80 transition-none  flex items-start gap-3.5 group ${glowClass}`}>
-      <div className="p-2.5 rounded-none bg-slate-800/90 text-slate-300 border border-slate-700/50 group-hover:scale-105 transition-none ">
+    <Card className={`p-4 bg-card border border-border hover:border-primary transition-none flex items-start gap-3.5 group font-mono ${glowClass}`}>
+      <div className="p-2.5 rounded-none bg-background text-foreground border border-border group-hover:border-primary transition-none">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block truncate">
+        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block truncate font-mono">
           {label}
         </span>
         <div className={`text-2xl font-black font-mono tracking-tight mt-0.5 ${color}`}>{value}</div>
-        {sub && <span className="text-[10px] text-slate-500 mt-0.5 block truncate">{sub}</span>}
+        {sub && <span className="text-[10px] text-muted-foreground mt-0.5 block truncate font-mono uppercase">{sub}</span>}
       </div>
     </Card>
   );
@@ -94,16 +94,16 @@ function TagsEditor({
   });
 
   return (
-    <div className="p-3 bg-slate-950 border border-slate-800 rounded-none space-y-2.5 shadow-xl">
+    <div className="p-3 bg-card border border-border rounded-none space-y-2.5 shadow-xl font-mono">
       <div className="flex flex-wrap gap-1.5">
         {tags.map((t) => (
           <span
             key={t}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold font-mono"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-none bg-background border border-border text-foreground text-[10px] font-bold font-mono uppercase"
           >
             #{t}
             <button type="button" onClick={() => setTags(tags.filter((x) => x !== t))}>
-              <X className="w-3 h-3 hover:text-white" />
+              <X className="w-3 h-3 text-muted-foreground hover:text-destructive" />
             </button>
           </span>
         ))}
@@ -120,23 +120,23 @@ function TagsEditor({
               setInput('');
             }
           }}
-          placeholder="Type tag and press Enter..."
-          className="flex-1 bg-slate-900 border border-slate-800 rounded-none px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+          placeholder="TYPE TAG AND PRESS ENTER..."
+          className="flex-1 bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono uppercase"
         />
         <Button
           type="button"
           variant="primary"
           size="sm"
-          className="text-xs bg-emerald-600 hover:bg-emerald-500 px-3"
+          className="text-xs px-3 font-mono uppercase"
           isLoading={tagMutation.isPending}
           onClick={() => tagMutation.mutate()}
         >
-          Save
+          SAVE
         </Button>
         <button
           type="button"
           onClick={onClose}
-          className="p-1 text-slate-400 hover:text-slate-200"
+          className="p-1 text-muted-foreground hover:text-foreground"
         >
           <X className="w-4 h-4" />
         </button>
@@ -193,7 +193,6 @@ function VoiceNoteBubble({
 
     setIsPlaying(true);
 
-    // 1. Play real microphone recording if audioUrl exists
     if (audioUrl) {
       try {
         const audio = new Audio(audioUrl);
@@ -221,7 +220,6 @@ function VoiceNoteBubble({
       }
     }
 
-    // 2. Fallback to Web Speech Synthesis speaking transcribed audio
     playFallbackSpeech();
   };
 
@@ -258,12 +256,12 @@ function VoiceNoteBubble({
     `0:${Math.floor(secs).toString().padStart(2, '0')}`;
 
   return (
-    <div className="p-3.5 rounded-none bg-emerald-950/50 border border-emerald-500/40 space-y-2.5 w-72 shadow-lg">
+    <div className="p-3.5 rounded-none bg-background border border-border space-y-2.5 w-72 shadow-md font-mono">
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={togglePlay}
-          className="p-3 rounded-none bg-emerald-500 text-white hover:bg-emerald-400 transition-none shadow-md shadow-emerald-500/30 flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
+          className="p-3 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 transition-none flex items-center justify-center shrink-0"
         >
           {isPlaying ? (
             <Pause className="w-4 h-4 fill-current" />
@@ -278,9 +276,8 @@ function VoiceNoteBubble({
             (h, i) => (
               <div
                 key={i}
-                className={`flex-1 rounded-none transition-none  ${
-                  progress > (i / 18) * 100 ? 'bg-emerald-400 scale-y-110' : 'bg-slate-700'
-                }`}
+                className={`flex-1 rounded-none transition-none ${progress > (i / 18) * 100 ? 'bg-primary scale-y-110' : 'bg-muted'
+                  }`}
                 style={{ height: `${h}%` }}
               />
             )
@@ -295,18 +292,18 @@ function VoiceNoteBubble({
             setPlaybackRate(nextRate);
             if (audioRef.current) audioRef.current.playbackRate = nextRate;
           }}
-          className="px-2 py-1 rounded-none bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-300 hover:text-white"
+          className="px-2 py-1 rounded-none bg-card border border-border text-[10px] font-mono font-bold text-foreground hover:border-primary"
         >
           {playbackRate}x
         </button>
       </div>
 
-      <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-        <span className="flex items-center gap-1.5 text-emerald-300 font-sans font-medium truncate max-w-[170px]">
-          <Mic className="w-3.5 h-3.5 text-emerald-400 shrink-0 animate-pulse" />
+      <div className="flex items-center justify-between text-[11px] text-muted-foreground font-mono">
+        <span className="flex items-center gap-1.5 text-foreground font-sans font-medium truncate max-w-[170px]">
+          <Mic className="w-3.5 h-3.5 text-primary shrink-0" />
           <span className="truncate">"{cleanText}"</span>
         </span>
-        <span className="font-bold text-white">
+        <span className="font-bold text-foreground">
           {fmtTime(isPlaying ? currentTime : duration)}
         </span>
       </div>
@@ -383,9 +380,9 @@ export function WhatsAppFeature() {
   });
 
   // Scroll to bottom on new messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isBotThinking]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages, isBotThinking]);
 
   // Voice Note Recording Handlers with Real Speech Recognition & Audio Blob
   const startVoiceRecording = async () => {
@@ -444,7 +441,7 @@ export function WhatsAppFeature() {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch {}
+      } catch { }
       recognitionRef.current = null;
     }
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
@@ -465,7 +462,7 @@ export function WhatsAppFeature() {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch {}
+      } catch { }
       recognitionRef.current = null;
     }
 
@@ -583,33 +580,33 @@ export function WhatsAppFeature() {
   const popularEmojis = ['👍', '❤️', '😂', '🔥', '👏', '🚀', '✅', '🙏'];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-mono">
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-none bg-gradient-to-r from-emerald-950/40 via-slate-900/60 to-teal-950/40 border border-emerald-500/20 backdrop-blur-xl shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-none bg-card border border-border shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-none bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 shadow-lg shadow-emerald-500/10">
-            <MessageSquare className="w-6 h-6 animate-pulse" />
+          <div className="p-3 rounded-none bg-background border border-border text-primary">
+            <MessageSquare className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wider text-foreground flex items-center gap-2.5 flex-wrap">
               <span>WhatsApp Business Multi-Agent Hub</span>
-              <span className="px-2.5 py-0.5 rounded-none text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="px-2.5 py-0.5 rounded-none text-[10px] font-mono font-bold bg-primary/10 text-primary border border-primary/30 uppercase">
                 24/7 AI Auto-Pilot
               </span>
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1 uppercase font-mono">
               Omnichannel conversational CRM with voice note intelligence, broadcast campaigns, and instant client sync.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <Button
             variant="outline"
             size="sm"
             onClick={() => refetch()}
             isLoading={isRefetching}
-            className="border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-300"
+            className="border-border bg-background hover:bg-muted text-foreground text-xs uppercase"
           >
             <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
             <span>Refresh</span>
@@ -619,9 +616,9 @@ export function WhatsAppFeature() {
             variant="outline"
             size="sm"
             onClick={() => setShowTemplatesModal(true)}
-            className="border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 hover:text-white"
+            className="border-border bg-background hover:bg-muted text-foreground hover:border-primary text-xs uppercase"
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
+            <Sparkles className="w-3.5 h-3.5 mr-1.5 text-primary" />
             <span>Meta Templates &amp; Media</span>
           </Button>
 
@@ -629,9 +626,9 @@ export function WhatsAppFeature() {
             variant="outline"
             size="sm"
             onClick={() => setShowBroadcastModal(true)}
-            className="border-purple-500/30 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:text-white"
+            className="border-border bg-background hover:bg-muted text-foreground hover:border-primary text-xs uppercase"
           >
-            <Megaphone className="w-3.5 h-3.5 mr-1.5" />
+            <Megaphone className="w-3.5 h-3.5 mr-1.5 text-purple-600 dark:text-purple-400" />
             <span>New Broadcast</span>
           </Button>
 
@@ -639,7 +636,7 @@ export function WhatsAppFeature() {
             variant="primary"
             size="sm"
             onClick={() => setShowNewModal(true)}
-            className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold shadow-lg shadow-emerald-600/20"
+            className="text-xs uppercase font-mono"
           >
             <Plus className="w-4 h-4 mr-1.5" />
             <span>New Chat</span>
@@ -653,72 +650,72 @@ export function WhatsAppFeature() {
           label="Active Chats"
           value={stats?.active_conversations ?? 0}
           sub={`${stats?.total_conversations ?? 0} total threads`}
-          icon={<MessageCircle className="w-4 h-4 text-emerald-400" />}
-          color="text-emerald-400"
+          icon={<MessageCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
+          color="text-emerald-600 dark:text-emerald-400"
           glowClass="hover:border-emerald-500/40"
         />
         <StatCard
           label="Bot Auto-Pilot Rate"
           value={`${stats?.bot_auto_reply_rate ?? 0}%`}
           sub={`${stats?.auto_pilot_enabled ?? 0} chats automated`}
-          icon={<Zap className="w-4 h-4 text-purple-400" />}
-          color="text-purple-400"
+          icon={<Zap className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+          color="text-purple-600 dark:text-purple-400"
           glowClass="hover:border-purple-500/40"
         />
         <StatCard
           label="Avg Response Time"
           value={`${stats?.avg_response_time_seconds ?? 0}s`}
           sub="Autonomous SLA speed"
-          icon={<Clock className="w-4 h-4 text-amber-400" />}
-          color="text-amber-400"
-          glowClass="hover:border-amber-500/40"
+          icon={<Clock className="w-4 h-4 text-primary" />}
+          color="text-primary"
+          glowClass="hover:border-primary/40"
         />
         <StatCard
           label="Unread Inbound"
           value={stats?.unread_total ?? 0}
           sub={`${stats?.handed_off_conversations ?? 0} rep handoffs`}
-          icon={<Activity className="w-4 h-4 text-rose-400" />}
-          color="text-rose-400"
-          glowClass="hover:border-rose-500/40"
+          icon={<Activity className="w-4 h-4 text-destructive" />}
+          color="text-destructive"
+          glowClass="hover:border-destructive/40"
         />
       </div>
 
       {/* ── Main WhatsApp Workspace ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-slate-800 rounded-none overflow-hidden bg-slate-950 shadow-2xl h-[720px] max-h-[720px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-border rounded-none overflow-hidden bg-card shadow-xl h-[720px] max-h-[720px] font-mono">
         {/* ── Conversation List ── */}
-        <div className="border-r border-slate-800 bg-slate-900/40 flex flex-col h-full min-h-0 overflow-hidden">
+        <div className="border-r border-border bg-card flex flex-col h-full min-h-0 overflow-hidden">
           {/* List Header */}
-          <div className="p-3.5 border-b border-slate-800 bg-slate-900/80 space-y-2.5 shrink-0">
+          <div className="p-3.5 border-b border-border bg-background space-y-2.5 shrink-0">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5 font-mono">
+                <MessageSquare className="w-3.5 h-3.5 text-primary" />
                 <span>Threads ({displayedConvs.length})</span>
               </span>
-              <Badge variant="success" className="gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-none bg-emerald-400 animate-pulse" />
+              <Badge variant="success" className="gap-1 text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 uppercase">
+                <span className="w-1.5 h-1.5 rounded-none bg-emerald-500 animate-pulse" />
                 Live Sync
               </Badge>
             </div>
 
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search name, phone, or tags..."
+                placeholder="SEARCH NAME, PHONE, OR TAGS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-none pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition-none"
+                className="w-full bg-card border border-border rounded-none pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary font-mono transition-none uppercase"
               />
             </div>
           </div>
 
           {/* Conversation Items */}
-          <div className="flex-1 overflow-y-auto min-h-0 divide-y divide-slate-800/60 scrollbar-thin">
+          <div className="flex-1 overflow-y-auto min-h-0 divide-y divide-border scrollbar-thin">
             {isLoadingConvs ? (
-              <div className="py-16 text-center text-slate-500 text-xs">Loading conversations...</div>
+              <div className="py-16 text-center text-muted-foreground text-xs uppercase font-mono">Loading conversations...</div>
             ) : !displayedConvs?.length ? (
-              <div className="py-16 text-center text-slate-500 text-xs p-4">
+              <div className="py-16 text-center text-muted-foreground text-xs p-4 uppercase font-mono">
                 {searchQuery ? 'No matching conversations found.' : 'No conversations started yet.'}
               </div>
             ) : (
@@ -728,21 +725,21 @@ export function WhatsAppFeature() {
                   <div
                     key={conv.id}
                     onClick={() => setSelectedConv(conv)}
-                    className={`p-3.5 cursor-pointer transition-none  space-y-1.5 ${
+                    className={`p-3.5 cursor-pointer transition-none space-y-1.5 ${
                       isSelected
-                        ? 'bg-emerald-950/30 border-l-4 border-l-emerald-500 text-white shadow-lg'
-                        : 'hover:bg-slate-900/60 text-slate-300'
+                        ? 'bg-muted dark:bg-card border-l-4 border-l-primary text-foreground'
+                        : 'hover:bg-muted text-foreground'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white truncate">{conv.contact_name}</span>
+                      <span className="text-xs font-bold text-foreground truncate uppercase font-mono">{conv.contact_name}</span>
                       <div className="flex items-center gap-1.5">
                         {conv.unread_count > 0 && (
-                          <span className="w-4 h-4 rounded-none bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center animate-bounce">
+                          <span className="w-4 h-4 rounded-none bg-primary text-primary-foreground text-[9px] font-bold font-mono flex items-center justify-center">
                             {conv.unread_count}
                           </span>
                         )}
-                        <span className="text-[10px] text-slate-500 font-mono">
+                        <span className="text-[10px] text-muted-foreground font-mono">
                           {conv.last_message_at
                             ? new Date(conv.last_message_at).toLocaleTimeString([], {
                                 hour: '2-digit',
@@ -753,14 +750,14 @@ export function WhatsAppFeature() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <div className="flex items-center justify-between text-[11px] text-muted-foreground font-mono">
                       <span>{conv.phone_number}</span>
                       <div className="flex items-center gap-1.5">
                         {conv.status === 'archived' && (
-                          <span className="text-[9px] text-slate-500 uppercase font-bold">Archived</span>
+                          <span className="text-[9px] text-muted-foreground uppercase font-bold">Archived</span>
                         )}
                         {conv.ai_auto_pilot && (
-                          <span className="flex items-center gap-0.5 text-emerald-400 text-[10px] font-bold">
+                          <span className="flex items-center gap-0.5 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold font-mono uppercase">
                             <Bot className="w-3.5 h-3.5" /> Auto
                           </span>
                         )}
@@ -772,7 +769,7 @@ export function WhatsAppFeature() {
                         {conv.tags.slice(0, 3).map((t) => (
                           <span
                             key={t}
-                            className="px-1.5 py-0.5 rounded-none bg-slate-800/80 border border-slate-700/50 text-slate-400 text-[9px] font-mono"
+                            className="px-1.5 py-0.5 rounded-none bg-background border border-border text-muted-foreground text-[9px] font-mono uppercase"
                           >
                             #{t}
                           </span>
@@ -787,31 +784,31 @@ export function WhatsAppFeature() {
         </div>
 
         {/* ── Chat Area ── */}
-        <div className="lg:col-span-2 flex flex-col bg-slate-950 h-full min-h-0 overflow-hidden relative">
+        <div className="lg:col-span-2 flex flex-col bg-background h-full min-h-0 overflow-hidden relative font-mono">
           {activeConv ? (
             <>
               {/* Chat Header */}
-              <div className="p-3.5 border-b border-slate-800 bg-slate-900/90 backdrop-blur-xl shrink-0 flex items-center justify-between">
+              <div className="p-3.5 border-b border-border bg-card shrink-0 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-none bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-emerald-600/30">
+                    <div className="w-10 h-10 rounded-none bg-primary text-primary-foreground font-mono font-bold flex items-center justify-center text-sm border border-primary">
                       {activeConv.contact_name
                         .split(' ')
                         .map((n) => n[0])
                         .slice(0, 2)
                         .join('')}
                     </div>
-                    <span className="absolute bottom-0 right-0 w-3 h-3 rounded-none bg-emerald-400 border-2 border-slate-950" />
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-none bg-emerald-500 border border-card" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-black text-white">{activeConv.contact_name}</h3>
-                      <span className="text-[10px] font-mono text-emerald-400 font-semibold">
+                      <h3 className="text-sm font-bold text-foreground uppercase font-mono">{activeConv.contact_name}</h3>
+                      <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold uppercase">
                         online
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-                      <Phone className="w-3 h-3 text-slate-500" />
+                    <span className="text-[11px] text-muted-foreground font-mono flex items-center gap-2">
+                      <Phone className="w-3 h-3 text-muted-foreground" />
                       {activeConv.phone_number}
                     </span>
                   </div>
@@ -824,7 +821,7 @@ export function WhatsAppFeature() {
                     variant="outline"
                     onClick={triggerAiResponse}
                     isLoading={isBotThinking}
-                    className="border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 text-xs h-8"
+                    className="border-border bg-background hover:bg-muted text-emerald-600 dark:text-emerald-400 hover:border-primary text-xs h-8 uppercase font-mono"
                   >
                     <Bot className="w-3.5 h-3.5 mr-1" />
                     <span>AI Reply</span>
@@ -839,7 +836,7 @@ export function WhatsAppFeature() {
                         editingTagsForConv === activeConv.id ? null : activeConv.id
                       )
                     }
-                    className="p-2 rounded-none text-slate-400 hover:bg-slate-800 hover:text-white transition-none"
+                    className="p-2 rounded-none text-muted-foreground hover:bg-muted hover:text-foreground transition-none"
                   >
                     <Tag className="w-4 h-4" />
                   </button>
@@ -849,7 +846,7 @@ export function WhatsAppFeature() {
                     type="button"
                     title="Archive chat"
                     onClick={() => archiveMutation.mutate(activeConv.id)}
-                    className="p-2 rounded-none text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition-none"
+                    className="p-2 rounded-none text-muted-foreground hover:bg-muted hover:text-destructive transition-none"
                   >
                     <Archive className="w-4 h-4" />
                   </button>
@@ -863,10 +860,10 @@ export function WhatsAppFeature() {
                         autoPilot: !activeConv.ai_auto_pilot,
                       })
                     }
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-bold border transition-none ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-bold border transition-none font-mono uppercase ${
                       activeConv.ai_auto_pilot
-                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-lg shadow-emerald-500/10'
-                        : 'bg-slate-800 text-slate-400 border-slate-700'
+                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                        : 'bg-muted text-muted-foreground border-border'
                     }`}
                   >
                     <Bot className="w-3.5 h-3.5" />
@@ -877,7 +874,7 @@ export function WhatsAppFeature() {
 
               {/* Inline Tags Editor */}
               {editingTagsForConv === activeConv.id && (
-                <div className="p-3 bg-slate-900 border-b border-slate-800 shrink-0">
+                <div className="p-3 bg-card border-b border-border shrink-0">
                   <TagsEditor
                     conv={activeConv}
                     onClose={() => setEditingTagsForConv(null)}
@@ -886,13 +883,13 @@ export function WhatsAppFeature() {
               )}
 
               {/* Message Stream */}
-              <div className="flex-1 overflow-y-auto min-h-0 p-5 space-y-4 scrollbar-thin bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/40">
+              <div className="flex-1 overflow-y-auto min-h-0 p-5 space-y-4 scrollbar-thin bg-background">
                 {isLoadingMsgs ? (
-                  <div className="py-24 text-center text-slate-500 text-xs">
+                  <div className="py-24 text-center text-muted-foreground text-xs uppercase font-mono">
                     Loading conversation stream...
                   </div>
                 ) : !messages?.length ? (
-                  <div className="py-24 text-center text-slate-500 text-xs space-y-2">
+                  <div className="py-24 text-center text-muted-foreground text-xs space-y-2 uppercase font-mono">
                     <MessageSquare className="w-8 h-8 opacity-30 mx-auto" />
                     <p>No messages yet. Send an opening greeting or record a voice note!</p>
                   </div>
@@ -908,12 +905,12 @@ export function WhatsAppFeature() {
                     return (
                       <div
                         key={msg.id}
-                        className={`flex flex-col group ${isProspect ? 'items-start' : 'items-end'} animate-in fade-in `}
+                        className={`flex flex-col group ${isProspect ? 'items-start' : 'items-end'} animate-in fade-in`}
                       >
                         <div className="relative">
                           {/* Hover Emoji Reaction Bar */}
                           <div
-                            className={`absolute -top-7 ${isProspect ? 'left-0' : 'right-0'} hidden group-hover:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-none shadow-2xl z-20`}
+                            className={`absolute -top-7 ${isProspect ? 'left-0' : 'right-0'} hidden group-hover:flex items-center gap-1 p-1 bg-card border border-border rounded-none shadow-xl z-20 font-mono`}
                           >
                             {['👍', '❤️', '🔥', '👏', '🚀'].map((em) => (
                               <button
@@ -928,46 +925,46 @@ export function WhatsAppFeature() {
                             <button
                               type="button"
                               onClick={() => handleCopyMessage(msg.id, msg.text)}
-                              className="px-1.5 text-[10px] text-slate-400 hover:text-white"
+                              className="px-1.5 text-[10px] text-muted-foreground hover:text-foreground"
                               title="Copy text"
                             >
-                              {copiedId === msg.id ? <Check className="w-3 h-3 text-emerald-400" /> : <Share2 className="w-3 h-3" />}
+                              {copiedId === msg.id ? <Check className="w-3 h-3 text-primary" /> : <Share2 className="w-3 h-3" />}
                             </button>
                           </div>
 
                           {/* Message Bubble */}
                           <div
-                            className={`max-w-[85%] sm:max-w-[75%] p-3.5 rounded-none text-xs space-y-1.5 shadow-xl transition-none ${
+                            className={`max-w-[85%] sm:max-w-[75%] p-3.5 rounded-none text-xs space-y-1.5 shadow-sm transition-none font-mono ${
                               isBot
-                                ? 'bg-gradient-to-br from-purple-950/90 to-slate-900 border border-purple-500/50 text-purple-100 rounded-none-tr-none'
+                                ? 'bg-card border-2 border-purple-500/40 text-card-foreground'
                                 : isAgent
-                                ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-none-tr-none'
-                                : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-none-tl-none'
+                                ? 'bg-muted border border-border text-foreground'
+                                : 'bg-card border border-border text-card-foreground'
                             }`}
                           >
                             {/* Sender Header */}
-                            <div className="flex items-center gap-1.5 text-[10px] font-bold mb-1 border-b border-white/10 pb-1">
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold mb-1 border-b border-border pb-1 uppercase">
                               {isBot ? (
-                                <span className="flex items-center gap-1 text-purple-300">
-                                  <Bot className="w-3.5 h-3.5 text-purple-400" />
+                                <span className="flex items-center gap-1 text-purple-600 dark:text-purple-400">
+                                  <Bot className="w-3.5 h-3.5" />
                                   AI Auto-Pilot Fleet
                                 </span>
                               ) : isAgent ? (
-                                <span className="flex items-center gap-1 text-emerald-200">
+                                <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                                   <User className="w-3.5 h-3.5" />
                                   Sales Representative (You)
                                 </span>
                               ) : (
-                                <span className="flex items-center gap-1 text-slate-400">
-                                  <User className="w-3.5 h-3.5 text-blue-400" />
+                                <span className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400">
+                                  <User className="w-3.5 h-3.5" />
                                   {activeConv.contact_name} (Lead)
                                 </span>
                               )}
                             </div>
 
                             {msg.intent && (
-                              <div className="text-[9px] text-purple-300/80 font-mono uppercase tracking-wider">
-                                Intent: {msg.intent}
+                              <div className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider">
+                                INTENT: {msg.intent}
                               </div>
                             )}
 
@@ -975,16 +972,14 @@ export function WhatsAppFeature() {
                             {isVoiceNote ? (
                               <VoiceNoteBubble text={msg.text} audioUrl={audioUrl} />
                             ) : (
-                              <p className="leading-relaxed whitespace-pre-wrap font-sans text-xs">
+                              <p className="leading-relaxed whitespace-pre-wrap font-mono text-xs text-foreground">
                                 {msg.text}
                               </p>
                             )}
 
                             {/* Time & Read Receipts */}
                             <div
-                              className={`flex items-center justify-end gap-1 text-[9px] font-mono pt-1 ${
-                                isProspect ? 'text-slate-500' : 'text-emerald-200/70'
-                              }`}
+                              className="flex items-center justify-end gap-1 text-[9px] font-mono pt-1 text-muted-foreground"
                             >
                               <span>
                                 {new Date(msg.created_at).toLocaleTimeString([], {
@@ -995,7 +990,7 @@ export function WhatsAppFeature() {
                               {!isProspect && (
                                 <CheckCheck
                                   className={`w-3.5 h-3.5 ${
-                                    msg.status === 'read' ? 'text-emerald-300' : 'text-slate-400'
+                                    msg.status === 'read' ? 'text-primary' : 'text-muted-foreground'
                                   }`}
                                 />
                               )}
@@ -1007,7 +1002,7 @@ export function WhatsAppFeature() {
                             <div
                               className={`absolute -bottom-2 ${
                                 isProspect ? 'left-2' : 'right-2'
-                              } px-1.5 py-0.5 rounded-none bg-slate-900 border border-slate-800 text-[11px] shadow-lg flex items-center gap-0.5`}
+                              } px-1.5 py-0.5 rounded-none bg-card border border-border text-[11px] shadow-md flex items-center gap-0.5 font-mono`}
                             >
                               <span>{reaction}</span>
                             </div>
@@ -1020,8 +1015,8 @@ export function WhatsAppFeature() {
 
                 {/* AI typing simulation indicator */}
                 {isBotThinking && (
-                  <div className="flex items-center gap-2 p-3 rounded-none bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs w-fit animate-pulse">
-                    <Bot className="w-4 h-4 text-purple-400" />
+                  <div className="flex items-center gap-2 p-3 rounded-none bg-card border border-purple-500/30 text-purple-600 dark:text-purple-400 text-xs w-fit animate-pulse font-mono uppercase">
+                    <Bot className="w-4 h-4" />
                     <span>AI Auto-Pilot is analyzing lead intent and drafting reply...</span>
                   </div>
                 )}
@@ -1030,10 +1025,10 @@ export function WhatsAppFeature() {
               </div>
 
               {/* Quick AI Suggestion Chips */}
-              <div className="px-4 py-2 bg-slate-900/60 border-t border-slate-800 flex items-center gap-2 overflow-x-auto scrollbar-none shrink-0">
-                <span className="text-[10px] text-slate-500 uppercase font-bold shrink-0 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-emerald-400" />
-                  Quick Actions:
+              <div className="px-4 py-2 bg-card border-t border-border flex items-center gap-2 overflow-x-auto scrollbar-none shrink-0 font-mono">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold shrink-0 flex items-center gap-1 font-mono">
+                  <Sparkles className="w-3 h-3 text-primary" />
+                  QUICK ACTIONS:
                 </span>
                 {[
                   'Send Enterprise Pricing & Tier Matrix',
@@ -1045,7 +1040,7 @@ export function WhatsAppFeature() {
                     key={tmpl}
                     type="button"
                     onClick={() => setInputText(tmpl)}
-                    className="px-3 py-1 rounded-none bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-[10px] text-slate-300 hover:text-white whitespace-nowrap transition-none flex items-center gap-1"
+                    className="px-3 py-1 rounded-none bg-background border border-border hover:border-primary text-[10px] text-foreground hover:text-foreground whitespace-nowrap transition-none flex items-center gap-1 font-mono uppercase"
                   >
                     + {tmpl}
                   </button>
@@ -1054,11 +1049,11 @@ export function WhatsAppFeature() {
 
               {/* Attachment Picker Popover */}
               {showAttachmentMenu && (
-                <div className="absolute bottom-20 left-4 z-30 p-3 rounded-none bg-slate-900 border border-slate-800 shadow-2xl grid grid-cols-3 gap-2 w-72 animate-in fade-in ">
+                <div className="absolute bottom-20 left-4 z-30 p-3 rounded-none bg-card border border-border shadow-2xl grid grid-cols-3 gap-2 w-72 animate-in fade-in font-mono">
                   {[
                     {
                       label: 'Proposal PDF',
-                      icon: <FileText className="w-4 h-4 text-blue-400" />,
+                      icon: <FileText className="w-4 h-4 text-blue-500" />,
                       action: () => {
                         sendMutation.mutate({
                           text: '📄 [Attachment: Enterprise_AI_CRM_Proposal_v2.pdf (2.4 MB)] Please review our multi-agent architecture and commercial terms.',
@@ -1068,7 +1063,7 @@ export function WhatsAppFeature() {
                     },
                     {
                       label: 'Pricing Matrix',
-                      icon: <DollarSign className="w-4 h-4 text-emerald-400" />,
+                      icon: <DollarSign className="w-4 h-4 text-primary" />,
                       action: () => {
                         sendMutation.mutate({
                           text: '📊 [Attachment: SaaS_Tier_Pricing_Matrix_2026.pdf] Here is the complete breakdown of Growth, Enterprise, and Custom Agent tiers.',
@@ -1078,7 +1073,7 @@ export function WhatsAppFeature() {
                     },
                     {
                       label: 'Demo Screen',
-                      icon: <ImageIcon className="w-4 h-4 text-purple-400" />,
+                      icon: <ImageIcon className="w-4 h-4 text-purple-500" />,
                       action: () => {
                         sendMutation.mutate({
                           text: '🖼️ [Screenshot: Realtime_Objection_Battlecard_Studio.png] Preview of our live sales speech battle-card analytics.',
@@ -1088,7 +1083,7 @@ export function WhatsAppFeature() {
                     },
                     {
                       label: 'Office Pin',
-                      icon: <MapPin className="w-4 h-4 text-rose-400" />,
+                      icon: <MapPin className="w-4 h-4 text-destructive" />,
                       action: () => {
                         sendMutation.mutate({
                           text: '📍 [Location: 500 Howard St, San Francisco, CA] HQ Solutions Briefing Center.',
@@ -1098,7 +1093,7 @@ export function WhatsAppFeature() {
                     },
                     {
                       label: 'Contact Card',
-                      icon: <User className="w-4 h-4 text-amber-400" />,
+                      icon: <User className="w-4 h-4 text-amber-500" />,
                       action: () => {
                         sendMutation.mutate({
                           text: '👤 [vCard: Marcus Vance - Lead Solutions Architect] Phone: +1 415-890-2144.',
@@ -1111,12 +1106,12 @@ export function WhatsAppFeature() {
                       key={att.label}
                       type="button"
                       onClick={att.action}
-                      className="p-2.5 rounded-none bg-slate-950 hover:bg-slate-800 border border-slate-800 flex flex-col items-center gap-1.5 text-center transition-none group"
+                      className="p-2.5 rounded-none bg-background hover:bg-muted border border-border flex flex-col items-center gap-1.5 text-center transition-none group font-mono"
                     >
-                      <div className="p-2 rounded-none bg-slate-900 group-hover:scale-110 transition-none">
+                      <div className="p-2 rounded-none bg-card group-hover:scale-110 transition-none">
                         {att.icon}
                       </div>
-                      <span className="text-[10px] font-bold text-slate-300 group-hover:text-white">
+                      <span className="text-[10px] font-bold text-foreground group-hover:text-foreground uppercase font-mono">
                         {att.label}
                       </span>
                     </button>
@@ -1126,7 +1121,7 @@ export function WhatsAppFeature() {
 
               {/* Emoji Picker Popover */}
               {showEmojiPicker && (
-                <div className="absolute bottom-20 left-14 z-30 p-3 rounded-none bg-slate-900 border border-slate-800 shadow-2xl grid grid-cols-4 gap-2 w-52 animate-in fade-in ">
+                <div className="absolute bottom-20 left-14 z-30 p-3 rounded-none bg-card border border-border shadow-2xl grid grid-cols-4 gap-2 w-52 animate-in fade-in font-mono">
                   {popularEmojis.map((em) => (
                     <button
                       key={em}
@@ -1135,7 +1130,7 @@ export function WhatsAppFeature() {
                         setInputText((prev) => prev + em);
                         setShowEmojiPicker(false);
                       }}
-                      className="p-2 text-xl hover:bg-slate-800 rounded-none transition-none flex items-center justify-center"
+                      className="p-2 text-xl hover:bg-muted rounded-none transition-none flex items-center justify-center font-mono"
                     >
                       {em}
                     </button>
@@ -1144,18 +1139,18 @@ export function WhatsAppFeature() {
               )}
 
               {/* ── Interactive Input Bar / Live Voice Note Recorder ── */}
-              <div className="p-3.5 border-t border-slate-800 bg-slate-900/90 backdrop-blur-xl shrink-0">
+              <div className="p-3.5 border-t border-border bg-card shrink-0 font-mono">
                 {isRecordingVoiceNote ? (
                   /* Live Voice Note HUD */
-                  <div className="flex items-center justify-between gap-3 bg-slate-950 p-2.5 rounded-none border border-rose-500/40 animate-pulse">
+                  <div className="flex items-center justify-between gap-3 bg-background p-2.5 rounded-none border border-destructive animate-pulse font-mono">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-3 h-3 rounded-none bg-rose-500 animate-ping" />
-                        <span className="text-xs font-mono font-bold text-rose-400">
+                        <span className="w-3 h-3 rounded-none bg-destructive animate-ping" />
+                        <span className="text-xs font-mono font-bold text-destructive">
                           0:{voiceNoteDuration.toString().padStart(2, '0')}
                         </span>
                       </div>
-                      <span className="text-xs text-slate-300 font-medium">
+                      <span className="text-xs text-foreground font-medium uppercase font-mono">
                         {liveVoiceTranscript ? `"${liveVoiceTranscript}"` : 'Listening to your voice...'}
                       </span>
                     </div>
@@ -1164,7 +1159,7 @@ export function WhatsAppFeature() {
                       <button
                         type="button"
                         onClick={cancelVoiceRecording}
-                        className="p-2 rounded-none text-slate-400 hover:text-rose-400 hover:bg-slate-900 transition-none"
+                        className="p-2 rounded-none text-muted-foreground hover:text-destructive hover:bg-card transition-none"
                         title="Cancel Recording"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -1174,7 +1169,7 @@ export function WhatsAppFeature() {
                         variant="primary"
                         size="sm"
                         onClick={finishAndSendVoiceRecording}
-                        className="bg-emerald-600 hover:bg-emerald-500 px-3.5 rounded-none shadow-lg shadow-emerald-600/30"
+                        className="px-3.5 uppercase font-mono"
                       >
                         <Send className="w-3.5 h-3.5 mr-1" />
                         <span>Send Note</span>
@@ -1183,13 +1178,13 @@ export function WhatsAppFeature() {
                   </div>
                 ) : (
                   /* Standard Input Bar */
-                  <form onSubmit={handleSend} className="flex items-center gap-2">
+                  <form onSubmit={handleSend} className="flex items-center gap-2 font-mono">
                     {/* Attachment Toggle */}
                     <button
                       type="button"
                       onClick={() => setShowAttachmentMenu(!showAttachmentMenu)}
-                      className={`p-2 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition-none ${
-                        showAttachmentMenu ? 'bg-slate-800 text-emerald-400' : ''
+                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${
+                        showAttachmentMenu ? 'bg-muted text-primary' : ''
                       }`}
                       title="Attach Document / Media"
                     >
@@ -1200,8 +1195,8 @@ export function WhatsAppFeature() {
                     <button
                       type="button"
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                      className={`p-2 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition-none ${
-                        showEmojiPicker ? 'bg-slate-800 text-amber-400' : ''
+                      className={`p-2 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none ${
+                        showEmojiPicker ? 'bg-muted text-primary' : ''
                       }`}
                       title="Add Emoji"
                     >
@@ -1209,14 +1204,14 @@ export function WhatsAppFeature() {
                     </button>
 
                     {/* Sender Mode Switcher */}
-                    <div className="flex items-center bg-slate-950 p-0.5 rounded-none border border-slate-800 text-[10px] font-bold">
+                    <div className="flex items-center bg-background p-0.5 rounded-none border border-border text-[10px] font-bold uppercase font-mono">
                       <button
                         type="button"
                         onClick={() => setSenderMode('agent')}
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'agent'
-                            ? 'bg-emerald-600 text-white'
-                            : 'text-slate-400 hover:text-slate-200'
+                            ? 'bg-primary text-primary-foreground font-bold'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send as Sales Rep"
                       >
@@ -1227,8 +1222,8 @@ export function WhatsAppFeature() {
                         onClick={() => setSenderMode('prospect')}
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'prospect'
-                            ? 'bg-blue-600 text-white'
-                            : 'text-slate-400 hover:text-slate-200'
+                            ? 'bg-blue-600 text-white font-bold'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send as Inbound Prospect (triggers AI Bot reply)"
                       >
@@ -1239,8 +1234,8 @@ export function WhatsAppFeature() {
                         onClick={() => setSenderMode('bot')}
                         className={`px-2 py-1 rounded-none transition-none ${
                           senderMode === 'bot'
-                            ? 'bg-purple-600 text-white'
-                            : 'text-slate-400 hover:text-slate-200'
+                            ? 'bg-purple-600 text-white font-bold'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         title="Send directly as AI Bot"
                       >
@@ -1254,12 +1249,12 @@ export function WhatsAppFeature() {
                       onChange={(e) => setInputText(e.target.value)}
                       placeholder={
                         senderMode === 'prospect'
-                          ? `Speak as ${activeConv.contact_name} (triggers AI Auto-Pilot)...`
+                          ? `SPEAK AS ${activeConv.contact_name.toUpperCase()} (TRIGGERS AI AUTO-PILOT)...`
                           : senderMode === 'bot'
-                          ? 'Send as AI Auto-Pilot Bot...'
-                          : 'Type a WhatsApp message...'
+                          ? 'SEND AS AI AUTO-PILOT BOT...'
+                          : 'TYPE A WHATSAPP MESSAGE...'
                       }
-                      className="flex-1 bg-slate-950 border border-slate-800 rounded-none px-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition-none"
+                      className="flex-1 bg-background border border-border rounded-none px-4 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-none font-mono uppercase"
                     />
 
                     {inputText.trim() ? (
@@ -1268,7 +1263,7 @@ export function WhatsAppFeature() {
                         variant="primary"
                         size="sm"
                         isLoading={sendMutation.isPending}
-                        className="bg-emerald-600 hover:bg-emerald-500 px-4 shrink-0 rounded-none shadow-lg shadow-emerald-600/20"
+                        className="px-4 shrink-0 uppercase font-mono"
                       >
                         <Send className="w-4 h-4" />
                       </Button>
@@ -1276,7 +1271,7 @@ export function WhatsAppFeature() {
                       <button
                         type="button"
                         onClick={startVoiceRecording}
-                        className="p-2.5 rounded-none bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white transition-none shadow-md shadow-emerald-600/10"
+                        className="p-2.5 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 transition-none"
                         title="Record Voice Note"
                       >
                         <Mic className="w-4 h-4" />
@@ -1287,20 +1282,20 @@ export function WhatsAppFeature() {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-4 p-8">
-              <div className="p-4 rounded-none bg-slate-900 border border-slate-800">
-                <MessageSquare className="w-12 h-12 opacity-30 text-emerald-400" />
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4 p-8 font-mono">
+              <div className="p-4 rounded-none bg-card border border-border">
+                <MessageSquare className="w-12 h-12 opacity-30 text-primary" />
               </div>
               <div className="text-center space-y-1">
-                <h3 className="text-sm font-bold text-white">Select a WhatsApp Conversation</h3>
-                <p className="text-xs text-slate-400 max-w-sm">
+                <h3 className="text-sm font-bold text-foreground uppercase font-mono">Select a WhatsApp Conversation</h3>
+                <p className="text-xs text-muted-foreground max-w-sm uppercase font-mono">
                   Review 24/7 lead qualification threads, send voice notes, or launch an outbound broadcast.
                 </p>
               </div>
               <Button
                 variant="primary"
                 size="sm"
-                className="bg-emerald-600 hover:bg-emerald-500"
+                className="uppercase font-mono"
                 onClick={() => setShowNewModal(true)}
               >
                 <Plus className="w-4 h-4 mr-1.5" />

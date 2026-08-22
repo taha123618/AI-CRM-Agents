@@ -52,13 +52,14 @@ export function AuthCallbackPage() {
     >
       {errorMessage ? (
         <div className="space-y-4">
-          <div className="p-3.5 bg-rose-950/70 border border-rose-500/40 rounded-none text-rose-300 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 bg-background border border-destructive/40 rounded-none text-destructive text-xs flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
             <div>{errorMessage}</div>
           </div>
           <Button
             onClick={() => navigate('/login')}
-            className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white text-xs"
+            variant="primary"
+            className="w-full text-xs"
           >
             Return to Login
           </Button>
@@ -66,7 +67,7 @@ export function AuthCallbackPage() {
       ) : (
         <div className="py-8 flex flex-col items-center justify-center space-y-4">
           <LoadingSpinner size="lg" />
-          <p className="text-xs text-slate-400 animate-pulse">
+          <p className="text-xs text-muted-foreground animate-pulse">
             Validating credentials and issuing secure HTTP-only session cookies...
           </p>
         </div>

@@ -231,13 +231,13 @@ export function ReportsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <FileText className="w-5 h-5 text-primary" />
             <span>{t('reports.title', 'EXECUTIVE AI REPORTS & SYNTHESIS')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('reports.subtitle', 'DYNAMIC MULTI-AGENT INTELLIGENCE SYNTHESIS AND ARR PROJECTIONS')}
           </p>
         </div>
@@ -252,7 +252,7 @@ export function ReportsFeature() {
       <Card className="p-3">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
+            <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             {[
               { id: 'all', label: 'ALL REPORTS' },
               { id: 'revenue_forecast', label: 'REVENUE & ARR' },
@@ -264,8 +264,8 @@ export function ReportsFeature() {
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id)}
                 className={`px-2.5 py-1 text-[10px] font-bold uppercase transition-none ${activeCategory === tab.id
-                    ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                    : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
+                    ? 'bg-primary text-primary-foreground border border-primary'
+                    : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                   }`}
               >
                 {tab.label}
@@ -276,12 +276,12 @@ export function ReportsFeature() {
             {dynamicGeneratedReports.length > 0 && (
               <button
                 onClick={handleClearGeneratedReports}
-                className="text-[10px] text-[#FF2A54] hover:underline font-bold uppercase px-1.5 py-0.5"
+                className="text-[10px] text-destructive hover:underline font-bold uppercase px-1.5 py-0.5"
               >
                 CLEAR GENERATED ({dynamicGeneratedReports.length})
               </button>
             )}
-            <span className="text-[10px] text-slate-400 font-mono uppercase">
+            <span className="text-[10px] text-muted-foreground font-mono uppercase">
               {filteredReports.length} REPORTS ACTIVE
             </span>
           </div>
@@ -300,7 +300,7 @@ export function ReportsFeature() {
           {filteredReports.map((report) => (
             <Card
               key={report.id}
-              className="p-4 space-y-3 hover:border-[#FFB800] transition-none flex flex-col justify-between group font-mono"
+              className="p-4 space-y-3 hover:border-primary transition-none flex flex-col justify-between group font-mono"
             >
               <div className="space-y-2.5">
                 <div className="flex items-start justify-between gap-2">
@@ -310,33 +310,33 @@ export function ReportsFeature() {
                         {report.category.replace('_', ' ')}
                       </Badge>
                       {report.id.startsWith('rpt-fresh-') && (
-                        <span className="px-1.5 py-0.2 text-[8px] font-bold uppercase bg-[#0B0C10] text-[#FFB800] border border-[#FFB800] flex items-center gap-1">
+                        <span className="px-1.5 py-0.2 text-[8px] font-bold uppercase bg-background text-primary border border-primary flex items-center gap-1">
                           <Sparkles className="w-2.5 h-2.5" />
                           AI GENERATED
                         </span>
                       )}
                     </div>
-                    <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#FFB800] transition-none">
+                    <h3 className="text-xs font-bold text-foreground uppercase group-hover:text-primary transition-none">
                       {report.title}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-1 text-[9px] font-bold text-[#FFB800] bg-[#0B0C10] px-2 py-0.5 border border-[#FFB800]/50 shrink-0 uppercase">
+                  <div className="flex items-center gap-1 text-[9px] font-bold text-primary bg-background px-2 py-0.5 border border-primary/50 shrink-0 uppercase">
                     <Award className="w-3 h-3" />
                     <span>{report.confidence}% CONFIDENCE</span>
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed font-mono uppercase">{report.summary}</p>
+                <p className="text-xs text-foreground leading-relaxed font-mono uppercase">{report.summary}</p>
 
                 {/* Dynamic Findings List */}
-                <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-                  <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider block">
+                <div className="p-2.5 bg-background border border-border space-y-1.5">
+                  <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider block">
                     AI KEY FINDINGS &amp; METRICS
                   </span>
-                  <ul className="space-y-1 text-xs text-slate-300 font-mono">
+                  <ul className="space-y-1 text-xs text-foreground font-mono">
                     {report.highlights.map((highlight, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3 h-3 text-primary shrink-0 mt-0.5" />
                         <span>{highlight}</span>
                       </li>
                     ))}
@@ -345,10 +345,10 @@ export function ReportsFeature() {
               </div>
 
               {/* Footer Controls */}
-              <div className="pt-3 border-t border-[#3A4552] flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[10px] text-slate-400 font-mono uppercase">
+              <div className="pt-3 border-t border-border flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono uppercase">
                   <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-slate-500" />
+                    <Calendar className="w-3 h-3 text-muted-foreground" />
                     <span>{report.generatedAt}</span>
                   </div>
                   <span>• {report.period}</span>
@@ -379,35 +379,35 @@ export function ReportsFeature() {
           className="max-w-2xl font-mono"
         >
           <div className="space-y-3">
-            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1">
-              <span className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider">DYNAMIC OVERVIEW</span>
-              <p className="text-xs text-slate-200 leading-relaxed font-mono uppercase">{selectedReport.summary}</p>
+            <div className="p-3 bg-background border border-border space-y-1">
+              <span className="text-[10px] font-bold text-primary uppercase tracking-wider">DYNAMIC OVERVIEW</span>
+              <p className="text-xs text-foreground leading-relaxed font-mono uppercase">{selectedReport.summary}</p>
             </div>
 
             {/* Key Metrics Breakdown */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {Object.entries(selectedReport.metricsData).map(([key, val]) => (
-                <div key={key} className="p-2.5 bg-[#0B0C10] border border-[#3A4552] text-center">
-                  <span className="text-[9px] text-slate-400 uppercase font-bold block">{key}</span>
-                  <span className="text-xs font-black font-mono text-white mt-0.5 block">{String(val)}</span>
+                <div key={key} className="p-2.5 bg-background border border-border text-center">
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">{key}</span>
+                  <span className="text-xs font-black font-mono text-foreground mt-0.5 block">{String(val)}</span>
                 </div>
               ))}
             </div>
 
             {/* Complete Highlights */}
-            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-              <span className="text-[10px] font-bold text-white uppercase tracking-wider">DETAILED OBSERVATIONS</span>
-              <ul className="space-y-1 text-xs text-slate-300 font-mono">
+            <div className="p-3 bg-background border border-border space-y-1.5">
+              <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">DETAILED OBSERVATIONS</span>
+              <ul className="space-y-1 text-xs text-foreground font-mono">
                 {selectedReport.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#FFB800] shrink-0 mt-0.5" />
+                    <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                     <span>{h}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t border-[#3A4552]">
+            <div className="flex items-center justify-between pt-2 border-t border-border">
               <Button
                 variant="ghost"
                 size="sm"

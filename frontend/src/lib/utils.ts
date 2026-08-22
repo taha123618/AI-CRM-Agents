@@ -26,10 +26,10 @@ export function formatNumber(value: number, locale: string = 'en-US'): string {
 }
 
 export function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-emerald-400 bg-emerald-950/50 border-emerald-800/60';
-  if (score >= 60) return 'text-blue-400 bg-blue-950/50 border-blue-800/60';
-  if (score >= 40) return 'text-amber-400 bg-amber-950/50 border-amber-800/60';
-  return 'text-rose-400 bg-rose-950/50 border-rose-800/60';
+  if (score >= 80) return 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+  if (score >= 60) return 'text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/30';
+  if (score >= 40) return 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30';
+  return 'text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30';
 }
 
 export function getStatusBadgeClass(status: string): string {
@@ -39,7 +39,7 @@ export function getStatusBadgeClass(status: string): string {
     case 'completed':
     case 'positive':
     case 'low':
-      return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+      return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30';
 
     case 'prospecting':
     case 'qualification':
@@ -48,7 +48,7 @@ export function getStatusBadgeClass(status: string): string {
     case 'scheduled':
     case 'neutral':
     case 'medium':
-      return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+      return 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30';
 
     case 'high':
     case 'urgent':
@@ -57,9 +57,9 @@ export function getStatusBadgeClass(status: string): string {
     case 'unqualified':
     case 'lost':
     case 'cancelled':
-      return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+      return 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30';
 
     default:
-      return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+      return 'bg-muted text-muted-foreground border-border';
   }
 }

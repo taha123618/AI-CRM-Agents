@@ -14,11 +14,11 @@ import { EmailMessage } from '@/types/crm.types';
 import { EmailSyncAccountsModal } from './components/EmailSyncAccountsModal';
 
 const EMOTION_CONFIG: Record<string, { color: string; emoji: string }> = {
-  anger: { color: 'text-[#FF2A54] bg-[#0B0C10] border-[#FF2A54]', emoji: '😠' },
-  frustration: { color: 'text-amber-400 bg-[#0B0C10] border-amber-400', emoji: '😤' },
-  happiness: { color: 'text-[#FFB800] bg-[#0B0C10] border-[#FFB800]', emoji: '😊' },
-  excitement: { color: 'text-yellow-400 bg-[#0B0C10] border-yellow-400', emoji: '🎉' },
-  neutral: { color: 'text-slate-400 bg-[#0B0C10] border-slate-500', emoji: '😐' },
+  anger: { color: 'text-destructive bg-background border-destructive', emoji: '😠' },
+  frustration: { color: 'text-amber-400 bg-background border-amber-400', emoji: '😤' },
+  happiness: { color: 'text-primary bg-background border-primary', emoji: '😊' },
+  excitement: { color: 'text-yellow-400 bg-background border-yellow-400', emoji: '🎉' },
+  neutral: { color: 'text-muted-foreground bg-background border-border', emoji: '😐' },
 };
 
 function EmotionBadge({ emotion }: { emotion: string | null | undefined }) {
@@ -36,13 +36,13 @@ function EmotionBadge({ emotion }: { emotion: string | null | undefined }) {
 function SentimentBar({ score }: { score: number | null | undefined }) {
   if (score == null) return null;
   const pct = (score / 10) * 100;
-  const color = score >= 7 ? 'bg-[#FFB800]' : score >= 4 ? 'bg-[#FFB800]' : 'bg-[#FF2A54]';
+  const color = score >= 7 ? 'bg-primary' : score >= 4 ? 'bg-primary' : 'bg-destructive';
   return (
     <div className="flex items-center gap-2 font-mono">
-      <div className="flex-1 h-1.5 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
+      <div className="flex-1 h-1.5 bg-background border border-border rounded-none overflow-hidden">
         <div className={`h-full ${color} rounded-none transition-none`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-[9px] font-bold text-slate-400 font-mono">{score}/10</span>
+      <span className="text-[9px] font-bold text-muted-foreground font-mono">{score}/10</span>
     </div>
   );
 }
@@ -180,13 +180,13 @@ export function EmailsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Mail className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Mail className="w-5 h-5 text-primary" />
             <span>{t('emails.title', 'AUTONOMOUS EMAIL INTELLIGENCE')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('emails.subtitle', 'AI SENTIMENT RADAR, AUTO-CLASSIFICATION, AND DRAFT SYNTHESIS')}
           </p>
         </div>
@@ -198,12 +198,12 @@ export function EmailsFeature() {
           </Button>
 
           <Button variant="outline" onClick={handleBulkAnalyze} isLoading={isBulkAnalyzing} className="text-xs h-7">
-            <Sparkles className="w-3 h-3 text-[#FFB800]" />
+            <Sparkles className="w-3 h-3 text-primary" />
             <span>AUDIT FLEET</span>
           </Button>
 
           <Button variant="outline" onClick={() => setEmailModalOpen(true)} className="text-xs h-7">
-            <Brain className="w-3 h-3 text-[#FFB800]" />
+            <Brain className="w-3 h-3 text-primary" />
             <span>AI ANALYZE</span>
           </Button>
 
@@ -217,15 +217,15 @@ export function EmailsFeature() {
       {/* Priority Filter Bar */}
       <Card className="p-3">
         <div className="flex items-center gap-2 font-mono">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PRIORITY:</span>
+          <Filter className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">PRIORITY:</span>
           {['all', 'high', 'medium', 'low'].map((p) => (
             <button
               key={p}
               onClick={() => setPriorityFilter(p)}
               className={`px-2.5 py-0.5 text-[9px] font-bold uppercase transition-none ${priorityFilter === p
-                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                  : 'bg-[#0B0C10] text-slate-400 hover:text-white border border-[#3A4552]'
+                  ? 'bg-primary text-primary-foreground border border-primary'
+                  : 'bg-background text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               {p.toUpperCase()}
@@ -239,25 +239,25 @@ export function EmailsFeature() {
         {isLoading ? (
           [...Array(4)].map((_, i) => <Skeleton key={i} className="h-24 w-full" />)
         ) : filteredEmails.length === 0 ? (
-          <Card className="p-10 text-center text-slate-500 text-xs font-mono uppercase">
+          <Card className="p-10 text-center text-muted-foreground text-xs font-mono uppercase">
             NO EMAILS MATCH YOUR SEARCH CRITERIA.
           </Card>
         ) : (
           filteredEmails.map((email) => (
             <Card
               key={email.id}
-              className="p-3 hover:border-[#FFB800] transition-none cursor-pointer group font-mono"
+              className="p-3 hover:border-primary transition-none cursor-pointer group font-mono"
               onClick={() => handleOpenEmail(email)}
             >
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <h3 className="font-bold text-xs text-white group-hover:text-[#FFB800] transition-none uppercase">
+                    <h3 className="font-bold text-xs text-foreground group-hover:text-primary transition-none uppercase">
                       {email.subject}
                     </h3>
                     <Badge statusValue={email.priority}>{email.priority} PRIORITY</Badge>
                     {email.response_sent && (
-                      <span className="inline-flex items-center gap-1 text-[8px] text-[#FFB800] font-bold bg-[#0B0C10] px-1.5 py-0.2 border border-[#FFB800]/50 uppercase">
+                      <span className="inline-flex items-center gap-1 text-[8px] text-primary font-bold bg-background px-1.5 py-0.2 border border-primary/50 uppercase">
                         <CheckCircle2 className="w-2.5 h-2.5" /> DELIVERED
                       </span>
                     )}
@@ -272,21 +272,21 @@ export function EmailsFeature() {
                 </div>
 
                 {/* Sender & Recipient addresses */}
-                <div className="flex flex-wrap items-center gap-3 text-[10px] text-slate-400 font-mono">
+                <div className="flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground font-mono">
                   {email.from_email && (
                     <span className="flex items-center gap-1">
-                      <span className="text-slate-500">FROM:</span>
-                      <strong className="text-slate-300 font-mono text-[10px] uppercase">{email.from_email}</strong>
+                      <span className="text-muted-foreground">FROM:</span>
+                      <strong className="text-foreground font-mono text-[10px] uppercase">{email.from_email}</strong>
                     </span>
                   )}
                   {email.to_email && (
                     <span className="flex items-center gap-1">
-                      <span className="text-slate-500">TO:</span>
-                      <span className="text-slate-300 font-mono text-[10px] uppercase">{email.to_email}</span>
+                      <span className="text-muted-foreground">TO:</span>
+                      <span className="text-foreground font-mono text-[10px] uppercase">{email.to_email}</span>
                     </span>
                   )}
                   {email.sent_at && (
-                    <span className="flex items-center gap-1 text-slate-500 ml-auto text-[9px] font-mono uppercase">
+                    <span className="flex items-center gap-1 text-muted-foreground ml-auto text-[9px] font-mono uppercase">
                       <Clock className="w-2.5 h-2.5" />
                       {new Date(email.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -294,12 +294,12 @@ export function EmailsFeature() {
                 </div>
 
                 {/* Sentiment score bar */}
-                <div className="flex items-center gap-2 pt-1 border-t border-[#3A4552]/60">
-                  <span className="text-[8px] text-slate-500 uppercase font-bold shrink-0">SENTIMENT</span>
+                <div className="flex items-center gap-2 pt-1 border-t border-border/60">
+                  <span className="text-[8px] text-muted-foreground uppercase font-bold shrink-0">SENTIMENT</span>
                   <div className="flex-1 max-w-[120px]">
                     <SentimentBar score={email.sentiment_score} />
                   </div>
-                  <span className="text-[8px] text-slate-500 ml-auto uppercase font-mono">
+                  <span className="text-[8px] text-muted-foreground ml-auto uppercase font-mono">
                     {email.category}
                   </span>
                 </div>
@@ -320,23 +320,23 @@ export function EmailsFeature() {
         >
           <div className="space-y-3 font-mono">
             {sendErrorMsg && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+              <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                 <div className="uppercase">{sendErrorMsg}</div>
               </div>
             )}
 
             {sendSuccessMsg && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800] text-[#FFB800] text-xs flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#FFB800] shrink-0 mt-0.5" />
+              <div className="p-2.5 bg-background border border-primary text-primary text-xs flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                 <div className="uppercase">{sendSuccessMsg}</div>
               </div>
             )}
 
             {/* Recipient Input & Confirmation */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1">
-                <UserCheck className="w-3 h-3 text-[#FFB800]" />
+              <label className="block text-[10px] font-bold text-foreground uppercase flex items-center gap-1">
+                <UserCheck className="w-3 h-3 text-primary" />
                 RECIPIENT ADDRESS
               </label>
               <Input
@@ -350,9 +350,9 @@ export function EmailsFeature() {
             </div>
 
             {/* Email Intelligence metadata row */}
-            <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1.5 font-mono">
+            <div className="p-2.5 bg-background border border-border space-y-1.5 font-mono">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400 uppercase text-[10px]">CATEGORY: <span className="text-slate-200 font-bold">{selectedEmail.category}</span></span>
+                <span className="text-muted-foreground uppercase text-[10px]">CATEGORY: <span className="text-foreground font-bold">{selectedEmail.category}</span></span>
                 <div className="flex items-center gap-1.5">
                   <EmotionBadge emotion={selectedEmail.emotion} />
                   <Badge statusValue={selectedEmail.sentiment}>{selectedEmail.sentiment}</Badge>
@@ -360,8 +360,8 @@ export function EmailsFeature() {
               </div>
               {selectedEmail.sentiment_score != null && (
                 <div className="flex items-center gap-2">
-                  <Brain className="w-3 h-3 text-[#FFB800] shrink-0" />
-                  <span className="text-[10px] text-slate-500 uppercase">SENTIMENT SCORE:</span>
+                  <Brain className="w-3 h-3 text-primary shrink-0" />
+                  <span className="text-[10px] text-muted-foreground uppercase">SENTIMENT SCORE:</span>
                   <div className="flex-1">
                     <SentimentBar score={selectedEmail.sentiment_score} />
                   </div>
@@ -371,15 +371,15 @@ export function EmailsFeature() {
 
             {/* AI Follow-up Suggestions */}
             {selectedEmail.follow_up_suggestions?.length ? (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#FFB800]/40 space-y-1 font-mono">
-                <h4 className="text-[10px] font-bold text-[#FFB800] uppercase tracking-wider flex items-center gap-1">
+              <div className="p-2.5 bg-background border border-primary/40 space-y-1 font-mono">
+                <h4 className="text-[10px] font-bold text-primary uppercase tracking-wider flex items-center gap-1">
                   <Lightbulb className="w-3 h-3" />
                   FOLLOW-UP SUGGESTIONS
                 </h4>
                 <ul className="space-y-1">
                   {selectedEmail.follow_up_suggestions.map((s, i) => (
-                    <li key={i} className="flex items-start gap-1.5 text-xs text-slate-300 font-mono uppercase">
-                      <ArrowRight className="w-3 h-3 text-[#FFB800] mt-0.5 shrink-0" />
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-foreground font-mono uppercase">
+                      <ArrowRight className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                       <span>{s}</span>
                     </li>
                   ))}
@@ -389,19 +389,19 @@ export function EmailsFeature() {
 
             {/* Editable draft */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold text-slate-300 uppercase flex items-center gap-1">
-                <MessageSquare className="w-3 h-3 text-[#FFB800]" />
+              <label className="block text-[10px] font-bold text-foreground uppercase flex items-center gap-1">
+                <MessageSquare className="w-3 h-3 text-primary" />
                 RESPONSE CONTENT (EDITABLE BODY)
               </label>
               <textarea
                 rows={6}
                 value={editedResponse}
                 onChange={(e) => setEditedResponse(e.target.value)}
-                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#FFB800]"
+                className="w-full bg-background text-foreground border border-border rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-primary"
               />
             </div>
 
-            <div className="flex items-center justify-between pt-1 border-t border-[#3A4552]">
+            <div className="flex items-center justify-between pt-1 border-t border-border">
               <Button variant="outline" onClick={() => setSelectedEmail(null)} className="text-xs">
                 CLOSE
               </Button>
@@ -430,8 +430,8 @@ export function EmailsFeature() {
         >
           <form onSubmit={handleComposeSubmit} className="space-y-3 font-mono">
             {composeError && (
-              <div className="p-2.5 bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-[#FF2A54] shrink-0 mt-0.5" />
+              <div className="p-2.5 bg-background border border-destructive text-destructive text-xs flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                 <div className="uppercase">{composeError}</div>
               </div>
             )}
@@ -454,8 +454,8 @@ export function EmailsFeature() {
             />
 
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-300">
-                EMAIL MESSAGE BODY <span className="text-[#FF2A54] ml-0.5">*</span>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-foreground">
+                EMAIL MESSAGE BODY <span className="text-destructive ml-0.5">*</span>
               </label>
               <textarea
                 rows={5}
@@ -463,11 +463,11 @@ export function EmailsFeature() {
                 value={composeBody}
                 onChange={(e) => setComposeBody(e.target.value)}
                 placeholder="WRITE YOUR MESSAGE HERE..."
-                className="w-full bg-[#0B0C10] text-slate-100 border border-[#3A4552] rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-[#FFB800]"
+                className="w-full bg-background text-foreground border border-border rounded-none p-2.5 text-xs font-mono leading-relaxed focus:outline-none focus:border-primary"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#3A4552]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
               <Button type="button" variant="outline" onClick={() => setIsComposeOpen(false)} className="text-xs">
                 CANCEL
               </Button>

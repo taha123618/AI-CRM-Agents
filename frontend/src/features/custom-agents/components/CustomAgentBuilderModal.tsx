@@ -141,17 +141,17 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
       case 'query_crm':
         return <Database className="w-4 h-4 text-cyan-400" />;
       case 'update_deal':
-        return <TrendingUp className="w-4 h-4 text-[#FFB800]" />;
+        return <TrendingUp className="w-4 h-4 text-primary" />;
       case 'send_email':
         return <Mail className="w-4 h-4 text-brand-400" />;
       case 'schedule_meeting':
         return <Calendar className="w-4 h-4 text-purple-400" />;
       case 'generate_summary':
-        return <FileText className="w-4 h-4 text-[#FFB800]" />;
+        return <FileText className="w-4 h-4 text-primary" />;
       case 'webhook_call':
-        return <Webhook className="w-4 h-4 text-[#FF2A54]" />;
+        return <Webhook className="w-4 h-4 text-destructive" />;
       default:
-        return <Wrench className="w-4 h-4 text-slate-400" />;
+        return <Wrench className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -165,7 +165,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
     >
       <div className="space-y-4 font-mono">
         {/* Step Indicator */}
-        <div className="grid grid-cols-4 gap-1.5 border-b border-[#3A4552] pb-3 text-center">
+        <div className="grid grid-cols-4 gap-1.5 border-b border-border pb-3 text-center">
           {[
             { num: 1, labelKey: 'custom_agents.step_identity', defaultLabel: 'IDENTITY & TRIGGER', icon: Bot },
             { num: 2, labelKey: 'custom_agents.step_persona', defaultLabel: 'PERSONA & LLM', icon: Sliders },
@@ -177,8 +177,8 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
               type="button"
               onClick={() => setStep(s.num as any)}
               className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 p-1.5 rounded-none text-[11px] font-bold uppercase transition-none ${step === s.num
-                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                  : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552] hover:text-white'
+                  ? 'bg-primary text-primary-foreground border border-primary'
+                  : 'bg-background text-muted-foreground border border-border hover:text-foreground'
                 }`}
             >
               <s.icon className="w-3.5 h-3.5" />
@@ -188,7 +188,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         </div>
 
         {errorMsg && (
-          <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#FF2A54] text-[#FF2A54] text-xs font-mono uppercase">
+          <div className="p-2.5 rounded-none bg-background border border-destructive text-destructive text-xs font-mono uppercase">
             {errorMsg}
           </div>
         )}
@@ -197,8 +197,8 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         {step === 1 && (
           <div className="space-y-3 font-mono">
             <div>
-              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
-                {t('custom_agents.agent_name') || 'AGENT NAME'} <span className="text-[#FF2A54]">*</span>
+              <label className="text-[10px] font-bold text-foreground block mb-1 uppercase tracking-wider">
+                {t('custom_agents.agent_name') || 'AGENT NAME'} <span className="text-destructive">*</span>
               </label>
               <Input
                 placeholder="E.G. VIP CUSTOMER ONBOARDING CONCIERGE"
@@ -209,7 +209,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+              <label className="text-[10px] font-bold text-foreground block mb-1 uppercase tracking-wider">
                 {t('custom_agents.mission_desc') || 'MISSION DESCRIPTION'}
               </label>
               <Input
@@ -220,7 +220,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+              <label className="text-[10px] font-bold text-foreground block mb-1 uppercase tracking-wider">
                 {t('custom_agents.trigger_mode') || 'TRIGGER MODE'}
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -235,12 +235,12 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                     type="button"
                     onClick={() => setTriggerType(tItem.id as TriggerType)}
                     className={`p-2.5 rounded-none border text-left transition-none uppercase font-mono ${triggerType === tItem.id
-                        ? 'border-[#FFB800] bg-[#0B0C10] text-[#FFB800]'
-                        : 'border-[#3A4552] bg-[#0B0C10] text-slate-400 hover:border-slate-500'
+                        ? 'border-primary bg-background text-primary'
+                        : 'border-border bg-background text-muted-foreground hover:border-border'
                       }`}
                   >
                     <div className="text-xs font-bold">{tItem.labelKey ? t(tItem.labelKey) : tItem.label}</div>
-                    <div className="text-[9px] text-slate-500 mt-0.5">{tItem.desc}</div>
+                    <div className="text-[9px] text-muted-foreground mt-0.5">{tItem.desc}</div>
                   </button>
                 ))}
               </div>
@@ -248,13 +248,13 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
             {triggerType === 'event' && (
               <div>
-                <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                <label className="text-[10px] font-bold text-foreground block mb-1 uppercase tracking-wider">
                   TRIGGER EVENT NAME
                 </label>
                 <select
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="lead.created">ON NEW LEAD CREATED</option>
                   <option value="lead.qualified">ON LEAD QUALIFIED (SCORE &gt; 70)</option>
@@ -272,13 +272,13 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
           <div className="space-y-3 font-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] font-bold text-slate-300 block mb-1 uppercase tracking-wider">
+                <label className="text-[10px] font-bold text-foreground block mb-1 uppercase tracking-wider">
                   {t('custom_agents.llm_model') || 'LLM MODEL ENGINE'}
                 </label>
                 <select
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
-                  className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#FFB800] uppercase font-mono"
+                  className="w-full bg-background border border-border rounded-none px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary uppercase font-mono"
                 >
                   <option value="smart-fallback">SMARTFALLBACK (AUTO-ROUTING)</option>
                   <option value="gpt-4o">OPENAI GPT-4O</option>
@@ -288,9 +288,9 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-300 block mb-1 flex justify-between uppercase tracking-wider">
+                <label className="text-[10px] font-bold text-foreground block mb-1 flex justify-between uppercase tracking-wider">
                   <span>{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
-                  <span className="text-[#FFB800] font-mono">{temperature}</span>
+                  <span className="text-primary font-mono">{temperature}</span>
                 </label>
                 <input
                   type="range"
@@ -299,17 +299,17 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                   step="0.1"
                   value={temperature}
                   onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                  className="w-full accent-[#FFB800] mt-2"
+                  className="w-full accent-primary mt-2"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">
-                  {t('custom_agents.system_prompt') || 'SYSTEM PERSONA & INSTRUCTIONS'} <span className="text-[#FF2A54]">*</span>
+                <label className="text-[10px] font-bold text-foreground uppercase tracking-wider">
+                  {t('custom_agents.system_prompt') || 'SYSTEM PERSONA & INSTRUCTIONS'} <span className="text-destructive">*</span>
                 </label>
-                <span className="text-[9px] text-slate-500 uppercase">{t('custom_agents.insert_variables') || 'INSERT VARIABLES'}</span>
+                <span className="text-[9px] text-muted-foreground uppercase">{t('custom_agents.insert_variables') || 'INSERT VARIABLES'}</span>
               </div>
               <div className="flex flex-wrap gap-1 mb-2">
                 {TEMPLATE_VARIABLES.map((v) => (
@@ -317,7 +317,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                     key={v.label}
                     type="button"
                     onClick={() => handleInsertVariable(v.label)}
-                    className="px-1.5 py-0.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-[10px] font-mono text-[#FFB800] hover:border-[#FFB800] transition-none uppercase"
+                    className="px-1.5 py-0.5 rounded-none bg-background border border-border text-[10px] font-mono text-primary hover:border-primary transition-none uppercase"
                     title={v.desc}
                   >
                     + {v.label}
@@ -329,7 +329,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
                 placeholder="DESCRIBE HOW THE AGENT SHOULD REASON AND WHAT STRUCTURED OUTPUT TO PRODUCE..."
-                className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none p-2.5 text-xs font-mono text-white focus:outline-none focus:border-[#FFB800] resize-none leading-relaxed uppercase"
+                className="w-full bg-background border border-border rounded-none p-2.5 text-xs font-mono text-foreground focus:outline-none focus:border-primary resize-none leading-relaxed uppercase"
                 required
               />
             </div>
@@ -340,10 +340,10 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         {step === 3 && (
           <div className="space-y-3 font-mono">
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-0.5">
                 {t('custom_agents.authorized_tools') || 'AUTHORIZED CRM CAPABILITY TOOLS'}
               </h4>
-              <p className="text-[10px] text-slate-400 uppercase">
+              <p className="text-[10px] text-muted-foreground uppercase">
                 {t('custom_agents.enable_tools_desc') || 'ENABLE TOOLS THIS AGENT IS PERMITTED TO EXECUTE AUTONOMOUSLY.'}
               </p>
             </div>
@@ -356,21 +356,21 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                     key={tool.id}
                     onClick={() => handleToolToggle(tool.id)}
                     className={`p-2.5 rounded-none border cursor-pointer transition-none flex items-start gap-2.5 ${isSelected
-                        ? 'border-[#FFB800] bg-[#0B0C10] text-white'
-                        : 'border-[#3A4552] bg-[#0B0C10] text-slate-400 hover:border-slate-500'
+                        ? 'border-primary bg-background text-foreground'
+                        : 'border-border bg-background text-muted-foreground hover:border-border'
                       }`}
                   >
-                    <div className="p-1.5 rounded-none bg-[#1F2833] border border-[#3A4552] shrink-0">
+                    <div className="p-1.5 rounded-none bg-card border border-border shrink-0">
                       {getToolIcon(tool.id)}
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-white uppercase truncate">{tool.name}</span>
+                        <span className="text-xs font-bold text-foreground uppercase truncate">{tool.name}</span>
                         <Badge variant={isSelected ? 'success' : 'default'} className="text-[8px] uppercase">
                           {isSelected ? 'ENABLED' : 'DISABLED'}
                         </Badge>
                       </div>
-                      <p className="text-[9px] text-slate-400 mt-0.5 uppercase leading-relaxed line-clamp-2">
+                      <p className="text-[9px] text-muted-foreground mt-0.5 uppercase leading-relaxed line-clamp-2">
                         {tool.description}
                       </p>
                     </div>
@@ -384,14 +384,14 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         {/* STEP 4: REVIEW & DEPLOY */}
         {step === 4 && (
           <div className="space-y-3 font-mono">
-            <div className="p-3.5 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2.5">
-              <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
+            <div className="p-3.5 rounded-none bg-background border border-border space-y-2.5">
+              <div className="flex items-center justify-between border-b border-border pb-2">
                 <div>
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2 uppercase">
-                    <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+                  <h4 className="text-xs font-bold text-foreground flex items-center gap-2 uppercase">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" />
                     <span>{name || 'UNTITLED CUSTOM AGENT'}</span>
                   </h4>
-                  <p className="text-[10px] text-slate-400 mt-0.5 uppercase">{description || 'NO DESCRIPTION'}</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5 uppercase">{description || 'NO DESCRIPTION'}</p>
                 </div>
                 <Badge variant={isActive ? 'success' : 'default'} className="text-[9px] uppercase">
                   {isActive ? 'ACTIVE & READY' : 'PAUSED'}
@@ -400,28 +400,28 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs uppercase">
                 <div>
-                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.trigger_mode') || 'TRIGGER'}</span>
-                  <span className="font-bold text-white">{triggerType}</span>
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">{t('custom_agents.trigger_mode') || 'TRIGGER'}</span>
+                  <span className="font-bold text-foreground">{triggerType}</span>
                 </div>
                 <div>
-                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.llm_model') || 'MODEL ENGINE'}</span>
-                  <span className="font-bold text-white">{modelName}</span>
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">{t('custom_agents.llm_model') || 'MODEL ENGINE'}</span>
+                  <span className="font-bold text-foreground">{modelName}</span>
                 </div>
                 <div>
-                  <span className="text-[9px] text-slate-500 uppercase font-bold block">{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
-                  <span className="font-bold text-[#FFB800] font-mono">{temperature}</span>
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">{t('custom_agents.temperature') || 'TEMPERATURE'}</span>
+                  <span className="font-bold text-primary font-mono">{temperature}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-[9px] text-slate-500 uppercase font-bold block mb-1">
+                <span className="text-[9px] text-muted-foreground uppercase font-bold block mb-1">
                   {t('custom_agents.active_tools') || 'ACTIVE TOOLS'} ({selectedTools.length})
                 </span>
                 <div className="flex flex-wrap gap-1">
                   {selectedTools.map((tItem) => (
                     <span
                       key={tItem}
-                      className="px-1.5 py-0.5 rounded-none text-[9px] font-bold bg-[#1F2833] text-[#FFB800] border border-[#3A4552] uppercase"
+                      className="px-1.5 py-0.5 rounded-none text-[9px] font-bold bg-card text-primary border border-border uppercase"
                     >
                       {tItem}
                     </span>
@@ -436,9 +436,9 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
                 id="activeToggle"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-3.5 h-3.5 rounded-none accent-[#FFB800]"
+                className="w-3.5 h-3.5 rounded-none accent-primary"
               />
-              <label htmlFor="activeToggle" className="text-xs font-bold text-slate-300 uppercase cursor-pointer">
+              <label htmlFor="activeToggle" className="text-xs font-bold text-foreground uppercase cursor-pointer">
                 {t('custom_agents.enable_immediately') || 'ENABLE AGENT IMMEDIATELY UPON CREATION'}
               </label>
             </div>
@@ -446,7 +446,7 @@ export function CustomAgentBuilderModal({ isOpen, onClose, agentToEdit }: Props)
         )}
 
         {/* Modal Actions */}
-        <div className="flex items-center justify-between border-t border-[#3A4552] pt-3">
+        <div className="flex items-center justify-between border-t border-border pt-3">
           <Button
             variant="outline"
             size="sm"

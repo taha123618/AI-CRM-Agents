@@ -59,11 +59,11 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 font-mono">
-      <div className="w-full max-w-lg bg-[#1F2833] border border-[#3A4552] rounded-none shadow-2xl flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-lg bg-card border border-border rounded-none shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[#3A4552] bg-[#0B0C10] shrink-0">
-          <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <div className="p-1.5 rounded-none bg-[#0B0C10] border border-[#FFB800]/50 text-[#FFB800]">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-background shrink-0">
+          <h2 className="text-xs font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <div className="p-1.5 rounded-none bg-background border border-primary/50 text-primary">
               <Megaphone className="w-3.5 h-3.5" />
             </div>
             BROADCAST CAMPAIGN STUDIO
@@ -71,7 +71,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-none text-slate-400 hover:text-white transition-none"
+            className="p-1 rounded-none text-muted-foreground hover:text-foreground transition-none"
           >
             <X className="w-4 h-4" />
           </button>
@@ -81,7 +81,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
         <div className="flex-1 overflow-y-auto p-4 space-y-4 font-mono">
           {/* Template Selector */}
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
               SELECT TEMPLATE
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -94,8 +94,8 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                     setCustomText(tmpl.text);
                   }}
                   className={`p-2.5 rounded-none text-left text-xs uppercase font-mono border transition-none ${selectedTemplate.name === tmpl.name
-                      ? 'bg-[#0B0C10] border-[#FFB800] text-[#FFB800]'
-                      : 'bg-[#0B0C10] border-[#3A4552] text-slate-400 hover:text-white'
+                      ? 'bg-background border-primary text-primary'
+                      : 'bg-background border-border text-muted-foreground hover:text-foreground'
                     }`}
                 >
                   {tmpl.name}
@@ -106,33 +106,33 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
 
           {/* Message Text */}
           <div className="space-y-1">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
               MESSAGE CONTENT
             </label>
             <textarea
               rows={4}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
-              className="w-full bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-[#FFB800] resize-none"
+              className="w-full bg-background border border-border rounded-none px-3 py-2 text-xs font-mono text-foreground focus:outline-none focus:border-primary resize-none"
             />
           </div>
 
           {/* Recipients */}
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
               RECIPIENTS ({phoneList.length})
             </label>
             <div className="space-y-1 max-h-32 overflow-y-auto">
               {phoneList.map((p) => (
                 <div
                   key={p}
-                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs text-slate-300 font-mono"
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none bg-background border border-border text-xs text-foreground font-mono"
                 >
                   <span>{p}</span>
                   <button
                     type="button"
                     onClick={() => removePhone(p)}
-                    className="text-slate-500 hover:text-[#FF2A54] transition-none"
+                    className="text-muted-foreground hover:text-destructive transition-none"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -146,7 +146,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
                 onChange={(e) => setNewPhone(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addPhone()}
                 placeholder="+1 (555) 000-0000"
-                className="flex-1 bg-[#0B0C10] border border-[#3A4552] rounded-none px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-[#FFB800]"
+                className="flex-1 bg-background border border-border rounded-none px-3 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-primary"
               />
               <Button
                 type="button"
@@ -162,7 +162,7 @@ export function BroadcastModal({ onClose }: BroadcastModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-3 border-t border-[#3A4552] flex items-center gap-2 shrink-0">
+        <div className="p-3 border-t border-border flex items-center gap-2 shrink-0">
           <Button
             type="button"
             variant="outline"

@@ -108,16 +108,16 @@ export function LanguageManagerModal({
     >
       <div className="space-y-3 font-mono">
         {errorMsg && (
-          <div className="p-2.5 rounded-none bg-[#0B0C10] border border-[#FF2A54] text-xs text-[#FF2A54] uppercase font-mono">
+          <div className="p-2.5 rounded-none bg-background border border-destructive text-xs text-destructive uppercase font-mono">
             {errorMsg}
           </div>
         )}
 
         {/* Action Bar */}
-        <div className="flex items-center justify-between p-3 bg-[#0B0C10] border border-[#3A4552] rounded-none">
+        <div className="flex items-center justify-between p-3 bg-background border border-border rounded-none">
           <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-[#FFB800]" />
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
+            <Globe className="w-4 h-4 text-primary" />
+            <span className="text-xs font-bold text-foreground uppercase tracking-wider">
               CONFIGURED LOCALES ({availableLanguages.length})
             </span>
           </div>
@@ -139,14 +139,14 @@ export function LanguageManagerModal({
         {isAdding && (
           <form
             onSubmit={handleCreateLanguage}
-            className="p-4 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-3 animate-in fade-in"
+            className="p-4 rounded-none bg-background border border-border space-y-3 animate-in fade-in"
           >
-            <div className="flex items-center justify-between border-b border-[#3A4552] pb-2">
-              <span className="text-xs font-bold text-white uppercase">ADD NEW LOCALE</span>
+            <div className="flex items-center justify-between border-b border-border pb-2">
+              <span className="text-xs font-bold text-foreground uppercase">ADD NEW LOCALE</span>
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="text-slate-400 hover:text-white text-xs"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
                 CANCEL
               </button>
@@ -193,7 +193,7 @@ export function LanguageManagerModal({
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-[#3A4552]">
+            <div className="flex justify-end gap-2 pt-2 border-t border-border">
               <Button type="button" variant="outline" size="sm" onClick={() => setIsAdding(false)} className="text-xs uppercase">
                 CANCEL
               </Button>
@@ -205,35 +205,35 @@ export function LanguageManagerModal({
         )}
 
         {/* Languages Table */}
-        <div className="border border-[#3A4552] rounded-none overflow-hidden max-h-[440px] overflow-y-auto">
+        <div className="border border-border rounded-none overflow-hidden max-h-[440px] overflow-y-auto">
           <table className="w-full text-left border-collapse font-mono">
             <thead>
-              <tr className="border-b border-[#3A4552] bg-[#0B0C10] text-[10px] uppercase font-bold text-slate-400">
+              <tr className="border-b border-border bg-background text-[10px] uppercase font-bold text-muted-foreground">
                 <th className="py-2.5 px-3">LOCALE</th>
                 <th className="py-2.5 px-3">DIRECTION</th>
                 <th className="py-2.5 px-3">STATUS</th>
                 <th className="py-2.5 px-3 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#3A4552] text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {availableLanguages.map((lang) => {
                 const isCurrent = lang.code === currentLanguage;
                 return (
-                  <tr key={lang.code} className="hover:bg-[#0B0C10] transition-none">
+                  <tr key={lang.code} className="hover:bg-background transition-none">
                     <td className="py-2.5 px-3">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{lang.flag_emoji}</span>
                         <div>
-                          <div className="font-bold text-white flex items-center gap-1.5 uppercase">
+                          <div className="font-bold text-foreground flex items-center gap-1.5 uppercase">
                             <span>{lang.name}</span>
-                            <span className="text-[10px] text-slate-500 font-mono">({lang.code})</span>
+                            <span className="text-[10px] text-muted-foreground font-mono">({lang.code})</span>
                             {lang.is_default && (
                               <Badge variant="success" className="text-[8px] uppercase font-mono">
                                 PRIMARY
                               </Badge>
                             )}
                           </div>
-                          <span className="text-[10px] text-slate-400 uppercase font-mono">{lang.english_name}</span>
+                          <span className="text-[10px] text-muted-foreground uppercase font-mono">{lang.english_name}</span>
                         </div>
                       </div>
                     </td>
@@ -249,8 +249,8 @@ export function LanguageManagerModal({
                         type="button"
                         onClick={() => handleToggleEnable(lang)}
                         className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-none border transition-none ${lang.is_enabled
-                            ? 'bg-[#0B0C10] text-[#FFB800] border-[#FFB800]'
-                            : 'bg-[#0B0C10] text-slate-500 border-[#3A4552]'
+                            ? 'bg-background text-primary border-primary'
+                            : 'bg-background text-muted-foreground border-border'
                           }`}
                       >
                         {lang.is_enabled ? 'ENABLED' : 'DISABLED'}
@@ -262,7 +262,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => setLanguage(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-slate-300 hover:text-white border border-[#3A4552] hover:border-[#FFB800] transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-foreground hover:text-foreground border border-border hover:border-primary transition-none"
                         >
                           SWITCH
                         </button>
@@ -272,7 +272,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => onOpenTranslationEditor(lang.code)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-cyan-400 hover:text-cyan-300 border border-[#3A4552] hover:border-cyan-400 transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-cyan-400 hover:text-cyan-300 border border-border hover:border-cyan-400 transition-none"
                         >
                           DICTIONARY
                         </button>
@@ -282,7 +282,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => handleSetDefault(lang)}
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-[#1F2833] text-[#FFB800] border border-[#3A4552] hover:border-[#FFB800] transition-none"
+                          className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-none bg-card text-primary border border-border hover:border-primary transition-none"
                           title="Set as System Default"
                         >
                           DEFAULT
@@ -293,7 +293,7 @@ export function LanguageManagerModal({
                         <button
                           type="button"
                           onClick={() => handleDelete(lang.code)}
-                          className="p-1 rounded-none text-slate-500 hover:text-[#FF2A54] transition-none"
+                          className="p-1 rounded-none text-muted-foreground hover:text-destructive transition-none"
                           title="Delete Locale"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -308,8 +308,8 @@ export function LanguageManagerModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-2 border-t border-[#3A4552]">
-          <span className="text-[10px] text-slate-500 uppercase font-mono">
+        <div className="flex items-center justify-between pt-2 border-t border-border">
+          <span className="text-[10px] text-muted-foreground uppercase font-mono">
             RTL LOCALES AUTOMATICALLY MIRROR THE ENTIRE APPLICATION DOM TREE
           </span>
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">

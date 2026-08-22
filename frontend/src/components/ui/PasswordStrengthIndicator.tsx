@@ -8,9 +8,9 @@ interface PasswordStrengthIndicatorProps {
 }
 
 const STRENGTH_CONFIG = {
-  weak: { color: 'bg-[#FF2A54]', width: '33%', label: 'WEAK', textColor: 'text-[#FF2A54]' },
-  fair: { color: 'bg-[#FFB800]', width: '66%', label: 'FAIR', textColor: 'text-[#FFB800]' },
-  strong: { color: 'bg-[#FFB800]', width: '100%', label: 'STRONG', textColor: 'text-[#FFB800]' },
+  weak: { color: 'bg-destructive', width: '33%', label: 'WEAK', textColor: 'text-destructive' },
+  fair: { color: 'bg-primary', width: '66%', label: 'FAIR', textColor: 'text-primary' },
+  strong: { color: 'bg-primary', width: '100%', label: 'STRONG', textColor: 'text-primary' },
 };
 
 export function PasswordStrengthIndicator({
@@ -28,7 +28,7 @@ export function PasswordStrengthIndicator({
     <div className={`space-y-1.5 font-mono ${className}`}>
       {/* Strength bar */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 h-1.5 bg-[#0B0C10] border border-[#3A4552] rounded-none overflow-hidden">
+        <div className="flex-1 h-1.5 bg-background border border-border rounded-none overflow-hidden">
           <div
             className={`h-full rounded-none transition-none ${config.color}`}
             style={{ width: config.width }}
@@ -47,12 +47,12 @@ export function PasswordStrengthIndicator({
             return (
               <div key={req} className="flex items-center gap-1.5">
                 {isMet ? (
-                  <Check className="w-3 h-3 text-[#FFB800] shrink-0" />
+                  <Check className="w-3 h-3 text-primary shrink-0" />
                 ) : (
-                  <X className="w-3 h-3 text-slate-500 shrink-0" />
+                  <X className="w-3 h-3 text-muted-foreground shrink-0" />
                 )}
                 <span
-                  className={`text-[9px] font-mono uppercase ${isMet ? 'text-[#FFB800]' : 'text-slate-500'
+                  className={`text-[9px] font-mono uppercase ${isMet ? 'text-primary' : 'text-muted-foreground'
                     }`}
                 >
                   {req}

@@ -26,7 +26,7 @@ import { useTranslation, useLocaleFormat } from '@/features/multi-language';
 import { Deal, DealStage } from '@/types/crm.types';
 
 const STAGES: { id: DealStage; titleKey: string; defaultTitle: string; color: string; badgeColor: string }[] = [
-  { id: 'prospecting', titleKey: 'deals.stage_discovery', defaultTitle: 'Discovery', color: 'border-slate-700', badgeColor: 'bg-slate-800 text-slate-300' },
+  { id: 'prospecting', titleKey: 'deals.stage_discovery', defaultTitle: 'Discovery', color: 'border-border', badgeColor: 'bg-muted text-foreground' },
   { id: 'qualification', titleKey: 'leads.qualification_status', defaultTitle: 'Qualification', color: 'border-brand-500/50', badgeColor: 'bg-brand-500/20 text-brand-300' },
   { id: 'proposal', titleKey: 'deals.stage_proposal', defaultTitle: 'Proposal Sent', color: 'border-blue-500/50', badgeColor: 'bg-blue-500/20 text-blue-300' },
   { id: 'negotiation', titleKey: 'deals.stage_negotiation', defaultTitle: 'Negotiation', color: 'border-amber-500/50', badgeColor: 'bg-amber-500/20 text-amber-300' },
@@ -189,11 +189,11 @@ export function DealsFeature() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <Briefcase className="w-6 h-6 text-brand-400" />
             {t('deals.title', 'Sales Pipeline & Kanban Board')}
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {t('deals.subtitle', 'Drag and drop deals across stages with automated AI deal health auditing')}
           </p>
         </div>
@@ -219,7 +219,7 @@ export function DealsFeature() {
           </div>
           <button
             onClick={() => updateStageMutation.reset()}
-            className="text-[10px] uppercase font-bold text-rose-400 hover:text-white"
+            className="text-[10px] uppercase font-bold text-rose-400 hover:text-foreground"
           >
             Dismiss
           </button>
@@ -230,8 +230,8 @@ export function DealsFeature() {
       {isError && (
         <Card className="p-6 text-center border-rose-500/30 bg-rose-500/5">
           <AlertCircle className="w-8 h-8 text-rose-400 mx-auto mb-2" />
-          <h3 className="text-sm font-bold text-white">Error Loading Deals</h3>
-          <p className="text-xs text-slate-400 mt-1">
+          <h3 className="text-sm font-bold text-foreground">Error Loading Deals</h3>
+          <p className="text-xs text-muted-foreground mt-1">
             {error instanceof Error ? error.message : 'Unable to connect to FastAPI backend.'}
           </p>
         </Card>
@@ -271,15 +271,15 @@ export function DealsFeature() {
                 className={`flex flex-col w-[280px] shrink-0 rounded-none p-3 transition-none  border h-full ${
                   isTargetColumn
                     ? 'bg-brand-500/10 ring-2 ring-brand-500/40 border-brand-500/30 scale-[1.01]'
-                    : 'bg-slate-900/30 border-slate-900'
+                    : 'bg-card/30 border-border'
                 }`}
               >
                 {/* Kanban Column Header with Colored Stripe */}
                 <div
-                  className={`p-3 rounded-none bg-slate-950/80 border-t-2 ${topStripeClass} border-x border-b border-slate-800/80 flex flex-col gap-1 shadow-md shrink-0`}
+                  className={`p-3 rounded-none bg-background/80 border-t-2 ${topStripeClass} border-x border-b border-border/80 flex flex-col gap-1 shadow-md shrink-0`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                       {t(col.titleKey, col.defaultTitle)}
                     </h3>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-none ${col.badgeColor}`}>
@@ -298,7 +298,7 @@ export function DealsFeature() {
                       className={`h-28 border border-dashed rounded-none flex flex-col items-center justify-center text-xs transition-none ${
                         isTargetColumn
                           ? 'border-brand-500/60 bg-brand-500/10 text-brand-300 font-bold'
-                          : 'border-slate-800/60 text-slate-650'
+                          : 'border-border/60 text-muted-foreground'
                       }`}
                     >
                       <span>{isTargetColumn ? 'Drop Here' : 'No Deals'}</span>
@@ -315,15 +315,15 @@ export function DealsFeature() {
                           className={`p-3.5 space-y-2.5 transition-none shadow-md group cursor-grab active:cursor-grabbing border ${
                             isBeingDragged
                               ? 'opacity-40 border-brand-500/80 ring-2 ring-brand-500/40 scale-95'
-                              : 'hover:border-slate-700/90 border-slate-800'
+                              : 'hover:border-border/90 border-border'
                           }`}
                         >
                           {/* Header with Grip Icon */}
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-1.5 flex-1">
-                              <GripVertical className="w-4 h-4 text-slate-600 group-hover:text-slate-400 shrink-0 mt-0.5" />
+                              <GripVertical className="w-4 h-4 text-muted-foreground group-hover:text-muted-foreground shrink-0 mt-0.5" />
                               <div>
-                                <h4 className="font-semibold text-xs text-white line-clamp-2">{deal.name}</h4>
+                                <h4 className="font-semibold text-xs text-foreground line-clamp-2">{deal.name}</h4>
                                 {Boolean(deal.next_actions?.length) && (
                                   <span className="mt-1 px-1.5 py-0.5 rounded-none text-[9px] font-extrabold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-wider inline-flex items-center gap-0.5">
                                     <Sparkles className="w-2.5 h-2.5" />
@@ -344,7 +344,7 @@ export function DealsFeature() {
                               )}
                               <button
                                 onClick={() => handleOpenEdit(deal)}
-                                className="p-1 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition-none"
+                                className="p-1 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-none"
                                 title="Edit Deal Details"
                               >
                                 <Pencil className="w-3.5 h-3.5" />
@@ -352,7 +352,7 @@ export function DealsFeature() {
                               <button
                                 onClick={() => handleDeleteDeal(deal.id)}
                                 disabled={deletingId === deal.id}
-                                className="p-1 rounded-none text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-none"
+                                className="p-1 rounded-none text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 transition-none"
                                 title="Delete Deal"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -372,12 +372,12 @@ export function DealsFeature() {
 
                           {/* AI Risk Factors */}
                           {deal.risk_factors && deal.risk_factors.length > 0 && (
-                            <div className="pt-2 border-t border-slate-850 space-y-1">
+                            <div className="pt-2 border-t border-border space-y-1">
                               <span className="text-[9px] uppercase font-bold text-amber-400 flex items-center gap-1">
                                 <AlertTriangle className="w-3 h-3 text-amber-400" />
                                 <span>AI Risk Factors</span>
                               </span>
-                              <ul className="text-[10px] text-slate-400 space-y-1 pl-3.5 list-disc">
+                              <ul className="text-[10px] text-muted-foreground space-y-1 pl-3.5 list-disc">
                                 {deal.risk_factors.map((risk, idx) => (
                                   <li key={idx} className="leading-tight">{risk}</li>
                                 ))}
@@ -387,11 +387,11 @@ export function DealsFeature() {
 
                           {/* Close Probability + Forecast */}
                           {(deal.close_probability != null || deal.forecast_close_date) && (
-                            <div className="pt-2 border-t border-slate-800/60 space-y-1">
+                            <div className="pt-2 border-t border-border/60 space-y-1">
                               {deal.close_probability != null && (
                                 <div className="flex items-center gap-2">
                                   <span className="text-[9px] uppercase font-bold text-emerald-400">Win %</span>
-                                  <div className="flex-1 h-1.5 bg-slate-800 rounded-none overflow-hidden">
+                                  <div className="flex-1 h-1.5 bg-muted rounded-none overflow-hidden">
                                     <div
                                       className={`h-full rounded-none transition-none ${
                                         deal.close_probability >= 70 ? 'bg-emerald-500' : deal.close_probability >= 40 ? 'bg-amber-500' : 'bg-rose-500'
@@ -405,8 +405,8 @@ export function DealsFeature() {
                                 </div>
                               )}
                               {deal.forecast_close_date && (
-                                <div className="text-[9px] text-slate-500">
-                                  <span className="text-slate-400">Forecast: </span>
+                                <div className="text-[9px] text-muted-foreground">
+                                  <span className="text-muted-foreground">Forecast: </span>
                                   {deal.forecast_close_date}
                                 </div>
                               )}
@@ -419,7 +419,7 @@ export function DealsFeature() {
                               <span className="text-[9px] uppercase font-bold text-brand-400">Next Actions</span>
                               <ul className="space-y-0.5">
                                 {deal.next_actions.slice(0, 2).map((action, idx) => (
-                                  <li key={idx} className="text-[9px] text-slate-400 flex items-start gap-1">
+                                  <li key={idx} className="text-[9px] text-muted-foreground flex items-start gap-1">
                                     <span className="text-brand-400 shrink-0">›</span>
                                     <span className="leading-tight">{action}</span>
                                   </li>
@@ -429,7 +429,7 @@ export function DealsFeature() {
                           )}
 
                           {/* Quick Actions Footer */}
-                          <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-1">
+                          <div className="pt-2 border-t border-border/80 flex items-center justify-between gap-1">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -449,7 +449,7 @@ export function DealsFeature() {
                                     handleStageMove(deal, STAGES[currentIndex + 1].id);
                                   }
                                 }}
-                                className="p-1.5 rounded-none text-slate-400 hover:bg-slate-800 hover:text-white transition-none"
+                                className="p-1.5 rounded-none text-muted-foreground hover:bg-muted hover:text-foreground transition-none"
                                 title="Move to Next Stage"
                               >
                                 <ArrowRight className="w-3.5 h-3.5" />
@@ -477,7 +477,7 @@ export function DealsFeature() {
         >
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Deal Name</label>
+              <label className="text-xs font-semibold text-foreground block mb-1">Deal Name</label>
               <Input
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
@@ -487,9 +487,9 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Deal Value ($)</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Deal Value ($)</label>
                 <div className="relative">
-                  <DollarSign className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <DollarSign className="w-4 h-4 text-muted-foreground absolute left-3 top-2.5" />
                   <Input
                     type="number"
                     value={editValue}
@@ -500,11 +500,11 @@ export function DealsFeature() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Pipeline Stage</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Pipeline Stage</label>
                 <select
                   value={editStage}
                   onChange={(e) => setEditStage(e.target.value as DealStage)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-none px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-card border border-border rounded-none px-3 py-2 text-xs font-medium text-foreground focus:outline-none focus:border-brand-500"
                 >
                   {STAGES.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -517,7 +517,7 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1 flex items-center gap-1">
+                <label className="text-xs font-semibold text-foreground block mb-1 flex items-center gap-1">
                   <Activity className="w-3.5 h-3.5 text-brand-400" />
                   <span>Health Score (0-100)</span>
                 </label>
@@ -531,12 +531,12 @@ export function DealsFeature() {
               </div>
 
               <div className="flex flex-col justify-end">
-                <label className="flex items-center gap-2 p-2 rounded-none bg-slate-900 border border-slate-800 cursor-pointer">
+                <label className="flex items-center gap-2 p-2 rounded-none bg-card border border-border cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editIsStalled}
                     onChange={(e) => setEditIsStalled(e.target.checked)}
-                    className="w-4 h-4 rounded-none text-brand-500 focus:ring-brand-500 bg-slate-800 border-slate-700"
+                    className="w-4 h-4 rounded-none text-brand-500 focus:ring-brand-500 bg-muted border-border"
                   />
                   <span className="text-xs font-medium text-amber-400 flex items-center gap-1">
                     <AlertTriangle className="w-3.5 h-3.5" />
@@ -547,7 +547,7 @@ export function DealsFeature() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">
+              <label className="text-xs font-semibold text-foreground block mb-1">
                 AI Risk Factors (comma separated)
               </label>
               <Input
@@ -559,7 +559,7 @@ export function DealsFeature() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Close Probability (%)</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Close Probability (%)</label>
                 <Input
                   type="number" min="0" max="100"
                   value={editCloseProbability}
@@ -568,7 +568,7 @@ export function DealsFeature() {
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Forecast Close Date</label>
+                <label className="text-xs font-semibold text-foreground block mb-1">Forecast Close Date</label>
                 <Input
                   value={editForecastDate}
                   onChange={(e) => setEditForecastDate(e.target.value)}
@@ -578,7 +578,7 @@ export function DealsFeature() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">
+              <label className="text-xs font-semibold text-foreground block mb-1">
                 AI Next Actions (one per line)
               </label>
               <textarea
@@ -586,11 +586,11 @@ export function DealsFeature() {
                 value={editNextActions}
                 onChange={(e) => setEditNextActions(e.target.value)}
                 placeholder="e.g. Schedule technical review&#10;Send security questionnaire&#10;Loop in procurement"
-                className="w-full bg-slate-900 text-slate-100 border border-slate-700/80 rounded-none p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-card text-foreground border border-border/80 rounded-none p-3 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/50"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+            <div className="flex justify-end gap-2 pt-3 border-t border-border">
               <Button variant="outline" onClick={() => setEditingDeal(null)}>
                 Cancel
               </Button>

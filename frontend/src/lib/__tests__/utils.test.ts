@@ -3,8 +3,8 @@ import { cn, formatCurrency, formatNumber, getScoreColor, getStatusBadgeClass } 
 
 describe('Utility Functions (src/lib/utils.ts)', () => {
   it('cn merges class names properly with tailwind merge', () => {
-    const res = cn('p-4', 'p-2', 'text-white', { 'bg-blue-500': true, 'bg-red-500': false });
-    expect(res).toBe('p-2 text-white bg-blue-500');
+    const res = cn('p-4', 'p-2', 'text-foreground', { 'bg-blue-500': true, 'bg-red-500': false });
+    expect(res).toBe('p-2 text-foreground bg-blue-500');
   });
 
   it('formatCurrency formats whole numbers without unnecessary cents', () => {
@@ -37,6 +37,6 @@ describe('Utility Functions (src/lib/utils.ts)', () => {
     expect(getStatusBadgeClass('qualified')).toContain('emerald');
     expect(getStatusBadgeClass('proposal')).toContain('blue');
     expect(getStatusBadgeClass('urgent')).toContain('rose');
-    expect(getStatusBadgeClass('unknown_status')).toContain('slate');
+    expect(getStatusBadgeClass('unknown_status')).toContain('muted');
   });
 });

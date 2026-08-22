@@ -28,10 +28,10 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
     >
       <div className="space-y-3 font-mono">
         {isLoading ? (
-          <div className="py-10 text-center text-slate-500 text-xs uppercase">{t('custom_agents.loading_telemetry') || 'LOADING EXECUTION LOGS...'}</div>
+          <div className="py-10 text-center text-muted-foreground text-xs uppercase">{t('custom_agents.loading_telemetry') || 'LOADING EXECUTION LOGS...'}</div>
         ) : !executions || executions.length === 0 ? (
-          <div className="py-10 text-center text-slate-500 space-y-2 uppercase">
-            <History className="w-8 h-8 mx-auto opacity-30 text-[#FFB800]" />
+          <div className="py-10 text-center text-muted-foreground space-y-2 uppercase">
+            <History className="w-8 h-8 mx-auto opacity-30 text-primary" />
             <p className="text-xs">{t('custom_agents.no_telemetry') || 'NO EXECUTION TELEMETRY RECORDED YET FOR THIS AGENT.'}</p>
           </div>
         ) : (
@@ -39,7 +39,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
             {executions.map((exec) => (
               <div
                 key={exec.id}
-                className="p-3 rounded-none bg-[#0B0C10] border border-[#3A4552] space-y-2"
+                className="p-3 rounded-none bg-background border border-border space-y-2"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -54,13 +54,13 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
                         {t('custom_agents.failed') || 'FAILED'}
                       </Badge>
                     )}
-                    <span className="text-xs font-mono font-bold text-slate-300 uppercase">
+                    <span className="text-xs font-mono font-bold text-foreground uppercase">
                       {t('custom_agents.status') || 'TRIGGER'}: {exec.trigger_event}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400 uppercase">
-                    <span className="flex items-center gap-1 text-[#FFB800]">
+                  <div className="flex items-center gap-3 text-[10px] font-mono text-muted-foreground uppercase">
+                    <span className="flex items-center gap-1 text-primary">
                       <Clock className="w-3 h-3" />
                       {exec.duration_ms}MS
                     </span>
@@ -74,15 +74,15 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
 
                 {/* Output recommendation */}
                 {exec.output_payload?.recommendation && (
-                  <div className="p-2.5 rounded-none bg-[#1F2833] border border-[#3A4552] text-xs text-slate-200 leading-relaxed font-mono uppercase">
+                  <div className="p-2.5 rounded-none bg-card border border-border text-xs text-foreground leading-relaxed font-mono uppercase">
                     {exec.output_payload.recommendation}
                   </div>
                 )}
 
                 {/* Input Payload details */}
                 {exec.input_payload && (
-                  <div className="p-2 rounded-none bg-[#1F2833] border border-[#3A4552] text-[10px] font-mono text-slate-400 overflow-x-auto">
-                    <span className="text-slate-500 block mb-1 uppercase font-bold">INPUT PAYLOAD:</span>
+                  <div className="p-2 rounded-none bg-card border border-border text-[10px] font-mono text-muted-foreground overflow-x-auto">
+                    <span className="text-muted-foreground block mb-1 uppercase font-bold">INPUT PAYLOAD:</span>
                     <pre>{JSON.stringify(exec.input_payload, null, 2)}</pre>
                   </div>
                 )}
@@ -91,7 +91,7 @@ export function AgentExecutionsModal({ isOpen, onClose, agent }: Props) {
           </div>
         )}
 
-        <div className="flex justify-end pt-2 border-t border-[#3A4552]">
+        <div className="flex justify-end pt-2 border-t border-border">
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs uppercase">
             {t('common.cancel') || 'CLOSE'}
           </Button>

@@ -32,23 +32,23 @@ export function SettingsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Sliders className="w-5 h-5 text-primary" />
             <span>PLATFORM GOVERNANCE, INTEGRATIONS &amp; SECURITY</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             ENTERPRISE RBAC PERMISSIONS, OUTBOUND WEBHOOKS, BULK ETL, ASYNC WORKERS, AND FORENSIC AUDIT LOGS.
           </p>
         </div>
 
         {currentUser && (
-          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-none bg-[#0B0C10] border border-[#3A4552] text-xs shrink-0 self-start md:self-auto font-mono">
-            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-[#FFB800]' : 'text-slate-400'}`} />
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-none bg-background border border-border text-xs shrink-0 self-start md:self-auto font-mono">
+            <UserCheck className={`w-4 h-4 ${isAdmin ? 'text-primary' : 'text-muted-foreground'}`} />
             <div>
-              <span className="text-slate-500 block text-[9px] uppercase">ACTIVE SESSION</span>
-              <span className="font-mono text-slate-200 text-xs font-bold uppercase">{currentUser.email}</span>
+              <span className="text-muted-foreground block text-[9px] uppercase">ACTIVE SESSION</span>
+              <span className="font-mono text-foreground text-xs font-bold uppercase">{currentUser.email}</span>
             </div>
             <Badge variant={isAdmin ? 'purple' : 'info'} className="text-[8px] font-mono uppercase ml-1">
               {currentUser.role}
@@ -58,7 +58,7 @@ export function SettingsFeature() {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex flex-wrap items-center gap-1.5 bg-[#0B0C10] p-2 border border-[#3A4552] font-mono">
+      <div className="flex flex-wrap items-center gap-1.5 bg-background p-2 border border-border font-mono">
         {tabs?.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -67,15 +67,15 @@ export function SettingsFeature() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-mono font-bold uppercase transition-none ${isActive
-                  ? 'bg-[#FFB800] text-[#0B0C10] border border-[#FFB800]'
-                  : 'bg-[#1F2833] text-slate-400 hover:text-white border border-[#3A4552]'
+                  ? 'bg-primary text-primary-foreground border border-primary'
+                  : 'bg-card text-muted-foreground hover:text-foreground border border-border'
                 }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
               {tab.badge && (
                 <span
-                  className={`text-[8px] px-1 py-0.2 rounded-none font-mono ${isActive ? 'bg-[#0B0C10] text-[#FFB800] font-bold' : 'bg-[#0B0C10] text-slate-400 border border-[#3A4552]'
+                  className={`text-[8px] px-1 py-0.2 rounded-none font-mono ${isActive ? 'bg-background text-primary font-bold' : 'bg-background text-muted-foreground border border-border'
                     }`}
                 >
                   {tab.badge}

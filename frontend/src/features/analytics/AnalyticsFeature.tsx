@@ -39,13 +39,13 @@ export function AnalyticsFeature() {
   return (
     <div className="space-y-4 font-mono">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1F2833] p-4 border border-[#3A4552]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-card p-4 border border-border">
         <div>
-          <h1 className="text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-[#FFB800]" />
+          <h1 className="text-base font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-primary" />
             <span>{t('analytics.title', 'ARR & PREDICTIVE ANALYTICS')}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 uppercase">
+          <p className="text-xs text-muted-foreground mt-0.5 uppercase">
             {t('analytics.subtitle', 'MULTI-AGENT STRATEGIC FORECASTING AND REVENUE TELEMETRY')}
           </p>
         </div>
@@ -65,7 +65,7 @@ export function AnalyticsFeature() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <Bot className="w-4 h-4 text-[#FFB800]" />
+            <Bot className="w-4 h-4 text-primary" />
             <span>ANALYTICS AGENT — LIVE AI INSIGHTS</span>
           </CardTitle>
           <Button variant="outline" size="sm" onClick={() => refetchInsights()} disabled={insightsLoading} className="text-xs h-7">
@@ -81,19 +81,19 @@ export function AnalyticsFeature() {
           ) : insights ? (
             <div className="space-y-3">
               {/* Summary */}
-              <p className="text-xs text-slate-300 font-mono border-l-2 border-[#FFB800] pl-3 uppercase">{insights.summary}</p>
+              <p className="text-xs text-foreground font-mono border-l-2 border-primary pl-3 uppercase">{insights.summary}</p>
 
               {/* KPI Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                 {insights.kpis.map((kpi) => (
-                  <div key={kpi.label} className="p-2.5 bg-[#0B0C10] border border-[#3A4552] space-y-1">
-                    <div className="text-[9px] text-slate-400 uppercase font-bold">{kpi.label}</div>
+                  <div key={kpi.label} className="p-2.5 bg-background border border-border space-y-1">
+                    <div className="text-[9px] text-muted-foreground uppercase font-bold">{kpi.label}</div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-base font-black font-mono ${kpi.trend === 'up' ? 'text-[#FFB800]' : kpi.trend === 'down' ? 'text-[#FF2A54]' : 'text-slate-300'
+                      <span className={`text-base font-black font-mono ${kpi.trend === 'up' ? 'text-primary' : kpi.trend === 'down' ? 'text-destructive' : 'text-foreground'
                         }`}>{kpi.value}</span>
-                      {kpi.trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-[#FFB800]" />}
-                      {kpi.trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-[#FF2A54]" />}
-                      {kpi.trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-slate-500" />}
+                      {kpi.trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-primary" />}
+                      {kpi.trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-destructive" />}
+                      {kpi.trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-muted-foreground" />}
                     </div>
                   </div>
                 ))}
@@ -102,15 +102,15 @@ export function AnalyticsFeature() {
               {/* Insight bullets */}
               <div className="space-y-1.5 pt-1">
                 {insights.insights.map((insight, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-slate-300 font-mono">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#FFB800] mt-0.5 shrink-0" />
+                  <div key={i} className="flex items-start gap-2 text-xs text-foreground font-mono">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                     <span>{insight}</span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-slate-500 text-xs font-mono uppercase">UNABLE TO LOAD INSIGHTS.</div>
+            <div className="text-center py-6 text-muted-foreground text-xs font-mono uppercase">UNABLE TO LOAD INSIGHTS.</div>
           )}
         </CardContent>
       </Card>
@@ -119,17 +119,17 @@ export function AnalyticsFeature() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">TOTAL LEADS &amp; CONVERSION</span>
-            <TrendingUp className="w-4 h-4 text-[#FFB800]" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">TOTAL LEADS &amp; CONVERSION</span>
+            <TrendingUp className="w-4 h-4 text-primary" />
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-24 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatNumber(metrics?.leads.total || 0)} LEADS
               </div>
-              <p className="text-[10px] font-mono text-[#FFB800]">
+              <p className="text-[10px] font-mono text-primary">
                 {metrics?.leads.total ? Math.round(((metrics.leads.qualified || 0) / metrics.leads.total) * 100) : 0}% QUALIFICATION RATE
               </p>
             </div>
@@ -138,18 +138,18 @@ export function AnalyticsFeature() {
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">ANNUAL RUN RATE (ARR)</span>
-            <TrendingUp className="w-4 h-4 text-[#FFB800]" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">ANNUAL RUN RATE (ARR)</span>
+            <TrendingUp className="w-4 h-4 text-primary" />
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-32 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatCurrency(metrics?.customers.arr || 0)}
               </div>
-              <p className="text-[10px] font-mono text-slate-400">
-                MRR: <span className="text-white font-bold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
+              <p className="text-[10px] font-mono text-muted-foreground">
+                MRR: <span className="text-foreground font-bold">{formatCurrency(metrics?.customers.mrr || 0)}</span>
               </p>
             </div>
           )}
@@ -157,18 +157,18 @@ export function AnalyticsFeature() {
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">WEIGHTED PIPELINE</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">WEIGHTED PIPELINE</span>
             <TrendingUp className="w-4 h-4 text-cyan-400" />
           </div>
           {metricsLoading ? (
             <Skeleton className="h-8 w-32 mt-2" />
           ) : (
             <div className="mt-2 space-y-0.5">
-              <div className="text-xl font-black font-mono text-white">
+              <div className="text-xl font-black font-mono text-foreground">
                 {formatCurrency(metrics?.deals.pipeline_value || 0)}
               </div>
-              <p className="text-[10px] font-mono text-slate-400">
-                TOTAL DEALS: <span className="text-white font-bold">{metrics?.deals.total || 0}</span>
+              <p className="text-[10px] font-mono text-muted-foreground">
+                TOTAL DEALS: <span className="text-foreground font-bold">{metrics?.deals.total || 0}</span>
               </p>
             </div>
           )}
@@ -189,7 +189,7 @@ export function AnalyticsFeature() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-[#FFB800]" />
+              <PieIcon className="w-4 h-4 text-primary" />
               <span>RETENTION &amp; HEALTH DISTRIBUTION</span>
             </CardTitle>
           </CardHeader>
@@ -214,48 +214,48 @@ export function AnalyticsFeature() {
           <div className="space-y-3 font-mono">
             {/* KPI Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
-                <span className="text-[9px] text-slate-400 uppercase font-bold block">CONVERSION</span>
-                <span className="text-xs font-black font-mono text-[#FFB800]">
+              <div className="p-2.5 bg-background border border-border">
+                <span className="text-[9px] text-muted-foreground uppercase font-bold block">CONVERSION</span>
+                <span className="text-xs font-black font-mono text-primary">
                   {forecastResult.kpis?.lead_conversion_rate || 30}%
                 </span>
               </div>
-              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
-                <span className="text-[9px] text-slate-400 uppercase font-bold block">WIN RATE</span>
+              <div className="p-2.5 bg-background border border-border">
+                <span className="text-[9px] text-muted-foreground uppercase font-bold block">WIN RATE</span>
                 <span className="text-xs font-black font-mono text-cyan-400">
                   {forecastResult.kpis?.win_rate || 24}%
                 </span>
               </div>
-              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
-                <span className="text-[9px] text-slate-400 uppercase font-bold block">MRR</span>
-                <span className="text-xs font-black font-mono text-white">
+              <div className="p-2.5 bg-background border border-border">
+                <span className="text-[9px] text-muted-foreground uppercase font-bold block">MRR</span>
+                <span className="text-xs font-black font-mono text-foreground">
                   {formatCurrency(forecastResult.kpis?.mrr || 50000)}
                 </span>
               </div>
-              <div className="p-2.5 bg-[#0B0C10] border border-[#3A4552]">
-                <span className="text-[9px] text-slate-400 uppercase font-bold block">ARR</span>
-                <span className="text-xs font-black font-mono text-[#FFB800]">
+              <div className="p-2.5 bg-background border border-border">
+                <span className="text-[9px] text-muted-foreground uppercase font-bold block">ARR</span>
+                <span className="text-xs font-black font-mono text-primary">
                   {formatCurrency(forecastResult.kpis?.arr || 600000)}
                 </span>
               </div>
             </div>
 
             {/* Quick Insights */}
-            <div className="p-3 bg-[#0B0C10] border border-[#3A4552] space-y-1.5">
-              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-[#FFB800]" />
+            <div className="p-3 bg-background border border-border space-y-1.5">
+              <h4 className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-primary" />
                 STRATEGIC AI INSIGHTS
               </h4>
-              <ul className="space-y-1 text-xs font-mono text-slate-300">
+              <ul className="space-y-1 text-xs font-mono text-foreground">
                 {Array.isArray(forecastResult.insights) && forecastResult.insights.length > 0 ? (
                   forecastResult.insights.map((insight: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3 h-3 text-[#FFB800] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3 h-3 text-primary shrink-0 mt-0.5" />
                       <span>{insight}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-slate-400 text-xs">
+                  <li className="text-muted-foreground text-xs">
                     1. Revenue growing steadily at 12% MoM<br />
                     2. Strong lead conversion rate across tech accounts<br />
                     3. Recommended sales cycle optimization for proposal stage
@@ -264,7 +264,7 @@ export function AnalyticsFeature() {
               </ul>
             </div>
 
-            <div className="flex justify-end pt-1 border-t border-[#3A4552]">
+            <div className="flex justify-end pt-1 border-t border-border">
               <Button variant="outline" onClick={() => setForecastResult(null)} className="text-xs">
                 CLOSE REPORT
               </Button>

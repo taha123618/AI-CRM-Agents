@@ -39,18 +39,18 @@ export function Modal({ isOpen, onClose, title, description, children, className
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full max-w-lg bg-[#1F2833] rounded-none p-5 shadow-2xl border border-[#3A4552] z-10 max-h-[90vh] overflow-y-auto overflow-x-hidden',
+          'relative w-full max-w-lg bg-card text-card-foreground rounded-none p-5 shadow-2xl border border-border z-10 max-h-[90vh] overflow-y-auto overflow-x-hidden',
           className
         )}
       >
-        <div className="flex items-start justify-between pb-3 border-b border-[#3A4552]">
+        <div className="flex items-start justify-between pb-3 border-b border-border">
           <div className="min-w-0 flex-1 mr-3">
-            <h2 className="text-sm font-bold font-mono uppercase tracking-wider text-white leading-snug break-words">{title}</h2>
-            {description && <p className="mt-0.5 text-xs font-mono uppercase text-slate-400 leading-normal break-words">{description}</p>}
+            <h2 className="text-sm font-bold font-mono uppercase tracking-wider text-foreground leading-snug break-words">{title}</h2>
+            {description && <p className="mt-0.5 text-xs font-mono uppercase text-muted-foreground leading-normal break-words">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-none p-1 text-slate-400 hover:bg-[#0B0C10] hover:text-white transition-none shrink-0"
+            className="rounded-none p-1 text-muted-foreground hover:bg-background hover:text-foreground transition-none shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
