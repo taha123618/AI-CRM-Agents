@@ -137,10 +137,6 @@ class LeadQualificationAgent(BaseAgent):
             "message": f"Lead communication email queued for delivery to {recipient_email}",
         }
 
-        await self.log_activity("lead_qualified", result)
-
-        return result
-
     async def enrich_lead(self, lead_data: Dict[str, Any]) -> Dict[str, Any]:
         """Enrich lead data from public sources"""
         email = lead_data.get("email", "")

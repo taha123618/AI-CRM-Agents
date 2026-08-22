@@ -6,10 +6,10 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy dependency specifications
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install --no-package-lock --no-audit --no-fund
 
 # Copy source files
 COPY . .
