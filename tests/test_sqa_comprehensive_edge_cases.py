@@ -32,9 +32,9 @@ def test_csv_formula_injection_sanitization_advanced():
     for payload in dangerous_payloads:
         sanitized = sanitize_csv_cell(payload)
         # Should be prefixed with single quote or safe
-        assert sanitized.startswith("'") or not sanitized.startswith(("=", "+", "-", "@")), (
-            f"Payload failed CSV sanitization: {payload} -> {sanitized}"
-        )
+        assert sanitized.startswith("'") or not sanitized.startswith(
+            ("=", "+", "-", "@")
+        ), f"Payload failed CSV sanitization: {payload} -> {sanitized}"
 
 
 def test_idor_tenant_isolation_boundary():
@@ -58,10 +58,7 @@ async def test_rag_semantic_search_empty_and_fallback():
     try:
         # Search with query that matches nothing
         results = RagService.semantic_search(
-            query="xyznonexistentunlikelyterm999999",
-            db=db,
-            top_k=5,
-            min_score=0.95
+            query="xyznonexistentunlikelyterm999999", db=db, top_k=5, min_score=0.95
         )
         assert isinstance(results, list)
 
@@ -69,7 +66,7 @@ async def test_rag_semantic_search_empty_and_fallback():
         rag_answer = await RagService.ask_crm_rag(
             question="What is the pricing for nonexistent secret project zebra?",
             db=db,
-            top_k=4
+            top_k=4,
         )
         assert isinstance(rag_answer, dict)
         assert "answer" in rag_answer
@@ -92,7 +89,7 @@ def test_custom_fields_schema_validation_edge_cases():
         "name": "invalid_field",
         "field_key": "invalid_field_key",
         "field_type": "unsupported_unknown_type",
-        "is_required": False
+        "is_required": False,
     }
     res = client.post("/api/custom-fields", json=invalid_payload, headers=headers_admin)
     # Should reject with 400 or 422
@@ -124,7 +121,9 @@ def test_metrics_prometheus_exposition():
     """SQA Test: Verify /metrics returns standard Prometheus plain text format."""
     res = client.get("/metrics")
     assert res.status_code == 200
-    assert "crm_requests_total" in res.text or "# HELP" in res.text or "crm_" in res.text
+    assert (
+        "crm_requests_total" in res.text or "# HELP" in res.text or "crm_" in res.text
+    )
 
 
 def test_auth_lockout_and_password_validation_edge_cases():
@@ -135,7 +134,7 @@ def test_auth_lockout_and_password_validation_edge_cases():
         "password": "weak",
         "first_name": "Weak",
         "last_name": "User",
-        "role": "sales"
+        "role": "sales",
     }
     res = client.post("/api/auth/register", json=weak_payload)
     assert res.status_code in [400, 422]

@@ -17,13 +17,21 @@ router = APIRouter()
 
 
 class BenchmarkRequest(BaseModel):
-    agent_name: str = Field(..., min_length=2, max_length=100, description="Name of Agent under test")
-    prompt_variant_a: str = Field(..., min_length=5, description="Baseline System Prompt")
-    prompt_variant_b: str = Field(..., min_length=5, description="Candidate / Experimental System Prompt")
+    agent_name: str = Field(
+        ..., min_length=2, max_length=100, description="Name of Agent under test"
+    )
+    prompt_variant_a: str = Field(
+        ..., min_length=5, description="Baseline System Prompt"
+    )
+    prompt_variant_b: str = Field(
+        ..., min_length=5, description="Candidate / Experimental System Prompt"
+    )
     dataset_size: int = Field(4, ge=1, le=20)
 
 
-@router.post("/benchmark", response_model=Dict[str, Any], status_code=status.HTTP_200_OK)
+@router.post(
+    "/benchmark", response_model=Dict[str, Any], status_code=status.HTTP_200_OK
+)
 def run_prompt_benchmark(
     payload: BenchmarkRequest,
     db: Session = Depends(get_db),
@@ -46,7 +54,12 @@ def get_evaluation_history(
     db: Session = Depends(get_db),
 ):
     """List historical prompt benchmark evaluation runs."""
-    runs = db.query(LLMEvaluationRun).order_by(desc(LLMEvaluationRun.created_at)).limit(limit).all()
+    runs = (
+        db.query(LLMEvaluationRun)
+        .order_by(desc(LLMEvaluationRun.created_at))
+        .limit(limit)
+        .all()
+    )
     return [
         {
             "id": str(r.id),
@@ -67,31 +80,54 @@ def get_evaluation_history(
 
 @router.get("/finetuning/export")
 def export_finetuning_dataset(
-    target_agent: str = Query("lead_qualification", description="Agent domain dataset to export"),
+    target_agent: str = Query(
+        "lead_qualification", description="Agent domain dataset to export"
+    ),
     format_type: str = Query("jsonl", description="'jsonl' or 'json'"),
     db: Session = Depends(get_db),
 ):
     """Export historical CRM won deals, qualified leads, and transcripts into OpenAI/Anthropic fine-tuning dataset format."""
     from database.models import Deal, Contact
+
     won_deals = db.query(Deal).filter(Deal.stage == "closed_won").limit(20).all()
 
     examples = []
     for d in won_deals:
-        examples.append({
-            "messages": [
-                {"role": "system", "content": f"You are the AI CRM {target_agent.capitalize()} Agent."},
-                {"role": "user", "content": f"Evaluate deal viability for '{d.name}' valued at ${d.value:,.2f} with health score {d.health_score}."},
-                {"role": "assistant", "content": f"Deal '{d.name}' qualified as High-Value Opportunity. Strategy: Prioritize executive sponsorship and proposal review."},
-            ]
-        })
+        examples.append(
+            {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": f"You are the AI CRM {target_agent.capitalize()} Agent.",
+                    },
+                    {
+                        "role": "user",
+                        "content": f"Evaluate deal viability for '{d.name}' valued at ${d.value:,.2f} with health score {d.health_score}.",
+                    },
+                    {
+                        "role": "assistant",
+                        "content": f"Deal '{d.name}' qualified as High-Value Opportunity. Strategy: Prioritize executive sponsorship and proposal review.",
+                    },
+                ]
+            }
+        )
 
     if not examples:
         examples = [
             {
                 "messages": [
-                    {"role": "system", "content": "You are the AI CRM Lead Qualification Agent."},
-                    {"role": "user", "content": "VP of Eng at ScaleUp Corp requesting 250 seat enterprise deployment with SOC-2 SLA."},
-                    {"role": "assistant", "content": "Lead classified as High Priority (Score 94). BANT verified: Budget approved, Authority confirmed, Timeline Q3."},
+                    {
+                        "role": "system",
+                        "content": "You are the AI CRM Lead Qualification Agent.",
+                    },
+                    {
+                        "role": "user",
+                        "content": "VP of Eng at ScaleUp Corp requesting 250 seat enterprise deployment with SOC-2 SLA.",
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Lead classified as High Priority (Score 94). BANT verified: Budget approved, Authority confirmed, Timeline Q3.",
+                    },
                 ]
             }
         ]
@@ -116,6 +152,7 @@ class FineTuningJobRequest(BaseModel):
 def launch_finetuning_job(payload: FineTuningJobRequest):
     """Launch fine-tuning training job on historical CRM dataset."""
     import time
+
     job_id = f"ftjob_{uuid.uuid4().hex[:10]}"
     return {
         "job_id": job_id,
@@ -127,4 +164,3 @@ def launch_finetuning_job(payload: FineTuningJobRequest):
         "estimated_completion_minutes": 12,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
-

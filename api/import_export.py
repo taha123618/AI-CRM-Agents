@@ -101,5 +101,7 @@ async def bulk_export_audit_logs(
     return Response(
         content=csv_content,
         media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=compliance_audit_logs.csv"},
+        headers={
+            "Content-Disposition": "attachment; filename=compliance_audit_logs.csv"
+        },
     )

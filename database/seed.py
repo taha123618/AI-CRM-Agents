@@ -39,7 +39,9 @@ def seed_initial_users(db: Session):
             permissions=ROLE_DEFAULT_PERMISSIONS["admin"],
         )
         db.add(admin_user)
-        print("Seeded default Super Admin account: admin@gmail.com (password: admin123)")
+        print(
+            "Seeded default Super Admin account: admin@gmail.com (password: admin123)"
+        )
     else:
         admin_user.role = "admin"
         admin_user.is_active = True
@@ -494,7 +496,9 @@ def seed_journey_and_sequences(db: Session):
             intv1 = CustomerIntervention(
                 id=uuid.uuid4(),
                 customer_id=custs[0].id,
-                customer_name=custs[0].company.name if custs[0].company else "Acme Corporation",
+                customer_name=custs[0].company.name
+                if custs[0].company
+                else "Acme Corporation",
                 intervention_type="executive_check_in",
                 status="completed",
                 target_agent="customer_success_agent",
@@ -508,7 +512,9 @@ def seed_journey_and_sequences(db: Session):
                 intv2 = CustomerIntervention(
                     id=uuid.uuid4(),
                     customer_id=custs[1].id,
-                    customer_name=custs[1].company.name if custs[1].company else "TechStart Inc",
+                    customer_name=custs[1].company.name
+                    if custs[1].company
+                    else "TechStart Inc",
                     intervention_type="feature_adoption_nudge",
                     status="active",
                     target_agent="whatsapp_agent",
@@ -624,7 +630,6 @@ def seed_journey_and_sequences(db: Session):
         )
         db.add_all([rule1, rule2, rule3])
         db.commit()
-
 
 
 def seed_languages_and_translations(db: Session):
@@ -1815,11 +1820,14 @@ def seed_voice_and_whatsapp(db: Session):
     )
     db.add_all([sim1, sim2])
     db.commit()
-    print("Seeded Voice Calls, WhatsApp Conversations, and Forecast Simulations successfully.")
+    print(
+        "Seeded Voice Calls, WhatsApp Conversations, and Forecast Simulations successfully."
+    )
 
 
 if __name__ == "__main__":
     from database.connection import SessionLocal
+
     db = SessionLocal()
     try:
         seed_database(db)

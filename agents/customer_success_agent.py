@@ -39,8 +39,14 @@ class CustomerSuccessAgent(BaseAgent):
             return await self.monitor_customer(customer_id)
         elif action in ("send_retention_email", "send_email", "dispatch_retention"):
             recipient = task.get("to") or task.get("recipient") or task.get("email")
-            subject = task.get("subject", "Executive Partnership Review & Success Update")
-            body = task.get("body") or task.get("message") or "We'd like to schedule an executive review to ensure you're achieving maximum value."
+            subject = task.get(
+                "subject", "Executive Partnership Review & Success Update"
+            )
+            body = (
+                task.get("body")
+                or task.get("message")
+                or "We'd like to schedule an executive review to ensure you're achieving maximum value."
+            )
             if not recipient or "@" not in str(recipient):
                 raise ValueError(f"Invalid recipient email: '{recipient}'")
             return await self.dispatch_retention_email(
@@ -67,11 +73,14 @@ class CustomerSuccessAgent(BaseAgent):
         """Dispatch retention and customer success email via centralized email task queue."""
         from services.task_queue_service import task_queue
 
-        await self.log_activity("dispatching_retention_email", {
-            "to": recipient_email,
-            "subject": subject,
-            "customer_id": customer_id,
-        })
+        await self.log_activity(
+            "dispatching_retention_email",
+            {
+                "to": recipient_email,
+                "subject": subject,
+                "customer_id": customer_id,
+            },
+        )
 
         job = await task_queue.enqueue_email(
             to_email=recipient_email,

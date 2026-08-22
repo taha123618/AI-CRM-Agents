@@ -24,11 +24,17 @@ def slugify_key(name: str) -> str:
 
 
 class CustomFieldCreateRequest(BaseModel):
-    entity_type: str = Field(..., description="'contact', 'deal', 'customer', 'company'")
+    entity_type: str = Field(
+        ..., description="'contact', 'deal', 'customer', 'company'"
+    )
     name: str = Field(..., min_length=2, max_length=100, description="Display Label")
     field_key: Optional[str] = Field(None, max_length=100, description="snake_case key")
-    field_type: str = Field("text", description="'text', 'number', 'select', 'boolean', 'date', 'currency'")
-    options: Optional[List[str]] = Field(default_factory=list, description="Dropdown options if select")
+    field_type: str = Field(
+        "text", description="'text', 'number', 'select', 'boolean', 'date', 'currency'"
+    )
+    options: Optional[List[str]] = Field(
+        default_factory=list, description="Dropdown options if select"
+    )
     is_required: bool = Field(False)
     default_value: Optional[Any] = None
 
@@ -57,7 +63,9 @@ class CustomFieldResponse(BaseModel):
 
 @router.get("", response_model=List[CustomFieldResponse])
 def list_custom_fields(
-    entity_type: Optional[str] = Query(None, description="Filter by entity type: contact, deal, customer, company"),
+    entity_type: Optional[str] = Query(
+        None, description="Filter by entity type: contact, deal, customer, company"
+    ),
     db: Session = Depends(get_db),
 ):
     """List all user-defined dynamic custom fields."""
@@ -82,7 +90,9 @@ def list_custom_fields(
     ]
 
 
-@router.post("", response_model=CustomFieldResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=CustomFieldResponse, status_code=status.HTTP_201_CREATED
+)
 def create_custom_field(
     payload: CustomFieldCreateRequest,
     db: Session = Depends(get_db),
@@ -90,10 +100,14 @@ def create_custom_field(
 ):
     """Create a new dynamic custom metadata field."""
     key = slugify_key(payload.field_key or payload.name)
-    existing = db.query(CustomFieldDefinition).filter(
-        CustomFieldDefinition.entity_type == payload.entity_type,
-        CustomFieldDefinition.field_key == key,
-    ).first()
+    existing = (
+        db.query(CustomFieldDefinition)
+        .filter(
+            CustomFieldDefinition.entity_type == payload.entity_type,
+            CustomFieldDefinition.field_key == key,
+        )
+        .first()
+    )
 
     valid_entities = {"contact", "deal", "customer", "company"}
     if payload.entity_type not in valid_entities:
@@ -149,11 +163,19 @@ def update_custom_field(
     try:
         val_id = uuid.UUID(field_id) if isinstance(field_id, str) else field_id
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid field UUID.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid field UUID."
+        )
 
-    field = db.query(CustomFieldDefinition).filter(CustomFieldDefinition.id == val_id).first()
+    field = (
+        db.query(CustomFieldDefinition)
+        .filter(CustomFieldDefinition.id == val_id)
+        .first()
+    )
     if not field:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Custom field not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Custom field not found."
+        )
 
     if payload.name is not None:
         field.name = payload.name.strip()
@@ -192,12 +214,23 @@ def delete_custom_field(
     try:
         val_id = uuid.UUID(field_id) if isinstance(field_id, str) else field_id
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid field UUID.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid field UUID."
+        )
 
-    field = db.query(CustomFieldDefinition).filter(CustomFieldDefinition.id == val_id).first()
+    field = (
+        db.query(CustomFieldDefinition)
+        .filter(CustomFieldDefinition.id == val_id)
+        .first()
+    )
     if not field:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Custom field not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Custom field not found."
+        )
 
     db.delete(field)
     db.commit()
-    return {"status": "success", "message": f"Field '{field.name}' deleted successfully."}
+    return {
+        "status": "success",
+        "message": f"Field '{field.name}' deleted successfully.",
+    }

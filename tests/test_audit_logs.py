@@ -74,4 +74,3 @@ def test_system_metrics_endpoint():
     assert "leads" in data["database"]["row_counts"]
     assert "agents" in data
     assert data["agents"]["registered_count"] == 9
-

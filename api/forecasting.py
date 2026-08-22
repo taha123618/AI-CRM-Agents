@@ -65,22 +65,25 @@ def run_monte_carlo(
 
 
 @router.get("/pipeline-velocity", response_model=Dict[str, Any])
-def get_pipeline_velocity(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_pipeline_velocity(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Compute pipeline velocity, stage duration averages, and conversion hazard rates."""
     return ForecastingService.get_pipeline_velocity_matrix(db)
 
 
 @router.get("/arr-trend", response_model=List[Dict[str, Any]])
-def get_arr_trend(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_arr_trend(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Return monthly ARR trend data for the current fiscal year."""
     return ForecastingService.get_arr_trend(db)
 
 
 @router.get("/stage-breakdown", response_model=List[Dict[str, Any]])
-def get_stage_breakdown(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_stage_breakdown(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Return current pipeline revenue value breakdown per stage."""
     return ForecastingService.get_stage_revenue_breakdown(db)
 

@@ -64,7 +64,9 @@ def test_custom_fields_full_crud():
     assert res_delete.json()["status"] == "success"
 
     # 5. Verify deleted returns 404
-    res_get_deleted = client.put(f"/api/custom-fields/{field_id}", json={"name": "Test"})
+    res_get_deleted = client.put(
+        f"/api/custom-fields/{field_id}", json={"name": "Test"}
+    )
     assert res_get_deleted.status_code == 404
 
 
@@ -132,10 +134,18 @@ def test_visual_workflows_full_lifecycle():
             "name": "High-Risk Customer Instant Retention Cadence",
             "description": "Triggered when churn risk is elevated above 60%. Deploys Customer Success Agent.",
             "trigger_type": "event",
-            "trigger_config": {"event_name": "customer.churn_risk_high", "threshold": 60},
+            "trigger_config": {
+                "event_name": "customer.churn_risk_high",
+                "threshold": 60,
+            },
             "nodes": [
                 {"id": "n1", "type": "trigger", "label": "Churn Risk > 60%"},
-                {"id": "n2", "type": "agent", "label": "Customer Success Agent", "agent": "customer_success"},
+                {
+                    "id": "n2",
+                    "type": "agent",
+                    "label": "Customer Success Agent",
+                    "agent": "customer_success",
+                },
                 {"id": "n3", "type": "action", "label": "Executive QBR Invitation"},
             ],
             "edges": [

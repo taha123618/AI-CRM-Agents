@@ -41,6 +41,7 @@ class AsyncTaskQueue:
         if not self._redis_client:
             try:
                 import redis
+
                 self._redis_client = redis.from_url(REDIS_URL, socket_timeout=1)
             except Exception:
                 self._redis_client = None
@@ -60,7 +61,12 @@ class AsyncTaskQueue:
             # Fall back transparently to in-process memory store
             pass
 
-    def create_task(self, task_type: str, max_attempts: int = 3, metadata: Optional[Dict[str, Any]] = None) -> TaskJob:
+    def create_task(
+        self,
+        task_type: str,
+        max_attempts: int = 3,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> TaskJob:
         """Register a new task in pending state."""
         task_id = str(uuid.uuid4())
         job = TaskJob(
@@ -87,7 +93,9 @@ class AsyncTaskQueue:
             if r:
                 raw = r.get(f"crm:task:{task_id}")
                 if raw:
-                    job_dict = json.loads(raw.decode("utf-8") if isinstance(raw, bytes) else raw)
+                    job_dict = json.loads(
+                        raw.decode("utf-8") if isinstance(raw, bytes) else raw
+                    )
                     job = TaskJob(**job_dict)
                     self.tasks[task_id] = job
                     return job
@@ -98,7 +106,9 @@ class AsyncTaskQueue:
 
     def list_tasks(self, limit: int = 50) -> List[TaskJob]:
         """List recently submitted background tasks."""
-        return list(sorted(self.tasks.values(), key=lambda t: t.created_at, reverse=True))[:limit]
+        return list(
+            sorted(self.tasks.values(), key=lambda t: t.created_at, reverse=True)
+        )[:limit]
 
     def cancel_task(self, task_id: str) -> Optional[TaskJob]:
         """Cancel a running or pending task."""
@@ -119,7 +129,8 @@ class AsyncTaskQueue:
     def clear_completed(self) -> int:
         """Remove completed, failed, or cancelled tasks from memory."""
         to_delete = [
-            tid for tid, task in self.tasks.items()
+            tid
+            for tid, task in self.tasks.items()
             if task.status in ("completed", "failed", "cancelled")
         ]
         for tid in to_delete:
@@ -146,7 +157,9 @@ class AsyncTaskQueue:
             for attempt in range(1, job.max_attempts + 1):
                 job.attempts = attempt
                 try:
-                    logger.info(f"Executing task {job.task_id} ({job.task_type}) - attempt {attempt}/{job.max_attempts}")
+                    logger.info(
+                        f"Executing task {job.task_id} ({job.task_type}) - attempt {attempt}/{job.max_attempts}"
+                    )
                     result = await coro_func(job)
                     job.status = "completed"
                     job.progress = 100
@@ -172,7 +185,9 @@ class AsyncTaskQueue:
                     else:
                         job.status = "failed"
                         job.completed_at = datetime.now(timezone.utc).isoformat()
-                        logger.error(f"Task {job.task_id} failed after {job.max_attempts} attempts: {e}")
+                        logger.error(
+                            f"Task {job.task_id} failed after {job.max_attempts} attempts: {e}"
+                        )
                 finally:
                     self._sync_to_redis(job)
 

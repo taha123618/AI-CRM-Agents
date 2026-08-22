@@ -4,7 +4,13 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app
 from database.connection import SessionLocal
-from database.models import Customer, Company, Contact, CustomerIntervention, OutreachSequence
+from database.models import (
+    Customer,
+    Company,
+    Contact,
+    CustomerIntervention,
+    OutreachSequence,
+)
 import uuid
 from tests.conftest import get_authenticated_client
 
@@ -38,14 +44,14 @@ def test_get_customer_journey_details_and_dynamic_db_intervention():
     stages_res = client.get("/api/journey/stages")
     assert stages_res.status_code == 200
     distribution = stages_res.json()["distribution"]
-    
+
     all_custs = []
     for stage_data in distribution.values():
         all_custs.extend(stage_data.get("customers", []))
 
     if all_custs:
         cust_id = all_custs[0]["id"]
-        
+
         # Get baseline health score from DB
         db = SessionLocal()
         try:
@@ -69,7 +75,9 @@ def test_get_customer_journey_details_and_dynamic_db_intervention():
             "intervention_type": "executive_check_in",
             "custom_notes": "Urgent ARR retention check.",
         }
-        trig_res = client.post("/api/journey/interventions/trigger", json=trigger_payload)
+        trig_res = client.post(
+            "/api/journey/interventions/trigger", json=trigger_payload
+        )
         assert trig_res.status_code == 200
         trig_data = trig_res.json()
         assert trig_data["status"] == "success"
@@ -84,14 +92,20 @@ def test_get_customer_journey_details_and_dynamic_db_intervention():
             if cust_db_after:
                 assert cust_db_after.health_score >= baseline_health
             # Verify intervention saved to PostgreSQL table
-            saved_intv = db.query(CustomerIntervention).filter(CustomerIntervention.id == intv_id).first()
+            saved_intv = (
+                db.query(CustomerIntervention)
+                .filter(CustomerIntervention.id == intv_id)
+                .first()
+            )
             assert saved_intv is not None
             assert saved_intv.status == "active"
         finally:
             db.close()
 
         # Query interventions list with filters
-        intv_list = client.get(f"/api/journey/interventions?status=active&search=executive")
+        intv_list = client.get(
+            f"/api/journey/interventions?status=active&search=executive"
+        )
         assert intv_list.status_code == 200
         assert isinstance(intv_list.json(), list)
 
@@ -103,7 +117,11 @@ def test_get_customer_journey_details_and_dynamic_db_intervention():
         # Verify resolution in DB
         db = SessionLocal()
         try:
-            resolved_db = db.query(CustomerIntervention).filter(CustomerIntervention.id == intv_id).first()
+            resolved_db = (
+                db.query(CustomerIntervention)
+                .filter(CustomerIntervention.id == intv_id)
+                .first()
+            )
             assert resolved_db is not None
             assert resolved_db.status == "completed"
         finally:
@@ -116,7 +134,10 @@ def test_get_nonexistent_customer_journey_returns_404():
     assert res.status_code == 404
 
     # Non-existent resolve returns 404
-    assert client.post(f"/api/journey/interventions/{uuid.uuid4()}/resolve").status_code == 404
+    assert (
+        client.post(f"/api/journey/interventions/{uuid.uuid4()}/resolve").status_code
+        == 404
+    )
 
 
 def test_sequences_full_database_crud_toggle_and_step_execution():
@@ -127,7 +148,9 @@ def test_sequences_full_database_crud_toggle_and_step_execution():
     sequences = res.json()
     assert isinstance(sequences, list)
 
-    prospects_res = client.get("/api/sequences/prospects/available?search=a&skip=0&limit=5")
+    prospects_res = client.get(
+        "/api/sequences/prospects/available?search=a&skip=0&limit=5"
+    )
     assert prospects_res.status_code == 200
     assert isinstance(prospects_res.json(), list)
 
@@ -229,10 +252,23 @@ def test_sequences_full_database_crud_toggle_and_step_execution():
 def test_sequences_negative_and_validation():
     fake_id = str(uuid.uuid4())
     assert client.get(f"/api/sequences/{fake_id}").status_code == 404
-    assert client.put(f"/api/sequences/{fake_id}", json={"name": "test"}).status_code == 404
+    assert (
+        client.put(f"/api/sequences/{fake_id}", json={"name": "test"}).status_code
+        == 404
+    )
     assert client.post(f"/api/sequences/{fake_id}/toggle").status_code == 404
-    assert client.post(f"/api/sequences/{fake_id}/enroll", json={"contact_ids": ["c1"]}).status_code == 404
-    assert client.post(f"/api/sequences/{fake_id}/execute-step", json={"channel": "email"}).status_code == 404
+    assert (
+        client.post(
+            f"/api/sequences/{fake_id}/enroll", json={"contact_ids": ["c1"]}
+        ).status_code
+        == 404
+    )
+    assert (
+        client.post(
+            f"/api/sequences/{fake_id}/execute-step", json={"channel": "email"}
+        ).status_code
+        == 404
+    )
     assert client.delete(f"/api/sequences/{fake_id}").status_code == 404
 
     # 422 validation

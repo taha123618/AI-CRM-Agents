@@ -8,7 +8,11 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-RATE_LIMIT_ENABLED = os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ["true", "1", "yes"]
+RATE_LIMIT_ENABLED = os.getenv("RATE_LIMIT_ENABLED", "true").lower() in [
+    "true",
+    "1",
+    "yes",
+]
 DEFAULT_REQUESTS_PER_MINUTE = int(os.getenv("RATE_LIMIT_RPM", "300"))
 # SECURITY: Strict rate limits for authentication endpoints to prevent brute-force
 AUTH_REQUESTS_PER_MINUTE = int(os.getenv("AUTH_RATE_LIMIT_RPM", "10"))
@@ -23,9 +27,11 @@ class RateLimiter:
         # client_key -> list of timestamp floats
         self.history: Dict[str, List[float]] = defaultdict(list)
 
-    def is_allowed(self, client_key: str, limit: int, window: int = 60) -> Tuple[bool, int, int]:
+    def is_allowed(
+        self, client_key: str, limit: int, window: int = 60
+    ) -> Tuple[bool, int, int]:
         """Check if request is allowed in current sliding window.
-        
+
         Returns:
             (allowed: bool, remaining: int, reset_seconds: int)
         """
@@ -59,7 +65,13 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
 
         # Bypass rate limits for health, openapi docs, and websocket upgrades
         path = request.url.path
-        if path.startswith("/health") or path.startswith("/docs") or path.startswith("/redoc") or path.startswith("/openapi.json") or path.startswith("/ws"):
+        if (
+            path.startswith("/health")
+            or path.startswith("/docs")
+            or path.startswith("/redoc")
+            or path.startswith("/openapi.json")
+            or path.startswith("/ws")
+        ):
             return await call_next(request)
 
         # Identify client by Bearer token, IP address or client host
@@ -83,7 +95,9 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
             else:
                 limit = DEFAULT_REQUESTS_PER_MINUTE
 
-        allowed, remaining, reset_seconds = rate_limiter.is_allowed(client_key, limit=limit)
+        allowed, remaining, reset_seconds = rate_limiter.is_allowed(
+            client_key, limit=limit
+        )
 
         if not allowed:
             return JSONResponse(

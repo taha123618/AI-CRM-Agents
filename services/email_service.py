@@ -57,12 +57,16 @@ class EmailService:
         from_address: Optional[str] = None,
     ):
         raw_user = user or os.getenv("EMAIL_USER", EMAIL_USER)
-        raw_pass = password if password is not None else os.getenv("EMAIL_PASSWORD", EMAIL_PASSWORD)
+        raw_pass = (
+            password
+            if password is not None
+            else os.getenv("EMAIL_PASSWORD", EMAIL_PASSWORD)
+        )
 
         self.host = host or os.getenv("EMAIL_HOST", EMAIL_HOST)
         self.port = int(port or os.getenv("EMAIL_PORT", str(EMAIL_PORT)))
         self.user = raw_user.strip().strip("\"'") if raw_user else ""
-        
+
         if raw_pass:
             clean_pass = raw_pass.strip().strip("\"'")
             if " " in clean_pass and len(clean_pass.replace(" ", "")) == 16:
@@ -76,7 +80,11 @@ class EmailService:
 
     def verify_smtp_connection(self) -> Dict[str, Any]:
         """Test SMTP handshake and authentication against configured mail server."""
-        if not self.password or self.password.startswith("<") or "your_" in self.password.lower():
+        if (
+            not self.password
+            or self.password.startswith("<")
+            or "your_" in self.password.lower()
+        ):
             return {
                 "status": "warning",
                 "message": "SMTP password is not configured or uses placeholder. Set EMAIL_PASSWORD with a valid Google App Password.",
@@ -122,7 +130,9 @@ class EmailService:
     ) -> Dict[str, Any]:
         """Synchronously deliver an email via SMTP with HTML and plain-text fallback."""
         masked_to = _sanitize_recipient(to_email)
-        logger.info(f"Initiating email dispatch: subject='{subject}', recipient='{masked_to}'")
+        logger.info(
+            f"Initiating email dispatch: subject='{subject}', recipient='{masked_to}'"
+        )
 
         # Create multi-part MIME container
         msg = MIMEMultipart("alternative")
@@ -159,7 +169,10 @@ class EmailService:
 
         try:
             from email.utils import parseaddr
-            envelope_sender = parseaddr(self.from_address)[1] or self.user or self.from_address
+
+            envelope_sender = (
+                parseaddr(self.from_address)[1] or self.user or self.from_address
+            )
 
             with smtplib.SMTP(self.host, self.port, timeout=15) as server:
                 server.ehlo()
@@ -170,7 +183,9 @@ class EmailService:
                     server.login(self.user, self.password)
                 server.sendmail(envelope_sender, [to_email], msg.as_string())
 
-            logger.info(f"Email successfully delivered to {masked_to} via {self.host}:{self.port}")
+            logger.info(
+                f"Email successfully delivered to {masked_to} via {self.host}:{self.port}"
+            )
             return {
                 "delivered": True,
                 "simulated": False,
@@ -180,9 +195,13 @@ class EmailService:
             }
         except smtplib.SMTPAuthenticationError as auth_err:
             logger.error(f"SMTP Auth Error sending to {masked_to}: {auth_err}")
-            raise RuntimeError("SMTP authentication failed. Verify Gmail App Password.") from auth_err
+            raise RuntimeError(
+                "SMTP authentication failed. Verify Gmail App Password."
+            ) from auth_err
         except (smtplib.SMTPException, OSError) as net_err:
-            logger.error(f"SMTP Network/Protocol Error sending to {masked_to}: {net_err}")
+            logger.error(
+                f"SMTP Network/Protocol Error sending to {masked_to}: {net_err}"
+            )
             raise RuntimeError(f"SMTP delivery failed: {net_err}") from net_err
 
     async def send_email_async(
@@ -378,7 +397,6 @@ Regards,
             text_body=text_body,
         )
 
-
     def render_crm_email(
         self,
         recipient_name: str,
@@ -390,7 +408,9 @@ Regards,
         """Generate branded HTML and plain-text templates for general CRM and reply emails."""
         safe_name = recipient_name or "there"
         # Convert plain text newlines into HTML paragraphs/breaks
-        formatted_html_body = body_content.replace("\n\n", "</p><p class=\"text\">").replace("\n", "<br>")
+        formatted_html_body = body_content.replace(
+            "\n\n", '</p><p class="text">'
+        ).replace("\n", "<br>")
 
         cta_button_html = ""
         if cta_url and cta_text:
@@ -578,5 +598,7 @@ if __name__ == "__main__":
         except Exception as err:
             print(f"\nFAILED to dispatch email: {err}")
     else:
-        print("\nNote: Please set a valid 16-character Google App Password in .env (EMAIL_PASSWORD=xxxx xxxx xxxx xxxx) to send live emails.")
+        print(
+            "\nNote: Please set a valid 16-character Google App Password in .env (EMAIL_PASSWORD=xxxx xxxx xxxx xxxx) to send live emails."
+        )
     print("=" * 60)

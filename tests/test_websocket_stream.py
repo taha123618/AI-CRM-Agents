@@ -16,7 +16,7 @@ def test_websocket_connection_and_ping():
     with client.websocket_connect("/ws") as websocket:
         # Send a ping/test message
         websocket.send_json({"type": "ping"})
-        
+
         # Verify connection remains open
         assert websocket is not None
 
@@ -24,8 +24,10 @@ def test_websocket_connection_and_ping():
 @pytest.mark.asyncio
 async def test_websocket_broadcast_event():
     """Verify ws_manager can broadcast an event to WebSocket listeners."""
-    await ws_manager.broadcast({
-        "type": "telemetry_test",
-        "agent": "TestAgent",
-        "message": "System status OK",
-    })
+    await ws_manager.broadcast(
+        {
+            "type": "telemetry_test",
+            "agent": "TestAgent",
+            "message": "System status OK",
+        }
+    )

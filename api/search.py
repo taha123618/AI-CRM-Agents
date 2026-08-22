@@ -14,14 +14,24 @@ router = APIRouter()
 
 
 class SemanticSearchRequest(BaseModel):
-    query: str = Field(..., min_length=2, description="Search keyword, question, or natural language query")
-    entity_filter: str = Field("all", description="'all', 'voice_call', 'meeting', 'email', 'deal_strategy'")
+    query: str = Field(
+        ...,
+        min_length=2,
+        description="Search keyword, question, or natural language query",
+    )
+    entity_filter: str = Field(
+        "all", description="'all', 'voice_call', 'meeting', 'email', 'deal_strategy'"
+    )
     top_k: int = Field(5, ge=1, le=25, description="Number of results to return")
-    min_score: float = Field(0.01, ge=0.0, le=1.0, description="Minimum similarity threshold")
+    min_score: float = Field(
+        0.01, ge=0.0, le=1.0, description="Minimum similarity threshold"
+    )
 
 
 class RagAskRequest(BaseModel):
-    question: str = Field(..., min_length=3, description="Question to answer using CRM knowledge")
+    question: str = Field(
+        ..., min_length=3, description="Question to answer using CRM knowledge"
+    )
     top_k: int = Field(4, ge=1, le=10)
 
 

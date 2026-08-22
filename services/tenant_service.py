@@ -21,7 +21,11 @@ class TenantService:
     @staticmethod
     def get_or_create_default_organization(db: Session) -> Organization:
         """Retrieve primary organization or seed it if empty."""
-        org = db.query(Organization).filter(Organization.slug == "default-workspace").first()
+        org = (
+            db.query(Organization)
+            .filter(Organization.slug == "default-workspace")
+            .first()
+        )
         if not org:
             org = Organization(
                 name="Default Workspace",
@@ -38,7 +42,12 @@ class TenantService:
     @staticmethod
     def list_organizations(db: Session, limit: int = 50) -> List[Organization]:
         """List all active organization tenants."""
-        return db.query(Organization).order_by(Organization.created_at.desc()).limit(limit).all()
+        return (
+            db.query(Organization)
+            .order_by(Organization.created_at.desc())
+            .limit(limit)
+            .all()
+        )
 
     @staticmethod
     def get_organization(db: Session, org_id: str) -> Optional[Organization]:
@@ -47,7 +56,9 @@ class TenantService:
             val_uuid = uuid.UUID(org_id) if isinstance(org_id, str) else org_id
             return db.query(Organization).filter(Organization.id == val_uuid).first()
         except (ValueError, TypeError):
-            return db.query(Organization).filter(Organization.slug == str(org_id)).first()
+            return (
+                db.query(Organization).filter(Organization.slug == str(org_id)).first()
+            )
 
     @staticmethod
     def create_organization(

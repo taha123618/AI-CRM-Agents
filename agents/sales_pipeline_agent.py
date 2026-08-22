@@ -42,7 +42,11 @@ class SalesPipelineAgent(BaseAgent):
         elif action in ("send_deal_email", "send_followup", "send_email"):
             recipient = task.get("to") or task.get("recipient") or task.get("email")
             subject = task.get("subject", f"Follow-up regarding Deal #{deal_id}")
-            body = task.get("body") or task.get("message") or "Following up on our latest proposal and project milestones."
+            body = (
+                task.get("body")
+                or task.get("message")
+                or "Following up on our latest proposal and project milestones."
+            )
             if not recipient or "@" not in str(recipient):
                 raise ValueError(f"Invalid recipient email: '{recipient}'")
             return await self.dispatch_deal_email(
@@ -69,11 +73,14 @@ class SalesPipelineAgent(BaseAgent):
         """Dispatch deal follow-up email via centralized email task queue."""
         from services.task_queue_service import task_queue
 
-        await self.log_activity("dispatching_deal_email", {
-            "to": recipient_email,
-            "subject": subject,
-            "deal_id": deal_id,
-        })
+        await self.log_activity(
+            "dispatching_deal_email",
+            {
+                "to": recipient_email,
+                "subject": subject,
+                "deal_id": deal_id,
+            },
+        )
 
         job = await task_queue.enqueue_email(
             to_email=recipient_email,

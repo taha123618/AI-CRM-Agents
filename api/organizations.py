@@ -14,10 +14,16 @@ router = APIRouter()
 
 
 class OrganizationCreateRequest(BaseModel):
-    name: str = Field(..., min_length=2, max_length=150, description="Workspace Organization Name")
-    slug: Optional[str] = Field(None, max_length=100, description="URL-safe unique identifier slug")
+    name: str = Field(
+        ..., min_length=2, max_length=150, description="Workspace Organization Name"
+    )
+    slug: Optional[str] = Field(
+        None, max_length=100, description="URL-safe unique identifier slug"
+    )
     domain: Optional[str] = Field(None, description="Primary company email domain")
-    plan_tier: str = Field("enterprise", description="'starter', 'growth', 'enterprise'")
+    plan_tier: str = Field(
+        "enterprise", description="'starter', 'growth', 'enterprise'"
+    )
 
 
 class OrganizationResponse(BaseModel):
@@ -33,8 +39,9 @@ class OrganizationResponse(BaseModel):
 
 
 @router.get("", response_model=List[OrganizationResponse])
-def list_organizations(db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def list_organizations(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """List all registered organization workspaces."""
     orgs = TenantService.list_organizations(db)
     if not orgs:
@@ -55,9 +62,14 @@ def list_organizations(db: Session = Depends(get_db),
     ]
 
 
-@router.post("", response_model=OrganizationResponse, status_code=status.HTTP_201_CREATED)
-def create_organization(payload: OrganizationCreateRequest, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+@router.post(
+    "", response_model=OrganizationResponse, status_code=status.HTTP_201_CREATED
+)
+def create_organization(
+    payload: OrganizationCreateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Create a new isolated organization tenant workspace."""
     try:
         org = TenantService.create_organization(
@@ -81,12 +93,17 @@ def create_organization(payload: OrganizationCreateRequest, db: Session = Depend
 
 
 @router.get("/{org_id}", response_model=OrganizationResponse)
-def get_organization_by_id(org_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_organization_by_id(
+    org_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get organization details by ID or slug."""
     org = TenantService.get_organization(db, org_id)
     if not org:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Organization not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Organization not found"
+        )
 
     return OrganizationResponse(
         id=str(org.id),

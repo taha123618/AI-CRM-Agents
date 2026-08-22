@@ -721,13 +721,17 @@ class AgentOrchestrator:
                     if hasattr(gen, "generations")
                     else str(gen)
                 )
-        except Exception as e:
+        except Exception:
             ai_output = f"Autonomous action executed for {action_type} on event {trigger_event}. Status: Complete."
 
         # Model identifier
-        if os.getenv("OPENAI_API_KEY") and not os.getenv("OPENAI_API_KEY", "").startswith("sk-your"):
+        if os.getenv("OPENAI_API_KEY") and not os.getenv(
+            "OPENAI_API_KEY", ""
+        ).startswith("sk-your"):
             engine_name = f"OpenAI ({os.getenv('OPENAI_MODEL', 'gpt-4o-mini')})"
-        elif os.getenv("ANTHROPIC_API_KEY") and not os.getenv("ANTHROPIC_API_KEY", "").startswith("sk-ant-your"):
+        elif os.getenv("ANTHROPIC_API_KEY") and not os.getenv(
+            "ANTHROPIC_API_KEY", ""
+        ).startswith("sk-ant-your"):
             engine_name = f"Anthropic Claude ({os.getenv('ANTHROPIC_MODEL', 'claude-3-5-sonnet')})"
         else:
             engine_name = "Multi-Agent Smart Inference Engine"
@@ -742,4 +746,3 @@ class AgentOrchestrator:
             "executed_at": datetime.now(timezone.utc).isoformat(),
             "message": f"Successfully triggered {agent_key} ({action_type}) via AI Orchestrator.",
         }
-

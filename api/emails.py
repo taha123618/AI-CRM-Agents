@@ -74,16 +74,24 @@ class EmailResponse(BaseModel):
 
 class EmailSendRequest(BaseModel):
     reply_text: str = Field(..., min_length=1, description="Reply content to deliver")
-    to_email: Optional[str] = Field(None, description="Optional recipient email override")
+    to_email: Optional[str] = Field(
+        None, description="Optional recipient email override"
+    )
     subject: Optional[str] = Field(None, description="Optional custom reply subject")
 
 
 class EmailComposeRequest(BaseModel):
     to_email: EmailStr = Field(..., description="Target recipient email address")
-    subject: str = Field(..., min_length=1, max_length=255, description="Email subject line")
+    subject: str = Field(
+        ..., min_length=1, max_length=255, description="Email subject line"
+    )
     body: str = Field(..., min_length=1, description="Email body content")
-    recipient_name: Optional[str] = Field(None, description="Optional recipient display name")
-    contact_id: Optional[str] = Field(None, description="Optional associated contact ID")
+    recipient_name: Optional[str] = Field(
+        None, description="Optional recipient display name"
+    )
+    contact_id: Optional[str] = Field(
+        None, description="Optional associated contact ID"
+    )
 
 
 @router.get("/", response_model=List[EmailResponse])
@@ -103,7 +111,11 @@ async def list_emails(
 
 
 @router.get("/{email_id}", response_model=EmailResponse)
-async def get_email(email_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+async def get_email(
+    email_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Fetch single email details by ID."""
     email = None
     try:
@@ -163,7 +175,9 @@ async def send_email_response(
     if email.contact:
         recipient_name = f"{email.contact.first_name} {email.contact.last_name}".strip()
 
-    logger.info(f"Queueing email response for email_id={email_id} to recipient='{resolved_recipient}'")
+    logger.info(
+        f"Queueing email response for email_id={email_id} to recipient='{resolved_recipient}'"
+    )
 
     # Step 3: Enqueue delivery in background task queue (delegates to centralized email_service)
     job = await task_queue.enqueue_email(
@@ -191,7 +205,11 @@ async def send_email_response(
         entity_id=str(email.id),
         action="reply_dispatched",
         actor="system_user",
-        details={"recipient": resolved_recipient, "task_id": job.task_id, "subject": subject},
+        details={
+            "recipient": resolved_recipient,
+            "task_id": job.task_id,
+            "subject": subject,
+        },
     )
 
     return {
@@ -216,7 +234,11 @@ async def compose_and_send_email(
     contact_id = None
     if payload.contact_id:
         try:
-            contact = db.query(Contact).filter(Contact.id == uuid.UUID(payload.contact_id)).first()
+            contact = (
+                db.query(Contact)
+                .filter(Contact.id == uuid.UUID(payload.contact_id))
+                .first()
+            )
             if contact:
                 contact_id = contact.id
         except Exception:

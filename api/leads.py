@@ -111,6 +111,7 @@ async def create_lead(
 ):
     """Create or update lead by email"""
     from services.audit_service import record_audit_log
+
     existing = db.query(Contact).filter(Contact.email == lead.email).first()
     if existing:
         if lead.first_name:
@@ -162,6 +163,7 @@ async def update_lead(
 ):
     """Update lead by ID"""
     from services.audit_service import record_audit_log
+
     lead = db.query(Contact).filter(Contact.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
@@ -193,6 +195,7 @@ async def delete_lead(
 ):
     """Delete lead"""
     from services.audit_service import record_audit_log
+
     lead = db.query(Contact).filter(Contact.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")

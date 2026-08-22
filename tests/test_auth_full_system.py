@@ -16,7 +16,12 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app
 from database.connection import SessionLocal
-from database.models import User, RefreshToken, PasswordResetToken, EmailVerificationToken
+from database.models import (
+    User,
+    RefreshToken,
+    PasswordResetToken,
+    EmailVerificationToken,
+)
 
 client = TestClient(app)
 
@@ -44,10 +49,18 @@ def test_full_registration_and_validation():
     # 2. Public self-registration as admin is forbidden
     admin_blocked = client.post(
         "/api/auth/register",
-        json={"email": f"hacker_{uid}@fake.com", "password": password, "full_name": "Fake Admin", "role": "admin"},
+        json={
+            "email": f"hacker_{uid}@fake.com",
+            "password": password,
+            "full_name": "Fake Admin",
+            "role": "admin",
+        },
     )
     assert admin_blocked.status_code == 403
-    assert "Super Admin accounts cannot be self-registered publicly" in admin_blocked.json()["detail"]
+    assert (
+        "Super Admin accounts cannot be self-registered publicly"
+        in admin_blocked.json()["detail"]
+    )
 
     # 3. Duplicate registration attempt rejected
     dup_resp = client.post(
@@ -112,7 +125,9 @@ def test_refresh_token_rotation_and_revocation():
     # 1. Rotate token
     rotate_client = TestClient(app)
     rotate_client.cookies.set("refresh_token", old_refresh)
-    ref_resp = rotate_client.post("/api/auth/refresh", json={"refresh_token": old_refresh})
+    ref_resp = rotate_client.post(
+        "/api/auth/refresh", json={"refresh_token": old_refresh}
+    )
     assert ref_resp.status_code == 200
     new_refresh = ref_resp.json()["refresh_token"]
     assert new_refresh != old_refresh
@@ -141,7 +156,12 @@ def test_forgot_and_reset_password_flow():
     # 1. Register user
     reg = client.post(
         "/api/auth/register",
-        json={"email": email, "password": old_pw, "full_name": "Reset Test User", "role": "sales"},
+        json={
+            "email": email,
+            "password": old_pw,
+            "full_name": "Reset Test User",
+            "role": "sales",
+        },
     )
     assert reg.status_code == 201
 
@@ -176,12 +196,16 @@ def test_forgot_and_reset_password_flow():
     assert "already used" in reused_resp.json()["detail"]
 
     # 6. Log in with new password succeeds
-    login_new = client.post("/api/auth/login", json={"email": email, "password": new_pw})
+    login_new = client.post(
+        "/api/auth/login", json={"email": email, "password": new_pw}
+    )
     assert login_new.status_code == 200
     assert "access_token" in login_new.json()
 
     # 7. Old password no longer works
-    login_old = client.post("/api/auth/login", json={"email": email, "password": old_pw})
+    login_old = client.post(
+        "/api/auth/login", json={"email": email, "password": old_pw}
+    )
     assert login_old.status_code == 401
 
 
@@ -198,6 +222,7 @@ def test_email_verification_token_flow():
     user_id = reg.json()["user"]["id"]
 
     from services.auth_service import create_email_verification_token
+
     user = db.query(User).filter(User.id == user_id).first()
     raw_token = create_email_verification_token(db, user)
     db.close()
@@ -231,6 +256,7 @@ def test_sso_providers_and_authorization_redirect():
 def test_rbac_admin_user_role_update():
     """Verify Admin RBAC user role update."""
     from database.seed import seed_initial_users
+
     db = SessionLocal()
     seed_initial_users(db)
     db.close()
@@ -249,7 +275,12 @@ def test_rbac_admin_user_role_update():
     # Register target sales user
     target_reg = client.post(
         "/api/auth/register",
-        json={"email": target_email, "password": "SalesPassword123!", "full_name": "Sales User", "role": "sales"},
+        json={
+            "email": target_email,
+            "password": "SalesPassword123!",
+            "full_name": "Sales User",
+            "role": "sales",
+        },
     )
     target_id = target_reg.json()["user"]["id"]
 
@@ -266,6 +297,7 @@ def test_rbac_admin_user_role_update():
 def test_admin_user_full_crud_operations():
     """Verify Super Admin can create, edit, toggle status, and delete users while non-admins are blocked."""
     from database.seed import seed_initial_users
+
     db = SessionLocal()
     seed_initial_users(db)
     db.close()
@@ -284,7 +316,12 @@ def test_admin_user_full_crud_operations():
     # Register standard sales rep
     sales_reg = client.post(
         "/api/auth/register",
-        json={"email": sales_email, "password": "SalesPassword123!", "full_name": "Sales Rep", "role": "sales"},
+        json={
+            "email": sales_email,
+            "password": "SalesPassword123!",
+            "full_name": "Sales Rep",
+            "role": "sales",
+        },
     )
     sales_token = sales_reg.json()["access_token"]
 
@@ -387,4 +424,3 @@ def test_rbac_fine_grained_permission_evaluation():
     # Role defaults getter
     assert "customers:read" in get_default_permissions_for_role("support")
     assert "audits:read" in get_default_permissions_for_role("auditor")
-

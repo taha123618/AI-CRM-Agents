@@ -146,13 +146,17 @@ def _format_sequence(s: OutreachSequence) -> Dict[str, Any]:
         "replied_count": s.replied_count or 0,
         "conversion_rate_pct": round(float(s.conversion_rate_pct or 0.0), 1),
         "steps": s.steps or [],
-        "created_at": s.created_at.isoformat() if s.created_at else datetime.now(timezone.utc).isoformat(),
+        "created_at": s.created_at.isoformat()
+        if s.created_at
+        else datetime.now(timezone.utc).isoformat(),
     }
 
 
 @router.get("", response_model=List[Dict[str, Any]])
 def list_sequences(
-    search: Optional[str] = Query(None, description="Search sequences by name or persona"),
+    search: Optional[str] = Query(
+        None, description="Search sequences by name or persona"
+    ),
     channel: Optional[str] = Query(None, description="Filter by channel"),
     status: Optional[str] = Query(None, description="Filter by active, paused, draft"),
     skip: int = Query(0, ge=0),
@@ -182,7 +186,9 @@ def list_sequences(
 
 @router.get("/prospects/available", response_model=List[Dict[str, Any]])
 def get_available_prospects(
-    search: Optional[str] = Query(None, description="Search contacts by name, email, or company"),
+    search: Optional[str] = Query(
+        None, description="Search contacts by name, email, or company"
+    ),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
     db: Session = Depends(get_db),
@@ -193,27 +199,36 @@ def get_available_prospects(
     for c in contacts:
         name = f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
         company_name = c.company.name if c.company else "Enterprise Prospect"
-        
+
         if search:
             q = search.lower()
-            if q not in name.lower() and q not in c.email.lower() and q not in company_name.lower():
+            if (
+                q not in name.lower()
+                and q not in c.email.lower()
+                and q not in company_name.lower()
+            ):
                 continue
 
-        results.append({
-            "id": str(c.id),
-            "name": name,
-            "email": c.email,
-            "company": company_name,
-            "title": c.job_title or "Decision Maker",
-            "score": c.lead_score or 75,
-        })
+        results.append(
+            {
+                "id": str(c.id),
+                "name": name,
+                "email": c.email,
+                "company": company_name,
+                "title": c.job_title or "Decision Maker",
+                "score": c.lead_score or 75,
+            }
+        )
 
     return results[skip : skip + limit]
 
 
 @router.post("", response_model=Dict[str, Any])
-def create_sequence(payload: CreateSequenceSchema, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def create_sequence(
+    payload: CreateSequenceSchema,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Create a new AI SDR multi-touch outreach sequence in PostgreSQL."""
     new_seq = OutreachSequence(
         id=uuid.uuid4(),
@@ -233,8 +248,11 @@ def create_sequence(payload: CreateSequenceSchema, db: Session = Depends(get_db)
 
 
 @router.get("/{sequence_id}", response_model=Dict[str, Any])
-def get_sequence(sequence_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def get_sequence(
+    sequence_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Get a specific sequence by ID from PostgreSQL."""
     _ensure_sequences_seeded(db)
     seq = None
@@ -242,7 +260,11 @@ def get_sequence(sequence_id: str, db: Session = Depends(get_db),
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")
@@ -250,15 +272,23 @@ def get_sequence(sequence_id: str, db: Session = Depends(get_db),
 
 
 @router.put("/{sequence_id}", response_model=Dict[str, Any])
-def update_sequence(sequence_id: str, payload: UpdateSequenceSchema, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def update_sequence(
+    sequence_id: str,
+    payload: UpdateSequenceSchema,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Update cadence details or step configuration in PostgreSQL."""
     seq = None
     try:
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")
@@ -278,15 +308,22 @@ def update_sequence(sequence_id: str, payload: UpdateSequenceSchema, db: Session
 
 
 @router.post("/{sequence_id}/toggle", response_model=Dict[str, Any])
-def toggle_sequence_status(sequence_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def toggle_sequence_status(
+    sequence_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Toggle cadence active / paused status in PostgreSQL."""
     seq = None
     try:
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")
@@ -298,15 +335,23 @@ def toggle_sequence_status(sequence_id: str, db: Session = Depends(get_db),
 
 
 @router.post("/{sequence_id}/enroll", response_model=Dict[str, Any])
-def enroll_contacts_in_sequence(sequence_id: str, payload: EnrollContactsSchema, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def enroll_contacts_in_sequence(
+    sequence_id: str,
+    payload: EnrollContactsSchema,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Enroll contacts or leads into an autonomous AI cadence in PostgreSQL."""
     seq = None
     try:
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")
@@ -358,7 +403,10 @@ async def generate_personalized_step_copy(
             contact = db.query(Contact).filter(Contact.id == payload.contact_id).first()
 
         if contact:
-            contact_name = f"{contact.first_name or ''} {contact.last_name or ''}".strip() or contact.email
+            contact_name = (
+                f"{contact.first_name or ''} {contact.last_name or ''}".strip()
+                or contact.email
+            )
             company_name = contact.company.name if contact.company else "Target Account"
 
     prompt = (
@@ -407,7 +455,11 @@ async def execute_sequence_step(
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")
@@ -418,7 +470,9 @@ async def execute_sequence_step(
             val_uuid = uuid.UUID(payload.contact_id)
             c = db.query(Contact).filter(Contact.id == val_uuid).first()
             if c:
-                contact_name = f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
+                contact_name = (
+                    f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
+                )
         except Exception:
             pass
 
@@ -428,7 +482,9 @@ async def execute_sequence_step(
             val_uuid = uuid.UUID(payload.contact_id)
             c = db.query(Contact).filter(Contact.id == val_uuid).first()
             if c:
-                contact_name = f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
+                contact_name = (
+                    f"{c.first_name or ''} {c.last_name or ''}".strip() or c.email
+                )
                 recipient_email = c.email
         except Exception:
             pass
@@ -452,6 +508,7 @@ async def execute_sequence_step(
             # Dispatch email through centralized email task queue
             target_to = recipient_email or "prospect@company.com"
             from services.task_queue_service import task_queue
+
             try:
                 job = await task_queue.enqueue_email(
                     to_email=target_to,
@@ -484,15 +541,22 @@ async def execute_sequence_step(
 
 
 @router.delete("/{sequence_id}", response_model=Dict[str, Any])
-def delete_sequence(sequence_id: str, db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)):
+def delete_sequence(
+    sequence_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
     """Delete an outreach sequence from PostgreSQL."""
     seq = None
     try:
         val_uuid = uuid.UUID(sequence_id)
         seq = db.query(OutreachSequence).filter(OutreachSequence.id == val_uuid).first()
     except (ValueError, AttributeError):
-        seq = db.query(OutreachSequence).filter(OutreachSequence.id == sequence_id).first()
+        seq = (
+            db.query(OutreachSequence)
+            .filter(OutreachSequence.id == sequence_id)
+            .first()
+        )
 
     if not seq:
         raise HTTPException(status_code=404, detail="Sequence not found")

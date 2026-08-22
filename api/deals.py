@@ -111,6 +111,7 @@ async def create_deal(
 ):
     """Create new deal"""
     from services.audit_service import record_audit_log
+
     db_deal = Deal(**deal.model_dump())
     db.add(db_deal)
     db.commit()
@@ -135,6 +136,7 @@ async def update_deal(
 ):
     """Update deal details"""
     from services.audit_service import record_audit_log
+
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
@@ -177,6 +179,7 @@ async def update_deal_stage(
 ):
     """Update deal stage"""
     from services.audit_service import record_audit_log
+
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
@@ -202,6 +205,7 @@ async def delete_deal(
 ):
     """Delete deal"""
     from services.audit_service import record_audit_log
+
     deal = db.query(Deal).filter(Deal.id == deal_id).first()
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")

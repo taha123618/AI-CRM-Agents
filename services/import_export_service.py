@@ -15,7 +15,7 @@ DANGEROUS_FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 
 def sanitize_csv_cell(val: Any) -> Any:
     """Sanitize CSV cell content to prevent CSV/Formula Injection attacks.
-    
+
     If a string begins with dangerous spreadsheet execution prefixes (=, +, -, @, \\t, \\r),
     it is prepended with a single quote (') to force spreadsheet processors (Excel, LibreOffice,
     Google Sheets) to treat it as safe text rather than an executable formula or DDE command.
@@ -53,7 +53,9 @@ def import_leads_csv(
             "created_count": 0,
             "updated_count": 0,
             "total_processed": 0,
-            "errors": [f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."],
+            "errors": [
+                f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."
+            ],
         }
 
     reader = csv.DictReader(io.StringIO(csv_text.strip()))
@@ -65,28 +67,41 @@ def import_leads_csv(
 
     for row_idx, row in enumerate(reader, start=1):
         if row_idx > MAX_CSV_ROWS:
-            errors.append(f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped.")
+            errors.append(
+                f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped."
+            )
             break
         email_key = mapping.get("email", "email")
-        email = _get_col_val(row, email_key, "email", "Email", "email_address", "Work Email")
+        email = _get_col_val(
+            row, email_key, "email", "Email", "email_address", "Work Email"
+        )
         if not email or "@" not in email:
             errors.append(f"Row {row_idx}: Missing or invalid email address.")
             continue
 
         fn_key = mapping.get("first_name", "first_name")
-        first_name = _get_col_val(row, fn_key, "first_name", "First Name", "given_name", "FirstName")
+        first_name = _get_col_val(
+            row, fn_key, "first_name", "First Name", "given_name", "FirstName"
+        )
 
         ln_key = mapping.get("last_name", "last_name")
-        last_name = _get_col_val(row, ln_key, "last_name", "Last Name", "family_name", "LastName")
+        last_name = _get_col_val(
+            row, ln_key, "last_name", "Last Name", "family_name", "LastName"
+        )
 
         jt_key = mapping.get("job_title", "job_title")
         job_title = _get_col_val(row, jt_key, "job_title", "Job Title", "title", "Role")
 
         ls_key = mapping.get("lead_source", "lead_source")
-        lead_source = _get_col_val(row, ls_key, "lead_source", "Lead Source", "source") or "csv_import"
+        lead_source = (
+            _get_col_val(row, ls_key, "lead_source", "Lead Source", "source")
+            or "csv_import"
+        )
 
         sc_key = mapping.get("lead_score", "lead_score")
-        score_val = _get_col_val(row, sc_key, "lead_score", "Lead Score", "score") or "50"
+        score_val = (
+            _get_col_val(row, sc_key, "lead_score", "Lead Score", "score") or "50"
+        )
 
         try:
             lead_score = int(score_val)
@@ -123,7 +138,11 @@ def import_leads_csv(
         entity_id="bulk_import",
         action="csv_import",
         actor="system",
-        details={"created": created_count, "updated": updated_count, "errors_count": len(errors)},
+        details={
+            "created": created_count,
+            "updated": updated_count,
+            "errors_count": len(errors),
+        },
     )
 
     return {
@@ -145,7 +164,9 @@ def import_deals_csv(
         return {
             "success": False,
             "created_count": 0,
-            "errors": [f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."],
+            "errors": [
+                f"CSV payload exceeds maximum allowed size of {MAX_CSV_PAYLOAD_BYTES // (1024*1024)}MB."
+            ],
         }
 
     reader = csv.DictReader(io.StringIO(csv_text.strip()))
@@ -156,22 +177,41 @@ def import_deals_csv(
 
     for row_idx, row in enumerate(reader, start=1):
         if row_idx > MAX_CSV_ROWS:
-            errors.append(f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped.")
+            errors.append(
+                f"Reached maximum row processing limit of {MAX_CSV_ROWS}. Remaining rows were skipped."
+            )
             break
 
-        name = row.get(mapping.get("name", "name")) or row.get("Deal Name") or row.get("deal_name")
+        name = (
+            row.get(mapping.get("name", "name"))
+            or row.get("Deal Name")
+            or row.get("deal_name")
+        )
         if not name:
             errors.append(f"Row {row_idx}: Missing deal name.")
             continue
 
-        val_str = row.get(mapping.get("value", "value")) or row.get("Amount") or row.get("value") or "0"
+        val_str = (
+            row.get(mapping.get("value", "value"))
+            or row.get("Amount")
+            or row.get("value")
+            or "0"
+        )
         try:
             val = float(str(val_str).replace("$", "").replace(",", "").strip())
         except Exception:
             val = 0.0
 
-        stage = row.get(mapping.get("stage", "stage")) or row.get("Stage") or "qualification"
-        health_str = row.get(mapping.get("health_score", "health_score")) or row.get("Health Score") or "60"
+        stage = (
+            row.get(mapping.get("stage", "stage"))
+            or row.get("Stage")
+            or "qualification"
+        )
+        health_str = (
+            row.get(mapping.get("health_score", "health_score"))
+            or row.get("Health Score")
+            or "60"
+        )
         try:
             health = int(health_str)
         except Exception:
@@ -199,19 +239,33 @@ def export_leads_csv(db: Session) -> str:
     contacts = db.query(Contact).order_by(Contact.created_at.desc()).all()
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["ID", "Email", "First Name", "Last Name", "Job Title", "Lead Score", "Lead Status", "Lead Source", "Created At"])
+    writer.writerow(
+        [
+            "ID",
+            "Email",
+            "First Name",
+            "Last Name",
+            "Job Title",
+            "Lead Score",
+            "Lead Status",
+            "Lead Source",
+            "Created At",
+        ]
+    )
     for c in contacts:
-        writer.writerow([
-            sanitize_csv_cell(str(c.id)),
-            sanitize_csv_cell(c.email),
-            sanitize_csv_cell(c.first_name or ""),
-            sanitize_csv_cell(c.last_name or ""),
-            sanitize_csv_cell(c.job_title or ""),
-            sanitize_csv_cell(c.lead_score or 0),
-            sanitize_csv_cell(c.lead_status or "new"),
-            sanitize_csv_cell(c.lead_source or ""),
-            sanitize_csv_cell(c.created_at.isoformat() if c.created_at else ""),
-        ])
+        writer.writerow(
+            [
+                sanitize_csv_cell(str(c.id)),
+                sanitize_csv_cell(c.email),
+                sanitize_csv_cell(c.first_name or ""),
+                sanitize_csv_cell(c.last_name or ""),
+                sanitize_csv_cell(c.job_title or ""),
+                sanitize_csv_cell(c.lead_score or 0),
+                sanitize_csv_cell(c.lead_status or "new"),
+                sanitize_csv_cell(c.lead_source or ""),
+                sanitize_csv_cell(c.created_at.isoformat() if c.created_at else ""),
+            ]
+        )
     return output.getvalue()
 
 
@@ -220,18 +274,31 @@ def export_deals_csv(db: Session) -> str:
     deals = db.query(Deal).order_by(Deal.created_at.desc()).all()
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["ID", "Deal Name", "Value", "Stage", "Health Score", "Close Probability", "Is Stalled", "Created At"])
+    writer.writerow(
+        [
+            "ID",
+            "Deal Name",
+            "Value",
+            "Stage",
+            "Health Score",
+            "Close Probability",
+            "Is Stalled",
+            "Created At",
+        ]
+    )
     for d in deals:
-        writer.writerow([
-            sanitize_csv_cell(str(d.id)),
-            sanitize_csv_cell(d.name),
-            sanitize_csv_cell(d.value or 0.0),
-            sanitize_csv_cell(d.stage),
-            sanitize_csv_cell(d.health_score or 50),
-            sanitize_csv_cell(d.probability or 0),
-            sanitize_csv_cell("Yes" if d.is_stalled else "No"),
-            sanitize_csv_cell(d.created_at.isoformat() if d.created_at else ""),
-        ])
+        writer.writerow(
+            [
+                sanitize_csv_cell(str(d.id)),
+                sanitize_csv_cell(d.name),
+                sanitize_csv_cell(d.value or 0.0),
+                sanitize_csv_cell(d.stage),
+                sanitize_csv_cell(d.health_score or 50),
+                sanitize_csv_cell(d.probability or 0),
+                sanitize_csv_cell("Yes" if d.is_stalled else "No"),
+                sanitize_csv_cell(d.created_at.isoformat() if d.created_at else ""),
+            ]
+        )
     return output.getvalue()
 
 
@@ -240,15 +307,19 @@ def export_audit_logs_csv(db: Session) -> str:
     logs = db.query(AuditLog).order_by(AuditLog.created_at.desc()).limit(1000).all()
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["ID", "Entity Type", "Entity ID", "Action", "Actor", "IP Address", "Timestamp"])
+    writer.writerow(
+        ["ID", "Entity Type", "Entity ID", "Action", "Actor", "IP Address", "Timestamp"]
+    )
     for l in logs:
-        writer.writerow([
-            sanitize_csv_cell(str(l.id)),
-            sanitize_csv_cell(l.entity_type),
-            sanitize_csv_cell(l.entity_id),
-            sanitize_csv_cell(l.action),
-            sanitize_csv_cell(l.actor),
-            sanitize_csv_cell(l.ip_address or ""),
-            sanitize_csv_cell(l.created_at.isoformat() if l.created_at else ""),
-        ])
+        writer.writerow(
+            [
+                sanitize_csv_cell(str(l.id)),
+                sanitize_csv_cell(l.entity_type),
+                sanitize_csv_cell(l.entity_id),
+                sanitize_csv_cell(l.action),
+                sanitize_csv_cell(l.actor),
+                sanitize_csv_cell(l.ip_address or ""),
+                sanitize_csv_cell(l.created_at.isoformat() if l.created_at else ""),
+            ]
+        )
     return output.getvalue()

@@ -69,7 +69,9 @@ async def test_email_intelligence_sentiment_extraction():
             "body": "We are very happy with the system!",
         }
     )
-    assert "label" in sentiment or "sentiment" in sentiment or isinstance(sentiment, dict)
+    assert (
+        "label" in sentiment or "sentiment" in sentiment or isinstance(sentiment, dict)
+    )
 
 
 @pytest.mark.asyncio

@@ -73,7 +73,9 @@ def _conv_to_dict(c: WhatsAppConversation) -> Dict[str, Any]:
 
 
 @router.get("/stats", response_model=Dict[str, Any])
-def get_whatsapp_stats(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def get_whatsapp_stats(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Aggregate WhatsApp conversation and messaging statistics."""
     convs = db.query(WhatsAppConversation).all()
     msgs = db.query(WhatsAppMessage).all()
@@ -272,10 +274,15 @@ def verify_whatsapp_meta_webhook(
 ):
     """Meta WhatsApp Cloud API Webhook Verification Challenge Handshake."""
     import os
+
     expected_token = os.getenv("WHATSAPP_VERIFY_TOKEN", "crm_whatsapp_verify_token")
     if hub_mode == "subscribe" and hub_verify_token == expected_token:
         try:
-            return int(hub_challenge) if hub_challenge and hub_challenge.isdigit() else hub_challenge
+            return (
+                int(hub_challenge)
+                if hub_challenge and hub_challenge.isdigit()
+                else hub_challenge
+            )
         except Exception:
             return hub_challenge
     elif hub_verify_token != expected_token and hub_verify_token is not None:
@@ -381,9 +388,7 @@ def toggle_whatsapp_auto_pilot(
     }
 
 
-@router.put(
-    "/conversations/{conversation_id}/tags", response_model=Dict[str, Any]
-)
+@router.put("/conversations/{conversation_id}/tags", response_model=Dict[str, Any])
 def update_conversation_tags(
     conversation_id: str,
     payload: WhatsAppTagsSchema,
@@ -413,9 +418,7 @@ def update_conversation_tags(
     }
 
 
-@router.put(
-    "/conversations/{conversation_id}/archive", response_model=Dict[str, Any]
-)
+@router.put("/conversations/{conversation_id}/archive", response_model=Dict[str, Any])
 def archive_whatsapp_conversation(
     conversation_id: str,
     db: Session = Depends(get_db),
@@ -451,9 +454,12 @@ class WhatsAppMediaUploadRequest(BaseModel):
 
 
 @router.post("/media/upload", response_model=Dict[str, Any])
-def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest, current_user: User = Depends(require_auth)):
+def upload_whatsapp_media(
+    payload: WhatsAppMediaUploadRequest, current_user: User = Depends(require_auth)
+):
     """Upload media file to Meta WhatsApp Cloud API and get a reusable media_id."""
     from services.whatsapp_cloud_service import WhatsAppCloudService
+
     return WhatsAppCloudService.upload_media(
         media_type=payload.media_type,
         filename=payload.filename,
@@ -462,10 +468,13 @@ def upload_whatsapp_media(payload: WhatsAppMediaUploadRequest, current_user: Use
 
 
 @router.get("/templates", response_model=List[Dict[str, Any]])
-def list_whatsapp_templates(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def list_whatsapp_templates(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """List Meta pre-approved message templates."""
     from database.models import WhatsAppTemplate
     from services.whatsapp_cloud_service import WhatsAppCloudService
+
     templates = db.query(WhatsAppTemplate).all()
     if not templates:
         templates = WhatsAppCloudService.sync_templates(db)
@@ -486,13 +495,15 @@ def list_whatsapp_templates(db: Session = Depends(get_db), current_user: User = 
 
 
 @router.post("/templates/sync", response_model=Dict[str, Any])
-def sync_whatsapp_templates(db: Session = Depends(get_db), current_user: User = Depends(require_auth)):
+def sync_whatsapp_templates(
+    db: Session = Depends(get_db), current_user: User = Depends(require_auth)
+):
     """Trigger template synchronization from Meta Business Manager."""
     from services.whatsapp_cloud_service import WhatsAppCloudService
+
     templates = WhatsAppCloudService.sync_templates(db)
     return {
         "status": "success",
         "synced_count": len(templates),
         "synced_at": datetime.now(timezone.utc).isoformat(),
     }
-
