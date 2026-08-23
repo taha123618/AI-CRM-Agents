@@ -23,16 +23,17 @@ Welcome to the AI-Powered CRM project. This document serves as the **single sour
 
 ## 🏗️ Project Architecture & Tech Stack
 
-This project is a production-ready enterprise CRM system powered by a multi-agent AI architecture with specialized communication and forecasting modules.
+This project is a production-ready enterprise CRM system powered by a multi-agent AI architecture with specialized communication, forecasting, and field mobile modules.
 
-* **Frontend Framework**: React 19 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, and Nginx
+* **Frontend Web Framework**: React 19 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, and Nginx
+* **Field Sales Mobile Framework**: React Native 0.86 with Expo SDK 57, React 19, Expo Router (file-based routing), Zustand, Lucide Native, React Native Reanimated, and AsyncStorage
 * **Backend Framework**: Python 3.9+ with FastAPI and Uvicorn
 * **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM and Alembic migrations
 * **AI Orchestration**: LangChain-based custom agent framework with `TraceMixin` transparent LLM tracing, live OpenAI/Anthropic support (`AsyncOpenAI`, `AsyncAnthropic`), and `SmartFallbackLLM`
 * **Real-time Communication**: WebSockets (`/ws`) with `ConnectionManager` event stream & Redis pub/sub
 * **Background Tasks & Email Delivery**: Asynchronous task queue (`services/task_queue_service.py`) with Redis persistence, exponential backoff retries, dedicated worker process (`worker.py`), and Gmail SMTP infrastructure (`services/email_service.py`)
 * **Caching & Event Bus**: Redis (pub/sub for agent event communication and response caching)
-* **Testing**: pytest and pytest-asyncio (unit and integration tests)
+* **Testing**: pytest and pytest-asyncio (backend), Vitest + React Testing Library (frontend web)
 * **Code Formatting**: Black (code formatter), Flake8 (linter), and Mypy (static type checker)
 * **Containerization**: Docker + Docker Compose (standalone `docker-compose.yml` for prod with `web`, `worker`, `db`, `redis`, `frontend` and `docker-compose.dev.yml` for dev)
 
@@ -42,13 +43,14 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), connection setup (`connection.py`), and seeding (`seed.py`).
 * `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), authentication & RBAC (`auth_service.py`), audit trail (`audit_service.py`), task queue (`task_queue_service.py`), and transactional email (`email_service.py`).
 * `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`), Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
+* `/mobile/`: Field Sales Mobile Application in Expo SDK 57 + React Native with Expo Router, Dynamic Custom Fields Engine, Voice Recording Studio, and Offline Sync Queue.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, events, and background tasks.
 
 ---
 
 ## 🚀 Specialized Platform Features
 
-1. **Enterprise Authentication, Security & RBAC Suite** (`/api/auth`, `services/auth_service.py`, `frontend/src/features/auth`, `frontend/src/features/settings`):
+1. **Enterprise Authentication, Security & RBAC Suite** (`/api/auth`, `services/auth_service.py`, `frontend/src/features/auth`, `frontend/src/features/settings`, `mobile/src/app/(auth)`):
    - Secure JWT token rotation, HTTP-only cookie sessions, brute-force account lockouts, and social SSO (Google & Microsoft).
    - Fine-grained Role-Based Access Control matrix (`admin: ['*']`, `sales`, `support`, `auditor`) with client-side `PermissionGuard` and server-side `require_permission`.
    - Super Admin public registration protection with seeded account (`admin@gmail.com` / `admin123`) and full User Management CRUD in `/settings` (search, role filters, permission editor, pagination).
@@ -58,7 +60,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Zero duplicate SMTP implementations: `EmailIntelligenceAgent` and `/api/emails` delegate all outbound transmissions to `email_service` via resilient background queueing (`task_queue.enqueue_email`).
    - Background task queue with exponential backoff retries (1s, 2s, 4s...) and Redis state caching (`crm:task:<id>`).
    - Standalone background worker daemon (`worker.py`) containerized in Docker.
-3. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`):
+3. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`, `mobile/src/app/voice`):
    - Real-time speech turn analysis, buyer intent scoring, and dynamic objection battle-cards.
    - Post-call automated CRM synthesis, action item extraction, and audio intelligence playback.
 4. **WhatsApp Business Multi-Agent Hub** (`/api/whatsapp`, `/agents/whatsapp_agent.py`, `frontend/src/features/whatsapp`):
@@ -72,7 +74,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Dynamic translation management system with RTL/LTR layout synchronization (e.g. Urdu, Arabic).
 7. **No-Code Custom Agent Builder** (`/api/custom-agents`, `/agents/custom_agent_builder.py`, `frontend/src/features/custom-agents`):
    - Visual creator for custom AI agents with customizable prompts, triggers, toolkits, and testing playground.
-8. **AI Deal War Room, Strategy Studio & Automations** (`/api/war-room`, `workflows/orchestrator.py`, `frontend/src/features/war-room`):
+8. **AI Deal War Room, Strategy Studio & Automations** (`/api/war-room`, `workflows/orchestrator.py`, `frontend/src/features/war-room`, `mobile/src/app/(tabs)/workflows.tsx`):
    - Multi-agent consensus verdicts, SWOT quadrant matrices, live competitor battle-cards, and buying committee maps.
    - 1-Click Smart Proposal Studio with tier pricing, SLA terms, and e-signature URL workflows.
    - Multi-Agent Workflow Automation Triggers with full CRUD and live AI Orchestrator execution.
@@ -82,6 +84,10 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 10. **AI SDR Multi-Touch Outreach & Cadence Studio** (`/api/sequences`, `frontend/src/features/sequences`):
    - Omnichannel outreach sequences across Email, WhatsApp, and Voice AI briefings with configurable day delays.
    - 1-click lead cohort enrollment and live AI prompt-engineered step copy generation.
+11. **Field Sales Mobile Intelligence Application & Offline Command** (`/mobile`, `mobile/src/app`, `mobile/src/components/dynamic-fields`):
+   - React Native Expo SDK 57 mobile field sales suite mapped 1:1 with backend entities and Tactical Command design tokens.
+   - Field Command Dashboard, Pipeline Radar with AI Health Breakdown, Audio Intelligence Voice Debrief Studio, and Dynamic Custom Fields Engine.
+   - Offline-First dual persistence with automatic 30s background action retry queue.
 
 ---
 
@@ -114,23 +120,22 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **Activity Logs**: Log significant actions using `await self.log_activity("activity_type", details_dict)`.
 * **Event Communication**: Use `publish_event` and `subscribe_event` to communicate asynchronously with other agents.
 
-### 5. Frontend Development & Tactical Command Design System
+### 5. Frontend & Mobile Tactical Command Design System
 * **Tactical Command Design Rules**: Strict adherence to `design.md`:
-  - **Zero Border Radius**: Global `rounded-none`, `--radius: 0rem;`, `* { border-radius: 0 !important; }`. Never use rounded pill or card corners.
-  - **Color Palette**: Void Black (`#0B0C10`), Matte Black (`#121212`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Purple (`#A855F7`).
+  - **Zero Border Radius**: Global `rounded-none`, `--radius: 0rem;`, `* { border-radius: 0 !important; }` in web and sharp corners in mobile.
+  - **Color Palette**: Void Black (`#0B0C10`), Matte Black (`#121212`), Steel Border (`#3A4552`), Tactical Amber / Gold Primary (`#FFB800`), Destructive (`#FF2A54`), Cyan (`#00E5FF`), Emerald (`#00FF9D`).
   - **Primary Buttons**: `bg-[#FFB800] text-[#0B0C10] font-bold rounded-none uppercase`.
   - **Typography**: `font-mono` applied to telemetry, tables, timestamps, IDs, financial metrics, currency notations, and charts.
-  - **Transitions**: `transition-none` with 0ms easing globally for instant tactical feedback.
-  - **Theme-Adaptive Scrollbars**: 6px squared scrollbars driven by CSS variables (`#0B0C10` on light mode, `#FFB800` on dark mode).
-* **Feature-Sliced Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 19 specialized modules (including public SaaS Landing Page with Lenis + GSAP momentum scrolling).
-* **State Management**: Use TanStack Query v5 for server state and Zustand for client UI state.
-* **Strict Type Safety**: Run `npm run type-check`, `npm run test`, and `npm run build` after changes to verify zero errors.
+  - **Transitions**: `transition-none` with 0ms easing globally for instant tactical feedback in web, and smooth Reanimated keyframes in mobile.
+* **Feature-Sliced Web Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 19 specialized modules.
+* **Mobile Architecture**: Organize screens in `mobile/src/app/`, shared components in `mobile/src/components/`, and state stores in `mobile/src/stores/`.
+* **State Management**: Use TanStack Query v5 for web server state and Zustand for mobile client/server state.
 
-### 6. Testing Guidelines
+### 6. Testing & Quality Guidelines
 * **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (190 tests across 27 suites).
-* **Frontend Framework**: Write component and integration tests using `Vitest` and React Testing Library (86 tests across 24 suites).
+* **Frontend Web Framework**: Write component and integration tests using `Vitest` and React Testing Library (86 tests across 24 suites).
+* **Mobile Validation**: Run `bunx expo-doctor`, `npx tsc --noEmit`, and `bunx expo export --platform web` (18 static routes, 0 errors).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
-* **Directory**: Place backend tests in `tests/` and frontend tests in `frontend/src/**/__tests__/`.
 
 ### 7. Cybersecurity & Transport Hardening
 * **HTTP Security Headers**: Enforce `SecurityHeadersMiddleware` on all responses (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Content-Security-Policy`, `Strict-Transport-Security`).
@@ -140,7 +145,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 
 ### 8. Git Workflow
 * **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
-* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add voice call intelligence analytics`).
+* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add field sales mobile app intelligence`).
 
 ---
 
@@ -152,11 +157,12 @@ We provide modular, project-specific AI skills inside `.agents/skills/`. Refer t
 2. [Backend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md) - Developing FastAPI endpoints, services, dependencies, and schemas.
 3. [Agent Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md) - Creating, extending, and debugging CRM agents and custom agent builders.
 4. [Frontend Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md) - Developing React 19 + TypeScript features, components, and TanStack Query state.
-5. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models, schemas, and migrations.
-6. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest tests.
-7. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
-8. [DevOps & Infrastructure](file:///Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md) - Standards for Docker, CI/CD, database migrations, backups, and observability.
-9. [Cybersecurity](file:///Users/taha/projects/ai-crm-agents/.agents/skills/cybersecurity/SKILL.md) - Guidelines for secure headers, SSRF/XSS defense, formula sanitization, and session safety.
+5. [Field Sales Mobile Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/field-sales-mobile/SKILL.md) - Developing React Native Expo SDK 57 field sales app, offline queue, dynamic custom fields, and voice recording studio.
+6. [Database Development](file:///Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md) - Managing SQLAlchemy models, schemas, and migrations.
+7. [Testing](file:///Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md) - Writing and executing pytest, Vitest, and mobile validation checks.
+8. [Git Workflow](file:///Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md) - Repository conventions and pull requests.
+9. [DevOps & Infrastructure](file:///Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md) - Standards for Docker, CI/CD, database migrations, backups, and observability.
+10. [Cybersecurity](file:///Users/taha/projects/ai-crm-agents/.agents/skills/cybersecurity/SKILL.md) - Guidelines for secure headers, SSRF/XSS defense, formula sanitization, and session safety.
 
 ---
 
@@ -185,6 +191,8 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/database-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md)
 * **devops-infrastructure**: Standards, workflows, and best practices for Docker, CI/CD, PostgreSQL migrations, Redis pub/sub, production deployment, and observability.
   - File Path: [`.agents/skills/devops-infrastructure/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/devops-infrastructure/SKILL.md)
+* **field-sales-mobile**: Guide for developing, extending, and maintaining the React Native Expo Field Sales Mobile App for AI-Powered CRM.
+  - File Path: [`.agents/skills/field-sales-mobile/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/field-sales-mobile/SKILL.md)
 * **frontend-development**: Guide for developing React 19 + TypeScript frontend features, components, queries, state, SaaS landing page, and Tactical Command design system.
   - File Path: [`.agents/skills/frontend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/frontend-development/SKILL.md)
 * **git-workflow**: Repository branching, commit styling, and pull request conventions.

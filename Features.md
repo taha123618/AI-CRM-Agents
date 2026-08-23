@@ -227,9 +227,10 @@ gantt
 4. - [x] **Custom LLM Fine-Tuning & Evaluation Playground**:
    - In-app evaluation harness to benchmark prompt variants and calculate accuracy scores against historical CRM deals (`services/eval_service.py`, `/api/evaluations`, `PromptEvaluationModal.tsx`).
 
-### 🟢 Nice to Have — Advanced Extensions
-1. **Mobile Application (React Native / Expo)**:
-   - Field sales mobile app for logging voice notes, checking deal health, and receiving real-time push notifications.
+### 🟢 Advanced Extensions & Mobile
+1. - [x] **Field Sales Mobile Intelligence Application (React Native / Expo SDK 57)**:
+   - Field sales mobile suite in `mobile/` built with Expo SDK 57, React Native 0.86, React 19, Expo Router (18 static routes), and Tactical Command design system.
+   - Field Command Dashboard, AI Deal Health radar, Voice Note audio recorder studio with buyer intent calculation, Dynamic Custom Fields renderer, Workflow trigger studio, and Offline-first dual persistence sync queue.
 2. - [x] **Visual Drag-and-Drop Workflow Canvas**:
    - Node-based visual automation editor for assembling complex branching agent cadences (`/api/workflows`, `WorkflowDefinition` model, `VisualWorkflowCanvas.tsx`).
 3. - [x] **Dynamic Custom Field Builder**:

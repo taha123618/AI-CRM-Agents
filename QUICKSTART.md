@@ -123,12 +123,27 @@ alembic upgrade head
 python run.py
 ```
 
-### 5. Start the frontend
+### 5. Start the frontend web application
 
 ```bash
 cd frontend
 npm install
 npm run dev
+```
+
+### 6. Start the Field Sales Mobile App (Expo)
+
+```bash
+cd mobile
+cp .env.example .env
+bun install # or npm install
+bunx expo start
+
+# Launch on iOS Simulator
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bunx expo run:ios
+
+# Or launch on Android Emulator
+bunx expo run:android
 ```
 
 ---
