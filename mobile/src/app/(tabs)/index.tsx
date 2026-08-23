@@ -22,6 +22,9 @@ import {
   Plus,
   Briefcase,
   User as UserIcon,
+  Users,
+  Building2,
+  Sparkles,
 } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useDealsStore } from '@/stores/dealsStore';
@@ -258,6 +261,63 @@ export default function DashboardScreen() {
             variant={avgHealthScore > 70 ? 'success' : 'default'}
             icon={<ShieldCheck size={14} color={avgHealthScore > 70 ? colors.success : colors.warning} />}
           />
+        </View>
+
+        {/* Autonomous Field Intelligence Hub */}
+        <View style={{ marginBottom: 16 }}>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => router.push('/leads' as any)}
+              style={{
+                flex: 1,
+                backgroundColor: colors.surface,
+                borderColor: colors.border,
+                borderWidth: 1,
+                borderRadius: 2,
+                padding: 12,
+              }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                <Users size={16} color={colors.primary} style={{ marginRight: 6 }} />
+                <Text style={{ fontSize: 11, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono, textTransform: 'uppercase' }}>
+                  LEADS (BANT)
+                </Text>
+              </View>
+              <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, marginBottom: 2 }}>
+                Prospect Radar
+              </Text>
+              <Text style={{ fontSize: 11, color: colors.textMuted }}>
+                BANT scores & AI SDR outreach
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => router.push('/customers' as any)}
+              style={{
+                flex: 1,
+                backgroundColor: colors.surface,
+                borderColor: colors.border,
+                borderWidth: 1,
+                borderRadius: 2,
+                padding: 12,
+              }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                <Building2 size={16} color={colors.secondary} style={{ marginRight: 6 }} />
+                <Text style={{ fontSize: 11, fontWeight: '700', color: colors.secondary, fontFamily: fonts.mono, textTransform: 'uppercase' }}>
+                  CUSTOMER 360
+                </Text>
+              </View>
+              <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, marginBottom: 2 }}>
+                Churn Prevention
+              </Text>
+              <Text style={{ fontSize: 11, color: colors.textMuted }}>
+                Account ARR & CS playbooks
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Section: Priority Attention Deals */}

@@ -50,6 +50,20 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
+          name="leads/index"
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+        <Stack.Screen
+          name="customers/index"
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+        <Stack.Screen
           name="voice/record"
           options={{
             headerShown: false,

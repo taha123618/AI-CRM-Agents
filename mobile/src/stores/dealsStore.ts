@@ -3,7 +3,7 @@
  */
 
 import { create } from 'zustand';
-import { Deal, DealStage, CustomFieldDefinition } from '@/types';
+import { Deal, DealStage, CustomFieldDefinition, DealCreateInput } from '@/types';
 import { api } from '@/services/api';
 
 interface DealsState {
@@ -14,6 +14,7 @@ interface DealsState {
   filterStage: DealStage | 'all';
   searchQuery: string;
   fetchDeals: () => Promise<void>;
+  createDeal: (input: DealCreateInput) => Promise<Deal>;
   fetchCustomFields: (entityType?: string) => Promise<void>;
   updateDealStage: (dealId: string, stage: DealStage) => Promise<void>;
   updateDealCustomFields: (dealId: string, values: Record<string, any>) => Promise<void>;
@@ -37,6 +38,21 @@ export const useDealsStore = create<DealsState>((set, get) => ({
       set({ deals, isLoading: false });
     } catch (e) {
       set({ isLoading: false });
+    }
+  },
+
+  createDeal: async (input) => {
+    set({ isLoading: true });
+    try {
+      const created = await api.createDeal(input);
+      set((state) => ({
+        deals: [created, ...state.deals],
+        isLoading: false,
+      }));
+      return created;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
     }
   },
 

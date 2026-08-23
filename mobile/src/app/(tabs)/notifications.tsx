@@ -9,6 +9,7 @@ import {
   FlatList,
   RefreshControl,
   TouchableOpacity,
+  ScrollView,
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -20,13 +21,23 @@ import {
   CheckCircle,
   Info,
   ArrowRight,
+  ShieldAlert,
 } from 'lucide-react-native';
+import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { NotificationItem } from '@/types';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+
+const ALERT_TABS = [
+  { key: 'all', label: 'ALL ALERTS' },
+  { key: 'unread', label: 'UNREAD' },
+  { key: 'deal_risk', label: 'DEAL RISKS' },
+  { key: 'lead_alert', label: 'LEAD ALERTS' },
+  { key: 'workflow_event', label: 'SWARM EVENTS' },
+];
 
 export default function NotificationsScreen() {
   const { colors, fonts } = useTheme();
@@ -35,15 +46,17 @@ export default function NotificationsScreen() {
   const { notifications, unreadCount, isLoading, fetchNotifications, markAsRead, markAllAsRead } =
     useNotificationStore();
 
-  const [filter, setFilter] = useState<'all' | 'unread' | 'critical'>('all');
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     fetchNotifications();
   }, []);
 
   const filteredNotifications = notifications.filter((n) => {
-    if (filter === 'unread') return !n.is_read;
-    if (filter === 'critical') return n.severity === 'critical';
+    if (activeTab === 'unread') return !n.is_read;
+    if (activeTab === 'deal_risk') return n.type === 'deal_risk';
+    if (activeTab === 'lead_alert') return n.type === 'lead_alert';
+    if (activeTab === 'workflow_event') return n.type === 'workflow_event';
     return true;
   });
 
@@ -61,15 +74,23 @@ export default function NotificationsScreen() {
   };
 
   const handleNotificationPress = (item: NotificationItem) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     markAsRead(item.id);
     if (item.entity_type === 'deal' && item.entity_id) {
       router.push(`/deals/${item.entity_id}` as any);
+    } else if (item.entity_type === 'lead') {
+      router.push('/leads' as any);
     }
+  };
+
+  const handleMarkAll = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    markAllAsRead();
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
-      {/* Header */}
+      {/* Top Header */}
       <View
         style={{
           paddingTop: 54,
@@ -103,18 +124,28 @@ export default function NotificationsScreen() {
               color: colors.text,
             }}
           >
-            Alerts & Triage ({unreadCount})
+            Notification Radar
           </Text>
         </View>
 
         {unreadCount > 0 && (
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={markAllAsRead}
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={handleMarkAll}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+              borderWidth: 1,
+              paddingHorizontal: 8,
+              paddingVertical: 5,
+              borderRadius: 2,
+              gap: 4,
+            }}
           >
-            <CheckCheck size={14} color={colors.primary} style={{ marginRight: 4 }} />
-            <Text style={{ fontSize: 11, color: colors.primary, fontWeight: '700', fontFamily: fonts.mono }}>
+            <CheckCheck size={12} color={colors.primary} />
+            <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
               MARK ALL READ
             </Text>
           </TouchableOpacity>
@@ -122,43 +153,30 @@ export default function NotificationsScreen() {
       </View>
 
       {/* Filter Tabs */}
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 16,
-          paddingVertical: 10,
-          backgroundColor: colors.cardSubtle,
-          borderBottomWidth: 1,
-          borderBottomColor: colors.border,
-          gap: 8,
-        }}
-      >
-        {(['all', 'unread', 'critical'] as const).map((f) => (
-          <TouchableOpacity
-            key={f}
-            onPress={() => setFilter(f)}
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 12,
-              backgroundColor: filter === f ? colors.primary : colors.surface,
-              borderRadius: 2,
-              borderWidth: 1,
-              borderColor: filter === f ? colors.primary : colors.border,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 11,
-                fontWeight: '700',
-                color: filter === f ? colors.primaryText : colors.textSecondary,
-                fontFamily: fonts.mono,
-                textTransform: 'uppercase',
-              }}
-            >
-              {f === 'all' ? 'ALL ALERTS' : f === 'unread' ? `UNREAD (${unreadCount})` : 'CRITICAL'}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <View style={{ backgroundColor: colors.cardSubtle, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 8, gap: 6 }}>
+          {ALERT_TABS.map((tab) => {
+            const active = activeTab === tab.key;
+            return (
+              <TouchableOpacity
+                key={tab.key}
+                onPress={() => setActiveTab(tab.key)}
+                style={{
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  borderRadius: 2,
+                  backgroundColor: active ? colors.primary : colors.surface,
+                  borderColor: active ? colors.primary : colors.border,
+                  borderWidth: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10, fontWeight: '700', fontFamily: fonts.mono, color: active ? colors.primaryText : colors.textSecondary }}>
+                  {tab.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
 
       {/* Notifications List */}
@@ -173,70 +191,57 @@ export default function NotificationsScreen() {
           <Card style={{ padding: 24, alignItems: 'center', marginTop: 20 }}>
             <Bell size={32} color={colors.textMuted} style={{ marginBottom: 12 }} />
             <Text style={{ color: colors.text, fontWeight: '700', fontSize: 15, marginBottom: 4 }}>
-              No Alerts
+              All Clear
             </Text>
             <Text style={{ color: colors.textMuted, fontSize: 12, textAlign: 'center' }}>
-              You are completely caught up on all lead qualifications and deal risk radar alerts.
+              No active alerts matching the selected triage filter.
             </Text>
           </Card>
         }
         renderItem={({ item }) => (
-          <Card
-            key={item.id}
+          <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => handleNotificationPress(item)}
-            variant={item.severity === 'critical' ? 'danger' : 'default'}
-            style={{
-              marginBottom: 10,
-              opacity: item.is_read ? 0.75 : 1,
-              borderLeftWidth: 3,
-              borderLeftColor:
-                item.severity === 'critical'
-                  ? colors.danger
-                  : item.severity === 'success'
-                  ? colors.success
-                  : colors.primary,
-            }}
+            style={{ marginBottom: 10 }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-              <View style={{ marginRight: 10, marginTop: 2 }}>{getSeverityIcon(item.severity)}</View>
-
-              <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '700',
-                      color: colors.text,
-                      flex: 1,
-                      marginRight: 6,
-                    }}
-                  >
-                    {item.title}
-                  </Text>
-                  <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>
-                    {item.timestamp}
-                  </Text>
+            <Card
+              variant={!item.is_read ? (item.severity === 'critical' ? 'danger' : 'highlight') : 'default'}
+              style={{ padding: 12 }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                <View style={{ marginTop: 2, marginRight: 10 }}>
+                  {getSeverityIcon(item.severity)}
                 </View>
 
-                <Text style={{ fontSize: 12, color: colors.textSecondary, lineHeight: 16, marginBottom: 6 }}>
-                  {item.message}
-                </Text>
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                    <Text style={{ fontSize: 14, fontWeight: item.is_read ? '600' : '800', color: colors.text, flex: 1, marginRight: 6 }}>
+                      {item.title}
+                    </Text>
+                    <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>
+                      {item.timestamp}
+                    </Text>
+                  </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Badge label={item.type.replace('_', ' ')} variant="muted" size="sm" />
+                  <Text style={{ fontSize: 12, color: colors.textSecondary, lineHeight: 16, marginBottom: 6 }}>
+                    {item.message}
+                  </Text>
 
-                  {item.entity_id && (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 10, color: colors.primary, fontWeight: '700', fontFamily: fonts.mono, marginRight: 2 }}>
-                        VIEW ENTITY
-                      </Text>
-                      <ArrowRight size={10} color={colors.primary} />
-                    </View>
-                  )}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Badge label={item.type.replace('_', ' ').toUpperCase()} variant="info" />
+                    {item.entity_id && (
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
+                          VIEW ENTITY
+                        </Text>
+                        <ArrowRight size={10} color={colors.primary} />
+                      </View>
+                    )}
+                  </View>
                 </View>
               </View>
-            </View>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         )}
       />
     </View>

@@ -9,7 +9,10 @@ import { Config } from '@/constants/config';
 import { OfflineStorage } from './offlineStorage';
 import {
   Deal,
+  DealCreateInput,
   Lead,
+  LeadCreateInput,
+  Customer,
   Contact,
   VoiceNote,
   CustomFieldDefinition,
@@ -215,6 +218,149 @@ class ApiClient {
       });
       return updatedDeals.find((d) => d.id === dealId)!;
     }
+  }
+
+  async createDeal(input: DealCreateInput): Promise<Deal> {
+    try {
+      const res = await this.client.post('/api/deals', {
+        name: input.name,
+        value: input.value,
+        stage: input.stage,
+        contact_name: input.contact_name,
+        company_name: input.company_name,
+      });
+      const newDeal: Deal = {
+        id: String(res.data.id),
+        name: res.data.name,
+        value: Number(res.data.value) || input.value,
+        stage: res.data.stage || input.stage,
+        health_score: res.data.health_score || 75,
+        is_stalled: false,
+        risk_factors: [],
+        close_probability: 50,
+        next_actions: ['Schedule Discovery Briefing'],
+        forecast_close_date: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+        contact_name: input.contact_name || 'Prospect Contact',
+        company_name: input.company_name || 'Target Account',
+        days_in_stage: 1,
+        last_activity_date: 'Just now',
+        custom_fields: {},
+      };
+      const current = await OfflineStorage.getCachedDeals();
+      await OfflineStorage.saveCachedDeals([newDeal, ...current]);
+      return newDeal;
+    } catch (e) {
+      // Offline fallback
+      const offlineDeal: Deal = {
+        id: `offline_deal_${Date.now()}`,
+        name: input.name,
+        value: input.value,
+        stage: input.stage,
+        health_score: 70,
+        is_stalled: false,
+        risk_factors: [],
+        close_probability: 50,
+        next_actions: ['Syncing with server'],
+        contact_name: input.contact_name || 'Prospect Contact',
+        company_name: input.company_name || 'Target Account',
+        days_in_stage: 1,
+        last_activity_date: 'Offline queued',
+        custom_fields: {},
+      };
+      const current = await OfflineStorage.getCachedDeals();
+      await OfflineStorage.saveCachedDeals([offlineDeal, ...current]);
+      await OfflineStorage.enqueueOfflineAction({
+        action_type: 'create_deal',
+        endpoint: '/api/deals',
+        method: 'POST',
+        payload: input,
+      });
+      return offlineDeal;
+    }
+  }
+
+  // ==========================================
+  // DYNAMIC LEADS & PROSPECTS METHODS
+  // ==========================================
+  async getLeads(): Promise<Lead[]> {
+    try {
+      const res = await this.client.get('/api/leads');
+      if (Array.isArray(res.data)) {
+        return res.data.map((l: any) => ({
+          id: String(l.id),
+          first_name: l.first_name || 'Prospect',
+          last_name: l.last_name || '',
+          email: l.email || 'lead@example.com',
+          company_name: l.company_name || l.company || 'Enterprise Account',
+          job_title: l.job_title || 'Decision Maker',
+          lead_source: l.lead_source || 'Inbound',
+          lead_score: l.lead_score !== undefined ? l.lead_score : 65,
+          lead_status: l.lead_status || 'new',
+          phone: l.phone || '+1-555-0199',
+          buying_signals: l.buying_signals || ['High cloud usage telemetry', 'Executive team expanded'],
+          recommended_action: l.recommended_action || 'Schedule AI Solution Demo',
+          routing_team: l.routing_team || 'Enterprise Sales Swarm',
+        }));
+      }
+    } catch (e) {
+      if (Config.IS_DEV) {
+        console.log('[ApiClient] Error fetching dynamic leads from /api/leads', e);
+      }
+    }
+    return [];
+  }
+
+  async createLead(input: LeadCreateInput): Promise<Lead> {
+    const res = await this.client.post('/api/leads', input);
+    return {
+      id: String(res.data.id),
+      first_name: res.data.first_name || input.first_name,
+      last_name: res.data.last_name || input.last_name,
+      email: res.data.email || input.email,
+      company_name: res.data.company_name || input.company_name,
+      job_title: res.data.job_title || input.job_title,
+      lead_source: res.data.lead_source || input.lead_source,
+      lead_score: res.data.lead_score || 50,
+      lead_status: res.data.lead_status || 'new',
+      buying_signals: ['Fresh field prospect'],
+      recommended_action: 'Perform BANT qualification analysis',
+      routing_team: 'Sales SDR Agent',
+    };
+  }
+
+  async qualifyLead(leadId: string): Promise<any> {
+    const res = await this.client.post(`/api/leads/${leadId}/qualify`);
+    return res.data;
+  }
+
+  // ==========================================
+  // DYNAMIC CUSTOMERS & RETENTION METHODS
+  // ==========================================
+  async getCustomers(): Promise<Customer[]> {
+    try {
+      const res = await this.client.get('/api/customers');
+      if (Array.isArray(res.data)) {
+        return res.data.map((c: any) => ({
+          id: String(c.id),
+          name: c.name || c.company_name || 'Enterprise Customer',
+          company_name: c.company_name || 'Account',
+          plan: c.plan || 'Enterprise Swarm',
+          mrr: Number(c.mrr) || 12500,
+          health_score: c.health_score !== undefined ? c.health_score : 80,
+          churn_risk: c.churn_risk || 'low',
+          churn_probability: c.churn_probability || 15,
+          logins_per_week: c.logins_per_week || 42,
+          features_used: c.features_used || 8,
+          license_usage_percent: c.license_usage_percent || 92,
+          recommended_actions: c.recommended_actions || ['Initiate quarterly executive business review'],
+        }));
+      }
+    } catch (e) {
+      if (Config.IS_DEV) {
+        console.log('[ApiClient] Error fetching dynamic customers from /api/customers', e);
+      }
+    }
+    return [];
   }
 
   // ==========================================
