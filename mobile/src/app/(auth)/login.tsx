@@ -9,8 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
+  Platform
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Shield, Zap, Lock, Mail } from 'lucide-react-native';

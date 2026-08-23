@@ -11,37 +11,47 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 1. **Tactical Field Command Dashboard**:
    - Live telemetry status bar with online/offline indicators and background action queue counter.
    - Real-time KPI telemetry (Pipeline ARR, Active Pipeline, Stalled Risks, AI Health Average).
-   - Priority attention deals and 1-tap quick action shortcuts.
+   - Autonomous Field Hub with 1-tap shortcuts to **Leads (BANT)**, **Customer 360**, **Workflows**, and **Voice Recording**.
    - 1-Tap header navigation to User Profile and Storage Diagnostics.
-2. **Deal Health Intelligence Radar**:
+2. **Deal Health Intelligence Radar & Creation**:
    - Multi-agent AI Health score tracking (0–100%).
+   - Interactive `+ NEW DEAL` creation modal connected to `/api/deals`.
    - Stalled deal detection (10+ days without buyer communication).
    - Identified risk factor chips and next recommended AI strategic actions.
    - 1-Tap stage progression pipeline selector (Discovery → Qualification → Proposal → Negotiation → Closed Won).
-3. **Voice Field Notes Studio**:
+3. **Leads & BANT Radar** (`/leads`):
+   - Real-time lead scoring and tier classifications (`TIER 1 • HIGH INTENT`, `TIER 2 • NURTURE`, `TIER 3`).
+   - 1-Tap AI Qualification via `LeadQualificationAgent` (`POST /api/leads/{id}/qualify`).
+   - WhatsApp Auto-Pilot template action sheet (*Intro Briefing*, *Demo & Battle-Card*, *Executive Discovery*).
+   - 1-Click Convert to Deal into active pipeline.
+   - Interactive `+ NEW PROSPECT` field creation modal.
+4. **Customer 360 & Churn Radar** (`/customers`):
+   - Account ARR/MRR metrics and seat license usage telemetry.
+   - Real-time churn probability radar and 1-tap autonomous retention playbooks.
+5. **Voice Field Notes Studio & Activity Debriefs** (`/activities`, `/voice/record`):
    - Dedicated field audio debrief recorder with live waveform visualization and timer.
    - Entity association (link recorded audio directly to a Deal, Contact, or Customer).
-   - Automated AI speech transcript synthesis, buyer intent score calculation, and action item checklist extraction.
-4. **Dynamic Custom Fields Engine**:
+   - Simulated audio playback bar with duration timer.
+   - Automated AI speech transcript synthesis, buyer intent score calculation, and interactive action item checklists.
+6. **Dynamic Custom Fields Engine**:
    - Live synchronization with `/api/custom-fields` and `CustomFieldDefinition` models.
    - Dynamic input controls for `text`, `number`, `select`, `boolean`, `date`, and `currency`.
    - In-app bulk editing and offline queued saving.
-5. **Mobile Workflow Trigger Studio**:
+7. **Mobile Workflow Trigger Studio** (`/workflows`):
    - Real-time status of autonomous multi-agent triggers (`WhatsAppAgent`, `CustomerSuccessAgent`, `VoiceCallAgent`).
    - Full CRUD capabilities: Create trigger modal, view specs, toggle active/paused, and delete.
    - 1-Click "TEST TRIGGER" execution with simulated consensus telemetry modal.
-6. **Real-Time Notification Center**:
-   - Alert triage across Lead Qualification alerts, Deal Risk warnings, and autonomous agent executions.
-   - Direct integration with `/api/audit-logs` compliance trail.
-   - Unread badge counters and deep linking to relevant CRM entities.
-7. **User Profile & Diagnostics Studio** (`/settings/profile`):
+8. **Real-Time Notification Center** (`/notifications`):
+   - Alert triage across `ALL ALERTS`, `UNREAD`, `DEAL RISKS`, `LEAD ALERTS`, and `SWARM EVENTS`.
+   - 1-Tap "MARK ALL READ" and deep linking to relevant CRM entities.
+9. **User Profile & Diagnostics Studio** (`/settings/profile`):
    - RBAC Level 1 telemetry and JWT bearer session details.
    - Backend API base URL and WebSocket connection diagnostics.
    - Local Offline Cache telemetry with 1-Tap **Force Resync** and **Purge Cache**.
    - Secure session termination and token scrubbing.
-8. **Offline-First Resilience**:
-   - Dual-layer storage (Memory + AsyncStorage + Background Queue).
-   - Mutations performed offline are queued locally and automatically synchronized with the server upon reconnection every 30 seconds.
+10. **Offline-First Resilience**:
+    - Dual-layer storage (Memory + AsyncStorage + Background Queue).
+    - Mutations performed offline are queued locally and automatically synchronized with the server upon reconnection every 30 seconds.
 
 ---
 
@@ -50,18 +60,22 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 ```text
 mobile/
 ├── src/
-│   ├── app/                      # Expo Router File-Based Routing (18 Routes)
+│   ├── app/                      # Expo Router File-Based Routing (20 Routes)
 │   │   ├── (auth)/               # Authentication & Role Presets
 │   │   │   └── login.tsx
 │   │   ├── (tabs)/               # Bottom Tab Navigator
 │   │   │   ├── _layout.tsx
 │   │   │   ├── index.tsx         # Tactical Command Dashboard
-│   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor
-│   │   │   ├── activities.tsx    # Voice Notes & Activity Logging
-│   │   │   ├── workflows.tsx     # Workflow Trigger Studio (CRUD)
-│   │   │   └── notifications.tsx # Real-Time Notification Center
+│   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor (+ NEW DEAL)
+│   │   │   ├── activities.tsx    # Voice Notes & Activity Logging (Playback & Checklists)
+│   │   │   ├── workflows.tsx     # Workflow Trigger Studio (Full CRUD)
+│   │   │   └── notifications.tsx # Real-Time Notification Center (Triage Tabs)
 │   │   ├── deals/
 │   │   │   └── [id].tsx          # Deal Details & Custom Fields
+│   │   ├── leads/
+│   │   │   └── index.tsx         # Leads & BANT Radar (Qualify, WhatsApp, Convert to Deal)
+│   │   ├── customers/
+│   │   │   └── index.tsx         # Customer 360 & Churn Prevention Radar
 │   │   ├── voice/
 │   │   │   └── record.tsx        # Voice Audio Intelligence Studio
 │   │   ├── settings/
@@ -85,6 +99,8 @@ mobile/
 │   ├── stores/                   # Zustand State Management
 │   │   ├── authStore.ts
 │   │   ├── dealsStore.ts
+│   │   ├── leadsStore.ts
+│   │   ├── customerStore.ts
 │   │   ├── voiceNotesStore.ts
 │   │   ├── notificationStore.ts
 │   │   └── workflowStore.ts
@@ -129,7 +145,7 @@ bun install
 bunx expo start
 
 # Run on iOS Simulator (macOS)
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bunx expo run:ios
+bunx expo run:ios
 
 # Run on Android Emulator
 bunx expo run:android
@@ -143,12 +159,35 @@ bunx expo start --web
 ## 🧪 Verification Commands
 
 ```bash
-# Check Expo dependency health
+# Check Expo dependency health (21/21 passed)
 bunx expo-doctor
 
-# Strict TypeScript type check
+# Strict TypeScript type check (0 errors)
 npx tsc --noEmit
 
-# Export static production bundle
+# Export static production bundle (20 routes compiled)
 bunx expo export --platform web
 ```
+
+---
+
+## 🐳 Docker Containerization & Deployment
+
+### 1. Build and Run Mobile Production Web Distribution (Nginx)
+```bash
+# Build mobile container image
+docker build -t ai-crm-mobile:latest ./mobile
+
+# Run standalone on port 8081
+docker run -d -p 8081:80 --name crm_mobile ai-crm-mobile:latest
+```
+
+### 2. Run via Unified Docker Compose
+```bash
+# Production stack (includes backend, worker, db, redis, frontend, and mobile)
+docker-compose up -d --build mobile
+
+# Development stack with live hot reload
+docker-compose -f docker-compose.dev.yml up --build mobile
+```
+

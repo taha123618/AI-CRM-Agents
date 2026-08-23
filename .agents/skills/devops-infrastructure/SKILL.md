@@ -62,6 +62,9 @@ docker-compose logs -f web
 docker-compose logs -f worker
 docker-compose logs -f frontend
 
+# Scale worker instances for high throughput email/task processing
+docker-compose up -d --scale worker=3
+
 # Execute database migrations inside running container
 docker-compose exec web alembic upgrade head
 
@@ -156,6 +159,7 @@ docker-compose exec web python3 -c "from database.connection import SessionLocal
 ## 🚀 CI/CD Automation Pipeline
 
 Automated via GitHub Actions in `.github/workflows/ci.yml`:
-1. **Backend QA**: PostgreSQL 14 + Redis 7 service containers, pip dependency caching, `flake8` & `black` linting, and Pytest coverage suite (**190 tests**).
-2. **Frontend QA**: Node 20 runtime, npm caching, TypeScript type-check (`tsc --noEmit`), Vitest suite (**86 tests**), and production SPA bundle build.
-3. **Container Build**: Docker Buildx verification with GitHub Actions layer caching.
+1. **Backend QA**: PostgreSQL 14 + Redis 7 service containers, pip dependency caching, `flake8` & `black` linting, and Pytest coverage suite (**195 tests** across 32 suites).
+2. **Frontend QA**: Node 20 runtime, npm caching, TypeScript type-check (`tsc --noEmit`), Vitest suite (**86 tests** across 24 suites), and production SPA bundle build.
+3. **Mobile QA**: Bun runtime, `expo-doctor` (21/21 checks), strict TypeScript compilation (`tsc --noEmit`), and Expo Router static bundle export (**20 routes**).
+4. **Container Build**: Docker Buildx verification with GitHub Actions layer caching.

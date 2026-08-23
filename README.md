@@ -351,13 +351,24 @@ ai-crm-agents/
 │   ├── nginx.conf                #   Production reverse proxy config
 │   └── vite.config.ts            #   Vite build tooling and test configuration
 │
+├── mobile/                       # Field Sales Mobile Application (Expo SDK 57 + React Native)
+│   ├── src/
+│   │   ├── app/                  #   Expo Router file-based routes (20 static routes)
+│   │   ├── components/           #   Dynamic Custom Fields & Tactical UI components
+│   │   ├── stores/               #   Zustand offline state stores
+│   │   └── services/             #   API client & AsyncStorage action queue
+│   ├── Dockerfile                #   Multi-stage mobile web build (Bun + Nginx)
+│   ├── Dockerfile.dev            #   Development Metro bundler container
+│   ├── nginx.conf                #   Production reverse proxy config
+│   └── app.json                  #   Expo application manifest
+│
 ├── .agents/                      # AI Coding Assistant Knowledge & Skills
 │   ├── AGENTS.md                 #   Single source of truth for architectural guidelines
-│   ├── skills/                   #   8 specialized skill definitions
+│   ├── skills/                   #   10 specialized skill definitions
 │   └── scripts/sync_rules.py     #   Tool rule synchronization utility
 │
 ├── .github/workflows/            # CI/CD Workflows
-│   ├── ci.yml                    #   Lint, Pytest, Vitest, Type-check, Docker build
+│   ├── ci.yml                    #   Lint, Pytest, Vitest, Mobile QA, Type-check, Docker build
 │   └── docker-build.yml          #   Trivy container security vulnerability scanner
 │
 ├── docs/                         # Comprehensive Documentation Hub
@@ -365,7 +376,7 @@ ai-crm-agents/
 ├── run.py                        # Local development runner
 ├── Makefile                      # Developer command-line interface
 ├── Dockerfile                    # Backend multi-stage production container
-├── docker-compose.yml            # Production container stack
+├── docker-compose.yml            # Production container stack (web, worker, db, redis, frontend, mobile)
 ├── docker-compose.dev.yml        # Development container stack (hot-reload)
 ├── requirements.txt              # Python production dependencies
 └── alembic.ini                   # Database migration configuration
@@ -378,13 +389,13 @@ ai-crm-agents/
 ### Prerequisites
 
 - **Docker Option**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) 24.0+
-- **Local Native Option**: Python 3.9+, Node.js 20+, PostgreSQL 14+, Redis 7+
+- **Local Native Option**: Python 3.9+, Node.js 20+, Bun (for Mobile), PostgreSQL 14+, Redis 7+
 
 ---
 
 ### Option A — Docker Quick Start (Recommended)
 
-Start the entire production or development stack with a single command:
+Start the entire production or development stack (Backend, Worker, Database, Redis, Web Frontend, and Mobile Web) with a single command:
 
 ```bash
 # 1. Clone repository
@@ -403,9 +414,11 @@ docker-compose up -d --build
 
 #### Application Endpoints:
 - 🖥️ **React Web Application**: `http://localhost:3000` (Dev) / `http://localhost:80` (Prod)
+- 📱 **Field Sales Mobile Web**: `http://localhost:8081` (Dev/Prod)
 - ⚡ **FastAPI Backend API**: `http://localhost:8000`
 - 📚 **Interactive Swagger API Docs**: `http://localhost:8000/docs`
 - 📖 **ReDoc Documentation**: `http://localhost:8000/redoc`
+
 
 ---
 

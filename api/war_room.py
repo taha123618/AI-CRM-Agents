@@ -511,6 +511,7 @@ Our solutions architecture team is available for any implementation questions.""
 
 
 @router.get("/automations", response_model=List[Dict[str, Any]])
+@router.get("/triggers", response_model=List[Dict[str, Any]])
 def list_automation_rules(
     search: Optional[str] = Query(None, description="Search rules by name"),
     status: Optional[str] = Query(None, description="Filter by active or paused"),
@@ -536,6 +537,7 @@ def list_automation_rules(
 
 
 @router.post("/automations", response_model=Dict[str, Any])
+@router.post("/triggers", response_model=Dict[str, Any])
 def create_automation_rule(
     payload: CreateAutomationRuleSchema,
     db: Session = Depends(get_db),
@@ -559,6 +561,7 @@ def create_automation_rule(
 
 
 @router.put("/automations/{rule_id}", response_model=Dict[str, Any])
+@router.put("/triggers/{rule_id}", response_model=Dict[str, Any])
 def update_automation_rule(
     rule_id: str,
     payload: CreateAutomationRuleSchema,
@@ -588,6 +591,8 @@ def update_automation_rule(
 
 
 @router.post("/automations/{rule_id}/execute", response_model=Dict[str, Any])
+@router.post("/triggers/{rule_id}/execute", response_model=Dict[str, Any])
+@router.post("/triggers/{rule_id}/test", response_model=Dict[str, Any])
 async def execute_automation_rule(
     rule_id: str,
     db: Session = Depends(get_db),
@@ -614,6 +619,9 @@ async def execute_automation_rule(
 
 
 @router.post("/automations/{rule_id}/toggle", response_model=Dict[str, Any])
+@router.put("/automations/{rule_id}/toggle", response_model=Dict[str, Any])
+@router.post("/triggers/{rule_id}/toggle", response_model=Dict[str, Any])
+@router.put("/triggers/{rule_id}/toggle", response_model=Dict[str, Any])
 def toggle_automation_rule(
     rule_id: str,
     db: Session = Depends(get_db),
@@ -637,6 +645,7 @@ def toggle_automation_rule(
 
 
 @router.delete("/automations/{rule_id}", response_model=Dict[str, Any])
+@router.delete("/triggers/{rule_id}", response_model=Dict[str, Any])
 def delete_automation_rule(
     rule_id: str,
     db: Session = Depends(get_db),
@@ -657,3 +666,4 @@ def delete_automation_rule(
     db.delete(rule)
     db.commit()
     return {"status": "success", "deleted_rule_id": del_id}
+

@@ -89,15 +89,19 @@ PYTHON := $(shell if [ -f .venv/bin/python3 ]; then echo .venv/bin/python3; else
 # ─────────────────────────────────────────────────────────────────────────────
 # TESTING & CODE QUALITY
 # ─────────────────────────────────────────────────────────────────────────────
-test: ## Run all automated tests (backend pytest + frontend vitest)
+test: ## Run all automated tests (backend pytest + frontend vitest + mobile checks)
 	PYTHONPATH=. $(PYTHON) -m pytest -v
 	cd frontend && npm run test
+	cd mobile && bunx expo-doctor && npx tsc --noEmit && bunx expo export --platform web
 
 test-backend: ## Run backend pytest tests only
 	PYTHONPATH=. $(PYTHON) -m pytest -v
 
 test-frontend: ## Run frontend Vitest tests only
 	cd frontend && npm run test
+
+test-mobile: ## Run mobile Expo Doctor, TypeScript & web export checks
+	cd mobile && bunx expo-doctor && npx tsc --noEmit && bunx expo export --platform web
 
 test-cov: ## Run backend tests with coverage report
 	PYTHONPATH=. $(PYTHON) -m pytest --cov=. --cov-report=term-missing --cov-report=html -v
@@ -130,7 +134,9 @@ run: ## Start local dev server without Docker (requires .venv activated)
 # ─────────────────────────────────────────────────────────────────────────────
 ci-qa: quality test ## Run full continuous integration quality pipeline
 	cd frontend && npm run type-check && npm run build
+	cd mobile && bunx expo export --platform web
 	@echo "All CI/CD quality checks passed successfully."
+
 
 db-seed: ## Seed database with realistic initial dataset
 	$(PYTHON) database/seed.py

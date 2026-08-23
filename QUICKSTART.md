@@ -57,6 +57,7 @@ docker-compose up -d --build
 ### 4. Access the Application
 
 - 🖥️ **React Frontend Application**: http://localhost:3000
+- 📱 **Field Sales Mobile Web**: http://localhost:8081
 - ⚡ **FastAPI Backend API**: http://localhost:8000
 - 🌐 **Interactive OpenAPI Docs**: http://localhost:8000/docs
 - 🔌 **WebSocket Real-time Stream**: ws://localhost:8000/ws

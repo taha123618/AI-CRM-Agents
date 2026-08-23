@@ -12,12 +12,13 @@ This skill defines the technical standards, file-based routing conventions, offl
 ## 🏗️ Architecture & Technology Stack
 
 - **Framework**: Expo SDK 57 + React Native 0.86 with React 19
-- **Navigation**: Expo Router (file-based routing in `src/app/` across 18 static routes)
-- **State Management**: Zustand stores in `src/stores/` (`authStore`, `dealsStore`, `voiceNotesStore`, `notificationStore`, `workflowStore`)
+- **Navigation**: Expo Router (file-based routing in `src/app/` across 20 static routes)
+- **State Management**: Zustand stores in `src/stores/` (`authStore`, `dealsStore`, `leadsStore`, `customerStore`, `voiceNotesStore`, `notificationStore`, `workflowStore`)
 - **Persistence & Offline Queue**: `@react-native-async-storage/async-storage` via `src/services/offlineStorage.ts`
 - **Networking**: Centralized Axios API client with automatic JWT token attachment, refresh interceptor, environment parsing, and dual-layer offline persistence in `src/services/api.ts`
 - **Iconography & Haptics**: `lucide-react-native`, `expo-haptics`, `react-native-svg`
 - **Design System**: Tactical Command Mobile Tokens (`#0B0C10` Void Black, `#FFB800` Tactical Gold, `#00FF9D` Emerald, `#FF2A54` Alert Red, Monospace metrics)
+- **Containerization**: Multi-stage Docker build with Bun builder and Nginx static distribution server (`mobile/Dockerfile`)
 
 ---
 
@@ -27,14 +28,16 @@ Routes are located inside `mobile/src/app/`:
 
 1. `(tabs)/_layout.tsx`: Bottom tab navigator with badges for notifications.
 2. `(tabs)/index.tsx`: **Tactical Field Command Dashboard** (Pipeline KPI stats, urgent deals, voice note CTA, and online/offline sync status).
-3. `(tabs)/deals.tsx`: **Deals & Pipeline Intelligence** (Stage tabs: Discovery, Qualified, Proposal, Negotiation, Won, and search filtering).
-4. `(tabs)/activities.tsx`: **Voice Notes & Activity Logging** (Captured debriefs, buyer intent scores, extracted action item checklists).
+3. `(tabs)/deals.tsx`: **Deals & Pipeline Intelligence** (Stage tabs: Discovery, Qualified, Proposal, Negotiation, Won, interactive `+ NEW DEAL` modal, and search filtering).
+4. `(tabs)/activities.tsx`: **Voice Notes & Activity Logging** (Captured debriefs, buyer intent scores, audio playback bar, extracted action item checklists).
 5. `(tabs)/workflows.tsx`: **Mobile Workflow Trigger Studio** (Multi-agent trigger execution logs, full CRUD, and 1-click test simulation).
 6. `(tabs)/notifications.tsx`: **Real-Time Notification Center** (Lead alerts, deal risk radar, and unread triage).
-7. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
-8. `voice/record.tsx`: **Dedicated Voice Note Recording Studio** (Pulsing waveform visualizer, recording timer, entity association, and AI summary preview).
-9. `settings/profile.tsx`: **User Profile & Diagnostics Studio** (RBAC telemetry, API gateway diagnostics, offline cache manager, and secure sign out).
-10. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, role presets).
+7. `leads/index.tsx`: **Leads & BANT Radar** (BANT scoring, WhatsApp template auto-pilot, and 1-click Convert to Deal).
+8. `customers/index.tsx`: **Customer 360 & Churn Radar** (MRR/ARR metrics, churn risk radar, and 1-click retention playbooks).
+9. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
+10. `voice/record.tsx`: **Dedicated Voice Note Recording Studio** (Pulsing waveform visualizer, recording timer, entity association, and AI summary preview).
+11. `settings/profile.tsx`: **User Profile & Diagnostics Studio** (RBAC telemetry, API gateway diagnostics, offline cache manager, and secure sign out).
+12. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, role presets).
 
 ---
 
@@ -78,6 +81,21 @@ Supported field types:
 - **Reads**: `src/services/api.ts` transparently returns cached data from `OfflineStorage` if network is unavailable or exceeds 15s timeout.
 - **Mutations**: Enqueued via `OfflineStorage.enqueueOfflineAction()` with unique IDs.
 - **Auto-Sync Hook**: `useOfflineSync()` runs every 30 seconds and processes queued mutations sequentially when network is restored.
+
+---
+
+## 🐳 Docker & Containerization Operations
+
+```bash
+# 1. Build mobile production web image
+docker build -t ai-crm-mobile:latest ./mobile
+
+# 2. Run mobile standalone container
+docker run -d -p 8081:80 --name crm_mobile ai-crm-mobile:latest
+
+# 3. Launch with full production Docker Compose stack
+docker-compose up -d --build mobile
+```
 
 ---
 

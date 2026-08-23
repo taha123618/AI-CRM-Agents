@@ -170,7 +170,7 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/agent-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/agent-development/SKILL.md)
 * **backend-development**: Guide for developing FastAPI routers, endpoints, dependencies, and Pydantic schemas.
   - File Path: [`.agents/skills/backend-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/backend-development/SKILL.md)
-* **cybersecurity**: Guide for database safety, XSS protection, SSRF validation, HTTP header defense, and secure session management.
+* **cybersecurity**: Guide for database safety, XSS protection, SSRF validation, HTTP header defense, file upload security, and secure session management.
   - File Path: [`.agents/skills/cybersecurity/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/cybersecurity/SKILL.md)
 * **database-development**: Guide for updating SQLAlchemy ORM models, running migrations with Alembic, and maintaining database schemas.
   - File Path: [`.agents/skills/database-development/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/database-development/SKILL.md)
@@ -184,6 +184,6 @@ Do not edit the auto-generated tool-specific files directly in the root of the p
   - File Path: [`.agents/skills/git-workflow/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/git-workflow/SKILL.md)
 * **project-architecture**: Understand the layout, component design, multi-agent collaboration, services, and workflows of the CRM system.
   - File Path: [`.agents/skills/project-architecture/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/project-architecture/SKILL.md)
-* **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, mocks, Vitest, and SQA quality standards.
+* **testing**: Instructions for writing unit and integration tests with pytest, pytest-asyncio, mocks, Vitest, Expo Doctor, and SQA quality standards.
   - File Path: [`.agents/skills/testing/SKILL.md`](file:////Users/taha/projects/ai-crm-agents/.agents/skills/testing/SKILL.md)
 
