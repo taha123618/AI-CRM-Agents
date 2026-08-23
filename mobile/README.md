@@ -57,117 +57,150 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 
 ## 🏗️ Architecture & Directory Structure
 
-```text
-mobile/
-├── src/
-│   ├── app/                      # Expo Router File-Based Routing (20 Routes)
-│   │   ├── (auth)/               # Authentication & Role Presets
-│   │   │   └── login.tsx
-│   │   ├── (tabs)/               # Bottom Tab Navigator
-│   │   │   ├── _layout.tsx
-│   │   │   ├── index.tsx         # Tactical Command Dashboard
-│   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor (+ NEW DEAL)
-│   │   │   ├── activities.tsx    # Voice Notes & Activity Logging (Playback & Checklists)
-│   │   │   ├── workflows.tsx     # Workflow Trigger Studio (Full CRUD)
-│   │   │   └── notifications.tsx # Real-Time Notification Center (Triage Tabs)
-│   │   ├── deals/
-│   │   │   └── [id].tsx          # Deal Details & Custom Fields
-│   │   ├── leads/
-│   │   │   └── index.tsx         # Leads & BANT Radar (Qualify, WhatsApp, Convert to Deal)
-│   │   ├── customers/
-│   │   │   └── index.tsx         # Customer 360 & Churn Prevention Radar
-│   │   ├── voice/
-│   │   │   └── record.tsx        # Voice Audio Intelligence Studio
-│   │   ├── settings/
-│   │   │   └── profile.tsx       # Profile, Server Telemetry & Cache Manager
-│   │   └── _layout.tsx           # Root Theme & Animated Splash Layout
-│   ├── components/               # Reusable Tactical UI Components
-│   │   ├── ui/
-│   │   │   ├── Button.tsx        # Tactile Button with Haptics
-│   │   │   ├── Card.tsx          # Tactical Card (highlight/danger)
-│   │   │   ├── Badge.tsx         # Stage, Risk, and Health Badges
-│   │   │   ├── Input.tsx         # Themed Form Input
-│   │   │   ├── StatCard.tsx      # Field KPI Metric Telemetry Card
-│   │   │   └── HealthIndicator.tsx# AI Health Progress Radar
-│   │   ├── animated-icon.tsx     # Tactical Command Splash & Icon
-│   │   └── dynamic-fields/       # Dynamic Custom Fields Engine
-│   │       ├── DynamicFieldInput.tsx
-│   │       └── DynamicFieldRenderer.tsx
-│   ├── services/                 # Centralized Networking & Persistence
-│   │   ├── api.ts                # Axios Client with JWT interceptors & Live Endpoints
-│   │   └── offlineStorage.ts     # Local AsyncStorage & Action Queue Manager
-│   ├── stores/                   # Zustand State Management
-│   │   ├── authStore.ts
-│   │   ├── dealsStore.ts
-│   │   ├── leadsStore.ts
-│   │   ├── customerStore.ts
-│   │   ├── voiceNotesStore.ts
-│   │   ├── notificationStore.ts
-│   │   └── workflowStore.ts
-│   ├── constants/                # Tactical Tokens & Endpoints
-│   │   ├── theme.ts              # Void Black (#0B0C10) & Tactical Gold (#FFB800)
-│   │   └── config.ts             # Environment Variables & Storage Namespaces
-│   ├── hooks/                    # Custom Utility Hooks
-│   │   ├── useTheme.ts
-│   │   └── useOfflineSync.ts
-│   └── types/                    # Shared Domain TypeScript Types
-└── .agents/
-    └── skills/                   # Mobile Development Agent Skills
-```
-
----
-
-## 🛠️ Environment Configuration & Setup
-
-### 1. Configure Environment Variables
-Copy the template and configure your backend endpoint:
-```bash
-cd mobile
-cp .env.example .env
-```
-
-Contents of `.env`:
-```env
-EXPO_PUBLIC_APP_ENV=development
-EXPO_PUBLIC_API_URL=http://localhost:8000
-EXPO_PUBLIC_WS_URL=ws://localhost:8000/ws
-EXPO_PUBLIC_ENABLE_OFFLINE_MOCK=true
-```
-
-### 2. Install Dependencies
-```bash
-bun install
-```
-
-### 3. Start the Development Server
-```bash
-# Start Metro bundler with Expo CLI
-bunx expo start
-
-# Run on iOS Simulator (macOS)
-bunx expo run:ios
-
-# Run on Android Emulator
-bunx expo run:android
-
-# Run Web Preview
-bunx expo start --web
-```
-
----
-
-## 🧪 Verification Commands
-
-```bash
-# Check Expo dependency health (21/21 passed)
-bunx expo-doctor
-
-# Strict TypeScript type check (0 errors)
-npx tsc --noEmit
-
-# Export static production bundle (20 routes compiled)
-bunx expo export --platform web
-```
+60: ```text
+61: mobile/
+62: ├── src/
+63: │   ├── app/                      # Expo Router File-Based Routing (43 Static Routes)
+64: │   │   ├── (auth)/               # Authentication, Provisioning & Recovery Suite
+65: │   │   │   ├── login.tsx         # Tactical Login & SSO Gateways
+66: │   │   │   ├── register.tsx      # Operator Provisioning & RBAC Level Assignment
+67: │   │   │   ├── forgot-password.tsx# Cryptographic Recovery Token Dispatch
+68: │   │   │   ├── reset-password.tsx# SHA-256 Token Overwrite Form
+69: │   │   │   └── verify-email.tsx  # Mailbox Verification & Token Validation
+70: │   │   ├── (tabs)/               # Bottom Tab Navigator
+71: │   │   │   ├── _layout.tsx
+72: │   │   │   ├── index.tsx         # Tactical Command Dashboard & Studio Launchers
+73: │   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor (+ NEW DEAL)
+74: │   │   │   ├── activities.tsx    # Voice Notes & Activity Logging (Playback & Checklists)
+75: │   │   │   ├── workflows.tsx     # Workflow Trigger Studio (Full CRUD)
+76: │   │   │   └── notifications.tsx # Real-Time Notification Center (Triage Tabs)
+77: │   │   ├── deals/
+78: │   │   │   └── [id].tsx          # Deal Details & Dynamic Custom Fields
+79: │   │   ├── leads/
+80: │   │   │   └── index.tsx         # Leads & BANT Radar (Qualify, WhatsApp, Convert to Deal)
+81: │   │   ├── customers/
+82: │   │   │   └── index.tsx         # Customer 360 & Churn Prevention Radar
+83: │   │   ├── war-room/
+84: │   │   │   └── index.tsx         # Deal War Room & Strategy Studio (Consensus, SWOT, Proposals)
+85: │   │   ├── forecasting/
+86: │   │   │   └── index.tsx         # Stochastic Monte Carlo Revenue Forecasting (P10/P50/P90)
+87: │   │   ├── journey/
+88: │   │   │   └── index.tsx         # Customer Lifecycle Journey & Churn Retention Studio
+89: │   │   ├── sequences/
+90: │   │   │   └── index.tsx         # AI SDR Multi-Touch Outreach Cadences (Email/WhatsApp/Voice)
+91: │   │   ├── voice-ai/
+92: │   │   │   └── index.tsx         # Voice AI Call Intelligence & Objection Battlecards
+93: │   │   ├── whatsapp/
+94: │   │   │   └── index.tsx         # WhatsApp Business Multi-Agent Hub (24/7 AI Auto-Pilot)
+95: │   │   ├── emails/
+96: │   │   │   └── index.tsx         # Autonomous Email Intelligence & Task Queue Outbound
+97: │   │   ├── analytics/
+98: │   │   │   └── index.tsx         # Executive Analytics, Velocity & Rep Leaderboards
+99: │   │   ├── agents/
+100: │   │   │   └── index.tsx         # AI Agents Swarm Fleet Monitor & Swarm Pulse
+101: │   │   ├── meetings/
+102: │   │   │   └── index.tsx         # Meeting Scheduler & AI Participant Briefing Studio
+103: │   │   ├── custom-agents/
+104: │   │   │   └── index.tsx         # No-Code Custom Agent Builder & Playground
+105: │   │   ├── multi-language/
+106: │   │   │   └── index.tsx         # Multi-Language Localization & RTL/LTR Synchronization
+107: │   │   ├── reports/
+108: │   │   │   └── index.tsx         # Executive Reports & Formula-Sanitized CSV Exports
+109: │   │   ├── settings/
+110: │   │   │   ├── index.tsx         # Platform Governance, RBAC Users, Webhooks & Audits Hub
+111: │   │   │   └── profile.tsx       # User Profile, Server Diagnostics & Cache Manager
+112: │   │   ├── explore.tsx           # Interactive SaaS Showcase & ROI Calculator Explorer
+113: │   │   ├── voice/
+114: │   │   │   └── record.tsx        # Voice Audio Intelligence Studio
+115: │   │   ├── unauthorized.tsx      # 403 Insufficient Privileges Tactical Screen
+116: │   │   └── _layout.tsx           # Root Theme & Animated Splash Layout
+115: │   ├── components/               # Reusable Tactical UI Components
+116: │   │   ├── ui/
+117: │   │   │   ├── Button.tsx        # Tactile Button with Haptics
+118: │   │   │   ├── Card.tsx          # Tactical Card (highlight/danger)
+119: │   │   │   ├── Badge.tsx         # Stage, Risk, and Health Badges
+120: │   │   │   ├── Input.tsx         # Themed Form Input
+121: │   │   │   ├── StatCard.tsx      # Field KPI Metric Telemetry Card
+122: │   │   │   └── HealthIndicator.tsx# AI Health Progress Radar
+123: │   │   ├── animated-icon.tsx     # Tactical Command Splash & Icon
+124: │   │   └── dynamic-fields/       # Dynamic Custom Fields Engine
+125: │   │       ├── DynamicFieldInput.tsx
+126: │   │       └── DynamicFieldRenderer.tsx
+127: │   ├── services/                 # Centralized Networking & Persistence
+128: │   │   ├── api.ts                # Axios Client with JWT interceptors & Live Endpoints
+129: │   │   └── offlineStorage.ts     # Local AsyncStorage & Action Queue Manager
+130: │   ├── stores/                   # Zustand State Management
+131: │   │   ├── authStore.ts
+132: │   │   ├── dealsStore.ts
+133: │   │   ├── leadsStore.ts
+134: │   │   ├── customerStore.ts
+135: │   │   ├── voiceNotesStore.ts
+136: │   │   ├── notificationStore.ts
+137: │   │   └── workflowStore.ts
+138: │   ├── constants/                # Tactical Tokens & Endpoints
+139: │   │   ├── theme.ts              # Void Black (#0B0C10) & Tactical Gold (#FFB800)
+140: │   │   └── config.ts             # Environment Variables & Storage Namespaces
+141: │   ├── hooks/                    # Custom Utility Hooks
+142: │   │   ├── useTheme.ts
+143: │   │   └── useOfflineSync.ts
+144: │   └── types/                    # Shared Domain TypeScript Types
+145: └── .agents/
+146:     └── skills/                   # Mobile Development Agent Skills
+147: ```
+148: 
+149: ---
+150: 
+151: ## 🛠️ Environment Configuration & Setup
+152: 
+153: ### 1. Configure Environment Variables
+154: Copy the template and configure your backend endpoint:
+155: ```bash
+156: cd mobile
+157: cp .env.example .env
+158: ```
+159: 
+160: Contents of `.env`:
+161: ```env
+162: EXPO_PUBLIC_APP_ENV=development
+163: EXPO_PUBLIC_API_URL=http://localhost:8000
+164: EXPO_PUBLIC_WS_URL=ws://localhost:8000/ws
+165: EXPO_PUBLIC_ENABLE_OFFLINE_MOCK=true
+166: ```
+167: 
+168: ### 2. Install Dependencies
+169: ```bash
+170: bun install
+171: ```
+172: 
+173: ### 3. Start the Development Server
+174: ```bash
+175: # Start Metro bundler with Expo CLI
+176: bunx expo start
+177: 
+178: # Run on iOS Simulator (macOS)
+179: bunx expo run:ios
+180: 
+181: # Run on Android Emulator
+182: bunx expo run:android
+183: 
+184: # Run Web Preview
+185: bunx expo start --web
+186: ```
+187: 
+188: ---
+189: 
+190: ## 🧪 Verification Commands
+191: 
+192: ```bash
+193: # Check Expo dependency health (21/21 passed)
+194: bunx expo-doctor
+195: 
+196: # Strict TypeScript type check (0 errors)
+197: npx tsc --noEmit
+198: 
+199: # Export static production bundle (42 routes compiled)
+200: bunx expo export --platform web
+201: ```
 
 ---
 

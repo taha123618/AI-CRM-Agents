@@ -146,10 +146,10 @@ export default function DashboardScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* User Settings / Profile */}
+          {/* Platform Settings & Governance Hub */}
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => router.push('/settings/profile' as any)}
+            onPress={() => router.push('/settings' as any)}
             style={{
               backgroundColor: colors.surface,
               borderColor: colors.border,
@@ -265,7 +265,7 @@ export default function DashboardScreen() {
 
         {/* Autonomous Field Intelligence Hub */}
         <View style={{ marginBottom: 16 }}>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
+          <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10 }}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => router.push('/leads' as any)}
@@ -288,7 +288,7 @@ export default function DashboardScreen() {
                 Prospect Radar
               </Text>
               <Text style={{ fontSize: 11, color: colors.textMuted }}>
-                BANT scores & AI SDR outreach
+                BANT scores & AI outreach
               </Text>
             </TouchableOpacity>
 
@@ -314,9 +314,63 @@ export default function DashboardScreen() {
                 Churn Prevention
               </Text>
               <Text style={{ fontSize: 11, color: colors.textMuted }}>
-                Account ARR & CS playbooks
+                Account ARR & Playbooks
               </Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Quick Command Studios Matrix */}
+          <Text
+            style={{
+              fontSize: 11,
+              fontWeight: '700',
+              color: colors.textMuted,
+              fontFamily: fonts.mono,
+              textTransform: 'uppercase',
+              marginBottom: 8,
+            }}
+          >
+            SPECIALIZED AI COMMAND STUDIOS:
+          </Text>
+
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {[
+              { title: 'WAR ROOM', route: '/war-room', icon: '⚔️' },
+              { title: 'FORECASTING', route: '/forecasting', icon: '📈' },
+              { title: 'JOURNEY', route: '/journey', icon: '🧭' },
+              { title: 'AI SDR SEQUENCES', route: '/sequences', icon: '⚡' },
+              { title: 'VOICE AI STUDIO', route: '/voice-ai', icon: '🎙️' },
+              { title: 'WHATSAPP HUB', route: '/whatsapp', icon: '💬' },
+              { title: 'EMAIL INTEL', route: '/emails', icon: '✉️' },
+              { title: 'ANALYTICS', route: '/analytics', icon: '📊' },
+              { title: 'AGENTS SWARM', route: '/agents', icon: '🤖' },
+              { title: 'MEETINGS', route: '/meetings', icon: '📅' },
+              { title: 'CUSTOM AGENTS', route: '/custom-agents', icon: '🛠️' },
+              { title: 'REPORTS & EXPORT', route: '/reports', icon: '📋' },
+              { title: 'MULTI-LANGUAGE', route: '/multi-language', icon: '🌐' },
+              { title: 'GOVERNANCE & RBAC', route: '/settings', icon: '🛡️' },
+              { title: 'FLEET SHOWCASE', route: '/explore', icon: '✨' },
+            ].map((mod, idx) => (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => router.push(mod.route as any)}
+                style={{
+                  backgroundColor: colors.surface,
+                  borderColor: colors.border,
+                  borderWidth: 1,
+                  paddingVertical: 7,
+                  paddingHorizontal: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <Text style={{ fontSize: 11 }}>{mod.icon}</Text>
+                <Text style={{ fontSize: 10, fontFamily: fonts.mono, fontWeight: '700', color: colors.text }}>
+                  {mod.title}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 

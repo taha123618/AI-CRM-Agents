@@ -15,6 +15,11 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<boolean>;
+  register: (payload: { full_name: string; email: string; password: string; role?: string }) => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<{ status: string; message: string }>;
+  resetPassword: (payload: { token: string; new_password: string }) => Promise<{ status: string; message: string }>;
+  verifyEmail: (token: string) => Promise<{ status: string; message: string }>;
+  ssoLogin: (provider: string, token: string, emailHint?: string, nameHint?: string) => Promise<boolean>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
 }
@@ -34,6 +39,88 @@ export const useAuthStore = create<AuthState>((set) => ({
           id: 'usr-1',
           email,
           full_name: email.split('@')[0],
+          role: 'sales',
+          is_active: true,
+        },
+        token: res.access_token,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+      return true;
+    } catch (e) {
+      set({ isLoading: false });
+      return false;
+    }
+  },
+
+  register: async (payload) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.register(payload);
+      set({
+        user: res.user || {
+          id: `usr-${Date.now()}`,
+          email: payload.email,
+          full_name: payload.full_name,
+          role: (payload.role as any) || 'sales',
+          is_active: true,
+        },
+        token: res.access_token,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+      return true;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  forgotPassword: async (email) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.forgotPassword(email);
+      set({ isLoading: false });
+      return res;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  resetPassword: async (payload) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.resetPassword(payload);
+      set({ isLoading: false });
+      return res;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  verifyEmail: async (token) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.verifyEmail(token);
+      set({ isLoading: false });
+      return res;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  ssoLogin: async (provider, token, emailHint, nameHint) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.ssoLogin(provider, token, emailHint, nameHint);
+      set({
+        user: res.user || {
+          id: `usr-sso-${Date.now()}`,
+          email: emailHint || `${provider}@enterprise.com`,
+          full_name: nameHint || 'SSO Operator',
           role: 'sales',
           is_active: true,
         },
@@ -79,3 +166,4 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 }));
+

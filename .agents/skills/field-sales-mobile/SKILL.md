@@ -12,7 +12,7 @@ This skill defines the technical standards, file-based routing conventions, offl
 ## 🏗️ Architecture & Technology Stack
 
 - **Framework**: Expo SDK 57 + React Native 0.86 with React 19
-- **Navigation**: Expo Router (file-based routing in `src/app/` across 20 static routes)
+- **Navigation**: Expo Router (file-based routing in `src/app/` across 43 static routes)
 - **State Management**: Zustand stores in `src/stores/` (`authStore`, `dealsStore`, `leadsStore`, `customerStore`, `voiceNotesStore`, `notificationStore`, `workflowStore`)
 - **Persistence & Offline Queue**: `@react-native-async-storage/async-storage` via `src/services/offlineStorage.ts`
 - **Networking**: Centralized Axios API client with automatic JWT token attachment, refresh interceptor, environment parsing, and dual-layer offline persistence in `src/services/api.ts`
@@ -27,17 +27,38 @@ This skill defines the technical standards, file-based routing conventions, offl
 Routes are located inside `mobile/src/app/`:
 
 1. `(tabs)/_layout.tsx`: Bottom tab navigator with badges for notifications.
-2. `(tabs)/index.tsx`: **Tactical Field Command Dashboard** (Pipeline KPI stats, urgent deals, voice note CTA, and online/offline sync status).
+2. `(tabs)/index.tsx`: **Tactical Field Command Dashboard** (Pipeline KPI stats, urgent deals, voice note CTA, specialized studios quick launcher matrix, and online/offline sync status).
 3. `(tabs)/deals.tsx`: **Deals & Pipeline Intelligence** (Stage tabs: Discovery, Qualified, Proposal, Negotiation, Won, interactive `+ NEW DEAL` modal, and search filtering).
 4. `(tabs)/activities.tsx`: **Voice Notes & Activity Logging** (Captured debriefs, buyer intent scores, audio playback bar, extracted action item checklists).
 5. `(tabs)/workflows.tsx`: **Mobile Workflow Trigger Studio** (Multi-agent trigger execution logs, full CRUD, and 1-click test simulation).
 6. `(tabs)/notifications.tsx`: **Real-Time Notification Center** (Lead alerts, deal risk radar, and unread triage).
-7. `leads/index.tsx`: **Leads & BANT Radar** (BANT scoring, WhatsApp template auto-pilot, and 1-click Convert to Deal).
-8. `customers/index.tsx`: **Customer 360 & Churn Radar** (MRR/ARR metrics, churn risk radar, and 1-click retention playbooks).
-9. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
-10. `voice/record.tsx`: **Dedicated Voice Note Recording Studio** (Pulsing waveform visualizer, recording timer, entity association, and AI summary preview).
-11. `settings/profile.tsx`: **User Profile & Diagnostics Studio** (RBAC telemetry, API gateway diagnostics, offline cache manager, and secure sign out).
-12. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, role presets).
+7. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
+8. `leads/index.tsx`: **Leads & BANT Radar** (BANT scoring, WhatsApp template auto-pilot, and 1-click Convert to Deal).
+9. `customers/index.tsx`: **Customer 360 & Churn Radar** (MRR/ARR metrics, churn risk radar, and 1-click retention playbooks).
+10. `war-room/index.tsx`: **AI Deal War Room & Strategy Studio** (Multi-agent consensus verdicts, SWOT quadrant, competitor battlecards, and 1-click smart proposals).
+11. `forecasting/index.tsx`: **Stochastic Monte Carlo Revenue Forecasting** (P10/P50/P90 confidence bounds, stage velocity & hazard conversion matrix).
+12. `journey/index.tsx`: **Autonomous Customer Journey & Churn Prevention** (Telemetry-guided lifecycle pipeline, ARR aggregation, and 1-click autonomous retention playbooks).
+13. `sequences/index.tsx`: **AI SDR Multi-Touch Cadences** (Omnichannel cadences across Email, WhatsApp, Voice AI with 1-click lead cohort enrollment).
+14. `voice-ai/index.tsx`: **Voice AI Call Intelligence Studio** (Real-time speech intent scoring, objection battlecards, and post-call CRM synthesis).
+15. `whatsapp/index.tsx`: **WhatsApp Multi-Agent Hub** (24/7 AI Auto-Pilot chat, manual operator override, broadcast campaigns).
+16. `emails/index.tsx`: **Autonomous Email Intelligence Studio** (RFC-5321 synthesized inbox, AI outbound draft composer, resilient task queue delivery).
+17. `analytics/index.tsx`: **Executive Analytics & Velocity Radar** (Fleet win rate, avg cycle days, daily ARR velocity, and top operator leaderboards).
+18. `agents/index.tsx`: **AI Agents Swarm Fleet Monitor** (Real-time status of 9 specialized BaseAgents, tasks completed counters, and swarm pulse trigger).
+19. `meetings/index.tsx`: **AI Meeting Scheduler & Briefing Studio** (Upcoming sessions timeline, acceptance metrics, and 1-click participant briefing dossiers).
+20. `custom-agents/index.tsx`: **No-Code Custom Agent Builder** (Visual custom agent provisioning, trigger bindings, prompt instructions, and tool assignments).
+21. `multi-language/index.tsx`: **Multi-Language & Localization Studio** (8 locale switchers, RTL/LTR layout synchronization, dynamic LLM translation cache).
+22. `reports/index.tsx`: **Executive Reports & Export Studio** (Deals, Leads, Voice Intelligence, Audit Logs with formula injection sanitization).
+23. `settings/index.tsx`: **Platform Governance, RBAC Users & Webhooks Hub** (User management, server metrics, outbound webhooks, and forensic audits).
+24. `settings/profile.tsx`: **User Profile & Diagnostics Studio** (RBAC telemetry, API gateway diagnostics, offline cache manager, and secure sign out).
+25. `explore.tsx`: **SaaS Fleet Showcase & ROI Calculator** (Capability overview, architecture specifications, and interactive ROI model).
+26. `voice/record.tsx`: **Dedicated Voice Note Recording Studio** (Pulsing waveform visualizer, recording timer, entity association, and AI summary preview).
+27. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, SSO shortcuts, role presets).
+28. `(auth)/register.tsx`: **Operator Provisioning Screen** (Full name, email, password strength meter, RBAC role assignment).
+29. `(auth)/forgot-password.tsx`: **Credential Recovery Screen** (Zero-enumeration reset token dispatch).
+30. `(auth)/reset-password.tsx`: **Password Overwrite Screen** (Single-use SHA-256 token verification & new password complexity validation).
+31. `(auth)/verify-email.tsx`: **Identity Verification Screen** (Mailbox confirmation & token validator).
+32. `unauthorized.tsx`: **403 Access Restriction Screen** (Insufficient privileges error, operator role telemetry, session termination).
+
 
 ---
 

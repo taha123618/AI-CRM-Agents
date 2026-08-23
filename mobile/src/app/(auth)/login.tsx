@@ -106,6 +106,14 @@ export default function LoginScreen() {
             secureTextEntry
           />
 
+          <View style={{ alignItems: 'flex-end', marginBottom: 12 }}>
+            <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password' as any)}>
+              <Text style={{ color: colors.primary, fontSize: 10, fontFamily: fonts.mono, fontWeight: '700' }}>
+                FORGOT PASSWORD?
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           {error ? (
             <Text
               style={{
@@ -125,19 +133,60 @@ export default function LoginScreen() {
             size="lg"
             isLoading={isLoading}
             onPress={handleLogin}
-            style={{ marginTop: 6 }}
+            style={{ marginTop: 2 }}
           />
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 14 }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+            <Text style={{ marginHorizontal: 8, color: colors.textMuted, fontSize: 9, fontFamily: fonts.mono }}>
+              OR SIGN IN WITH SSO
+            </Text>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+          </View>
+
+          <View style={{ gap: 6 }}>
+            <Button
+              title="GOOGLE WORKSPACE SSO"
+              variant="outline"
+              size="sm"
+              onPress={async () => {
+                const ok = await useAuthStore.getState().ssoLogin('google', `sso_google_${Date.now()}`);
+                if (ok) router.replace('/(tabs)' as any);
+              }}
+            />
+            <Button
+              title="MICROSOFT ENTRA SSO"
+              variant="outline"
+              size="sm"
+              onPress={async () => {
+                const ok = await useAuthStore.getState().ssoLogin('microsoft', `sso_ms_${Date.now()}`);
+                if (ok) router.replace('/(tabs)' as any);
+              }}
+            />
+          </View>
         </Card>
 
+        {/* Register Account Footer */}
+        <View style={{ marginTop: 18, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
+          <Text style={{ color: colors.textMuted, fontSize: 11, fontFamily: fonts.mono }}>
+            NEW TO FIELD COMMAND?
+          </Text>
+          <TouchableOpacity onPress={() => router.push('/(auth)/register' as any)}>
+            <Text style={{ color: colors.primary, fontSize: 11, fontFamily: fonts.mono, fontWeight: '700' }}>
+              ENROLL OPERATOR
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Quick Demo Preset Credentials */}
-        <View style={{ marginTop: 20, alignItems: 'center' }}>
+        <View style={{ marginTop: 18, alignItems: 'center' }}>
           <Text
             style={{
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: '600',
               color: colors.textMuted,
               fontFamily: fonts.mono,
-              marginBottom: 10,
+              marginBottom: 8,
               textTransform: 'uppercase',
             }}
           >
