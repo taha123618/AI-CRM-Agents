@@ -25,8 +25,10 @@ import {
   Users,
   Building2,
   Sparkles,
+  Menu,
 } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
+import { useSidebarStore } from '@/stores/sidebarStore';
 import { useDealsStore } from '@/stores/dealsStore';
 import { useVoiceNotesStore } from '@/stores/voiceNotesStore';
 import { useNotificationStore } from '@/stores/notificationStore';
@@ -45,6 +47,7 @@ export default function DashboardScreen() {
   const { notes, fetchNotes } = useVoiceNotesStore();
   const { fetchNotifications } = useNotificationStore();
   const { pendingCount, isSyncing, syncNow } = useOfflineSync();
+  const openSidebar = useSidebarStore((state) => state.openSidebar);
 
   useEffect(() => {
     fetchDeals();
@@ -73,7 +76,7 @@ export default function DashboardScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
-      {/* Top Header */}
+      {/* Tactical Field Command Header */}
       <View
         style={{
           paddingTop: 54,
@@ -149,7 +152,7 @@ export default function DashboardScreen() {
           {/* Platform Settings & Governance Hub */}
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => router.push('/settings' as any)}
+            onPress={() => router.push('/(tabs)/settings' as any)}
             style={{
               backgroundColor: colors.surface,
               borderColor: colors.border,
@@ -335,21 +338,23 @@ export default function DashboardScreen() {
 
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {[
-              { title: 'WAR ROOM', route: '/war-room', icon: '⚔️' },
-              { title: 'FORECASTING', route: '/forecasting', icon: '📈' },
-              { title: 'JOURNEY', route: '/journey', icon: '🧭' },
-              { title: 'AI SDR SEQUENCES', route: '/sequences', icon: '⚡' },
-              { title: 'VOICE AI STUDIO', route: '/voice-ai', icon: '🎙️' },
-              { title: 'WHATSAPP HUB', route: '/whatsapp', icon: '💬' },
-              { title: 'EMAIL INTEL', route: '/emails', icon: '✉️' },
-              { title: 'ANALYTICS', route: '/analytics', icon: '📊' },
-              { title: 'AGENTS SWARM', route: '/agents', icon: '🤖' },
-              { title: 'MEETINGS', route: '/meetings', icon: '📅' },
-              { title: 'CUSTOM AGENTS', route: '/custom-agents', icon: '🛠️' },
-              { title: 'REPORTS & EXPORT', route: '/reports', icon: '📋' },
-              { title: 'MULTI-LANGUAGE', route: '/multi-language', icon: '🌐' },
-              { title: 'GOVERNANCE & RBAC', route: '/settings', icon: '🛡️' },
-              { title: 'FLEET SHOWCASE', route: '/explore', icon: '✨' },
+              { title: 'LEADS & BANT', route: '/(tabs)/leads', icon: '🎯' },
+              { title: 'CUSTOMER 360', route: '/(tabs)/customers', icon: '🔄' },
+              { title: 'WAR ROOM', route: '/(tabs)/war-room', icon: '⚔️' },
+              { title: 'FORECASTING', route: '/(tabs)/forecasting', icon: '📈' },
+              { title: 'JOURNEY', route: '/(tabs)/journey', icon: '🧭' },
+              { title: 'AI SDR SEQUENCES', route: '/(tabs)/sequences', icon: '⚡' },
+              { title: 'VOICE AI STUDIO', route: '/(tabs)/voice-ai', icon: '🎙️' },
+              { title: 'WHATSAPP HUB', route: '/(tabs)/whatsapp', icon: '💬' },
+              { title: 'EMAIL INTEL', route: '/(tabs)/emails', icon: '✉️' },
+              { title: 'ANALYTICS', route: '/(tabs)/analytics', icon: '📊' },
+              { title: 'AGENTS SWARM', route: '/(tabs)/agents', icon: '🤖' },
+              { title: 'MEETINGS', route: '/(tabs)/meetings', icon: '📅' },
+              { title: 'CUSTOM AGENTS', route: '/(tabs)/custom-agents', icon: '🛠️' },
+              { title: 'REPORTS & EXPORT', route: '/(tabs)/reports', icon: '📋' },
+              { title: 'MULTI-LANGUAGE', route: '/(tabs)/multi-language', icon: '🌐' },
+              { title: 'GOVERNANCE & RBAC', route: '/(tabs)/settings', icon: '🛡️' },
+              { title: 'FLEET SHOWCASE', route: '/(tabs)/explore', icon: '✨' },
             ].map((mod, idx) => (
               <TouchableOpacity
                 key={idx}

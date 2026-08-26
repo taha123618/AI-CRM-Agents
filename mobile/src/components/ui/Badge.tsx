@@ -64,7 +64,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <View style={[containerStyle, style]}>
-      <Text style={textStyle}>{label}</Text>
+      <Text style={textStyle}>{String(label || '')}</Text>
     </View>
   );
 };

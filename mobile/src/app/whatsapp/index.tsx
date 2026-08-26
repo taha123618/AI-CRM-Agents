@@ -108,7 +108,7 @@ export default function WhatsAppScreen() {
                     {chat.contact}
                   </Text>
                   <Badge
-                    label={chat.status.toUpperCase()}
+                    label={String(chat.status || 'ACTIVE').toUpperCase()}
                     variant={chat.status === 'ai_autopilot' ? 'success' : 'primary'}
                   />
                 </View>
@@ -136,7 +136,7 @@ export default function WhatsAppScreen() {
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
               <Bot size={16} color={colors.primary} />
               <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary }}>
-                REPLY AS CO-PILOT TO {selectedChat.contact.toUpperCase()}
+                REPLY AS CO-PILOT TO {String(selectedChat.contact || '').toUpperCase()}
               </Text>
             </View>
 

@@ -186,7 +186,7 @@ export default function EmailsScreen() {
                   {em.subject}
                 </Text>
                 <Badge
-                  label={em.sentiment.toUpperCase()}
+                  label={String(em?.sentiment || 'NEUTRAL').toUpperCase()}
                   variant={em.sentiment === 'positive' ? 'success' : 'warning'}
                 />
               </View>
@@ -199,7 +199,7 @@ export default function EmailsScreen() {
                 <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
                   {em.date}
                 </Text>
-                <Badge label={`${em.urgency.toUpperCase()} URGENCY`} variant={em.urgency === 'high' ? 'danger' : 'primary'} />
+                <Badge label={`${String(em?.urgency || 'MEDIUM').toUpperCase()} URGENCY`} variant={em.urgency === 'high' ? 'danger' : 'primary'} />
               </View>
             </Card>
           ))}

@@ -146,7 +146,7 @@ export const Button: React.FC<ButtonProps> = ({
         <>
           {icon && <>{icon}</>}
           <Text style={[getTextStyle(), icon ? { marginLeft: 8 } : undefined, textStyle]}>
-            {title}
+            {String(title ?? '')}
           </Text>
         </>
       )}

@@ -129,7 +129,7 @@ export default function SequencesScreen() {
                 <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
                   Enrolled Leads: <Text style={{ color: colors.text, fontWeight: '700' }}>{seq.enrolled_count}</Text>
                 </Text>
-                <Badge label={seq.status.toUpperCase()} variant="primary" />
+                <Badge label={String(seq?.status || 'ACTIVE').toUpperCase()} variant="primary" />
               </View>
 
               {enrolledSuccess === seq.id ? (

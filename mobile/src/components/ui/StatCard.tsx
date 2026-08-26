@@ -65,7 +65,7 @@ export const StatCard: React.FC<StatCardProps> = ({
             fontFamily: fonts.mono,
           }}
         >
-          {label}
+          {String(label || '')}
         </Text>
         {icon && <View>{icon}</View>}
       </View>

@@ -125,7 +125,7 @@ export default function AgentsScreen() {
                   </Text>
                 </View>
                 <Badge
-                  label={agent.status.toUpperCase()}
+                  label={String(agent?.status || 'ONLINE').toUpperCase()}
                   variant={agent.status === 'running' || agent.status === 'active' ? 'success' : 'warning'}
                 />
               </View>

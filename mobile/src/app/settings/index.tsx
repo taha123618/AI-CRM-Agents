@@ -138,7 +138,7 @@ export default function SettingsHubScreen() {
                 <StatCard label="TOTAL OPERATORS" value={users.length} subValue="4 active accounts" trend="up" variant="primary" />
               </View>
               <View style={{ flex: 1 }}>
-                <StatCard label="YOUR ROLE" value={user?.role?.toUpperCase() || 'ADMIN'} subValue="Full Access" trend="up" variant="success" />
+                <StatCard label="YOUR ROLE" value={String(user?.role || 'ADMIN').toUpperCase()} subValue="Full Access" trend="up" variant="success" />
               </View>
             </View>
 
@@ -154,7 +154,7 @@ export default function SettingsHubScreen() {
                       {usr.name}
                     </Text>
                     <Badge
-                      label={usr.role.toUpperCase()}
+                      label={String(usr.role || 'USER').toUpperCase()}
                       variant={usr.role === 'admin' ? 'purple' : usr.role === 'sales' ? 'primary' : 'info'}
                     />
                   </View>
@@ -162,7 +162,7 @@ export default function SettingsHubScreen() {
                     {usr.email}
                   </Text>
                   <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
-                    Last Active: {usr.last_active} • Status: {usr.status.toUpperCase()}
+                    Last Active: {usr.last_active} • Status: {String(usr.status || 'ACTIVE').toUpperCase()}
                   </Text>
                 </Card>
               ))}

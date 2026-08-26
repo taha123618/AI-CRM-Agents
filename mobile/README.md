@@ -57,63 +57,81 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 
 ## 🏗️ Architecture & Directory Structure
 
-60: ```text
-61: mobile/
-62: ├── src/
-63: │   ├── app/                      # Expo Router File-Based Routing (43 Static Routes)
-64: │   │   ├── (auth)/               # Authentication, Provisioning & Recovery Suite
-65: │   │   │   ├── login.tsx         # Tactical Login & SSO Gateways
-66: │   │   │   ├── register.tsx      # Operator Provisioning & RBAC Level Assignment
-67: │   │   │   ├── forgot-password.tsx# Cryptographic Recovery Token Dispatch
-68: │   │   │   ├── reset-password.tsx# SHA-256 Token Overwrite Form
-69: │   │   │   └── verify-email.tsx  # Mailbox Verification & Token Validation
-70: │   │   ├── (tabs)/               # Bottom Tab Navigator
-71: │   │   │   ├── _layout.tsx
-72: │   │   │   ├── index.tsx         # Tactical Command Dashboard & Studio Launchers
-73: │   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor (+ NEW DEAL)
-74: │   │   │   ├── activities.tsx    # Voice Notes & Activity Logging (Playback & Checklists)
-75: │   │   │   ├── workflows.tsx     # Workflow Trigger Studio (Full CRUD)
-76: │   │   │   └── notifications.tsx # Real-Time Notification Center (Triage Tabs)
-77: │   │   ├── deals/
-78: │   │   │   └── [id].tsx          # Deal Details & Dynamic Custom Fields
-79: │   │   ├── leads/
-80: │   │   │   └── index.tsx         # Leads & BANT Radar (Qualify, WhatsApp, Convert to Deal)
-81: │   │   ├── customers/
-82: │   │   │   └── index.tsx         # Customer 360 & Churn Prevention Radar
-83: │   │   ├── war-room/
-84: │   │   │   └── index.tsx         # Deal War Room & Strategy Studio (Consensus, SWOT, Proposals)
-85: │   │   ├── forecasting/
-86: │   │   │   └── index.tsx         # Stochastic Monte Carlo Revenue Forecasting (P10/P50/P90)
-87: │   │   ├── journey/
-88: │   │   │   └── index.tsx         # Customer Lifecycle Journey & Churn Retention Studio
-89: │   │   ├── sequences/
-90: │   │   │   └── index.tsx         # AI SDR Multi-Touch Outreach Cadences (Email/WhatsApp/Voice)
-91: │   │   ├── voice-ai/
-92: │   │   │   └── index.tsx         # Voice AI Call Intelligence & Objection Battlecards
-93: │   │   ├── whatsapp/
-94: │   │   │   └── index.tsx         # WhatsApp Business Multi-Agent Hub (24/7 AI Auto-Pilot)
-95: │   │   ├── emails/
-96: │   │   │   └── index.tsx         # Autonomous Email Intelligence & Task Queue Outbound
-97: │   │   ├── analytics/
-98: │   │   │   └── index.tsx         # Executive Analytics, Velocity & Rep Leaderboards
-99: │   │   ├── agents/
-100: │   │   │   └── index.tsx         # AI Agents Swarm Fleet Monitor & Swarm Pulse
-101: │   │   ├── meetings/
-102: │   │   │   └── index.tsx         # Meeting Scheduler & AI Participant Briefing Studio
-103: │   │   ├── custom-agents/
-104: │   │   │   └── index.tsx         # No-Code Custom Agent Builder & Playground
-105: │   │   ├── multi-language/
-106: │   │   │   └── index.tsx         # Multi-Language Localization & RTL/LTR Synchronization
-107: │   │   ├── reports/
-108: │   │   │   └── index.tsx         # Executive Reports & Formula-Sanitized CSV Exports
-109: │   │   ├── settings/
-110: │   │   │   ├── index.tsx         # Platform Governance, RBAC Users, Webhooks & Audits Hub
-111: │   │   │   └── profile.tsx       # User Profile, Server Diagnostics & Cache Manager
-112: │   │   ├── explore.tsx           # Interactive SaaS Showcase & ROI Calculator Explorer
-113: │   │   ├── voice/
-114: │   │   │   └── record.tsx        # Voice Audio Intelligence Studio
-115: │   │   ├── unauthorized.tsx      # 403 Insufficient Privileges Tactical Screen
-116: │   │   └── _layout.tsx           # Root Theme & Animated Splash Layout
+```text
+mobile/
+├── src/
+│   ├── app/                      # Expo Router File-Based Routing (78 Static Routes)
+│   │   ├── (auth)/               # Authentication, Provisioning & Recovery Suite
+│   │   │   ├── login.tsx         # Tactical Login & SSO Gateways
+│   │   │   ├── register.tsx      # Operator Provisioning & RBAC Level Assignment
+│   │   │   ├── forgot-password.tsx# Cryptographic Recovery Token Dispatch
+│   │   │   ├── reset-password.tsx# SHA-256 Token Overwrite Form
+│   │   │   └── verify-email.tsx  # Mailbox Verification & Token Validation
+│   │   ├── (tabs)/               # Bottom Tab Navigator (All 18 Features Integrated)
+│   │   │   ├── _layout.tsx       # 5 Primary Bottom Bar Tabs + 13 In-Tab Feature Screens
+│   │   │   ├── index.tsx         # Tactical Command Dashboard & Studio Launchers
+│   │   │   ├── deals.tsx         # Deals & Pipeline Health Monitor (+ NEW DEAL)
+│   │   │   ├── studios.tsx       # AI Command Studios & Feature Modules Hub
+│   │   │   ├── activities.tsx    # Voice Notes & Activity Logging (Playback & Checklists)
+│   │   │   ├── notifications.tsx # Real-Time Notification Center (Triage Tabs)
+│   │   │   ├── leads.tsx         # In-Tab Leads & BANT Radar
+│   │   │   ├── customers.tsx     # In-Tab Customer 360 & Churn Radar
+│   │   │   ├── war-room.tsx      # In-Tab Deal War Room & Strategy Studio
+│   │   │   ├── forecasting.tsx   # In-Tab Monte Carlo ARR Forecasting
+│   │   │   ├── journey.tsx       # In-Tab Autonomous Customer Journey
+│   │   │   ├── sequences.tsx     # In-Tab AI SDR Multi-Touch Sequences
+│   │   │   ├── voice-ai.tsx      # In-Tab Voice AI Call Intelligence Studio
+│   │   │   ├── whatsapp.tsx      # In-Tab WhatsApp Multi-Agent Hub
+│   │   │   ├── emails.tsx        # In-Tab Autonomous Email Intelligence
+│   │   │   ├── analytics.tsx     # In-Tab Executive Analytics & Velocity
+│   │   │   ├── agents.tsx        # In-Tab AI Agents Swarm Fleet Monitor
+│   │   │   ├── meetings.tsx      # In-Tab Meeting Scheduler & Dossiers
+│   │   │   ├── custom-agents.tsx # In-Tab Custom Agent Builder
+│   │   │   ├── workflows.tsx     # In-Tab Workflow Trigger Studio (Full CRUD)
+│   │   │   ├── reports.tsx       # In-Tab Executive Reports & CSV Export
+│   │   │   ├── multi-language.tsx# In-Tab Multi-Language Localization
+│   │   │   ├── settings.tsx      # In-Tab Platform Governance & Security
+│   │   │   └── explore.tsx       # In-Tab SaaS Showcase & ROI Calculator
+│   │   ├── deals/
+│   │   │   └── [id].tsx          # Deal Details & Dynamic Custom Fields
+│   │   ├── leads/
+│   │   │   └── index.tsx         # Standalone Leads & BANT Radar
+│   │   ├── customers/
+│   │   │   └── index.tsx         # Standalone Customer 360 & Churn Prevention Radar
+│   │   ├── war-room/
+│   │   │   └── index.tsx         # Standalone Deal War Room & Strategy Studio
+│   │   ├── forecasting/
+│   │   │   └── index.tsx         # Standalone Monte Carlo Revenue Forecasting
+│   │   ├── journey/
+│   │   │   └── index.tsx         # Standalone Customer Lifecycle Journey
+│   │   ├── sequences/
+│   │   │   └── index.tsx         # Standalone AI SDR Multi-Touch Outreach
+│   │   ├── voice-ai/
+│   │   │   └── index.tsx         # Standalone Voice AI Call Intelligence
+│   │   ├── whatsapp/
+│   │   │   └── index.tsx         # Standalone WhatsApp Business Multi-Agent Hub
+│   │   ├── emails/
+│   │   │   └── index.tsx         # Standalone Autonomous Email Intelligence
+│   │   ├── analytics/
+│   │   │   └── index.tsx         # Standalone Executive Analytics & Velocity
+│   │   ├── agents/
+│   │   │   └── index.tsx         # Standalone AI Agents Swarm Fleet Monitor
+│   │   ├── meetings/
+│   │   │   └── index.tsx         # Standalone Meeting Scheduler & Dossiers
+│   │   ├── custom-agents/
+│   │   │   └── index.tsx         # Standalone No-Code Custom Agent Builder
+│   │   ├── multi-language/
+│   │   │   └── index.tsx         # Standalone Multi-Language Localization
+│   │   ├── reports/
+│   │   │   └── index.tsx         # Standalone Executive Reports & CSV Exports
+│   │   ├── settings/
+│   │   │   ├── index.tsx         # Standalone Platform Governance & RBAC
+│   │   │   └── profile.tsx       # Standalone User Profile & Cache Manager
+│   │   ├── explore.tsx           # Standalone SaaS Showcase & ROI Calculator
+│   │   ├── voice/
+│   │   │   └── record.tsx        # Voice Audio Intelligence Studio
+│   │   ├── unauthorized.tsx      # 403 Insufficient Privileges Tactical Screen
+│   │   └── _layout.tsx           # Root Theme & Animated Splash Layout
 115: │   ├── components/               # Reusable Tactical UI Components
 116: │   │   ├── ui/
 117: │   │   │   ├── Button.tsx        # Tactile Button with Haptics

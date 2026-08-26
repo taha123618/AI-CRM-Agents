@@ -46,7 +46,7 @@ export const Input: React.FC<InputProps> = ({
             fontFamily: fonts.mono,
           }}
         >
-          {label}
+          {String(label)}
         </Text>
       )}
       <View

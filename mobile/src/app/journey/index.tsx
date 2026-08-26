@@ -152,7 +152,7 @@ export default function JourneyScreen() {
                   {st.count} Active Customer Accounts
                 </Text>
                 <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.primary, fontWeight: '700' }}>
-                  HEALTH: {st.health.toUpperCase()}
+                  HEALTH: {String(st?.health || 'GOOD').toUpperCase()}
                 </Text>
               </View>
             </Card>

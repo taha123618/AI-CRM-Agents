@@ -26,9 +26,11 @@ import {
   Play,
   Square,
   Sparkles,
+  Menu,
 } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
+import { useSidebarStore } from '@/stores/sidebarStore';
 import { useVoiceNotesStore } from '@/stores/voiceNotesStore';
 import { VoiceNote } from '@/types';
 import { Card } from '@/components/ui/Card';
@@ -45,6 +47,7 @@ const FILTER_TABS = [
 export default function ActivitiesScreen() {
   const { colors, fonts } = useTheme();
   const router = useRouter();
+  const openSidebar = useSidebarStore((state) => state.openSidebar);
 
   const { notes, isLoading, fetchNotes } = useVoiceNotesStore();
   const [completedTasks, setCompletedTasks] = useState<Record<string, boolean>>({});

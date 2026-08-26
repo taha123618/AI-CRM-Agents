@@ -16,9 +16,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Search, Filter, Briefcase, Plus, ArrowUpRight, X, DollarSign, Building, User } from 'lucide-react-native';
+import { Search, Filter, Briefcase, Plus, ArrowUpRight, X, DollarSign, Building, User, Menu } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
+import { useSidebarStore } from '@/stores/sidebarStore';
 import { useDealsStore } from '@/stores/dealsStore';
 import { DealStage, Deal, DealCreateInput } from '@/types';
 import { Card } from '@/components/ui/Card';
@@ -39,6 +40,7 @@ const STAGES: { key: DealStage | 'all'; label: string }[] = [
 export default function DealsScreen() {
   const { colors, fonts } = useTheme();
   const router = useRouter();
+  const openSidebar = useSidebarStore((state) => state.openSidebar);
 
   const { deals, isLoading, fetchDeals, createDeal, filterStage, setFilterStage, searchQuery, setSearchQuery } =
     useDealsStore();
@@ -282,7 +284,7 @@ export default function DealsScreen() {
                   <Text style={{ fontSize: 15, fontWeight: '800', color: colors.primary, fontFamily: fonts.mono }}>
                     ${item.value ? item.value.toLocaleString() : '0'}
                   </Text>
-                  <Badge label={item.stage.replace('_', ' ').toUpperCase()} variant="primary" />
+                  <Badge label={String(item?.stage || 'DISCOVERY').replace(/_/g, ' ').toUpperCase()} variant="primary" />
                 </View>
               </View>
 
@@ -374,7 +376,7 @@ export default function DealsScreen() {
                         }}
                       >
                         <Text style={{ fontSize: 11, fontWeight: '700', fontFamily: fonts.mono, color: active ? colors.primaryText : colors.textSecondary }}>
-                          {stg.toUpperCase()}
+                          {String(stg || '').toUpperCase()}
                         </Text>
                       </TouchableOpacity>
                     );

@@ -175,7 +175,7 @@ export default function ProfileSettingsScreen() {
                 {user?.email || 'admin@gmail.com'}
               </Text>
             </View>
-            <Badge label={user?.role?.toUpperCase() || 'ADMIN'} variant="primary" />
+            <Badge label={String(user?.role || 'ADMIN').toUpperCase()} variant="primary" />
           </View>
 
           <View style={{ paddingTop: 10, borderTopWidth: 1, borderTopColor: colors.borderMuted, gap: 6 }}>

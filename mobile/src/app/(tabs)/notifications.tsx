@@ -22,9 +22,11 @@ import {
   Info,
   ArrowRight,
   ShieldAlert,
+  Menu,
 } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
+import { useSidebarStore } from '@/stores/sidebarStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { NotificationItem } from '@/types';
 import { Card } from '@/components/ui/Card';
@@ -42,6 +44,7 @@ const ALERT_TABS = [
 export default function NotificationsScreen() {
   const { colors, fonts } = useTheme();
   const router = useRouter();
+  const openSidebar = useSidebarStore((state) => state.openSidebar);
 
   const { notifications, unreadCount, isLoading, fetchNotifications, markAsRead, markAllAsRead } =
     useNotificationStore();
@@ -75,7 +78,9 @@ export default function NotificationsScreen() {
 
   const handleNotificationPress = (item: NotificationItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    markAsRead(item.id);
+    if (!item.is_read) {
+      markAsRead(item.id);
+    }
     if (item.entity_type === 'deal' && item.entity_id) {
       router.push(`/deals/${item.entity_id}` as any);
     } else if (item.entity_type === 'lead') {
@@ -228,7 +233,7 @@ export default function NotificationsScreen() {
                   </Text>
 
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Badge label={item.type.replace('_', ' ').toUpperCase()} variant="info" />
+                    <Badge label={String(item?.type || 'ALERT').replace(/_/g, ' ').toUpperCase()} variant="info" />
                     {item.entity_id && (
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                         <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>

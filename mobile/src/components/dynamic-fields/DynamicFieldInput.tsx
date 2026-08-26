@@ -34,10 +34,15 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
   const { colors, fonts } = useTheme();
   const [selectModalVisible, setSelectModalVisible] = useState(false);
 
+  if (!definition) return null;
+
   const currentValue = value !== undefined ? value : definition.default_value;
+  const fieldKey = definition.field_key || '';
+  const fieldName = definition.name || 'Field';
+  const fieldType = definition.field_type || 'text';
 
   const renderControl = () => {
-    switch (definition.field_type) {
+    switch (fieldType) {
       case 'boolean':
         return (
           <View
@@ -57,7 +62,7 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
             </Text>
             <Switch
               value={!!currentValue}
-              onValueChange={(val) => onChange(definition.field_key, val)}
+              onValueChange={(val) => onChange(fieldKey, val)}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor={currentValue ? colors.primaryText : colors.textMuted}
             />
@@ -120,19 +125,18 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
                       color: colors.primary,
                       fontFamily: fonts.mono,
                       marginBottom: 12,
-                      textTransform: 'uppercase',
                     }}
                   >
-                    Select {definition.name}
+                    SELECT {fieldName.toUpperCase()}
                   </Text>
                   <FlatList
                     data={definition.options || []}
-                    keyExtractor={(item) => item}
+                    keyExtractor={(item) => String(item)}
                     renderItem={({ item }) => (
                       <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={() => {
-                          onChange(definition.field_key, item);
+                          onChange(fieldKey, item);
                           setSelectModalVisible(false);
                         }}
                         style={{
@@ -151,7 +155,7 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
                             fontFamily: currentValue === item ? fonts.mono : fonts.sans,
                           }}
                         >
-                          {item}
+                          {String(item)}
                         </Text>
                       </TouchableOpacity>
                     )}
@@ -183,7 +187,7 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
               borderRadius: 2,
             }}
           >
-            {definition.field_type === 'currency' && (
+            {fieldType === 'currency' && (
               <Text style={{ color: colors.primary, fontFamily: fonts.mono, fontWeight: '700', marginRight: 6 }}>
                 $
               </Text>
@@ -192,11 +196,11 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
               value={currentValue !== undefined && currentValue !== null ? String(currentValue) : ''}
               onChangeText={(text) => {
                 const num = text === '' ? '' : Number(text);
-                onChange(definition.field_key, isNaN(num as number) ? text : num);
+                onChange(fieldKey, isNaN(num as number) ? text : num);
               }}
               keyboardType="numeric"
               placeholderTextColor={colors.textMuted}
-              placeholder={definition.default_value ? String(definition.default_value) : '0'}
+              placeholder={definition.default_value !== undefined && definition.default_value !== null ? String(definition.default_value) : '0'}
               style={{
                 flex: 1,
                 paddingVertical: 10,
@@ -213,10 +217,10 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
       default:
         return (
           <TextInput
-            value={currentValue ? String(currentValue) : ''}
-            onChangeText={(text) => onChange(definition.field_key, text)}
+            value={currentValue !== undefined && currentValue !== null ? String(currentValue) : ''}
+            onChangeText={(text) => onChange(fieldKey, text)}
             placeholderTextColor={colors.textMuted}
-            placeholder={`Enter ${definition.name.toLowerCase()}...`}
+            placeholder={`Enter ${fieldName.toLowerCase()}...`}
             style={{
               backgroundColor: colors.surface,
               borderWidth: 1,
@@ -234,21 +238,25 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
 
   return (
     <View style={{ marginBottom: 14 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
-        <Text
-          style={{
-            fontSize: 12,
-            fontWeight: '600',
-            color: colors.textSecondary,
-            fontFamily: fonts.mono,
-            textTransform: 'uppercase',
-            letterSpacing: 0.5,
-          }}
-        >
-          {definition.name} {definition.is_required && <Text style={{ color: colors.danger }}>*</Text>}
-        </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: '600',
+              color: colors.textSecondary,
+              fontFamily: fonts.mono,
+              letterSpacing: 0.5,
+            }}
+          >
+            {fieldName.toUpperCase()}
+          </Text>
+          {definition.is_required ? (
+            <Text style={{ color: colors.danger, fontWeight: '700' }}>*</Text>
+          ) : null}
+        </View>
         <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>
-          [{definition.field_type}]
+          [{fieldType.toUpperCase()}]
         </Text>
       </View>
       {renderControl()}
