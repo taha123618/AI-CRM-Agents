@@ -68,7 +68,11 @@ export default function VerifyEmailScreen() {
         </Text>
       </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingBottom: 40 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Header Branding */}
         <View style={{ alignItems: 'center', marginBottom: 28 }}>
           <View

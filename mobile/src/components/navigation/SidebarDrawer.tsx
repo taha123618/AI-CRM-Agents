@@ -47,6 +47,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { useSidebarStore } from '@/stores/sidebarStore';
 import { useAuthStore } from '@/stores/authStore';
 import { Badge } from '@/components/ui/Badge';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface NavItem {
   name: string;
@@ -239,7 +240,7 @@ export function SidebarDrawer() {
           {/* Categorized Navigation List */}
           <ScrollView
             style={{ flex: 1 }}
-            contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 8, gap: 14 }}
+            contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 8, paddingBottom: 40, gap: 14 }}
             showsVerticalScrollIndicator={false}
           >
             {NAV_SECTIONS.map((section, sIdx) => {
@@ -329,6 +330,9 @@ export function SidebarDrawer() {
               gap: 8,
             }}
           >
+            {/* Theme Switcher in Drawer */}
+            <ThemeToggle showLabel size="md" style={{ width: '100%' }} />
+
             <TouchableOpacity
               onPress={() => handleNavigate('/(tabs)/settings')}
               style={{

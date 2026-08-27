@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
   TextInput,
   RefreshControl,
@@ -16,6 +15,7 @@ import {
   Alert,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import {
   GitBranch,
   Play,
@@ -316,10 +316,11 @@ export default function WorkflowsScreen() {
         </ScrollView>
       </View>
 
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredWorkflows}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={fetchWorkflows} tintColor={colors.primary} />
         }
@@ -494,7 +495,11 @@ export default function WorkflowsScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 24 }}>
+            <ScrollView
+              style={{ flexShrink: 1 }}
+              contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
+              showsVerticalScrollIndicator={true}
+            >
               <Input
                 label="TRIGGER NAME"
                 value={newWfName}
@@ -655,7 +660,11 @@ export default function WorkflowsScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 20 }}>
+            <ScrollView
+              style={{ flexShrink: 1 }}
+              contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
+              showsVerticalScrollIndicator={true}
+            >
               <Card variant="subtle">
                 <Text style={{ fontSize: 11, color: colors.textMuted, fontFamily: fonts.mono, marginBottom: 4 }}>
                   TRIGGER EVENT IDENTIFIER:
@@ -763,42 +772,44 @@ export default function WorkflowsScreen() {
               </TouchableOpacity>
             </View>
 
-            {selectedWorkflow && (
-              <View style={{ marginBottom: 12 }}>
-                <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text, marginBottom: 2 }}>
-                  {selectedWorkflow.name}
+            <ScrollView style={{ maxHeight: 380 }} contentContainerStyle={{ gap: 10, paddingBottom: 8 }}>
+              {selectedWorkflow && (
+                <View style={{ marginBottom: 4 }}>
+                  <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text, marginBottom: 2 }}>
+                    {selectedWorkflow.name}
+                  </Text>
+                  <Text style={{ fontSize: 11, color: colors.secondary, fontFamily: fonts.mono }}>
+                    Target Agent: {selectedWorkflow.action_agent}
+                  </Text>
+                </View>
+              )}
+
+              <View
+                style={{
+                  backgroundColor: colors.surface,
+                  padding: 12,
+                  borderRadius: 2,
+                  borderLeftWidth: 3,
+                  borderLeftColor: colors.success,
+                  marginBottom: 8,
+                }}
+              >
+                <Text style={{ fontSize: 10, color: colors.success, fontWeight: '700', fontFamily: fonts.mono, marginBottom: 4 }}>
+                  STATUS: MULTI-AGENT SWARM CONSENSUS [200 OK]
                 </Text>
-                <Text style={{ fontSize: 11, color: colors.secondary, fontFamily: fonts.mono }}>
-                  Target Agent: {selectedWorkflow.action_agent}
+                <Text style={{ fontSize: 12, color: colors.text, lineHeight: 18 }}>
+                  {lastExecutionResult?.message ||
+                    'Multi-agent consensus generated. Autonomous workflow actions queued successfully to Task Queue.'}
                 </Text>
               </View>
-            )}
 
-            <View
-              style={{
-                backgroundColor: colors.surface,
-                padding: 12,
-                borderRadius: 2,
-                borderLeftWidth: 3,
-                borderLeftColor: colors.success,
-                marginBottom: 16,
-              }}
-            >
-              <Text style={{ fontSize: 10, color: colors.success, fontWeight: '700', fontFamily: fonts.mono, marginBottom: 4 }}>
-                STATUS: MULTI-AGENT SWARM CONSENSUS [200 OK]
-              </Text>
-              <Text style={{ fontSize: 12, color: colors.text, lineHeight: 18 }}>
-                {lastExecutionResult?.message ||
-                  'Multi-agent consensus generated. Autonomous workflow actions queued successfully to Task Queue.'}
-              </Text>
-            </View>
-
-            <Button
-              title="DISMISS"
-              variant="primary"
-              size="md"
-              onPress={() => setModalVisible(false)}
-            />
+              <Button
+                title="DISMISS"
+                variant="primary"
+                size="md"
+                onPress={() => setModalVisible(false)}
+              />
+            </ScrollView>
           </View>
         </View>
       </Modal>

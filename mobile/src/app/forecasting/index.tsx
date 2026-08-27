@@ -12,6 +12,8 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatCard } from '@/components/ui/StatCard';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { RadarPulse } from '@/components/ui/RadarPulse';
 
 export default function ForecastingScreen() {
   const { colors, fonts } = useTheme();
@@ -80,56 +82,64 @@ export default function ForecastingScreen() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={loadData} tintColor={colors.primary} />}
       >
         {/* Run Simulation Trigger */}
-        <Button
-          title={isSimulating ? "COMPUTING 10,000 MONTE CARLO PATHS..." : "RUN STOCHASTIC SIMULATION"}
-          variant="primary"
-          size="md"
-          isLoading={isSimulating}
-          onPress={runSimulation}
-        />
+        <AnimatedEntrance animation="fadeInDown" delay={40}>
+          <Button
+            title={isSimulating ? "COMPUTING 10,000 MONTE CARLO PATHS..." : "RUN STOCHASTIC SIMULATION"}
+            variant="primary"
+            size="md"
+            icon={<RadarPulse size={10} color={colors.primaryText} style={{ marginRight: 6 }} />}
+            isLoading={isSimulating}
+            onPress={runSimulation}
+          />
+        </AnimatedEntrance>
 
         {/* Confidence Interval Telemetry Cards */}
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <View style={{ flex: 1 }}>
-            <Card style={{ padding: 10, borderColor: colors.warning }}>
-              <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.warning, fontWeight: '700' }}>P10 (CONSERVATIVE)</Text>
-              <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text, marginVertical: 4 }}>
-                {data ? formatCurrency(data.p10_conservative) : '$0'}
-              </Text>
-              <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>90% CONFIDENCE</Text>
-            </Card>
-          </View>
+        <AnimatedEntrance animation="fadeInUp" delay={100}>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            <View style={{ flex: 1 }}>
+              <Card style={{ padding: 10, borderColor: colors.warning, marginBottom: 0 }}>
+                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.warning, fontWeight: '700' }}>P10 (CONSERVATIVE)</Text>
+                <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text, marginVertical: 4 }}>
+                  {data ? formatCurrency(data.p10_conservative) : '$0'}
+                </Text>
+                <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>90% CONFIDENCE</Text>
+              </Card>
+            </View>
 
-          <View style={{ flex: 1 }}>
-            <Card variant="highlight" style={{ padding: 10 }}>
-              <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.primary, fontWeight: '700' }}>P50 (EXPECTED)</Text>
-              <Text style={{ fontSize: 16, fontWeight: '800', color: colors.primary, marginVertical: 4 }}>
-                {data ? formatCurrency(data.p50_expected) : '$0'}
-              </Text>
-              <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>BASE ARR TARGET</Text>
-            </Card>
-          </View>
+            <View style={{ flex: 1 }}>
+              <Card variant="highlight" style={{ padding: 10, marginBottom: 0 }}>
+                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.primary, fontWeight: '700' }}>P50 (EXPECTED)</Text>
+                <Text style={{ fontSize: 16, fontWeight: '800', color: colors.primary, marginVertical: 4 }}>
+                  {data ? formatCurrency(data.p50_expected) : '$0'}
+                </Text>
+                <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>BASE ARR TARGET</Text>
+              </Card>
+            </View>
 
-          <View style={{ flex: 1 }}>
-            <Card style={{ padding: 10, borderColor: colors.success }}>
-              <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.success, fontWeight: '700' }}>P90 (OPTIMISTIC)</Text>
-              <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text, marginVertical: 4 }}>
-                {data ? formatCurrency(data.p90_optimistic) : '$0'}
-              </Text>
-              <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>MAX VELOCITY</Text>
-            </Card>
+            <View style={{ flex: 1 }}>
+              <Card style={{ padding: 10, borderColor: colors.success, marginBottom: 0 }}>
+                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.success, fontWeight: '700' }}>P90 (OPTIMISTIC)</Text>
+                <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text, marginVertical: 4 }}>
+                  {data ? formatCurrency(data.p90_optimistic) : '$0'}
+                </Text>
+                <Text style={{ fontSize: 8, fontFamily: fonts.mono, color: colors.textMuted }}>MAX VELOCITY</Text>
+              </Card>
+            </View>
           </View>
-        </View>
+        </AnimatedEntrance>
 
         {/* Pipeline Stage Velocity & Conversion Matrix */}
-        <Card style={{ padding: 14 }}>
-          <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary, marginBottom: 10 }}>
-            STAGE VELOCITY & HAZARD CONVERSION
-          </Text>
+        <AnimatedEntrance animation="fadeInUp" delay={160}>
+          <Card style={{ padding: 14 }}>
+            <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary, marginBottom: 10 }}>
+              STAGE VELOCITY & HAZARD CONVERSION
+            </Text>
 
           <View style={{ gap: 8 }}>
             {data?.stage_velocity?.map((sv: any, idx: number) => (
@@ -157,8 +167,10 @@ export default function ForecastingScreen() {
             ))}
           </View>
         </Card>
+      </AnimatedEntrance>
 
-        {/* AI Executive Commentary */}
+      {/* AI Executive Commentary */}
+      <AnimatedEntrance animation="fadeInUp" delay={220}>
         <Card variant="highlight" style={{ padding: 14 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <Sparkles size={16} color={colors.primary} />
@@ -170,7 +182,8 @@ export default function ForecastingScreen() {
             Stochastic modeling indicates 74% probability of exceeding quarterly ARR target if stalled deals in Proposal stage are accelerated within 7 days.
           </Text>
         </Card>
-      </ScrollView>
-    </View>
-  );
+      </AnimatedEntrance>
+    </ScrollView>
+  </View>
+);
 }

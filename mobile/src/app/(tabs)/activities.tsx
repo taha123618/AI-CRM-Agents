@@ -6,13 +6,13 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   TextInput,
   RefreshControl,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import {
   Mic,
@@ -36,6 +36,9 @@ import { VoiceNote } from '@/types';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
+import { VoicePlaybackService } from '@/services/voicePlaybackService';
 
 const FILTER_TABS = [
   { key: 'all', label: 'ALL DEBRIEFS' },
@@ -57,26 +60,39 @@ export default function ActivitiesScreen() {
 
   useEffect(() => {
     fetchNotes();
+    return () => {
+      VoicePlaybackService.stopVoice();
+    };
   }, []);
 
   const toggleTask = (taskId: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    } catch {}
     setCompletedTasks((prev) => ({
       ...prev,
       [taskId]: !prev[taskId],
     }));
   };
 
-  const handlePlayToggle = (noteId: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (playingId === noteId) {
+  const handlePlayToggle = async (note: VoiceNote) => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    } catch {}
+
+    if (playingId === note.id) {
+      await VoicePlaybackService.stopVoice();
       setPlayingId(null);
     } else {
-      setPlayingId(noteId);
-      // Auto stop after 5s simulation
-      setTimeout(() => {
-        setPlayingId((curr) => (curr === noteId ? null : curr));
-      }, 5000);
+      setPlayingId(note.id);
+      const textToSpeak = `${note.title}. Executive summary: ${note.summary}. Transcript snippet: ${note.transcript}`;
+
+      await VoicePlaybackService.playVoice(textToSpeak, {
+        onStart: () => setPlayingId(note.id),
+        onDone: () => setPlayingId(null),
+        onStopped: () => setPlayingId(null),
+        rate: 1.05,
+      });
     }
   };
 
@@ -179,32 +195,45 @@ export default function ActivitiesScreen() {
           {FILTER_TABS.map((tab) => {
             const active = selectedFilter === tab.key;
             return (
-              <TouchableOpacity
+              <ScalePressable
                 key={tab.key}
-                onPress={() => setSelectedFilter(tab.key)}
+                scaleTo={0.94}
+                onPress={() => {
+                  try {
+                    Haptics.selectionAsync();
+                  } catch {}
+                  setSelectedFilter(tab.key);
+                }}
                 style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
                   borderRadius: 2,
                   backgroundColor: active ? colors.primary : colors.surface,
                   borderColor: active ? colors.primary : colors.border,
                   borderWidth: 1,
                 }}
               >
-                <Text style={{ fontSize: 10, fontWeight: '700', fontFamily: fonts.mono, color: active ? colors.primaryText : colors.textSecondary }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: '700',
+                    fontFamily: fonts.mono,
+                    color: active ? colors.primaryText : colors.textSecondary,
+                  }}
+                >
                   {tab.label}
                 </Text>
-              </TouchableOpacity>
+              </ScalePressable>
             );
           })}
         </ScrollView>
       </View>
 
-      {/* Notes List */}
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredNotes}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={fetchNotes} tintColor={colors.primary} />
         }
@@ -224,11 +253,12 @@ export default function ActivitiesScreen() {
             />
           </Card>
         }
-        renderItem={({ item: note }) => {
+        renderItem={({ item: note, index }) => {
           const isPlaying = playingId === note.id;
 
           return (
-            <Card key={note.id} style={{ marginBottom: 14 }}>
+            <AnimatedEntrance animation="fadeInUp" index={index} staggerMs={40}>
+              <Card key={note.id} style={{ marginBottom: 14 }}>
               {/* Title & Intent Score */}
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
                 <View style={{ flex: 1, marginRight: 8 }}>
@@ -259,7 +289,7 @@ export default function ActivitiesScreen() {
                 />
               </View>
 
-              {/* Audio Playback Simulation Bar */}
+              {/* Audio Playback Bar with Real Speech Synthesis */}
               <View
                 style={{
                   flexDirection: 'row',
@@ -274,7 +304,7 @@ export default function ActivitiesScreen() {
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => handlePlayToggle(note.id)}
+                  onPress={() => handlePlayToggle(note)}
                   style={{
                     width: 28,
                     height: 28,
@@ -293,13 +323,22 @@ export default function ActivitiesScreen() {
 
                 <View style={{ flex: 1 }}>
                   <View style={{ height: 4, backgroundColor: colors.border, borderRadius: 2, overflow: 'hidden' }}>
-                    <View style={{ height: '100%', width: isPlaying ? '70%' : '0%', backgroundColor: colors.primary }} />
+                    <View
+                      style={{
+                        height: '100%',
+                        width: isPlaying ? '100%' : '0%',
+                        backgroundColor: isPlaying ? colors.primary : colors.textMuted,
+                      }}
+                    />
                   </View>
                 </View>
 
-                <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>
-                  {isPlaying ? 'PLAYING...' : `00:${note.duration_seconds < 10 ? '0' : ''}${note.duration_seconds}`}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  {isPlaying && <Volume2 size={12} color={colors.primary} />}
+                  <Text style={{ fontSize: 10, color: isPlaying ? colors.primary : colors.textMuted, fontFamily: fonts.mono, fontWeight: isPlaying ? '700' : '400' }}>
+                    {isPlaying ? 'AUDIO ACTIVE' : `00:${note.duration_seconds < 10 ? '0' : ''}${note.duration_seconds}`}
+                  </Text>
+                </View>
               </View>
 
               {/* AI Summary */}
@@ -413,8 +452,9 @@ export default function ActivitiesScreen() {
                 />
               </View>
             </Card>
-          );
-        }}
+          </AnimatedEntrance>
+        );
+      }}
       />
     </View>
   );

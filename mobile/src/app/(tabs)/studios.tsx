@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 import {
   Sparkles,
   Search,
@@ -31,7 +32,10 @@ import {
 import { useTheme } from '@/hooks/useTheme';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
 import { StatCard } from '@/components/ui/StatCard';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface StudioItem {
   id: string;
@@ -296,7 +300,10 @@ export default function StudiosHubScreen() {
             AI COMMAND STUDIOS
           </Text>
         </View>
-        <Badge label="17 MODULES" variant="primary" />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <ThemeToggle size="sm" />
+          <Badge label="17 MODULES" variant="primary" />
+        </View>
       </View>
 
       {/* Search & Filter Bar */}
@@ -333,82 +340,94 @@ export default function StudiosHubScreen() {
         {/* Category Pills */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6 }}>
           {categories.map((cat) => {
-            const isActive = selectedCategory === cat;
+            const active = selectedCategory === cat;
             return (
-              <TouchableOpacity
+              <ScalePressable
                 key={cat}
-                onPress={() => setSelectedCategory(cat)}
+                scaleTo={0.94}
+                onPress={() => {
+                  try {
+                    Haptics.selectionAsync();
+                  } catch {}
+                  setSelectedCategory(cat);
+                }}
                 style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  backgroundColor: isActive ? colors.primary : colors.surface,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 2,
+                  backgroundColor: active ? colors.primary : colors.surface,
+                  borderColor: active ? colors.primary : colors.border,
                   borderWidth: 1,
-                  borderColor: isActive ? colors.primary : colors.border,
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 9,
+                    fontSize: 10,
+                    fontWeight: '700',
                     fontFamily: fonts.mono,
-                    fontWeight: '800',
-                    color: isActive ? colors.background : colors.textSecondary,
+                    color: active ? colors.primaryText : colors.textSecondary,
                   }}
                 >
                   {cat}
                 </Text>
-              </TouchableOpacity>
+              </ScalePressable>
             );
           })}
         </ScrollView>
       </View>
 
       {/* Grid of Studios */}
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 10 }}>
-        {filteredStudios.map((studio) => {
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 10, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
+        {filteredStudios.map((studio, index) => {
           const Icon = studio.icon;
           return (
-            <TouchableOpacity
-              key={studio.id}
-              activeOpacity={0.7}
-              onPress={() => router.push(studio.route as any)}
-            >
-              <Card style={{ padding: 14 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <View
-                      style={{
-                        width: 32,
-                        height: 32,
-                        backgroundColor: colors.surface,
-                        borderWidth: 1,
-                        borderColor: colors.border,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Icon size={16} color={colors.primary} />
+            <AnimatedEntrance key={studio.id} animation="fadeInUp" index={index} staggerMs={35}>
+              <ScalePressable
+                scaleTo={0.98}
+                onPress={() => router.push(studio.route as any)}
+              >
+                <Card style={{ padding: 14, marginBottom: 0 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                      <View
+                        style={{
+                          width: 32,
+                          height: 32,
+                          backgroundColor: colors.surface,
+                          borderWidth: 1,
+                          borderColor: colors.border,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Icon size={16} color={colors.primary} />
+                      </View>
+                      <View>
+                        <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+                          {studio.title}
+                        </Text>
+                        <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
+                          {studio.category}
+                        </Text>
+                      </View>
                     </View>
-                    <View>
-                      <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
-                        {studio.title}
-                      </Text>
-                      <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
-                        {studio.category}
-                      </Text>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                      <Badge label={studio.badge} variant={studio.badgeVariant} size="sm" />
+                      <ArrowRight size={14} color={colors.textMuted} />
                     </View>
                   </View>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                    <Badge label={studio.badge} variant={studio.badgeVariant} size="sm" />
-                    <ArrowRight size={14} color={colors.textMuted} />
-                  </View>
-                </View>
-
-                <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, lineHeight: 16 }}>
-                  {studio.desc}
-                </Text>
-              </Card>
-            </TouchableOpacity>
+                  <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, lineHeight: 16 }}>
+                    {studio.desc}
+                  </Text>
+                </Card>
+              </ScalePressable>
+            </AnimatedEntrance>
           );
         })}
       </ScrollView>

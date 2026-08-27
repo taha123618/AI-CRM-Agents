@@ -481,10 +481,11 @@ class ApiClient {
   // DYNAMIC VOICE AI CALLS & NOTES METHODS
   // ==========================================
   async getVoiceNotes(): Promise<VoiceNote[]> {
+    const localNotes = await OfflineStorage.getCachedVoiceNotes();
     try {
       const res = await this.client.get('/api/voice-calls');
       if (Array.isArray(res.data)) {
-        const notes: VoiceNote[] = res.data.map((c: any) => ({
+        const remoteNotes: VoiceNote[] = res.data.map((c: any) => ({
           id: String(c.id),
           title: c.summary ? `Debrief: ${c.contact_name}` : `Voice Call with ${c.contact_name}`,
           duration_seconds: c.duration_seconds || 60,
@@ -499,15 +500,19 @@ class ApiClient {
           created_at: c.created_at || new Date().toISOString(),
           is_synced: true,
         }));
-        await OfflineStorage.saveCachedVoiceNotes(notes);
-        return notes;
+
+        // Preserve locally created notes that haven't been wiped
+        const unsyncedOrLocal = localNotes.filter((n) => !n.is_synced || !remoteNotes.some((r) => r.id === n.id));
+        const merged = [...unsyncedOrLocal, ...remoteNotes];
+        await OfflineStorage.saveCachedVoiceNotes(merged);
+        return merged;
       }
     } catch (e) {
       if (Config.IS_DEV) {
         console.log('[ApiClient] Fetching voice notes from offline cache');
       }
     }
-    return await OfflineStorage.getCachedVoiceNotes();
+    return localNotes;
   }
 
   async saveVoiceNote(note: Omit<VoiceNote, 'id' | 'created_at' | 'is_synced'>): Promise<VoiceNote> {
@@ -1153,24 +1158,52 @@ class ApiClient {
   // OFFLINE QUEUE SYNC
   // ==========================================
   async syncOfflineQueue(): Promise<{ syncedCount: number }> {
-    const queue = await OfflineStorage.getOfflineQueue();
-    let synced = 0;
-    for (const action of queue) {
-      try {
-        await this.client.request({
-          url: action.endpoint,
-          method: action.method,
-          data: action.payload,
-        });
-        await OfflineStorage.dequeueOfflineAction(action.id);
-        synced++;
-      } catch (e) {
-        if (Config.IS_DEV) {
-          console.warn(`[ApiClient] Failed to sync offline action ${action.id}`, e);
+    try {
+      const token = await AsyncStorage.getItem(Config.STORAGE_KEYS.AUTH_TOKEN);
+      if (!token) {
+        // Unauthenticated session: wait until user logs in before syncing offline actions
+        return { syncedCount: 0 };
+      }
+
+      const queue = await OfflineStorage.getOfflineQueue();
+      if (queue.length === 0) {
+        return { syncedCount: 0 };
+      }
+
+      let synced = 0;
+      for (const action of queue) {
+        try {
+          await this.client.request({
+            url: action.endpoint,
+            method: action.method,
+            data: action.payload,
+          });
+          await OfflineStorage.dequeueOfflineAction(action.id);
+          synced++;
+        } catch (e: any) {
+          const status = e?.response?.status;
+          if (status === 401) {
+            // Authentication token expired or invalid: pause sync to avoid hammering the backend
+            break;
+          } else if (status === 400 || status === 422 || (action.retry_count && action.retry_count >= 3)) {
+            // Drop invalid/unrecoverable actions to prevent permanent queue clog
+            if (Config.IS_DEV) {
+              console.warn(`[ApiClient] Dropping unrecoverable offline action ${action.id} (${status || 'max retries'})`);
+            }
+            await OfflineStorage.dequeueOfflineAction(action.id);
+          } else {
+            // Increment retry count
+            action.retry_count = (action.retry_count || 0) + 1;
+            if (Config.IS_DEV) {
+              console.warn(`[ApiClient] Failed to sync offline action ${action.id} (attempt ${action.retry_count}):`, e?.message || e);
+            }
+          }
         }
       }
+      return { syncedCount: synced };
+    } catch {
+      return { syncedCount: 0 };
     }
-    return { syncedCount: synced };
   }
 }
 

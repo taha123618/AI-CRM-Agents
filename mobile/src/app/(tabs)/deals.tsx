@@ -7,7 +7,6 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
   TextInput,
   TouchableOpacity,
   RefreshControl,
@@ -15,6 +14,7 @@ import {
   Alert,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { Search, Filter, Briefcase, Plus, ArrowUpRight, X, DollarSign, Building, User, Menu } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
@@ -27,6 +27,8 @@ import { Badge } from '@/components/ui/Badge';
 import { HealthIndicator } from '@/components/ui/HealthIndicator';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
 
 const STAGES: { key: DealStage | 'all'; label: string }[] = [
   { key: 'all', label: 'ALL DEALS' },
@@ -217,13 +219,18 @@ export default function DealsScreen() {
           {STAGES.map((s) => {
             const active = filterStage === s.key;
             return (
-              <TouchableOpacity
+              <ScalePressable
                 key={s.key}
-                activeOpacity={0.7}
-                onPress={() => setFilterStage(s.key)}
+                scaleTo={0.94}
+                onPress={() => {
+                  try {
+                    Haptics.selectionAsync();
+                  } catch {}
+                  setFilterStage(s.key);
+                }}
                 style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
                   borderRadius: 2,
                   backgroundColor: active ? colors.primary : colors.surface,
                   borderColor: active ? colors.primary : colors.border,
@@ -240,18 +247,18 @@ export default function DealsScreen() {
                 >
                   {s.label}
                 </Text>
-              </TouchableOpacity>
+              </ScalePressable>
             );
           })}
         </ScrollView>
       </View>
 
-      {/* Deals List */}
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredDeals}
         keyExtractor={(item) => item.id}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchDeals} tintColor={colors.primary} />}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         ListEmptyComponent={
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 60 }}>
             <Briefcase size={36} color={colors.textMuted} style={{ marginBottom: 12 }} />
@@ -263,40 +270,42 @@ export default function DealsScreen() {
             </Text>
           </View>
         }
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => router.push(`/deals/${item.id}` as any)}
-            style={{ marginBottom: 12 }}
-          >
-            <Card variant={item.is_stalled ? 'danger' : 'default'} style={{ padding: 14 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                <View style={{ flex: 1, marginRight: 10 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text, marginBottom: 2 }}>
-                    {item.name}
-                  </Text>
-                  <Text style={{ fontSize: 12, color: colors.textSecondary }}>
-                    {item.company_name || 'Target Account'} {item.contact_name ? `• ${item.contact_name}` : ''}
-                  </Text>
+        renderItem={({ item, index }) => (
+          <AnimatedEntrance animation="fadeInUp" index={index} staggerMs={40}>
+            <ScalePressable
+              scaleTo={0.98}
+              onPress={() => router.push(`/deals/${item.id}` as any)}
+              style={{ marginBottom: 12 }}
+            >
+              <Card variant={item.is_stalled ? 'danger' : 'default'} style={{ padding: 14, marginBottom: 0 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <View style={{ flex: 1, marginRight: 10 }}>
+                    <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text, marginBottom: 2 }}>
+                      {item.name}
+                    </Text>
+                    <Text style={{ fontSize: 12, color: colors.textSecondary }}>
+                      {item.company_name || 'Target Account'} {item.contact_name ? `• ${item.contact_name}` : ''}
+                    </Text>
+                  </View>
+
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={{ fontSize: 15, fontWeight: '800', color: colors.primary, fontFamily: fonts.mono }}>
+                      ${item.value ? item.value.toLocaleString() : '0'}
+                    </Text>
+                    <Badge label={String(item?.stage || 'DISCOVERY').replace(/_/g, ' ').toUpperCase()} variant="primary" />
+                  </View>
                 </View>
 
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 15, fontWeight: '800', color: colors.primary, fontFamily: fonts.mono }}>
-                    ${item.value ? item.value.toLocaleString() : '0'}
-                  </Text>
-                  <Badge label={String(item?.stage || 'DISCOVERY').replace(/_/g, ' ').toUpperCase()} variant="primary" />
+                {/* Health Score & Stalled Telemetry */}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.borderMuted }}>
+                  <View style={{ flex: 1, marginRight: 12 }}>
+                    <HealthIndicator score={item.health_score || 50} isStalled={item.is_stalled} />
+                  </View>
+                  <ArrowUpRight size={14} color={colors.primary} />
                 </View>
-              </View>
-
-              {/* Health Score & Stalled Telemetry */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.borderMuted }}>
-                <View style={{ flex: 1, marginRight: 12 }}>
-                  <HealthIndicator score={item.health_score || 50} isStalled={item.is_stalled} />
-                </View>
-                <ArrowUpRight size={14} color={colors.primary} />
-              </View>
-            </Card>
-          </TouchableOpacity>
+              </Card>
+            </ScalePressable>
+          </AnimatedEntrance>
         )}
       />
 
@@ -324,7 +333,11 @@ export default function DealsScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView contentContainerStyle={{ gap: 12 }}>
+            <ScrollView
+              style={{ flexShrink: 1 }}
+              contentContainerStyle={{ gap: 12, paddingBottom: 24 }}
+              showsVerticalScrollIndicator={true}
+            >
               <Input
                 label="DEAL TITLE *"
                 placeholder="e.g. Acme Corp — Enterprise AI Cloud"

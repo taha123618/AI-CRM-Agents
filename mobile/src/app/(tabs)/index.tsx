@@ -38,6 +38,10 @@ import { StatCard } from '@/components/ui/StatCard';
 import { Badge } from '@/components/ui/Badge';
 import { HealthIndicator } from '@/components/ui/HealthIndicator';
 import { Button } from '@/components/ui/Button';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
+import { RadarPulse } from '@/components/ui/RadarPulse';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export default function DashboardScreen() {
   const { colors, fonts } = useTheme();
@@ -149,6 +153,9 @@ export default function DashboardScreen() {
             </Text>
           </TouchableOpacity>
 
+          {/* Theme Switcher Toggle */}
+          <ThemeToggle size="sm" />
+
           {/* Platform Settings & Governance Hub */}
           <TouchableOpacity
             activeOpacity={0.7}
@@ -169,7 +176,9 @@ export default function DashboardScreen() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={
           <RefreshControl
             refreshing={dealsLoading || isSyncing}
@@ -179,56 +188,57 @@ export default function DashboardScreen() {
         }
       >
         {/* Quick Voice Note CTA Banner */}
-        <Card
-          variant="highlight"
-          style={{
-            backgroundColor: colors.surface,
-            padding: 16,
-            marginBottom: 16,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Zap size={14} color={colors.primary} />
+        <AnimatedEntrance animation="fadeInDown" delay={50}>
+          <Card
+            variant="highlight"
+            style={{
+              backgroundColor: colors.surface,
+              padding: 16,
+              marginBottom: 16,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flex: 1, paddingRight: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                <RadarPulse size={8} color={colors.primary} style={{ marginRight: 6 }} />
+                <Text
+                  style={{
+                    fontSize: 11,
+                    fontWeight: '700',
+                    color: colors.primary,
+                    fontFamily: fonts.mono,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Instant Field Intelligence
+                </Text>
+              </View>
               <Text
                 style={{
-                  fontSize: 11,
+                  fontSize: 15,
                   fontWeight: '700',
-                  color: colors.primary,
-                  fontFamily: fonts.mono,
-                  marginLeft: 4,
-                  textTransform: 'uppercase',
+                  color: colors.text,
+                  marginBottom: 2,
                 }}
               >
-                Instant Field Intelligence
+                Capture Voice Note
+              </Text>
+              <Text style={{ fontSize: 12, color: colors.textMuted }}>
+                Record prospect meeting audio for autonomous transcript & task generation.
               </Text>
             </View>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: '700',
-                color: colors.text,
-                marginBottom: 2,
-              }}
-            >
-              Capture Voice Note
-            </Text>
-            <Text style={{ fontSize: 12, color: colors.textMuted }}>
-              Record prospect meeting audio for autonomous transcript & task generation.
-            </Text>
-          </View>
 
-          <Button
-            title="RECORD"
-            variant="primary"
-            size="sm"
-            icon={<Mic size={14} color={colors.primaryText} />}
-            onPress={() => router.push('/voice/record' as any)}
-          />
-        </Card>
+            <Button
+              title="RECORD"
+              variant="primary"
+              size="sm"
+              icon={<Mic size={14} color={colors.primaryText} />}
+              onPress={() => router.push('/voice/record' as any)}
+            />
+          </Card>
+        </AnimatedEntrance>
 
         {/* 4 Primary KPI Telemetry Cards */}
         <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10 }}>
@@ -238,12 +248,16 @@ export default function DashboardScreen() {
             subValue={`${deals.length} deals total`}
             trend="up"
             variant="primary"
+            animated={true}
+            delay={80}
           />
           <StatCard
             label="ACTIVE PIPELINE"
             value={activeDealsCount}
             subValue="In negotiation"
             trend="neutral"
+            animated={true}
+            delay={140}
           />
         </View>
 
@@ -255,6 +269,8 @@ export default function DashboardScreen() {
             trend={stalledDeals.length > 0 ? 'down' : 'neutral'}
             variant={stalledDeals.length > 0 ? 'danger' : 'default'}
             icon={<AlertTriangle size={14} color={stalledDeals.length > 0 ? colors.danger : colors.textMuted} />}
+            animated={true}
+            delay={200}
           />
           <StatCard
             label="AI HEALTH AVG"
@@ -263,14 +279,16 @@ export default function DashboardScreen() {
             trend={avgHealthScore > 70 ? 'up' : 'down'}
             variant={avgHealthScore > 70 ? 'success' : 'default'}
             icon={<ShieldCheck size={14} color={avgHealthScore > 70 ? colors.success : colors.warning} />}
+            animated={true}
+            delay={260}
           />
         </View>
 
         {/* Autonomous Field Intelligence Hub */}
-        <View style={{ marginBottom: 16 }}>
+        <AnimatedEntrance animation="fadeInUp" delay={300} style={{ marginBottom: 16 }}>
           <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10 }}>
-            <TouchableOpacity
-              activeOpacity={0.8}
+            <ScalePressable
+              scaleTo={0.97}
               onPress={() => router.push('/leads' as any)}
               style={{
                 flex: 1,
@@ -293,10 +311,10 @@ export default function DashboardScreen() {
               <Text style={{ fontSize: 11, color: colors.textMuted }}>
                 BANT scores & AI outreach
               </Text>
-            </TouchableOpacity>
+            </ScalePressable>
 
-            <TouchableOpacity
-              activeOpacity={0.8}
+            <ScalePressable
+              scaleTo={0.97}
               onPress={() => router.push('/customers' as any)}
               style={{
                 flex: 1,
@@ -319,7 +337,7 @@ export default function DashboardScreen() {
               <Text style={{ fontSize: 11, color: colors.textMuted }}>
                 Account ARR & Playbooks
               </Text>
-            </TouchableOpacity>
+            </ScalePressable>
           </View>
 
           {/* Quick Command Studios Matrix */}
@@ -356,8 +374,9 @@ export default function DashboardScreen() {
               { title: 'GOVERNANCE & RBAC', route: '/(tabs)/settings', icon: '🛡️' },
               { title: 'FLEET SHOWCASE', route: '/(tabs)/explore', icon: '✨' },
             ].map((mod, idx) => (
-              <TouchableOpacity
+              <ScalePressable
                 key={idx}
+                scaleTo={0.95}
                 onPress={() => router.push(mod.route as any)}
                 style={{
                   backgroundColor: colors.surface,
@@ -374,10 +393,10 @@ export default function DashboardScreen() {
                 <Text style={{ fontSize: 10, fontFamily: fonts.mono, fontWeight: '700', color: colors.text }}>
                   {mod.title}
                 </Text>
-              </TouchableOpacity>
+              </ScalePressable>
             ))}
           </View>
-        </View>
+        </AnimatedEntrance>
 
         {/* Section: Priority Attention Deals */}
         <View style={{ marginBottom: 16 }}>

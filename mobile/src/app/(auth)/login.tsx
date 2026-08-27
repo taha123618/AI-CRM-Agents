@@ -48,7 +48,11 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: colors.background }}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 20 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 20, paddingBottom: 40 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Branding Header */}
         <View style={{ alignItems: 'center', marginBottom: 28 }}>
           <View

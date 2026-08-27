@@ -5,18 +5,46 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Mic, ArrowLeft, Play, ShieldAlert, Sparkles, CheckCircle2, PhoneCall, Volume2 } from 'lucide-react-native';
+import { Mic, ArrowLeft, Play, ShieldAlert, Sparkles, CheckCircle2, PhoneCall, Volume2, Square } from 'lucide-react-native';
+import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatCard } from '@/components/ui/StatCard';
+import { VoicePlaybackService } from '@/services/voicePlaybackService';
 
 export default function VoiceAIScreen() {
   const { colors, fonts } = useTheme();
   const router = useRouter();
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzed, setAnalyzed] = useState(false);
+  const [speakingCard, setSpeakingCard] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      VoicePlaybackService.stopVoice();
+    };
+  }, []);
+
+  const playObjection = async (id: string, text: string) => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    } catch {}
+
+    if (speakingCard === id) {
+      await VoicePlaybackService.stopVoice();
+      setSpeakingCard(null);
+    } else {
+      setSpeakingCard(id);
+      await VoicePlaybackService.playVoice(text, {
+        onStart: () => setSpeakingCard(id),
+        onDone: () => setSpeakingCard(null),
+        onStopped: () => setSpeakingCard(null),
+        rate: 1.05,
+      });
+    }
+  };
 
   const triggerAnalysis = () => {
     setAnalyzing(true);
@@ -61,7 +89,11 @@ export default function VoiceAIScreen() {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Record New Call Debrief Action */}
         <Card variant="highlight" style={{ padding: 16 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -111,18 +143,34 @@ export default function VoiceAIScreen() {
 
           <View style={{ gap: 8 }}>
             <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border }}>
-              <Text style={{ fontSize: 11, fontWeight: '700', color: colors.danger, fontFamily: fonts.mono, marginBottom: 4 }}>
-                OBJECTION: "We already have Salesforce licenses for 2 years."
-              </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                <Text style={{ fontSize: 11, fontWeight: '700', color: colors.danger, fontFamily: fonts.mono, flex: 1 }}>
+                  OBJECTION: "We already have Salesforce licenses for 2 years."
+                </Text>
+                <TouchableOpacity
+                  onPress={() => playObjection('sf', 'We sit directly alongside your existing database as an autonomous multi-agent co-pilot with zero data migration required.')}
+                  style={{ padding: 4 }}
+                >
+                  {speakingCard === 'sf' ? <Square size={14} color={colors.primary} /> : <Volume2 size={14} color={colors.primary} />}
+                </TouchableOpacity>
+              </View>
               <Text style={{ fontSize: 10, color: colors.textSecondary, fontFamily: fonts.mono, lineHeight: 14 }}>
                 COUNTER: "We sit directly alongside your existing database as an autonomous multi-agent co-pilot with zero data migration required."
               </Text>
             </View>
 
             <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border }}>
-              <Text style={{ fontSize: 11, fontWeight: '700', color: colors.danger, fontFamily: fonts.mono, marginBottom: 4 }}>
-                OBJECTION: "Is client call data retained for model training?"
-              </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                <Text style={{ fontSize: 11, fontWeight: '700', color: colors.danger, fontFamily: fonts.mono, flex: 1 }}>
+                  OBJECTION: "Is client call data retained for model training?"
+                </Text>
+                <TouchableOpacity
+                  onPress={() => playObjection('gdpr', 'No. Enterprise Zero Data Retention SLA applies with end-to-end encryption.')}
+                  style={{ padding: 4 }}
+                >
+                  {speakingCard === 'gdpr' ? <Square size={14} color={colors.primary} /> : <Volume2 size={14} color={colors.primary} />}
+                </TouchableOpacity>
+              </View>
               <Text style={{ fontSize: 10, color: colors.textSecondary, fontFamily: fonts.mono, lineHeight: 14 }}>
                 COUNTER: "No. Enterprise Zero Data Retention SLA applies with end-to-end encryption."
               </Text>

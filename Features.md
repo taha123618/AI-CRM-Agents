@@ -136,11 +136,24 @@ This document serves as the **definitive feature checklist and product roadmap**
 
 ---
 
-### 13. 🧪 Testing & Quality Assurance
-- [x] **Backend Pytest Suite**: 108 unit, integration, edge-case, security, webhook, and auth tests with mock LLM fixtures (`tests/`).
-- [x] **Frontend Vitest Suite**: 37 unit, integration, and component tests verifying UI rendering, modals, and store updates (`src/features/**/__tests__`).
-- [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, and validation schema constraints (`tests/test_security_validation.py`, `tests/test_must_have_security.py`, `tests/test_must_have_deep_security.py`).
-- [x] **Static Type Checking**: `mypy` for Python backend and `tsc --noEmit` for TypeScript frontend.
+### 13. 📱 Field Sales Mobile Application (Expo SDK 57 & React Native 0.86)
+- [x] **Expo Router File-Based Routing**: 78 compiled static routes with deep linking, modal stacks, and bottom tab navigation (`mobile/src/app`).
+- [x] **High-Performance List Virtualization (`@shopify/flash-list`)**: Complete list recycling across all collections (Deals, Leads, Notes, Notifications, Customers, Workflows, Pickers) with 60–120 FPS performance.
+- [x] **Universal Platform-Split Voice Playback Engine (`VoicePlaybackService`)**: Dynamic audio synthesis supporting Web Speech API on Web and dynamic Expo Speech bridge on iOS/Android without native crash triggers.
+- [x] **Live Microphone Speech Recognition Studio (`/voice/record`)**: Live transcript audio capture, editable fields for title, transcript, AI summary, and action items, and in-studio audio debrief playback.
+- [x] **Tactical Command Design System**: Strict adherence to `#0B0C10` Void Black, `#FFB800` Tactical Gold, `#00FF9D` Emerald, `#FF2A54` Alert Red, and monospace typography.
+- [x] **🌓 Dark / Light Theme Toggle**: Seamless contrast inversion between Dark Mode (`#0B0C10`) and Light Mode (`#F8FAFC`) with zero layout shift.
+- [x] **Dynamic Custom Fields Engine**: Dynamic rendering and evaluation of custom fields (`text`, `number`, `select`, `boolean`, `date`, `currency`).
+- [x] **Offline-First Storage & Auto-Sync**: Dual-layer memory + AsyncStorage queue with automatic 30s background retry sync.
+
+---
+
+### 14. 🧪 Testing & Quality Assurance
+- [x] **Backend Pytest Suite**: 195 unit, integration, edge-case, security, webhook, and auth tests with mock LLM fixtures (`tests/`).
+- [x] **Frontend Vitest Suite**: 86 unit, integration, and component tests verifying UI rendering, modals, and store updates (`frontend/src/**/__tests__`).
+- [x] **Field Sales Mobile Verification**: 21 Expo Doctor health checks, 0 TypeScript errors, and 78/78 static route bundle exports.
+- [x] **Security Hardening Tests**: SQL injection boundary tests, XSS transcript sanitization tests, SSRF validation, and formula injection sanitization.
+- [x] **Static Type Checking**: `mypy` for Python backend and `tsc --noEmit` for TypeScript frontend & mobile.
 
 ---
 

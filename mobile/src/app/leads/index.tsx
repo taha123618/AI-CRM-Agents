@@ -7,7 +7,6 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
   TextInput,
   TouchableOpacity,
   RefreshControl,
@@ -16,6 +15,7 @@ import {
   Linking,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import {
   Search,
@@ -42,6 +42,8 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
 
 const STATUS_FILTERS = [
   { key: 'all', label: 'ALL LEADS' },
@@ -296,33 +298,46 @@ export default function LeadsScreen() {
           {STATUS_FILTERS.map((s) => {
             const active = filterStatus === s.key;
             return (
-              <TouchableOpacity
+              <ScalePressable
                 key={s.key}
-                onPress={() => setFilterStatus(s.key)}
+                scaleTo={0.94}
+                onPress={() => {
+                  try {
+                    Haptics.selectionAsync();
+                  } catch {}
+                  setFilterStatus(s.key as any);
+                }}
                 style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
                   borderRadius: 2,
                   backgroundColor: active ? colors.primary : colors.surface,
                   borderColor: active ? colors.primary : colors.border,
                   borderWidth: 1,
                 }}
               >
-                <Text style={{ fontSize: 10, fontWeight: '700', fontFamily: fonts.mono, color: active ? colors.primaryText : colors.textSecondary }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: '700',
+                    fontFamily: fonts.mono,
+                    color: active ? colors.primaryText : colors.textSecondary,
+                  }}
+                >
                   {s.label}
                 </Text>
-              </TouchableOpacity>
+              </ScalePressable>
             );
           })}
         </ScrollView>
       </View>
 
-      {/* Leads List */}
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredLeads}
         keyExtractor={(item) => item.id}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchLeads} tintColor={colors.primary} />}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         ListEmptyComponent={
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 60 }}>
             <Users size={36} color={colors.textMuted} style={{ marginBottom: 12 }} />
@@ -334,79 +349,81 @@ export default function LeadsScreen() {
             </Text>
           </View>
         }
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const isHighIntent = item.lead_score >= 80;
           const tierLabel = isHighIntent ? 'TIER 1 • HIGH INTENT' : item.lead_score >= 50 ? 'TIER 2 • NURTURE' : 'TIER 3';
           const isQualifying = isQualifyingId === item.id;
 
           return (
-            <Card style={{ marginBottom: 12, padding: 14 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
-                    {item.first_name} {item.last_name}
-                  </Text>
-                  <Text style={{ fontSize: 12, color: colors.textSecondary }}>
-                    {item.job_title || 'Decision Maker'} • {item.company_name || 'Enterprise'}
-                  </Text>
-                  <Text style={{ fontSize: 11, color: colors.textMuted, fontFamily: fonts.mono, marginTop: 2 }}>
-                    {item.email}
-                  </Text>
-                </View>
-
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Badge label={tierLabel} variant={isHighIntent ? 'primary' : 'muted'} />
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-                    <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>BANT: </Text>
-                    <Text style={{ fontSize: 13, fontWeight: '800', color: isHighIntent ? colors.success : colors.primary, fontFamily: fonts.mono }}>
-                      {item.lead_score}/100
+            <AnimatedEntrance animation="fadeInUp" index={index} staggerMs={40}>
+              <Card style={{ marginBottom: 12, padding: 14 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <View style={{ flex: 1, marginRight: 8 }}>
+                    <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+                      {item.first_name} {item.last_name}
+                    </Text>
+                    <Text style={{ fontSize: 12, color: colors.textSecondary }}>
+                      {item.job_title || 'Decision Maker'} • {item.company_name || 'Enterprise'}
+                    </Text>
+                    <Text style={{ fontSize: 11, color: colors.textMuted, fontFamily: fonts.mono, marginTop: 2 }}>
+                      {item.email}
                     </Text>
                   </View>
-                </View>
-              </View>
 
-              {/* Buying Signals & AI Recommendation */}
-              {item.recommended_action && (
-                <View style={{ backgroundColor: colors.surface, padding: 8, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2, marginVertical: 6 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
-                    <Sparkles size={11} color={colors.primary} style={{ marginRight: 4 }} />
-                    <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
-                      AI SDR ACTION:
-                    </Text>
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Badge label={tierLabel} variant={isHighIntent ? 'primary' : 'muted'} />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                      <Text style={{ fontSize: 10, color: colors.textMuted, fontFamily: fonts.mono }}>BANT: </Text>
+                      <Text style={{ fontSize: 13, fontWeight: '800', color: isHighIntent ? colors.success : colors.primary, fontFamily: fonts.mono }}>
+                        {item.lead_score}/100
+                      </Text>
+                    </View>
                   </View>
-                  <Text style={{ fontSize: 11, color: colors.text }}>{item.recommended_action}</Text>
                 </View>
-              )}
 
-              {/* Action Buttons */}
-              <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.borderMuted }}>
-                <Button
-                  title="QUALIFY"
-                  size="sm"
-                  variant="outline"
-                  icon={<Bot size={12} color={colors.primary} />}
-                  isLoading={isQualifying}
-                  onPress={() => handleQualify(item.id)}
-                  style={{ flex: 1 }}
-                />
-                <Button
-                  title="WHATSAPP"
-                  size="sm"
-                  variant="primary"
-                  icon={<MessageSquare size={12} color={colors.primaryText} />}
-                  onPress={() => setSelectedWhatsAppLead(item)}
-                  style={{ flex: 1 }}
-                />
-                <Button
-                  title="TO DEAL"
-                  size="sm"
-                  variant="secondary"
-                  icon={<Briefcase size={12} color={colors.text} />}
-                  onPress={() => setConvertingLead(item)}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </Card>
+                {/* Buying Signals & AI Recommendation */}
+                {item.recommended_action && (
+                  <View style={{ backgroundColor: colors.surface, padding: 8, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2, marginVertical: 6 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                      <Sparkles size={11} color={colors.primary} style={{ marginRight: 4 }} />
+                      <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
+                        AI SDR ACTION:
+                      </Text>
+                    </View>
+                    <Text style={{ fontSize: 11, color: colors.text }}>{item.recommended_action}</Text>
+                  </View>
+                )}
+
+                {/* Action Buttons */}
+                <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.borderMuted }}>
+                  <Button
+                    title="QUALIFY"
+                    size="sm"
+                    variant="outline"
+                    icon={<Bot size={12} color={colors.primary} />}
+                    isLoading={isQualifying}
+                    onPress={() => handleQualify(item.id)}
+                    style={{ flex: 1 }}
+                  />
+                  <Button
+                    title="WHATSAPP"
+                    size="sm"
+                    variant="primary"
+                    icon={<MessageSquare size={12} color={colors.primaryText} />}
+                    onPress={() => setSelectedWhatsAppLead(item)}
+                    style={{ flex: 1 }}
+                  />
+                  <Button
+                    title="TO DEAL"
+                    size="sm"
+                    variant="secondary"
+                    icon={<Briefcase size={12} color={colors.text} />}
+                    onPress={() => setConvertingLead(item)}
+                    style={{ flex: 1 }}
+                  />
+                </View>
+              </Card>
+            </AnimatedEntrance>
           );
         }}
       />
@@ -429,7 +446,7 @@ export default function LeadsScreen() {
               </TouchableOpacity>
             </View>
 
-            <View style={{ gap: 10 }}>
+            <ScrollView style={{ maxHeight: 360 }} contentContainerStyle={{ gap: 10, paddingBottom: 16 }}>
               {WHATSAPP_TEMPLATES.map((tmpl) => (
                 <TouchableOpacity
                   key={tmpl.id}
@@ -454,7 +471,7 @@ export default function LeadsScreen() {
                   </Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -513,7 +530,11 @@ export default function LeadsScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView contentContainerStyle={{ gap: 12 }}>
+            <ScrollView
+              style={{ flexShrink: 1 }}
+              contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
+              showsVerticalScrollIndicator={true}
+            >
               <Input label="FIRST NAME *" placeholder="e.g. Sarah" value={firstName} onChangeText={setFirstName} />
               <Input label="LAST NAME" placeholder="e.g. Connor" value={lastName} onChangeText={setLastName} />
               <Input label="WORK EMAIL *" placeholder="e.g. sarah.connor@acme.com" keyboardType="email-address" value={email} onChangeText={setEmail} />

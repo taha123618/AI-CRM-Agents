@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, ViewStyle } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
+import { AnimatedEntrance } from './AnimatedEntrance';
 
 export interface StatCardProps {
   label: string;
@@ -14,6 +15,8 @@ export interface StatCardProps {
   icon?: React.ReactNode;
   variant?: 'default' | 'primary' | 'danger' | 'success';
   style?: ViewStyle;
+  animated?: boolean;
+  delay?: number;
 }
 
 export const StatCard: React.FC<StatCardProps> = ({
@@ -24,6 +27,8 @@ export const StatCard: React.FC<StatCardProps> = ({
   icon,
   variant = 'default',
   style,
+  animated = false,
+  delay = 0,
 }) => {
   const { colors, fonts } = useTheme();
 
@@ -40,7 +45,7 @@ export const StatCard: React.FC<StatCardProps> = ({
     }
   };
 
-  return (
+  const content = (
     <View
       style={[
         {
@@ -93,4 +98,14 @@ export const StatCard: React.FC<StatCardProps> = ({
       )}
     </View>
   );
+
+  if (animated) {
+    return (
+      <AnimatedEntrance animation="fadeInUp" delay={delay} style={{ flex: 1 }}>
+        {content}
+      </AnimatedEntrance>
+    );
+  }
+
+  return content;
 };

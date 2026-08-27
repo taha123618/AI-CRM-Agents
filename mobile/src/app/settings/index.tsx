@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, RefreshControl, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Sliders, ArrowLeft, Shield, Users, Activity, Globe, Cpu, History, CheckCircle2, UserPlus, Server } from 'lucide-react-native';
+import { Sliders, ArrowLeft, Shield, Users, Activity, Globe, Cpu, History, CheckCircle2, UserPlus, Server, Sun, Moon, Monitor } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useAuthStore } from '@/stores/authStore';
 import { Card } from '@/components/ui/Card';
@@ -13,11 +13,14 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatCard } from '@/components/ui/StatCard';
 import { OfflineStorage } from '@/services/offlineStorage';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { ScalePressable } from '@/components/ui/ScalePressable';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
 
-type SettingsTab = 'rbac' | 'observability' | 'webhooks' | 'tasks' | 'audits' | 'diagnostics';
+type SettingsTab = 'rbac' | 'appearance' | 'observability' | 'webhooks' | 'tasks' | 'audits' | 'diagnostics';
 
 export default function SettingsHubScreen() {
-  const { colors, fonts } = useTheme();
+  const { colors, fonts, isDark, themeMode, setThemeMode } = useTheme();
   const router = useRouter();
   const { user } = useAuthStore();
   const isAdmin = user?.role === 'admin';
@@ -48,6 +51,7 @@ export default function SettingsHubScreen() {
   }, []);
 
   const tabs = [
+    { id: 'appearance' as const, label: 'APPEARANCE', icon: Sun },
     { id: 'rbac' as const, label: 'RBAC USERS', icon: Shield },
     { id: 'observability' as const, label: 'METRICS', icon: Activity },
     { id: 'webhooks' as const, label: 'WEBHOOKS', icon: Globe },
@@ -81,13 +85,16 @@ export default function SettingsHubScreen() {
             COMMAND
           </Text>
         </TouchableOpacity>
-        <View style={{ alignItems: 'flex-end' }}>
-          <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted, textTransform: 'uppercase' }}>
-            ENTERPRISE GOVERNANCE
-          </Text>
-          <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
-            SETTINGS &amp; SECURITY
-          </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <ThemeToggle size="sm" />
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted, textTransform: 'uppercase' }}>
+              ENTERPRISE GOVERNANCE
+            </Text>
+            <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+              SETTINGS &amp; SECURITY
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -129,7 +136,11 @@ export default function SettingsHubScreen() {
         </ScrollView>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* TAB: RBAC USERS */}
         {activeTab === 'rbac' && (
           <View style={{ gap: 12 }}>
@@ -280,6 +291,118 @@ export default function SettingsHubScreen() {
               </Card>
             ))}
           </View>
+        )}
+
+        {/* TAB: APPEARANCE & THEME */}
+        {activeTab === 'appearance' && (
+          <AnimatedEntrance animation="fadeInUp" delay={40} style={{ gap: 14 }}>
+            <Card variant="highlight" style={{ padding: 16 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <View>
+                  <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+                    THEME &amp; VISUAL DISPLAY
+                  </Text>
+                  <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted, marginTop: 2 }}>
+                    Instant switch between Void Dark and Tactical Light
+                  </Text>
+                </View>
+                <Badge label={isDark ? "DARK ACTIVE" : "LIGHT ACTIVE"} variant="primary" />
+              </View>
+
+              {/* Quick Toggle Button */}
+              <ThemeToggle showLabel size="lg" style={{ width: '100%', marginBottom: 12 }} />
+
+              <Text style={{ fontSize: 10, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary, marginBottom: 8 }}>
+                THEME MODE SELECTION:
+              </Text>
+
+              <View style={{ gap: 8 }}>
+                {/* Dark Mode Card */}
+                <ScalePressable
+                  scaleTo={0.97}
+                  onPress={() => setThemeMode('dark')}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: 12,
+                    backgroundColor: themeMode === 'dark' ? colors.surface : colors.card,
+                    borderWidth: 1,
+                    borderColor: themeMode === 'dark' ? colors.primary : colors.border,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Moon size={18} color={themeMode === 'dark' ? colors.primary : colors.textMuted} />
+                    <View>
+                      <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+                        Tactical Void Dark
+                      </Text>
+                      <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
+                        #0B0C10 Void Black with Tactical Gold Accents
+                      </Text>
+                    </View>
+                  </View>
+                  {themeMode === 'dark' && <CheckCircle2 size={16} color={colors.primary} />}
+                </ScalePressable>
+
+                {/* Light Mode Card */}
+                <ScalePressable
+                  scaleTo={0.97}
+                  onPress={() => setThemeMode('light')}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: 12,
+                    backgroundColor: themeMode === 'light' ? colors.surface : colors.card,
+                    borderWidth: 1,
+                    borderColor: themeMode === 'light' ? colors.primary : colors.border,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Sun size={18} color={themeMode === 'light' ? colors.primary : colors.textMuted} />
+                    <View>
+                      <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+                        Tactical Crisp Light
+                      </Text>
+                      <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
+                        High-contrast daylight theme with deep amber accents
+                      </Text>
+                    </View>
+                  </View>
+                  {themeMode === 'light' && <CheckCircle2 size={16} color={colors.primary} />}
+                </ScalePressable>
+
+                {/* System Default Card */}
+                <ScalePressable
+                  scaleTo={0.97}
+                  onPress={() => setThemeMode('system')}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: 12,
+                    backgroundColor: themeMode === 'system' ? colors.surface : colors.card,
+                    borderWidth: 1,
+                    borderColor: themeMode === 'system' ? colors.primary : colors.border,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Monitor size={18} color={themeMode === 'system' ? colors.primary : colors.textMuted} />
+                    <View>
+                      <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+                        System Default Sync
+                      </Text>
+                      <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
+                        Follow device OS dark/light appearance setting
+                      </Text>
+                    </View>
+                  </View>
+                  {themeMode === 'system' && <CheckCircle2 size={16} color={colors.primary} />}
+                </ScalePressable>
+              </View>
+            </Card>
+          </AnimatedEntrance>
         )}
 
         {/* TAB: DIAGNOSTICS */}

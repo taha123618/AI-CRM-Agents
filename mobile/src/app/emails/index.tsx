@@ -84,7 +84,9 @@ export default function EmailsScreen() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={loadData} tintColor={colors.primary} />}
       >
         {/* Compose CTA Button */}

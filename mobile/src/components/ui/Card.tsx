@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
+import { ScalePressable } from './ScalePressable';
 
 export interface CardProps {
   children: React.ReactNode;
@@ -45,13 +46,13 @@ export const Card: React.FC<CardProps> = ({
 
   if (onPress) {
     return (
-      <TouchableOpacity
-        activeOpacity={0.7}
+      <ScalePressable
+        scaleTo={0.98}
         onPress={onPress}
         style={[cardStyle, style]}
       >
         {children}
-      </TouchableOpacity>
+      </ScalePressable>
     );
   }
 

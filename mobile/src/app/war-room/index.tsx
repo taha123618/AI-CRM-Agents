@@ -12,6 +12,9 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatCard } from '@/components/ui/StatCard';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
+import { ScalePressable } from '@/components/ui/ScalePressable';
+import { RadarPulse } from '@/components/ui/RadarPulse';
 
 export default function WarRoomScreen() {
   const { colors, fonts } = useTheme();
@@ -70,8 +73,9 @@ export default function WarRoomScreen() {
       {/* Feature Navigation Tabs */}
       <View style={{ flexDirection: 'row', backgroundColor: colors.surface, borderBottomWidth: 1, borderBottomColor: colors.border }}>
         {(['verdict', 'swot', 'competitors', 'proposal'] as const).map((tab) => (
-          <TouchableOpacity
+          <ScalePressable
             key={tab}
+            scaleTo={0.95}
             onPress={() => setActiveTab(tab)}
             style={{
               flex: 1,
@@ -92,20 +96,22 @@ export default function WarRoomScreen() {
             >
               {tab}
             </Text>
-          </TouchableOpacity>
+          </ScalePressable>
         ))}
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={loadData} tintColor={colors.primary} />}
       >
         {activeTab === 'verdict' && (
-          <View style={{ gap: 14 }}>
+          <AnimatedEntrance animation="fadeInUp" delay={40} style={{ gap: 14 }}>
             <Card variant="highlight" style={{ padding: 16 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Shield size={18} color={colors.primary} />
+                  <RadarPulse size={10} color={colors.primary} />
                   <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary }}>
                     SWARM CONSENSUS VERDICT
                   </Text>
@@ -140,11 +146,11 @@ export default function WarRoomScreen() {
                 3. Deliver customized Proposal Tier with SLA guarantees.
               </Text>
             </Card>
-          </View>
+          </AnimatedEntrance>
         )}
 
         {activeTab === 'swot' && (
-          <View style={{ gap: 12 }}>
+          <AnimatedEntrance animation="fadeInUp" delay={40} style={{ gap: 12 }}>
             <Card style={{ padding: 14, borderColor: colors.success }}>
               <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.success, marginBottom: 6 }}>
                 STRENGTHS (OUR ADVANTAGE)
@@ -158,80 +164,85 @@ export default function WarRoomScreen() {
 
             <Card style={{ padding: 14, borderColor: colors.danger }}>
               <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.danger, marginBottom: 6 }}>
-                THREATS (EXTERNAL RISKS)
+                WEAKNESSES & RISKS
               </Text>
-              {data?.swot?.threats?.map((t: string, idx: number) => (
+              {data?.swot?.weaknesses?.map((w: string, idx: number) => (
                 <Text key={idx} style={{ fontSize: 11, color: colors.text, fontFamily: fonts.mono, marginVertical: 2 }}>
-                  ! {t}
+                  - {w}
                 </Text>
               ))}
             </Card>
 
-            <Card style={{ padding: 14 }}>
+            <Card style={{ padding: 14, borderColor: colors.primary }}>
               <Text style={{ fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary, marginBottom: 6 }}>
                 OPPORTUNITIES
               </Text>
               {data?.swot?.opportunities?.map((o: string, idx: number) => (
-                <Text key={idx} style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, marginVertical: 2 }}>
-                  • {o}
+                <Text key={idx} style={{ fontSize: 11, color: colors.text, fontFamily: fonts.mono, marginVertical: 2 }}>
+                  * {o}
                 </Text>
               ))}
             </Card>
-          </View>
+          </AnimatedEntrance>
         )}
 
         {activeTab === 'competitors' && (
-          <View style={{ gap: 10 }}>
+          <AnimatedEntrance animation="fadeInUp" delay={40} style={{ gap: 12 }}>
             {data?.competitors?.map((comp: any, idx: number) => (
-              <Card key={idx} style={{ padding: 14 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text }}>
+              <Card key={idx} variant="subtle" style={{ padding: 14 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <Text style={{ fontSize: 14, fontWeight: '800', color: colors.text }}>
                     {comp.name}
                   </Text>
-                  <Badge label={`${comp.threat_level} THREAT`} variant={comp.threat_level === 'High' ? 'danger' : 'warning'} />
+                  <Badge label={`${comp.threat_level?.toUpperCase()} THREAT`} variant={comp.threat_level === 'high' ? 'danger' : 'warning'} />
                 </View>
-                <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono }}>
-                  KILLER DIFFERENTIATOR: {comp.differentiator}
+                <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, marginBottom: 6 }}>
+                  Our Win Strategy: {comp.counter_strategy}
                 </Text>
+                <View style={{ backgroundColor: colors.surface, padding: 8, borderWidth: 1, borderColor: colors.borderMuted }}>
+                  <Text style={{ fontSize: 10, color: colors.primary, fontFamily: fonts.mono }}>
+                    KILLER ARGUMENT: {comp.killer_pitch}
+                  </Text>
+                </View>
               </Card>
             ))}
-          </View>
+          </AnimatedEntrance>
         )}
 
         {activeTab === 'proposal' && (
-          <Card variant="highlight" style={{ padding: 16 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
-              <FileText size={18} color={colors.primary} />
-              <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '700', color: colors.primary }}>
-                1-CLICK SMART PROPOSAL STUDIO
+          <AnimatedEntrance animation="fadeInUp" delay={40} style={{ gap: 14 }}>
+            <Card variant="highlight" style={{ padding: 16 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                <FileText size={16} color={colors.primary} />
+                <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '800', color: colors.primary }}>
+                  1-CLICK PROPOSAL STUDIO
+                </Text>
+              </View>
+              <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text, marginBottom: 4 }}>
+                Autonomous Enterprise Agreement
               </Text>
-            </View>
+              <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, marginBottom: 12 }}>
+                Generated from multi-agent pricing matrix, risk profile, and stakeholder consensus.
+              </Text>
 
-            <Text style={{ fontSize: 11, color: colors.textSecondary, fontFamily: fonts.mono, marginBottom: 14, lineHeight: 16 }}>
-              Generate custom enterprise tier proposal with SLA terms and dispatch e-sign link directly to the prospect.
-            </Text>
-
-            {proposalSent ? (
-              <View style={{ backgroundColor: colors.surface, padding: 12, borderWidth: 1, borderColor: colors.success, marginBottom: 12 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              {proposalSent ? (
+                <View style={{ backgroundColor: colors.surface, padding: 12, borderColor: colors.success, borderWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                   <CheckCircle2 size={16} color={colors.success} />
-                  <Text style={{ fontSize: 11, fontFamily: fonts.mono, color: colors.success, fontWeight: '700' }}>
+                  <Text style={{ fontSize: 11, color: colors.success, fontFamily: fonts.mono, fontWeight: '700' }}>
                     PROPOSAL DISPATCHED TO BUYING COMMITTEE
                   </Text>
                 </View>
-                <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted, marginTop: 4 }}>
-                  E-Signature tracking active via Task Queue.
-                </Text>
-              </View>
-            ) : null}
-
-            <Button
-              title={proposalSent ? "DISPATCH REVISED PROPOSAL" : "GENERATE & SEND PROPOSAL"}
-              variant="primary"
-              size="lg"
-              onPress={() => setProposalSent(true)}
-            />
-          </Card>
+              ) : (
+                <Button
+                  title="GENERATE & SEND PROPOSAL"
+                  variant="primary"
+                  size="lg"
+                  icon={<Sparkles size={14} color={colors.primaryText} />}
+                  onPress={() => setProposalSent(true)}
+                />
+              )}
+            </Card>
+          </AnimatedEntrance>
         )}
       </ScrollView>
     </View>

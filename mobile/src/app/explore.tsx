@@ -98,7 +98,11 @@ export default function ExploreScreen() {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Tactical Hero Banner */}
         <Card variant="highlight" style={{ padding: 18 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>

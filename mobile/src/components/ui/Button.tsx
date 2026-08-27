@@ -4,15 +4,13 @@
 
 import React from 'react';
 import {
-  TouchableOpacity,
   Text,
-  StyleSheet,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useTheme';
+import { ScalePressable } from './ScalePressable';
 
 export interface ButtonProps {
   title: string;
@@ -41,9 +39,6 @@ export const Button: React.FC<ButtonProps> = ({
 
   const handlePress = () => {
     if (disabled || isLoading) return;
-    try {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    } catch {}
     onPress();
   };
 
@@ -131,8 +126,8 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <ScalePressable
+      scaleTo={0.96}
       onPress={handlePress}
       disabled={disabled || isLoading}
       style={[getContainerStyle(), style]}
@@ -150,6 +145,6 @@ export const Button: React.FC<ButtonProps> = ({
           </Text>
         </>
       )}
-    </TouchableOpacity>
+    </ScalePressable>
   );
 };

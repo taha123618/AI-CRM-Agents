@@ -26,7 +26,7 @@ Welcome to the AI-Powered CRM project. This document serves as the **single sour
 This project is a production-ready enterprise CRM system powered by a multi-agent AI architecture with specialized communication, forecasting, and field mobile modules.
 
 * **Frontend Web Framework**: React 19 with TypeScript, Vite, Tailwind CSS, TanStack React Query v5, Zustand, Recharts, Lucide Icons, and Nginx
-* **Field Sales Mobile Framework**: React Native 0.86 with Expo SDK 57, React 19, Expo Router (file-based routing), Zustand, Lucide Native, React Native Reanimated, and AsyncStorage
+* **Field Sales Mobile Framework**: React Native 0.86 with Expo SDK 57, React 19, Expo Router (file-based routing across 78 static routes), `@shopify/flash-list` list virtualization, Universal Voice Playback Engine (Web Speech & Expo Speech), Zustand, Lucide Native, React Native Reanimated, and AsyncStorage
 * **Backend Framework**: Python 3.9+ with FastAPI and Uvicorn
 * **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM and Alembic migrations
 * **AI Orchestration**: LangChain-based custom agent framework with `TraceMixin` transparent LLM tracing, live OpenAI/Anthropic support (`AsyncOpenAI`, `AsyncAnthropic`), and `SmartFallbackLLM`
@@ -43,7 +43,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * `/database/`: DB models (`models.py`), schema definitions (`schema.sql`), connection setup (`connection.py`), and seeding (`seed.py`).
 * `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), authentication & RBAC (`auth_service.py`), audit trail (`audit_service.py`), task queue (`task_queue_service.py`), and transactional email (`email_service.py`).
 * `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`), Vite, Tailwind CSS, TanStack Query, Zustand, and Nginx.
-* `/mobile/`: Field Sales Mobile Application in Expo SDK 57 + React Native with Expo Router, Dynamic Custom Fields Engine, Voice Recording Studio, and Offline Sync Queue.
+* `/mobile/`: Field Sales Mobile Application in Expo SDK 57 + React Native with Expo Router, `@shopify/flash-list` virtualization, Dynamic Custom Fields Engine, Universal Voice Playback Studio, and Offline Sync Queue.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, events, and background tasks.
 
 ---
@@ -60,9 +60,10 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - Zero duplicate SMTP implementations: `EmailIntelligenceAgent` and `/api/emails` delegate all outbound transmissions to `email_service` via resilient background queueing (`task_queue.enqueue_email`).
    - Background task queue with exponential backoff retries (1s, 2s, 4s...) and Redis state caching (`crm:task:<id>`).
    - Standalone background worker daemon (`worker.py`) containerized in Docker.
-3. **Voice AI Call Intelligence Studio** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`, `mobile/src/app/voice`):
-   - Real-time speech turn analysis, buyer intent scoring, and dynamic objection battle-cards.
-   - Post-call automated CRM synthesis, action item extraction, and audio intelligence playback.
+3. **Voice AI Call Intelligence Studio & Universal Speech Playback** (`/api/voice-calls`, `/agents/voice_call_agent.py`, `frontend/src/features/voice-ai`, `mobile/src/app/voice`, `mobile/src/services/voicePlaybackService.ts`):
+   - Real-time speech turn analysis, buyer intent scoring, and dynamic objection battle-cards with audio playback.
+   - Post-call automated CRM synthesis, action item extraction, and live microphone speech recognition note capture.
+   - Universal platform-split speech synthesis engine (`voicePlaybackService.web.ts` using Web Speech API and `voicePlaybackService.native.ts` bridging `expo-speech`).
 4. **WhatsApp Business Multi-Agent Hub** (`/api/whatsapp`, `/agents/whatsapp_agent.py`, `frontend/src/features/whatsapp`):
    - Omnichannel WhatsApp chat with 24/7 AI Auto-Pilot lead qualification and customer support.
    - Broadcast template messaging campaigns, conversation tagging, search, and handoff archiving.
@@ -86,7 +87,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
    - 1-click lead cohort enrollment and live AI prompt-engineered step copy generation.
 11. **Field Sales Mobile Intelligence Application & Offline Command** (`/mobile`, `mobile/src/app`, `mobile/src/components/dynamic-fields`):
    - React Native Expo SDK 57 mobile field sales suite mapped 1:1 with backend entities and Tactical Command design tokens.
-   - Field Command Dashboard, Pipeline Radar with AI Health Breakdown, Audio Intelligence Voice Debrief Studio, and Dynamic Custom Fields Engine.
+   - Field Command Dashboard, Pipeline Radar with AI Health Breakdown, Audio Intelligence Voice Debrief Studio, `@shopify/flash-list` high performance list virtualization, and Dynamic Custom Fields Engine.
    - Offline-First dual persistence with automatic 30s background action retry queue.
 
 ---
@@ -127,14 +128,16 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
   - **Primary Buttons**: `bg-[#FFB800] text-[#0B0C10] font-bold rounded-none uppercase`.
   - **Typography**: `font-mono` applied to telemetry, tables, timestamps, IDs, financial metrics, currency notations, and charts.
   - **Transitions**: `transition-none` with 0ms easing globally for instant tactical feedback in web, and smooth Reanimated keyframes in mobile.
+  - **List Virtualization**: Memory-recycled `@shopify/flash-list` for all mobile collections.
+  - **Theme Toggle**: Real-time dark/light mode switching with contrast inversion.
 * **Feature-Sliced Web Design**: Organize feature domains in `frontend/src/features/<feature-name>/` across 19 specialized modules.
 * **Mobile Architecture**: Organize screens in `mobile/src/app/`, shared components in `mobile/src/components/`, and state stores in `mobile/src/stores/`.
 * **State Management**: Use TanStack Query v5 for web server state and Zustand for mobile client/server state.
 
 ### 6. Testing & Quality Guidelines
-* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (190 tests across 27 suites).
+* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (195 tests across 27 suites).
 * **Frontend Web Framework**: Write component and integration tests using `Vitest` and React Testing Library (86 tests across 24 suites).
-* **Mobile Validation**: Run `bunx expo-doctor`, `npx tsc --noEmit`, and `bunx expo export --platform web` (18 static routes, 0 errors).
+* **Mobile Validation**: Run `bunx expo-doctor`, `npx tsc --noEmit`, and `bunx expo export --platform web` (78 static routes, 0 errors).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.
 
 ### 7. Cybersecurity & Transport Hardening

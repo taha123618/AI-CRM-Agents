@@ -28,28 +28,34 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 4. **Customer 360 & Churn Radar** (`/customers`):
    - Account ARR/MRR metrics and seat license usage telemetry.
    - Real-time churn probability radar and 1-tap autonomous retention playbooks.
-5. **Voice Field Notes Studio & Activity Debriefs** (`/activities`, `/voice/record`):
-   - Dedicated field audio debrief recorder with live waveform visualization and timer.
-   - Entity association (link recorded audio directly to a Deal, Contact, or Customer).
-   - Simulated audio playback bar with duration timer.
-   - Automated AI speech transcript synthesis, buyer intent score calculation, and interactive action item checklists.
-6. **Dynamic Custom Fields Engine**:
-   - Live synchronization with `/api/custom-fields` and `CustomFieldDefinition` models.
-   - Dynamic input controls for `text`, `number`, `select`, `boolean`, `date`, and `currency`.
-   - In-app bulk editing and offline queued saving.
-7. **Mobile Workflow Trigger Studio** (`/workflows`):
-   - Real-time status of autonomous multi-agent triggers (`WhatsAppAgent`, `CustomerSuccessAgent`, `VoiceCallAgent`).
-   - Full CRUD capabilities: Create trigger modal, view specs, toggle active/paused, and delete.
-   - 1-Click "TEST TRIGGER" execution with simulated consensus telemetry modal.
-8. **Real-Time Notification Center** (`/notifications`):
-   - Alert triage across `ALL ALERTS`, `UNREAD`, `DEAL RISKS`, `LEAD ALERTS`, and `SWARM EVENTS`.
-   - 1-Tap "MARK ALL READ" and deep linking to relevant CRM entities.
-9. **User Profile & Diagnostics Studio** (`/settings/profile`):
-   - RBAC Level 1 telemetry and JWT bearer session details.
-   - Backend API base URL and WebSocket connection diagnostics.
-   - Local Offline Cache telemetry with 1-Tap **Force Resync** and **Purge Cache**.
-   - Secure session termination and token scrubbing.
-10. **Offline-First Resilience**:
+5. **Live Microphone Voice Notes Studio & Activity Debriefs** (`/activities`, `/voice/record`):
+    - Real-time live speech-to-text recognition capturing your spoken voice directly into the note transcript.
+    - Editable fields for Note Title, Recorded Transcript, AI Executive Summary, and Action Items.
+    - Universal Platform Speech Synthesis (`VoicePlaybackService`) utilizing Web Speech API on Web and dynamic Expo Speech bridge on iOS/Android.
+    - In-studio and in-feed audio playback buttons (**"LISTEN TO YOUR RECORDED NOTE"**).
+    - Automatic local preservation of unsynced voice notes at the top of the feed.
+    - Entity association (link recorded audio directly to a Deal, Contact, or Customer).
+6. **High-Performance List Virtualization (`@shopify/flash-list`)**:
+    - Complete migration of all collection lists (Deals, Leads, Voice Notes, Notifications, Customers, Workflows, Select Options) to `@shopify/flash-list` v2 for 60–120 FPS cell recycling and low memory overhead.
+7. **Dynamic Custom Fields Engine**:
+    - Live synchronization with `/api/custom-fields` and `CustomFieldDefinition` models.
+    - Dynamic input controls for `text`, `number`, `select` (powered by `FlashList`), `boolean`, `date`, and `currency`.
+    - In-app bulk editing and offline queued saving.
+8. **Mobile Workflow Trigger Studio** (`/workflows`):
+    - Real-time status of autonomous multi-agent triggers (`WhatsAppAgent`, `CustomerSuccessAgent`, `VoiceCallAgent`).
+    - Full CRUD capabilities: Create trigger modal, view specs, toggle active/paused, and delete.
+    - 1-Click "TEST TRIGGER" execution with simulated consensus telemetry modal.
+9. **Real-Time Notification Center** (`/notifications`):
+    - Alert triage across `ALL ALERTS`, `UNREAD`, `DEAL RISKS`, `LEAD ALERTS`, and `SWARM EVENTS`.
+    - 1-Tap "MARK ALL READ" and deep linking to relevant CRM entities.
+10. **🌓 Dark / Light Tactical Theme Toggle**:
+    - Global theme toggle supporting Dark Mode (`#0B0C10` Void Black), Light Mode (`#F8FAFC` Crisp Tactical), and System preference with instant contrast inversion and zero layout shift.
+11. **User Profile & Diagnostics Studio** (`/settings/profile`):
+    - RBAC Level 1 telemetry and JWT bearer session details.
+    - Backend API base URL and WebSocket connection diagnostics.
+    - Local Offline Cache telemetry with 1-Tap **Force Resync** and **Purge Cache**.
+    - Secure session termination and token scrubbing.
+12. **Offline-First Resilience**:
     - Dual-layer storage (Memory + AsyncStorage + Background Queue).
     - Mutations performed offline are queued locally and automatically synchronized with the server upon reconnection every 30 seconds.
 

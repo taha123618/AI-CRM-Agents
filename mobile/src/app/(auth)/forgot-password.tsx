@@ -51,7 +51,11 @@ export default function ForgotPasswordScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: colors.background }}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20, paddingTop: 56, paddingBottom: 40 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, padding: 20, paddingTop: 56, paddingBottom: 60 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Back Link */}
         <TouchableOpacity
           onPress={() => router.push('/(auth)/login' as any)}

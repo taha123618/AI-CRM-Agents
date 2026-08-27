@@ -163,7 +163,9 @@ export default function MeetingsScreen() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
       >
         {/* Fleet Metrics */}
@@ -436,53 +438,55 @@ export default function MeetingsScreen() {
       {/* Briefing Dossier Modal */}
       <Modal visible={dossierModalVisible} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', padding: 16 }}>
-          <Card variant="highlight" style={{ padding: 18, gap: 12 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <FileText size={16} color={colors.primary} />
-                <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '800', color: colors.primary }}>
-                  AI BRIEFING DOSSIER
+          <Card variant="highlight" style={{ padding: 18, maxHeight: '85%' }}>
+            <ScrollView style={{ flexShrink: 1 }} contentContainerStyle={{ gap: 12, paddingBottom: 12 }} showsVerticalScrollIndicator={true}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <FileText size={16} color={colors.primary} />
+                  <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '800', color: colors.primary }}>
+                    AI BRIEFING DOSSIER
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => setDossierModalVisible(false)}>
+                  <X size={18} color={colors.textMuted} />
+                </TouchableOpacity>
+              </View>
+
+              <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+                {selectedMeeting?.title}
+              </Text>
+
+              <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border, gap: 6 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Sparkles size={12} color={colors.primary} />
+                  <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.primary, fontWeight: '700' }}>
+                    SYNTHESIZED EXECUTIVE INTENT
+                  </Text>
+                </View>
+                <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.text }}>
+                  {selectedMeeting?.dossier || 'Key decision makers aligned on ARR ROI. Main friction point is SLA guarantees for EU cloud region.'}
                 </Text>
               </View>
-              <TouchableOpacity onPress={() => setDossierModalVisible(false)}>
-                <X size={18} color={colors.textMuted} />
-              </TouchableOpacity>
-            </View>
 
-            <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
-              {selectedMeeting?.title}
-            </Text>
-
-            <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border, gap: 6 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                <Sparkles size={12} color={colors.primary} />
-                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.primary, fontWeight: '700' }}>
-                  SYNTHESIZED EXECUTIVE INTENT
+              <View style={{ gap: 4 }}>
+                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
+                  RECOMMENDED TALKING POINTS:
+                </Text>
+                <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
+                  1. Highlight offline-first dual persistence reliability.
+                </Text>
+                <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
+                  2. Present 15% ARR discount for upfront 2-year commitment.
                 </Text>
               </View>
-              <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.text }}>
-                {selectedMeeting?.dossier || 'Key decision makers aligned on ARR ROI. Main friction point is SLA guarantees for EU cloud region.'}
-              </Text>
-            </View>
 
-            <View style={{ gap: 4 }}>
-              <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted }}>
-                RECOMMENDED TALKING POINTS:
-              </Text>
-              <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
-                1. Highlight offline-first dual persistence reliability.
-              </Text>
-              <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
-                2. Present 15% ARR discount for upfront 2-year commitment.
-              </Text>
-            </View>
-
-            <Button
-              title="DISMISS DOSSIER"
-              variant="primary"
-              size="md"
-              onPress={() => setDossierModalVisible(false)}
-            />
+              <Button
+                title="DISMISS DOSSIER"
+                variant="primary"
+                size="md"
+                onPress={() => setDossierModalVisible(false)}
+              />
+            </ScrollView>
           </Card>
         </View>
       </Modal>

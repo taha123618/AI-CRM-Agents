@@ -13,11 +13,13 @@ This skill defines the technical standards, file-based routing conventions, offl
 
 - **Framework**: Expo SDK 57 + React Native 0.86 with React 19
 - **Navigation**: Expo Router (file-based routing in `src/app/` across 78 static routes)
-- **State Management**: Zustand stores in `src/stores/` (`authStore`, `dealsStore`, `leadsStore`, `customerStore`, `voiceNotesStore`, `notificationStore`, `workflowStore`)
+- **High-Performance Virtualization**: `@shopify/flash-list` v2 for 60-120 FPS cell recycling across all entity lists (`TacticalFlashList`)
+- **Universal Voice Engine**: Platform-split audio synthesis (`voicePlaybackService.web.ts` using Web Speech API and `voicePlaybackService.native.ts` bridging `expo-speech`)
+- **State Management**: Zustand stores in `src/stores/` (`authStore`, `dealsStore`, `leadsStore`, `customerStore`, `voiceNotesStore`, `notificationStore`, `workflowStore`, `themeStore`, `sidebarStore`)
 - **Persistence & Offline Queue**: `@react-native-async-storage/async-storage` via `src/services/offlineStorage.ts`
 - **Networking**: Centralized Axios API client with automatic JWT token attachment, refresh interceptor, environment parsing, and dual-layer offline persistence in `src/services/api.ts`
 - **Iconography & Haptics**: `lucide-react-native`, `expo-haptics`, `react-native-svg`
-- **Design System**: Tactical Command Mobile Tokens (`#0B0C10` Void Black, `#FFB800` Tactical Gold, `#00FF9D` Emerald, `#FF2A54` Alert Red, Monospace metrics)
+- **Design System**: Tactical Command Mobile Tokens (`#0B0C10` Void Black / Dark, `#F8FAFC` Light Mode, `#FFB800` Tactical Gold, `#00FF9D` Emerald, `#FF2A54` Alert Red, Monospace metrics)
 - **Containerization**: Multi-stage Docker build with Bun builder and Nginx static distribution server (`mobile/Dockerfile`)
 
 ---
@@ -27,19 +29,19 @@ This skill defines the technical standards, file-based routing conventions, offl
 Routes are located inside `mobile/src/app/`:
 
 1. `(tabs)/_layout.tsx`: Persistent Bottom Tab Navigator hosting 5 primary tabs (`Dashboard`, `Deals`, `AI Studios`, `Voice Notes`, `Alerts`) and 13 in-tab feature screens.
-2. `(tabs)/index.tsx`: **Tactical Field Command Dashboard** (Pipeline KPI stats, urgent deals, voice note CTA, specialized studios quick launcher matrix, and online/offline sync status).
-3. `(tabs)/deals.tsx`: **Deals & Pipeline Intelligence** (Stage tabs: Discovery, Qualified, Proposal, Negotiation, Won, interactive `+ NEW DEAL` modal, and search filtering).
+2. `(tabs)/index.tsx`: **Tactical Field Command Dashboard** (Pipeline KPI stats, urgent deals, voice note CTA, specialized studios quick launcher matrix, theme toggle, and online/offline sync status).
+3. `(tabs)/deals.tsx`: **Deals & Pipeline Intelligence** (Powered by `FlashList`, stage tabs: Discovery, Qualified, Proposal, Negotiation, Won, interactive `+ NEW DEAL` modal, and search filtering).
 4. `(tabs)/studios.tsx`: **AI Command Studios & Feature Modules Hub** (Category filtering, search, and 1-tap switching across all 17 feature studios).
-5. `(tabs)/activities.tsx`: **Voice Notes & Activity Logging** (Captured debriefs, buyer intent scores, audio playback bar, extracted action item checklists).
-6. `(tabs)/workflows.tsx`: **Mobile Workflow Trigger Studio** (Multi-agent trigger execution logs, full CRUD, and 1-click test simulation).
-7. `(tabs)/notifications.tsx`: **Real-Time Notification Center** (Lead alerts, deal risk radar, and unread triage).
-8. `(tabs)/leads.tsx` & `leads/index.tsx`: **Leads & BANT Radar** (BANT scoring, WhatsApp template auto-pilot, and 1-click Convert to Deal).
-9. `(tabs)/customers.tsx` & `customers/index.tsx`: **Customer 360 & Churn Radar** (MRR/ARR metrics, churn risk radar, and 1-click retention playbooks).
+5. `(tabs)/activities.tsx`: **Voice Notes & Activity Logging** (Powered by `FlashList`, captured debriefs, buyer intent scores, audio playback bar, extracted action item checklists).
+6. `(tabs)/workflows.tsx`: **Mobile Workflow Trigger Studio** (Powered by `FlashList`, multi-agent trigger execution logs, full CRUD, and 1-click test simulation).
+7. `(tabs)/notifications.tsx`: **Real-Time Notification Center** (Powered by `FlashList`, lead alerts, deal risk radar, and unread triage).
+8. `(tabs)/leads.tsx` & `leads/index.tsx`: **Leads & BANT Radar** (Powered by `FlashList`, BANT scoring, WhatsApp template auto-pilot, and 1-click Convert to Deal).
+9. `(tabs)/customers.tsx` & `customers/index.tsx`: **Customer 360 & Churn Radar** (Powered by `FlashList`, MRR/ARR metrics, churn risk radar, and 1-click retention playbooks).
 10. `(tabs)/war-room.tsx` & `war-room/index.tsx`: **AI Deal War Room & Strategy Studio** (Multi-agent consensus verdicts, SWOT quadrant, competitor battlecards, and 1-click smart proposals).
 11. `(tabs)/forecasting.tsx` & `forecasting/index.tsx`: **Stochastic Monte Carlo Revenue Forecasting** (P10/P50/P90 confidence bounds, stage velocity & hazard conversion matrix).
 12. `(tabs)/journey.tsx` & `journey/index.tsx`: **Autonomous Customer Journey & Churn Prevention** (Telemetry-guided lifecycle pipeline, ARR aggregation, and 1-click autonomous retention playbooks).
 13. `(tabs)/sequences.tsx` & `sequences/index.tsx`: **AI SDR Multi-Touch Cadences** (Omnichannel cadences across Email, WhatsApp, Voice AI with 1-click lead cohort enrollment).
-14. `(tabs)/voice-ai.tsx` & `voice-ai/index.tsx`: **Voice AI Call Intelligence Studio** (Real-time speech intent scoring, objection battlecards, and post-call CRM synthesis).
+14. `(tabs)/voice-ai.tsx` & `voice-ai/index.tsx`: **Voice AI Call Intelligence Studio** (Real-time speech intent scoring, dynamic objection battlecards with audio playback, and post-call CRM synthesis).
 15. `(tabs)/whatsapp.tsx` & `whatsapp/index.tsx`: **WhatsApp Multi-Agent Hub** (24/7 AI Auto-Pilot chat, manual operator override, broadcast campaigns).
 16. `(tabs)/emails.tsx` & `emails/index.tsx`: **Autonomous Email Intelligence Studio** (RFC-5321 synthesized inbox, AI outbound draft composer, resilient task queue delivery).
 17. `(tabs)/analytics.tsx` & `analytics/index.tsx`: **Executive Analytics & Velocity Radar** (Fleet win rate, avg cycle days, daily ARR velocity, and top operator leaderboards).
@@ -51,7 +53,7 @@ Routes are located inside `mobile/src/app/`:
 23. `(tabs)/settings.tsx` & `settings/index.tsx`: **Platform Governance, RBAC Users & Webhooks Hub** (User management, server metrics, outbound webhooks, and forensic audits).
 24. `settings/profile.tsx`: **User Profile & Diagnostics Studio** (RBAC telemetry, API gateway diagnostics, offline cache manager, and secure sign out).
 25. `(tabs)/explore.tsx` & `explore.tsx`: **SaaS Fleet Showcase & ROI Calculator** (Capability overview, architecture specifications, and interactive ROI model).
-26. `voice/record.tsx`: **Dedicated Voice Note Recording Studio** (Pulsing waveform visualizer, recording timer, entity association, and AI summary preview).
+26. `voice/record.tsx`: **Live Microphone Speech Recognition Studio** (Real-time speech-to-text transcript capture, editable title/transcript/summary/action items, entity association, and debrief audio playback).
 27. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
 28. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, SSO shortcuts, role presets).
 29. `(auth)/register.tsx`: **Operator Provisioning Screen** (Full name, email, password strength meter, RBAC role assignment).
@@ -60,6 +62,25 @@ Routes are located inside `mobile/src/app/`:
 32. `(auth)/verify-email.tsx`: **Identity Verification Screen** (Mailbox confirmation & token validator).
 33. `unauthorized.tsx`: **403 Access Restriction Screen** (Insufficient privileges error, operator role telemetry, session termination).
 
+---
+
+## ⚡ High-Performance FlashList Architecture
+
+All entity lists use `@shopify/flash-list` for memory recycling and 60-120fps scrolling:
+
+```tsx
+import { FlashList } from '@shopify/flash-list';
+// or use the reusable wrapper:
+import { TacticalFlashList } from '@/components/ui/TacticalFlashList';
+
+<FlashList
+  data={deals}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => <DealCard deal={item} />}
+  contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
+  refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchDeals} tintColor={colors.primary} />}
+/>
+```
 
 ---
 
@@ -83,18 +104,29 @@ import { DynamicFieldRenderer } from '@/components/dynamic-fields/DynamicFieldRe
 Supported field types:
 - `text`: Native TextInput with uppercase label and theme borders.
 - `number` & `currency`: Monospaced numeric input with currency symbol prefix.
-- `select`: Modal picker for selecting predefined options.
+- `select`: High-performance modal option picker powered by `FlashList`.
 - `boolean`: Native tactile Switch toggle.
 - `date`: Formatted date string input.
 
 ---
 
-## 🎙️ Voice Notes & Audio Intelligence Pipeline
+## 🎙️ Voice Notes & Universal Audio Intelligence Pipeline
 
-1. **Recording State**: Tracked in `useVoiceNotesStore` with live MM:SS counter and waveform animation.
-2. **AI Post-Processing**: Generates an executive summary, sentiment, buyer intent score (0–100%), and action items.
-3. **CRM Attachment**: Associates the note with the target `deal_id` or `contact_id`.
-4. **Offline Queueing**: If offline, the note is saved locally with `is_synced: false` and queued for background upload.
+1. **Live Speech Recognition**: `mobile/src/app/voice/record.tsx` connects live Web / Native speech recognition to transcribe real spoken voice directly into the note transcript.
+2. **Dynamic AI Post-Processing & Custom Fields**: Automatically derives note title, executive summary, buyer intent score (0–100%), and action items while allowing manual operator edits.
+3. **Universal Audio Playback**: `VoicePlaybackService.playVoice(text)` dynamically bridges:
+   - `voicePlaybackService.web.ts`: Web Speech API `window.speechSynthesis`.
+   - `voicePlaybackService.native.ts`: Dynamic Expo Speech bridge on iOS/Android.
+4. **CRM Attachment & Local Preservation**: Unsynced local voice notes are preserved at the top of the feed and automatically merged with backend responses.
+5. **Offline Queueing**: Notes are saved locally with `is_synced: false` and queued for background upload when online.
+
+---
+
+## 🌓 Dark / Light Theme Toggle System
+
+The mobile application features a persistent theme switcher powered by `themeStore` and `useTheme`:
+- **Theme Modes**: `dark` (Void Black `#0B0C10`), `light` (Crisp Tactical `#F8FAFC`), or `system`.
+- **Global Inversion**: Immediate visual contrast adaptation across cards, borders, text, and inputs with zero layout shift.
 
 ---
 

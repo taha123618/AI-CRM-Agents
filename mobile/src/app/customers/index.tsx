@@ -7,13 +7,13 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
   TextInput,
   TouchableOpacity,
   RefreshControl,
   Alert,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import {
   Search,
@@ -31,6 +31,7 @@ import { useCustomerStore } from '@/stores/customerStore';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
 
 export default function CustomersScreen() {
   const { colors, fonts } = useTheme();
@@ -147,12 +148,12 @@ export default function CustomersScreen() {
         </View>
       </View>
 
-      {/* Customer List */}
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredCustomers}
         keyExtractor={(item) => item.id}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchCustomers} tintColor={colors.primary} />}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         ListEmptyComponent={
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 60 }}>
             <Building2 size={36} color={colors.textMuted} style={{ marginBottom: 12 }} />
@@ -161,77 +162,77 @@ export default function CustomersScreen() {
             </Text>
           </View>
         }
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const isAtRisk = item.churn_risk === 'high' || (item.churn_probability && item.churn_probability > 40);
           const isTriggering = isTriggeringPlaybookId === item.id;
 
           return (
-            <Card variant={isAtRisk ? 'danger' : 'default'} style={{ marginBottom: 12, padding: 14 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
-                    {item.name || item.company_name}
-                  </Text>
-                  <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
-                    Plan: <Text style={{ fontFamily: fonts.mono, color: colors.primary }}>{item.plan}</Text>
-                  </Text>
+            <AnimatedEntrance animation="fadeInUp" index={index} staggerMs={40}>
+              <Card variant={isAtRisk ? 'danger' : 'default'} style={{ marginBottom: 12, padding: 14 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <View style={{ flex: 1, marginRight: 8 }}>
+                    <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+                      {item.name || item.company_name}
+                    </Text>
+                    <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
+                      Plan: <Text style={{ fontFamily: fonts.mono, color: colors.primary }}>{item.plan}</Text>
+                    </Text>
+                  </View>
+
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={{ fontSize: 15, fontWeight: '800', color: colors.primary, fontFamily: fonts.mono }}>
+                      ${(item.mrr || 0).toLocaleString()}/mo
+                    </Text>
+                    <Badge
+                      label={isAtRisk ? 'CHURN RISK' : 'HEALTHY'}
+                      variant={isAtRisk ? 'danger' : 'success'}
+                    />
+                  </View>
                 </View>
 
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 15, fontWeight: '800', color: colors.primary, fontFamily: fonts.mono }}>
-                    ${(item.mrr || 0).toLocaleString()}/mo
-                  </Text>
-                  <Badge
-                    label={isAtRisk ? 'CHURN RISK' : 'HEALTHY'}
-                    variant={isAtRisk ? 'danger' : 'success'}
-                  />
+                {/* Telemetry Metrics Grid */}
+                <View style={{ flexDirection: 'row', gap: 6, marginVertical: 6 }}>
+                  <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
+                    <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>HEALTH SCORE</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, fontFamily: fonts.mono }}>
+                      {item.health_score || 85}%
+                    </Text>
+                  </View>
+                  <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
+                    <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>CHURN PROB</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '800', color: isAtRisk ? colors.danger : colors.success, fontFamily: fonts.mono }}>
+                      {item.churn_probability || 10}%
+                    </Text>
+                  </View>
+                  <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
+                    <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>SEATS USED</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, fontFamily: fonts.mono }}>
+                      {item.license_usage_percent || 90}%
+                    </Text>
+                  </View>
                 </View>
-              </View>
 
-              {/* Telemetry Metrics Grid */}
-              <View style={{ flexDirection: 'row', gap: 6, marginVertical: 6 }}>
-                <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
-                  <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>HEALTH SCORE</Text>
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, fontFamily: fonts.mono }}>
-                    {item.health_score || 85}%
-                  </Text>
-                </View>
-                <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
-                  <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>CHURN PROB</Text>
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: isAtRisk ? colors.danger : colors.success, fontFamily: fonts.mono }}>
-                    {item.churn_probability || 10}%
-                  </Text>
-                </View>
-                <View style={{ flex: 1, backgroundColor: colors.surface, padding: 6, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2 }}>
-                  <Text style={{ fontSize: 9, color: colors.textMuted, fontFamily: fonts.mono }}>SEATS USED</Text>
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text, fontFamily: fonts.mono }}>
-                    {item.license_usage_percent || 90}%
-                  </Text>
-                </View>
-              </View>
+                {/* Recommended CS Action */}
+                {item.recommended_actions && item.recommended_actions.length > 0 && (
+                  <View style={{ backgroundColor: colors.surface, padding: 8, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2, marginBottom: 8 }}>
+                    <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
+                      AI CS RETENTION PLAN:
+                    </Text>
+                    <Text style={{ fontSize: 11, color: colors.text }}>{item.recommended_actions[0]}</Text>
+                  </View>
+                )}
 
-              {/* Recommended CS Action */}
-              {item.recommended_actions && item.recommended_actions.length > 0 && (
-                <View style={{ backgroundColor: colors.surface, padding: 8, borderWidth: 1, borderColor: colors.borderMuted, borderRadius: 2, marginBottom: 8 }}>
-                  <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary, fontFamily: fonts.mono }}>
-                    AI CS RETENTION PLAN:
-                  </Text>
-                  <Text style={{ fontSize: 11, color: colors.text }}>{item.recommended_actions[0]}</Text>
-                </View>
-              )}
-
-              {/* Retention Playbook Button */}
-              {isAtRisk && (
+                {/* 1-Click Retention Playbook Trigger */}
                 <Button
-                  title="LAUNCH AUTONOMOUS RETENTION"
-                  size="sm"
-                  variant="danger"
-                  icon={<Zap size={12} color="#FFFFFF" />}
+                  title={isTriggering ? "DISPATCHING AI RETENTION INTERVENTION..." : "LAUNCH AUTONOMOUS RETENTION PLAYBOOK"}
+                  variant={isAtRisk ? "danger" : "primary"}
+                  size="md"
+                  icon={<Zap size={14} color={isAtRisk ? "#FFFFFF" : colors.primaryText} />}
                   isLoading={isTriggering}
-                  onPress={() => handleRetention(item.id, item.name)}
+                  onPress={() => handleRetention(item.id, item.name || item.company_name)}
                 />
-              )}
-            </Card>
+              </Card>
+            </AnimatedEntrance>
           );
         }}
       />

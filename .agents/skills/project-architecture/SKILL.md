@@ -14,6 +14,7 @@ Use this skill when you need to understand the high-level architecture of the AI
 * `/database/`: Database configuration (`connection.py`), PostgreSQL schema (`schema.sql`), Alembic migrations, and SQLAlchemy ORM models (`models.py`).
 * `/services/`: Business services for forecasting (`forecasting_service.py`), translation (`i18n_service.py`), authentication & RBAC (`auth_service.py`), audit trail (`audit_service.py`), task queue (`task_queue_service.py`), and transactional email (`email_service.py`).
 * `/frontend/`: Production React 19 + TypeScript SPA with Feature-Sliced Design (`src/features/*`, `src/components/*`, `src/pages/*`, `src/app/*`), Vite, Tailwind CSS, TanStack Query v5, Zustand, Recharts, Nginx, and the Tactical Command design system.
+* `/mobile/`: Field Sales Mobile Application in React Native 0.86 + Expo SDK 57 (Expo Router with 78 static routes), `@shopify/flash-list` list virtualization, Universal Voice Playback Engine (Web Speech & Expo Speech), Dynamic Custom Fields Engine, and Offline Sync Queue.
 * `/workflows/`: Central coordination logic (`orchestrator.py`) managing execution flow, DB sessions, events, and background tasks.
 
 ## 🤖 Multi-Agent Collaboration & System Rules

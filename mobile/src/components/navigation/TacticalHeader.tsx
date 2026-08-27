@@ -11,13 +11,16 @@ import { useTheme } from '@/hooks/useTheme';
 import { useSidebarStore } from '@/stores/sidebarStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+
 interface TacticalHeaderProps {
   title: string;
   subtitle?: string;
   rightAction?: React.ReactNode;
+  showThemeToggle?: boolean;
 }
 
-export function TacticalHeader({ title, subtitle, rightAction }: TacticalHeaderProps) {
+export function TacticalHeader({ title, subtitle, rightAction, showThemeToggle = true }: TacticalHeaderProps) {
   const { colors, fonts } = useTheme();
   const router = useRouter();
   const openSidebar = useSidebarStore((state) => state.openSidebar);
@@ -66,6 +69,7 @@ export function TacticalHeader({ title, subtitle, rightAction }: TacticalHeaderP
 
       {/* Right Action */}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {showThemeToggle && <ThemeToggle size="sm" />}
         {rightAction ? (
           rightAction
         ) : (
@@ -73,24 +77,25 @@ export function TacticalHeader({ title, subtitle, rightAction }: TacticalHeaderP
             activeOpacity={0.7}
             onPress={() => router.push('/(tabs)/notifications' as any)}
             style={{
-              width: 34,
-              height: 34,
+              width: 30,
+              height: 30,
               backgroundColor: colors.surface,
               borderWidth: 1,
               borderColor: colors.border,
+              borderRadius: 2,
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Bell size={16} color={colors.textSecondary} />
+            <Bell size={14} color={colors.textSecondary} />
             {unreadCount > 0 && (
               <View
                 style={{
                   position: 'absolute',
-                  top: 5,
-                  right: 5,
-                  width: 6,
-                  height: 6,
+                  top: 4,
+                  right: 4,
+                  width: 5,
+                  height: 5,
                   backgroundColor: colors.danger,
                 }}
               />

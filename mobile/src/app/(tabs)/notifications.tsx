@@ -6,12 +6,12 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   RefreshControl,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import {
   Bell,
@@ -184,11 +184,11 @@ export default function NotificationsScreen() {
         </ScrollView>
       </View>
 
-      {/* Notifications List */}
-      <FlatList
+      {/* High-Performance FlashList */}
+      <FlashList
         data={filteredNotifications}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={fetchNotifications} tintColor={colors.primary} />
         }

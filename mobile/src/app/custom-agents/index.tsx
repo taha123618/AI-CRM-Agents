@@ -164,7 +164,9 @@ export default function CustomAgentsScreen() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 40, gap: 14 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
       >
         {/* Fleet Metrics */}
@@ -429,79 +431,81 @@ export default function CustomAgentsScreen() {
       {/* Test Execution Simulation Modal */}
       <Modal visible={testModalVisible} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', padding: 16 }}>
-          <Card variant="highlight" style={{ padding: 18, gap: 12 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Terminal size={16} color={colors.primary} />
-                <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '800', color: colors.primary }}>
-                  AGENT TEST TERMINAL
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => setTestModalVisible(false)}>
-                <X size={18} color={colors.textMuted} />
-              </TouchableOpacity>
-            </View>
-
-            <Text style={{ fontSize: 11, fontFamily: fonts.mono, color: colors.textMuted }}>
-              Simulating prompt execution for <Text style={{ color: colors.text, fontWeight: '700' }}>{selectedAgent?.name}</Text>
-            </Text>
-
-            <View>
-              <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted, marginBottom: 4 }}>
-                INPUT PROMPT PAYLOAD
-              </Text>
-              <TextInput
-                value={testInput}
-                onChangeText={setTestInput}
-                multiline
-                numberOfLines={3}
-                style={{
-                  backgroundColor: colors.surface,
-                  borderColor: colors.border,
-                  borderWidth: 1,
-                  padding: 8,
-                  color: colors.text,
-                  fontFamily: fonts.mono,
-                  fontSize: 11,
-                  minHeight: 50,
-                  textAlignVertical: 'top',
-                }}
-              />
-            </View>
-
-            {testOutput.length > 0 && (
-              <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border, gap: 4 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Sparkles size={12} color={colors.success} />
-                  <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.success, fontWeight: '700' }}>
-                    EXECUTION VERDICT (99.1% CONFIDENCE)
+          <Card variant="highlight" style={{ padding: 18, maxHeight: '85%' }}>
+            <ScrollView style={{ flexShrink: 1 }} contentContainerStyle={{ gap: 12, paddingBottom: 12 }} showsVerticalScrollIndicator={true}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Terminal size={16} color={colors.primary} />
+                  <Text style={{ fontSize: 12, fontFamily: fonts.mono, fontWeight: '800', color: colors.primary }}>
+                    AGENT TEST TERMINAL
                   </Text>
                 </View>
-                <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.text }}>
-                  {testOutput}
-                </Text>
+                <TouchableOpacity onPress={() => setTestModalVisible(false)}>
+                  <X size={18} color={colors.textMuted} />
+                </TouchableOpacity>
               </View>
-            )}
 
-            <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
-              <View style={{ flex: 1 }}>
-                <Button
-                  title="CLOSE"
-                  variant="outline"
-                  size="md"
-                  onPress={() => setTestModalVisible(false)}
+              <Text style={{ fontSize: 11, fontFamily: fonts.mono, color: colors.textMuted }}>
+                Simulating prompt execution for <Text style={{ color: colors.text, fontWeight: '700' }}>{selectedAgent?.name}</Text>
+              </Text>
+
+              <View>
+                <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.textMuted, marginBottom: 4 }}>
+                  INPUT PROMPT PAYLOAD
+                </Text>
+                <TextInput
+                  value={testInput}
+                  onChangeText={setTestInput}
+                  multiline
+                  numberOfLines={3}
+                  style={{
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                    borderWidth: 1,
+                    padding: 8,
+                    color: colors.text,
+                    fontFamily: fonts.mono,
+                    fontSize: 11,
+                    minHeight: 50,
+                    textAlignVertical: 'top',
+                  }}
                 />
               </View>
-              <View style={{ flex: 1 }}>
-                <Button
-                  title={testing ? "SIMULATING..." : "RUN TEST"}
-                  variant="primary"
-                  size="md"
-                  isLoading={testing}
-                  onPress={runTest}
-                />
+
+              {testOutput.length > 0 && (
+                <View style={{ backgroundColor: colors.surface, padding: 10, borderWidth: 1, borderColor: colors.border, gap: 4 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                    <Sparkles size={12} color={colors.success} />
+                    <Text style={{ fontSize: 9, fontFamily: fonts.mono, color: colors.success, fontWeight: '700' }}>
+                      EXECUTION VERDICT (99.1% CONFIDENCE)
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.text }}>
+                    {testOutput}
+                  </Text>
+                </View>
+              )}
+
+              <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+                <View style={{ flex: 1 }}>
+                  <Button
+                    title="CLOSE"
+                    variant="outline"
+                    size="md"
+                    onPress={() => setTestModalVisible(false)}
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Button
+                    title={testing ? "SIMULATING..." : "RUN TEST"}
+                    variant="primary"
+                    size="md"
+                    isLoading={testing}
+                    onPress={runTest}
+                  />
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </Card>
         </View>
       </Modal>

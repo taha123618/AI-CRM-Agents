@@ -76,3 +76,14 @@ Incoming Speech / Simulated Turn
 * **Live Simulator**: Interactive speech turn simulator with buyer intent score bar and real-time coaching suggestions.
 * **Analytics Tab**: Recharts objection frequency bar chart, sentiment distribution pie, and call direction breakdown.
 * **Transcript Viewer Modal**: Complete speaker-bubbled dialogue with sentiment tags and coaching highlights.
+
+---
+
+## 📱 Mobile Field Intelligence & Universal Voice Synthesis (`mobile/`)
+
+* **Live Speech Recognition Studio (`/voice/record`)**: Live Web / Native speech recognition directly capturing spoken voice into note transcript text.
+* **Universal Voice Synthesis (`VoicePlaybackService`)**:
+  - `voicePlaybackService.web.ts`: HTML5 Web Speech API `window.speechSynthesis`.
+  - `voicePlaybackService.native.ts`: Dynamic iOS/Android Expo Speech bridge without top-level crash triggers.
+* **Audio Debrief Playback**: 1-click in-studio and in-feed audio playback reading out notes and executive summaries aloud.
+* **Local Note Persistence**: Unsynced local voice notes are preserved at the top of the feed and merged with backend data.

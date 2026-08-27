@@ -166,7 +166,11 @@ export default function DealDetailScreen() {
         })}
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 50 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
         {activeTab === 'overview' && (
           <>
             {/* Interactive Pipeline Stage Funnel */}

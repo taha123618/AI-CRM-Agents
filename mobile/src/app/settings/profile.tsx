@@ -37,6 +37,7 @@ import { OfflineStorage } from '@/services/offlineStorage';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export default function ProfileSettingsScreen() {
   const { colors, fonts, isDark } = useTheme();
@@ -146,9 +147,14 @@ export default function ProfileSettingsScreen() {
             User Profile & System Telemetry
           </Text>
         </View>
+        <ThemeToggle size="sm" />
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 50 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 110, flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Section 1: User Identity Card */}
         <Card variant="highlight" style={{ marginBottom: 16 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>

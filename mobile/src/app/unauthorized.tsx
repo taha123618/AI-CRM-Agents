@@ -24,7 +24,11 @@ export default function UnauthorizedScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, padding: 20, paddingTop: 56 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingBottom: 40 }}
+        showsVerticalScrollIndicator={true}
+      >
         {/* Header Warning Icon */}
         <View style={{ alignItems: 'center', marginBottom: 24 }}>
           <View

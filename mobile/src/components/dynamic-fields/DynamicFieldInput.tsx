@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
   Switch,
   Modal,
-  FlatList,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useTheme } from '@/hooks/useTheme';
 import { CustomFieldDefinition } from '@/types';
 import { Button } from '@/components/ui/Button';
@@ -129,7 +129,7 @@ export const DynamicFieldInput: React.FC<DynamicFieldInputProps> = ({
                   >
                     SELECT {fieldName.toUpperCase()}
                   </Text>
-                  <FlatList
+                  <FlashList
                     data={definition.options || []}
                     keyExtractor={(item) => String(item)}
                     renderItem={({ item }) => (

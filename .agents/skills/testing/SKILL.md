@@ -71,7 +71,8 @@ Use this skill when designing, writing, executing, or debugging automated test s
 6. **Field Sales Mobile Verification (`Expo SDK 57`)**:
    - Dependency Health: `cd mobile && bunx expo-doctor` (21/21 checks passed)
    - TypeScript Strictness: `cd mobile && npx tsc --noEmit` (0 errors)
-   - Static Route Compilation: `cd mobile && bunx expo export --platform web` (20/20 routes compiled)
+   - Static Route Compilation: `cd mobile && bunx expo export --platform web` (78/78 routes compiled, 0 errors)
+   - List Virtualization: `@shopify/flash-list` cell recycling verified on all collection screens
 
 7. **Mocking External LLMs**:
    - Always mock LLMs in unit tests to prevent network delays and live token costs:
@@ -99,7 +100,7 @@ cd frontend && npm run test
 # 3. Verify Frontend TypeScript static analysis & build
 cd frontend && npm run type-check && npm run build
 
-# 4. Verify Field Sales Mobile Application (21 checks, 0 errors, 20 routes)
+# 4. Verify Field Sales Mobile Application (21 checks, 0 errors, 78 routes)
 cd mobile && bunx expo-doctor && npx tsc --noEmit && bunx expo export --platform web
 ```
 
