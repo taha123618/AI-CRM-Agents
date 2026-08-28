@@ -323,7 +323,7 @@ export default function RegisterScreen() {
           ) : null}
 
           <Button
-            title="PROVISION & INITIALIZE COMMAND"
+            title="REGISTER"
             variant="primary"
             size="lg"
             isLoading={isLoading}
@@ -338,7 +338,7 @@ export default function RegisterScreen() {
             ALREADY ENROLLED IN FLEET?
           </Text>
           <TouchableOpacity onPress={() => router.push('/(auth)/login' as any)}>
-            <Text style={{ color: colors.primary, fontSize: 11, fontFamily: fonts.mono, fontWeight: '700' }}>
+            <Text style={{ color: colors.primary, fontSize: 11, fontFamily: fonts.mono, fontWeight: '700', cursor: 'pointer' }}>
               SIGN IN
             </Text>
           </TouchableOpacity>
