@@ -152,18 +152,10 @@ class ApiClient {
     }
   }
 
-  async register(payload: { full_name: string; email: string; password: string; role?: string }): Promise<any> {
+  async register(payload: { full_name: string; email: string; password: string; role?: string }): Promise<{ status: string; email: string; message: string }> {
     try {
       const res = await this.client.post('/api/auth/register', payload);
-      if (res.data?.access_token) {
-        await AsyncStorage.setItem(Config.STORAGE_KEYS.AUTH_TOKEN, res.data.access_token);
-        if (res.data.refresh_token) {
-          await AsyncStorage.setItem(Config.STORAGE_KEYS.REFRESH_TOKEN, res.data.refresh_token);
-        }
-        if (res.data.user) {
-          await AsyncStorage.setItem(Config.STORAGE_KEYS.USER_PROFILE, JSON.stringify(res.data.user));
-        }
-      }
+      // Backend now returns OTP pending state, NOT a JWT token
       return res.data;
     } catch (e: any) {
       if (e.response) {
@@ -185,22 +177,65 @@ class ApiClient {
         if (!payload.password || payload.password.length < 8) {
           throw new Error('Password must be at least 8 characters.');
         }
-        const mockUser = {
-          id: `usr-${Date.now()}`,
-          email: normalizedEmail,
-          full_name: payload.full_name,
-          role: payload.role || 'sales',
-          is_active: true,
-        };
-        await AsyncStorage.setItem(Config.STORAGE_KEYS.AUTH_TOKEN, 'mock_jwt_token_field_sales');
-        await AsyncStorage.setItem(Config.STORAGE_KEYS.USER_PROFILE, JSON.stringify(mockUser));
+        // Offline mock: simulate OTP pending response
         return {
-          access_token: 'mock_jwt_token_field_sales',
-          token_type: 'bearer',
-          user: mockUser,
+          status: 'otp_sent',
+          email: normalizedEmail,
+          message: `A 6-digit verification code has been sent to ${normalizedEmail}. [OFFLINE MOCK: use 000000]`,
         };
       }
       throw new Error(e.message || 'Registration failed. Network error.');
+    }
+  }
+
+  async verifyOtp(email: string, otp: string): Promise<any> {
+    try {
+      const res = await this.client.post('/api/auth/verify-otp', { email, otp });
+      if (res.data?.access_token) {
+        await AsyncStorage.setItem(Config.STORAGE_KEYS.AUTH_TOKEN, res.data.access_token);
+        if (res.data.refresh_token) {
+          await AsyncStorage.setItem(Config.STORAGE_KEYS.REFRESH_TOKEN, res.data.refresh_token);
+        }
+        if (res.data.user) {
+          await AsyncStorage.setItem(Config.STORAGE_KEYS.USER_PROFILE, JSON.stringify(res.data.user));
+        }
+      }
+      return res.data;
+    } catch (e: any) {
+      if (e.response) {
+        throw new Error(e.response.data?.detail || 'Invalid or expired verification code.');
+      }
+      if (Config.ENABLE_OFFLINE_MOCK && !Config.IS_PROD) {
+        if (otp === '000000') {
+          const mockUser = {
+            id: `usr-offline-${Date.now()}`,
+            email,
+            full_name: email.split('@')[0],
+            role: 'sales',
+            is_active: true,
+          };
+          await AsyncStorage.setItem(Config.STORAGE_KEYS.AUTH_TOKEN, 'mock_jwt_otp_verified');
+          await AsyncStorage.setItem(Config.STORAGE_KEYS.USER_PROFILE, JSON.stringify(mockUser));
+          return { access_token: 'mock_jwt_otp_verified', token_type: 'bearer', user: mockUser };
+        }
+        throw new Error('Invalid verification code. [OFFLINE MOCK: use 000000]');
+      }
+      throw new Error(e.message || 'OTP verification failed.');
+    }
+  }
+
+  async resendOtp(email: string): Promise<{ status: string; message: string }> {
+    try {
+      const res = await this.client.post('/api/auth/resend-otp', { email });
+      return res.data;
+    } catch (e: any) {
+      if (e.response) {
+        throw new Error(e.response.data?.detail || 'Failed to resend verification code.');
+      }
+      if (Config.ENABLE_OFFLINE_MOCK && !Config.IS_PROD) {
+        return { status: 'ok', message: 'A new code has been dispatched. [OFFLINE MOCK: use 000000]' };
+      }
+      throw new Error(e.message || 'Failed to resend code.');
     }
   }
 

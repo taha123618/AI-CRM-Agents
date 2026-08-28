@@ -19,6 +19,7 @@ from database.models import (
     PasswordResetToken,
     EmailVerificationToken,
     LoginAttempt,
+    OtpToken,
 )
 
 # Configuration
@@ -661,3 +662,85 @@ def require_any_permission(permissions: List[str]):
         return user
 
     return any_perm_checker
+
+
+# ---------------------------------------------------------------------------
+# OTP (One-Time Password) 2FA helpers
+# ---------------------------------------------------------------------------
+
+OTP_EXPIRE_MINUTES = int(os.getenv("OTP_EXPIRE_MINUTES", "10"))
+
+
+def generate_otp() -> str:
+    """Generate a cryptographically secure 6-digit OTP code."""
+    return "{:06d}".format(secrets.randbelow(1_000_000))
+
+
+def _hash_otp(otp: str) -> str:
+    """SHA-256 hash of the plaintext OTP for safe DB storage."""
+    return hashlib.sha256(otp.encode()).hexdigest()
+
+
+def create_otp_token(db: Session, user_id: UUID) -> str:
+    """Generate a new OTP for the given user, invalidating any prior pending OTP.
+
+    Returns the plaintext OTP code (to be sent via email — never stored).
+    """
+    # Invalidate any existing unused OTPs for this user
+    db.query(OtpToken).filter(
+        OtpToken.user_id == user_id,
+        OtpToken.used == False,  # noqa: E712
+    ).update({"used": True})
+
+    otp = generate_otp()
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRE_MINUTES)
+
+    record = OtpToken(
+        user_id=user_id,
+        otp_hash=_hash_otp(otp),
+        expires_at=expires_at,
+        used=False,
+    )
+    db.add(record)
+    db.commit()
+    return otp
+
+
+def verify_otp_token(db: Session, user_id: UUID, otp: str) -> bool:
+    """Verify the OTP for the given user.
+
+    Returns True if valid. Raises HTTPException on failure.
+    Marks the token as used upon success.
+    """
+    otp_hash = _hash_otp(otp.strip())
+    record = (
+        db.query(OtpToken)
+        .filter(
+            OtpToken.user_id == user_id,
+            OtpToken.otp_hash == otp_hash,
+            OtpToken.used == False,  # noqa: E712
+        )
+        .first()
+    )
+
+    if not record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid verification code. Please check the code and try again.",
+        )
+
+    # Timezone-aware comparison
+    now = datetime.now(timezone.utc)
+    expires_at = record.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    if now > expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Verification code has expired. Please request a new code.",
+        )
+
+    record.used = True
+    db.commit()
+    return True

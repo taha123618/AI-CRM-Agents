@@ -15,7 +15,12 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<boolean>;
-  register: (payload: { full_name: string; email: string; password: string; role?: string }) => Promise<boolean>;
+  /** Registration — returns {status:'otp_sent', email, message}; does NOT log the user in. */
+  register: (payload: { full_name: string; email: string; password: string; role?: string }) => Promise<{ status: string; email: string; message: string }>;
+  /** Complete 2FA: verify OTP and authenticate the session. */
+  verifyOtp: (email: string, otp: string) => Promise<boolean>;
+  /** Request a new OTP code for an unverified account. */
+  resendOtp: (email: string) => Promise<{ status: string; message: string }>;
   forgotPassword: (email: string) => Promise<{ status: string; message: string }>;
   resetPassword: (payload: { token: string; new_password: string }) => Promise<{ status: string; message: string }>;
   verifyEmail: (token: string) => Promise<{ status: string; message: string }>;
@@ -56,13 +61,26 @@ export const useAuthStore = create<AuthState>((set) => ({
   register: async (payload) => {
     set({ isLoading: true });
     try {
+      // Backend returns {status:'otp_sent', email, message} — no JWT issued yet
       const res = await api.register(payload);
+      set({ isLoading: false });
+      return res;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  verifyOtp: async (email, otp) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.verifyOtp(email, otp);
       set({
         user: res.user || {
           id: `usr-${Date.now()}`,
-          email: payload.email,
-          full_name: payload.full_name,
-          role: (payload.role as any) || 'sales',
+          email,
+          full_name: email.split('@')[0],
+          role: 'sales',
           is_active: true,
         },
         token: res.access_token,
@@ -70,6 +88,18 @@ export const useAuthStore = create<AuthState>((set) => ({
         isLoading: false,
       });
       return true;
+    } catch (e) {
+      set({ isLoading: false });
+      throw e;
+    }
+  },
+
+  resendOtp: async (email) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.resendOtp(email);
+      set({ isLoading: false });
+      return res;
     } catch (e) {
       set({ isLoading: false });
       throw e;
@@ -166,4 +196,3 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 }));
-

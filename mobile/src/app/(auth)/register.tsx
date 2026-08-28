@@ -31,7 +31,6 @@ export default function RegisterScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState<'sales' | 'support' | 'auditor'>('sales');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   // Password strength checks
   const hasMinLength = password.length >= 8;
@@ -60,16 +59,16 @@ export default function RegisterScreen() {
     }
 
     try {
-      await register({
+      const res = await register({
         full_name: fullName.trim(),
         email: email.trim().toLowerCase(),
         password,
         role,
       });
-      setSuccess(true);
-      setTimeout(() => {
-        router.replace('/(tabs)' as any);
-      }, 800);
+      // Backend returned OTP pending — redirect to OTP verification screen
+      if (res.status === 'otp_sent') {
+        router.push({ pathname: '/(auth)/verify-otp', params: { email: res.email } } as any);
+      }
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please verify your inputs.');
     }
@@ -313,14 +312,7 @@ export default function RegisterScreen() {
             </View>
           ) : null}
 
-          {success ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
-              <CheckCircle2 size={14} color={colors.success} />
-              <Text style={{ color: colors.success, fontSize: 11, fontFamily: fonts.mono }}>
-                OPERATOR REGISTERED. INITIALIZING HUD...
-              </Text>
-            </View>
-          ) : null}
+
 
           <Button
             title="REGISTER"
