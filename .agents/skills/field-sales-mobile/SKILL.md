@@ -64,7 +64,10 @@ Routes are located inside `mobile/src/app/`:
 
 ---
 
-## ⚡ High-Performance FlashList Architecture
+## ⚡ High-Performance FlashList Architecture & Zero FlatList Policy
+
+> [!IMPORTANT]
+> **Zero `<FlatList>` Policy**: Always use `<FlashList>` from `@shopify/flash-list` (or `<TacticalFlashList>`) for rendering collections, lists, and modal option pickers across all mobile screens. Never import or use React Native's standard `<FlatList>`.
 
 All entity lists use `@shopify/flash-list` for memory recycling and 60-120fps scrolling:
 
