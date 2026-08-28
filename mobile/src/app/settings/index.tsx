@@ -17,6 +17,8 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { ScalePressable } from '@/components/ui/ScalePressable';
 import { AnimatedEntrance } from '@/components/ui/AnimatedEntrance';
 
+import { api } from '@/services/api';
+
 type SettingsTab = 'rbac' | 'appearance' | 'observability' | 'webhooks' | 'tasks' | 'audits' | 'diagnostics';
 
 export default function SettingsHubScreen() {
@@ -26,28 +28,40 @@ export default function SettingsHubScreen() {
   const isAdmin = user?.role === 'admin';
 
   const [activeTab, setActiveTab] = useState<SettingsTab>('rbac');
-  const [users, setUsers] = useState([
-    { id: 'usr-1', name: 'Super Admin', email: 'admin@gmail.com', role: 'admin', status: 'active', last_active: 'Now' },
-    { id: 'usr-2', name: 'Alex Mercer', email: 'alex@company.com', role: 'sales', status: 'active', last_active: '12m ago' },
-    { id: 'usr-3', name: 'Support Sentinel', email: 'support@company.com', role: 'support', status: 'active', last_active: '1h ago' },
-    { id: 'usr-4', name: 'Security Compliance', email: 'auditor@company.com', role: 'auditor', status: 'active', last_active: '3h ago' },
-  ]);
-
-  const [webhooks, setWebhooks] = useState([
-    { id: 'wh-1', name: 'Slack War Room Channel', url: 'https://hooks.slack.com/services/T00/B00/X00', events: ['deal.closed_won', 'war_room.consensus'], status: 'active' },
-    { id: 'wh-2', name: 'ERP Billing Gateway', url: 'https://api.enterprise-erp.com/v1/billing', events: ['deal.contract_signed'], status: 'active' },
-  ]);
-
-  const [auditLogs, setAuditLogs] = useState([
-    { id: 'aud-1', actor: 'admin@gmail.com', action: 'ROLE_UPDATE', target: 'alex@company.com (sales -> admin)', timestamp: '10:42 AM', ip: '192.168.1.1' },
-    { id: 'aud-2', actor: 'alex@company.com', action: 'PROPOSAL_GENERATE', target: 'Acme Corp Deal ($120k)', timestamp: '10:15 AM', ip: '192.168.1.42' },
-    { id: 'aud-3', actor: 'system@swarm', action: 'AUTONOMOUS_INTERVENTION', target: 'Cyberdyne Systems (Churn 85%)', timestamp: '09:30 AM', ip: '10.0.0.1' },
-  ]);
-
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<any[]>([]);
+  const [webhooks, setWebhooks] = useState<any[]>([]);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [metrics, setMetrics] = useState<any>(null);
   const [queueCount, setQueueCount] = useState(0);
 
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [uList, whList, audList, tskList, metRes, q] = await Promise.all([
+        api.getUsers(),
+        api.getWebhooks(),
+        api.getAuditLogs(),
+        api.getTasks(),
+        api.getMetrics(),
+        OfflineStorage.getOfflineQueue(),
+      ]);
+      setUsers(uList || []);
+      setWebhooks(whList || []);
+      setAuditLogs(audList || []);
+      setTasks(tskList || []);
+      setMetrics(metRes);
+      setQueueCount(q.length);
+    } catch (err) {
+      console.warn('[Settings] Failed to fetch live data', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    OfflineStorage.getOfflineQueue().then((q) => setQueueCount(q.length));
+    loadData();
   }, []);
 
   const tabs = [
@@ -140,6 +154,7 @@ export default function SettingsHubScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 14, flexGrow: 1 }}
         showsVerticalScrollIndicator={true}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={loadData} tintColor={colors.primary} />}
       >
         {/* TAB: RBAC USERS */}
         {activeTab === 'rbac' && (
@@ -223,19 +238,19 @@ export default function SettingsHubScreen() {
               CONFIGURED OUTBOUND WEBHOOKS:
             </Text>
 
-            {webhooks.map((wh) => (
+            {webhooks.map((wh: any) => (
               <Card key={wh.id} style={{ padding: 14 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
-                    {wh.name}
+                    {wh.name || wh.description || 'Outbound Webhook'}
                   </Text>
-                  <Badge label="ACTIVE" variant="success" />
+                  <Badge label={wh.is_active ? "ACTIVE" : "PAUSED"} variant="success" />
                 </View>
                 <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted, marginBottom: 6 }}>
                   {wh.url}
                 </Text>
                 <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
-                  {wh.events.map((ev, idx) => (
+                  {(wh.events || []).map((ev: string, idx: number) => (
                     <Badge key={idx} label={ev} variant="primary" size="sm" />
                   ))}
                 </View>

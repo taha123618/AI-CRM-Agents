@@ -36,16 +36,25 @@ export default function EmailsScreen() {
     loadData();
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    try {
+      await api.sendEmail({
+        to_email: to,
+        subject,
+        body,
+      });
+      await loadData();
       setSentSuccess(true);
       setTimeout(() => {
         setSentSuccess(false);
         setComposing(false);
-      }, 1200);
-    }, 1000);
+      }, 1000);
+    } catch (e) {
+      console.warn('[Emails] Send error', e);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (

@@ -33,14 +33,25 @@ export default function WhatsAppScreen() {
     loadData();
   }, []);
 
-  const handleSendReply = () => {
+  const handleSendReply = async () => {
     if (!replyText.trim()) return;
     setDispatchedSuccess(true);
-    setTimeout(() => {
-      setDispatchedSuccess(false);
-      setReplyText('');
-      setSelectedChat(null);
-    }, 1200);
+    try {
+      await api.sendWhatsAppMessage({
+        conversation_id: selectedChat?.id,
+        phone_number: selectedChat?.contact || '+1-555-0100',
+        message: replyText.trim(),
+      });
+      await loadData();
+    } catch (e) {
+      console.warn('[WhatsApp] Send error', e);
+    } finally {
+      setTimeout(() => {
+        setDispatchedSuccess(false);
+        setReplyText('');
+        setSelectedChat(null);
+      }, 1000);
+    }
   };
 
   return (

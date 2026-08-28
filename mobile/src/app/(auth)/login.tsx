@@ -30,17 +30,24 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     setError('');
-    const success = await login(email, password);
-    if (success) {
-      router.replace('/(tabs)' as any);
-    } else {
-      setError('Invalid credentials. Please verify your email and password.');
+    if (!email.trim() || !password) {
+      setError('Please enter your email and password.');
+      return;
+    }
+    try {
+      const success = await login(email.trim().toLowerCase(), password);
+      if (success) {
+        router.replace('/(tabs)' as any);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Invalid credentials. Please verify your email and password.');
     }
   };
 
   const handleDemoPreset = (demoEmail: string) => {
     setEmail(demoEmail);
     setPassword('admin123');
+    setError('');
   };
 
   return (
@@ -107,7 +114,7 @@ export default function LoginScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="••••••••"
-            secureTextEntry
+            isPassword
           />
 
           <View style={{ alignItems: 'flex-end', marginBottom: 12 }}>

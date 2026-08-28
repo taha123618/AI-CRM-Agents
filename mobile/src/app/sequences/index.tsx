@@ -32,15 +32,19 @@ export default function SequencesScreen() {
     loadData();
   }, []);
 
-  const handleEnroll = (seqId: string) => {
+  const handleEnroll = async (seqId: string) => {
     setEnrollingId(seqId);
-    setTimeout(() => {
-      setEnrollingId(null);
+    try {
+      await api.enrollSequence(seqId, ['lead-1', 'lead-2']);
       setEnrolledSuccess(seqId);
       setSequences((prev) =>
-        prev.map((s) => (s.id === seqId ? { ...s, enrolled_count: s.enrolled_count + 5 } : s))
+        prev.map((s) => (s.id === seqId ? { ...s, enrolled_count: (s.enrolled_count || 0) + 2 } : s))
       );
-    }, 1000);
+    } catch (e) {
+      console.warn('[Sequences] Enroll error', e);
+    } finally {
+      setEnrollingId(null);
+    }
   };
 
   return (

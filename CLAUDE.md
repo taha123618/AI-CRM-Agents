@@ -135,7 +135,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **State Management**: Use TanStack Query v5 for web server state and Zustand for mobile client/server state.
 
 ### 6. Testing & Quality Guidelines
-* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (195 tests across 27 suites).
+* **Backend Framework**: Write unit and integration tests using `pytest` and `pytest-asyncio` (196 tests across 32 suites).
 * **Frontend Web Framework**: Write component and integration tests using `Vitest` and React Testing Library (86 tests across 24 suites).
 * **Mobile Validation**: Run `bunx expo-doctor`, `npx tsc --noEmit`, and `bunx expo export --platform web` (78 static routes, 0 errors).
 * **Mocks**: Mock external APIs and LLM generation (e.g., Anthropic/OpenAI) to avoid running costly live requests in tests.

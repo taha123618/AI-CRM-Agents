@@ -12,7 +12,7 @@ Use this skill when designing, writing, executing, or debugging automated test s
 ## 🚀 SQA Standards & Test Pyramid
 
 1. **Backend Testing (`pytest` + `FastAPI TestClient`)**:
-   - Location: `tests/test_*.py` (32 suites, 195 tests)
+   - Location: `tests/test_*.py` (32 suites, 196 tests)
    - Use `TestClient(app)` with `get_authenticated_client()` for authenticated endpoint testing.
    - Use `@pytest.mark.asyncio` for asynchronous services, background task queues, and agent think loops.
    - Always write **both positive (200/201)** and **negative (400/401/403/404/422)** test cases.

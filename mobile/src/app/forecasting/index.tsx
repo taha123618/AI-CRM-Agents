@@ -33,15 +33,21 @@ export default function ForecastingScreen() {
     loadData();
   }, []);
 
-  const runSimulation = () => {
+  const runSimulation = async () => {
     setIsSimulating(true);
-    setTimeout(() => {
-      setIsSimulating(false);
+    try {
+      const simRes = await api.runForecastingSimulation({ iterations: 1000, target_arr: 2000000 });
       setData((prev: any) => ({
         ...prev,
-        p50_expected: (prev?.p50_expected || 1400000) + Math.floor(Math.random() * 50000),
+        p10_conservative: simRes.p10_conservative || prev?.p10_conservative,
+        p50_expected: simRes.p50_expected || prev?.p50_expected,
+        p90_optimistic: simRes.p90_optimistic || prev?.p90_optimistic,
       }));
-    }, 1000);
+    } catch (e) {
+      console.warn('[Forecasting] Simulation error', e);
+    } finally {
+      setIsSimulating(false);
+    }
   };
 
   const formatCurrency = (val: number) => `$${(val / 1000).toFixed(0)}k`;

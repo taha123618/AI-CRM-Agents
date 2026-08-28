@@ -249,7 +249,7 @@ export default function RegisterScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="••••••••••••"
-            secureTextEntry
+            isPassword
           />
 
           {/* Password Strength Meter */}
@@ -287,8 +287,22 @@ export default function RegisterScreen() {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             placeholder="••••••••••••"
-            secureTextEntry
+            isPassword
+            error={
+              confirmPassword.length > 0 && password !== confirmPassword
+                ? 'Passwords do not match'
+                : undefined
+            }
           />
+
+          {confirmPassword.length > 0 && password === confirmPassword && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+              <CheckCircle2 size={12} color={colors.success} />
+              <Text style={{ color: colors.success, fontSize: 10, fontFamily: fonts.mono, fontWeight: '700' }}>
+                PASSWORDS MATCH
+              </Text>
+            </View>
+          )}
 
           {error ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>

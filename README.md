@@ -11,7 +11,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
-[![Tests](https://img.shields.io/badge/Tests-195%20Backend%20%7C%2086%20Frontend%20Passing-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-196%20Backend%20%7C%2086%20Frontend%20Passing-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Mobile](https://img.shields.io/badge/Mobile-Expo%20SDK%2057%20%7C%2078%20Routes-blueviolet?style=for-the-badge&logo=expo&logoColor=white)](mobile/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 [![Design](https://img.shields.io/badge/Design-Tactical%20Command-FFB800?style=for-the-badge)](design.md)

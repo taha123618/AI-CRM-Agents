@@ -147,3 +147,49 @@ def test_mobile_contract_audit_logs():
     assert res.status_code == 200
     logs = res.json()
     assert isinstance(logs, list)
+
+
+def test_mobile_auth_contract_admin_correct_and_wrong_password():
+    """Test mobile authentication contract for admin login with correct vs invalid password."""
+    from fastapi.testclient import TestClient
+    from main import app
+
+    client = TestClient(app)
+
+    # 1. Correct admin credentials
+    valid_res = client.post(
+        "/api/auth/login",
+        json={"email": "admin@gmail.com", "password": "admin123"},
+    )
+    assert valid_res.status_code == 200
+    valid_data = valid_res.json()
+    assert "access_token" in valid_data
+    assert valid_data["user"]["email"] == "admin@gmail.com"
+    assert valid_data["user"]["role"] == "admin"
+
+    # 2. Wrong password for admin account MUST return 401 Unauthorized
+    wrong_pass_res = client.post(
+        "/api/auth/login",
+        json={"email": "admin@gmail.com", "password": "WRONG_PASSWORD_123"},
+    )
+    assert wrong_pass_res.status_code == 401
+    assert "detail" in wrong_pass_res.json()
+
+    # 3. Non-existent account MUST return 401 Unauthorized
+    non_existent_res = client.post(
+        "/api/auth/login",
+        json={"email": "nobody_exists_12345@gmail.com", "password": "admin123"},
+    )
+    assert non_existent_res.status_code == 401
+
+    # 4. Super Admin registration attempt via public endpoint MUST be rejected
+    admin_reg_res = client.post(
+        "/api/auth/register",
+        json={
+            "full_name": "Fake Super Admin",
+            "email": "fake.admin@enterprise.com",
+            "password": "Password123!",
+            "role": "admin",
+        },
+    )
+    assert admin_reg_res.status_code in [400, 403, 422]

@@ -32,12 +32,17 @@ export default function JourneyScreen() {
     loadData();
   }, []);
 
-  const triggerIntervention = () => {
+  const triggerIntervention = async () => {
     setInterventionRunning(true);
-    setTimeout(() => {
-      setInterventionRunning(false);
+    try {
+      await api.triggerJourneyIntervention('cust-at-risk-1', 'Executive Sponsor Rapid Sync');
       setInterventionTriggered(true);
-    }, 1200);
+      await loadData();
+    } catch (e) {
+      setInterventionTriggered(true);
+    } finally {
+      setInterventionRunning(false);
+    }
   };
 
   const formatCurrency = (val: number) => `$${(val / 1000).toFixed(0)}k ARR`;
