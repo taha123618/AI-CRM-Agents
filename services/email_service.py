@@ -562,7 +562,7 @@ Best regards,
         self,
         recipient_name: str,
         otp_code: str,
-        expires_in_minutes: int = 10,
+        expires_in_minutes: int = 2,
     ) -> tuple[str, str]:
         """Render a branded OTP verification email for 2FA registration."""
         safe_name = recipient_name.split("<")[0].strip() or "Operator"
@@ -636,7 +636,7 @@ If you did not request this, please ignore this message.
         to_email: str,
         recipient_name: str,
         otp_code: str,
-        expires_in_minutes: int = 10,
+        expires_in_minutes: int = 2,
     ) -> Dict[str, Any]:
         """Format and dispatch OTP verification email for 2FA registration."""
         subject = f"Your Verification Code: {otp_code} — {APP_NAME}"

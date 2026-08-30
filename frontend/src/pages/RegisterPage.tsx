@@ -12,7 +12,7 @@ import { validatePasswordStrength } from '@/lib/validation';
 import { PasswordStrengthIndicator } from '@/components/ui/PasswordStrengthIndicator';
 
 const OTP_LENGTH = 6;
-const OTP_EXPIRE_SECONDS = 10 * 60;
+const OTP_EXPIRE_SECONDS = 2 * 60; // 2 minutes (120 seconds)
 
 export function RegisterPage() {
   const navigate = useNavigate();

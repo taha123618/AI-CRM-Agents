@@ -51,7 +51,8 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 ## 🚀 Specialized Platform Features
 
 1. **Enterprise Authentication, Security & RBAC Suite** (`/api/auth`, `services/auth_service.py`, `frontend/src/features/auth`, `frontend/src/features/settings`, `mobile/src/app/(auth)`):
-   - Secure JWT token rotation, HTTP-only cookie sessions, brute-force account lockouts, and social SSO (Google & Microsoft).
+   - Multi-step 2-Factor Authentication (2FA) registration with automated 6-digit OTP delivery via Gmail SMTP (`send_otp_email`), SHA-256 hashed DB persistence (`OtpToken`), 2-minute expiry countdown, and resend rate-limiting.
+   - Secure JWT token rotation, HTTP-only cookie sessions, brute-force account lockouts, Eye/EyeOff password visibility toggling, and social SSO (Google & Microsoft).
    - Fine-grained Role-Based Access Control matrix (`admin: ['*']`, `sales`, `support`, `auditor`) with client-side `PermissionGuard` and server-side `require_permission`.
    - Super Admin public registration protection with seeded account (`admin@gmail.com` / `admin123`) and full User Management CRUD in `/settings` (search, role filters, permission editor, pagination).
    - Asynchronous Gmail SMTP password recovery flow with zero user enumeration risk and single-use DB-hashed tokens.

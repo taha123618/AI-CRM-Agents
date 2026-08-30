@@ -668,7 +668,7 @@ def require_any_permission(permissions: List[str]):
 # OTP (One-Time Password) 2FA helpers
 # ---------------------------------------------------------------------------
 
-OTP_EXPIRE_MINUTES = int(os.getenv("OTP_EXPIRE_MINUTES", "10"))
+OTP_EXPIRE_MINUTES = int(os.getenv("OTP_EXPIRE_MINUTES", "2"))
 
 
 def generate_otp() -> str:

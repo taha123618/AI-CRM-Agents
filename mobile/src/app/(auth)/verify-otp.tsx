@@ -30,7 +30,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 
 const OTP_LENGTH = 6;
-const OTP_EXPIRE_SECONDS = 10 * 60; // 10 minutes
+const OTP_EXPIRE_SECONDS = 2 * 60; // 2 minutes (120 seconds)
 
 export default function VerifyOtpScreen() {
   const { colors, fonts } = useTheme();
@@ -101,15 +101,6 @@ export default function VerifyOtpScreen() {
         setDigits(newDigits);
         inputRefs.current[index - 1]?.focus();
       }
-    }
-  };
-
-  const handlePaste = (text: string, _index: number) => {
-    const pasted = text.replace(/\D/g, '').slice(0, OTP_LENGTH);
-    if (pasted.length >= OTP_LENGTH) {
-      const newDigits = pasted.slice(0, OTP_LENGTH).split('');
-      setDigits(newDigits);
-      inputRefs.current[OTP_LENGTH - 1]?.focus();
     }
   };
 
