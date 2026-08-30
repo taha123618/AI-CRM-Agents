@@ -20,12 +20,12 @@ client = TestClient(app)
 
 
 def test_http_only_cookie_session_and_logout():
-    """Verify HTTP-only cookies on login/register and cookie-based authentication."""
+    """Verify HTTP-only cookies on login and cookie-based authentication."""
     uid = uuid.uuid4().hex[:6]
     email = f"sec_user_{uid}@enterprise.com"
     password = "SecPassword123!"
 
-    # 1. Register with cookies
+    # 1. Register and Login to get cookies
     reg_resp = client.post(
         "/api/auth/register",
         json={
@@ -36,9 +36,15 @@ def test_http_only_cookie_session_and_logout():
         },
     )
     assert reg_resp.status_code == 201
-    assert "access_token" in reg_resp.cookies
-    assert "refresh_token" in reg_resp.cookies
-    access_cookie = reg_resp.cookies["access_token"]
+
+    login_resp = client.post(
+        "/api/auth/login",
+        json={"email": email, "password": password},
+    )
+    assert login_resp.status_code == 200
+    assert "access_token" in login_resp.cookies
+    assert "refresh_token" in login_resp.cookies
+    access_cookie = login_resp.cookies["access_token"]
 
     # 2. Authenticate using cookie instead of Bearer header
     client_no_header = TestClient(app)

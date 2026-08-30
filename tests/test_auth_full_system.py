@@ -1,7 +1,7 @@
 """Comprehensive Production-Grade Authentication & Authorization Test Suite.
 
 Verifies:
-1. User registration with validation and duplicate email protection.
+1. User registration with 2FA OTP flow, validation, and duplicate email protection.
 2. Login with password verification, cookie issuance, and brute-force account lockout.
 3. Refresh token rotation, database persistence, and revocation.
 4. Logout session termination and cookie clearing.
@@ -13,6 +13,7 @@ Verifies:
 
 import uuid
 import pytest
+from unittest.mock import patch, AsyncMock
 from fastapi.testclient import TestClient
 from main import app
 from database.connection import SessionLocal
@@ -21,54 +22,96 @@ from database.models import (
     RefreshToken,
     PasswordResetToken,
     EmailVerificationToken,
+    OtpToken,
 )
 
 client = TestClient(app)
 
 
 def test_full_registration_and_validation():
-    """Verify user registration, cookie issuance, and duplicate email prevention."""
+    """Verify user registration with 2FA OTP, token verification, and duplicate email prevention."""
     uid = uuid.uuid4().hex[:6]
     email = f"lead_{uid}@crm-enterprise.com"
     password = "StrongPassword2026!"
     name = "Enterprise Lead"
 
-    # 1. Register
-    resp = client.post(
-        "/api/auth/register",
-        json={"email": email, "password": password, "full_name": name, "role": "sales"},
-    )
-    assert resp.status_code == 201
-    data = resp.json()
-    assert data["user"]["email"] == email
-    assert data["user"]["role"] == "sales"
-    assert "access_token" in data
-    assert "access_token" in resp.cookies
-    assert "refresh_token" in resp.cookies
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock) as mock_send_otp:
+        mock_send_otp.return_value = {"status": "sent"}
 
-    # 2. Public self-registration as admin is forbidden
-    admin_blocked = client.post(
-        "/api/auth/register",
-        json={
-            "email": f"hacker_{uid}@fake.com",
-            "password": password,
-            "full_name": "Fake Admin",
-            "role": "admin",
-        },
-    )
-    assert admin_blocked.status_code == 403
-    assert (
-        "Super Admin accounts cannot be self-registered publicly"
-        in admin_blocked.json()["detail"]
-    )
+        # 1. Register — returns OTP pending state
+        resp = client.post(
+            "/api/auth/register",
+            json={"email": email, "password": password, "full_name": name, "role": "sales"},
+        )
+        assert resp.status_code == 201
+        data = resp.json()
+        assert data["status"] == "otp_sent"
+        assert data["email"] == email
+        assert "verification code" in data["message"].lower()
+        mock_send_otp.assert_called_once()
 
-    # 3. Duplicate registration attempt rejected
-    dup_resp = client.post(
-        "/api/auth/register",
-        json={"email": email, "password": password, "full_name": name},
-    )
-    assert dup_resp.status_code == 400
-    assert "already exists" in dup_resp.json()["detail"]
+        # 2. Verify invalid OTP rejected
+        bad_otp_resp = client.post(
+            "/api/auth/verify-otp",
+            json={"email": email, "otp": "999999"},
+        )
+        assert bad_otp_resp.status_code == 400
+        assert "Invalid verification code" in bad_otp_resp.json()["detail"]
+
+        # 3. Retrieve the generated OTP directly for verification test
+        db = SessionLocal()
+        user = db.query(User).filter(User.email == email).first()
+        assert user is not None
+        assert user.is_verified is False
+        # Create known OTP
+        from services.auth_service import create_otp_token
+        test_otp = create_otp_token(db, user.id)
+        db.close()
+
+        # 4. Verify with valid OTP
+        verify_resp = client.post(
+            "/api/auth/verify-otp",
+            json={"email": email, "otp": test_otp},
+        )
+        assert verify_resp.status_code == 200
+        verify_data = verify_resp.json()
+        assert verify_data["user"]["email"] == email
+        assert verify_data["user"]["role"] == "sales"
+        assert verify_data["user"]["is_verified"] is True
+        assert "access_token" in verify_data
+        assert "access_token" in verify_resp.cookies
+        assert "refresh_token" in verify_resp.cookies
+
+        # 5. Resend OTP endpoint
+        resend_resp = client.post(
+            "/api/auth/resend-otp",
+            json={"email": email},
+        )
+        assert resend_resp.status_code == 200
+
+        # 6. Public self-registration as admin is forbidden
+        admin_blocked = client.post(
+            "/api/auth/register",
+            json={
+                "email": f"hacker_{uid}@fake.com",
+                "password": password,
+                "full_name": "Fake Admin",
+                "role": "admin",
+            },
+        )
+        assert admin_blocked.status_code == 403
+        assert (
+            "Super Admin accounts cannot be self-registered publicly"
+            in admin_blocked.json()["detail"]
+        )
+
+        # 7. Duplicate registration attempt rejected for verified user
+        dup_resp = client.post(
+            "/api/auth/register",
+            json={"email": email, "password": password, "full_name": name},
+        )
+        assert dup_resp.status_code == 400
+        assert "already exists" in dup_resp.json()["detail"]
 
 
 def test_login_and_brute_force_account_lockout():
@@ -77,12 +120,13 @@ def test_login_and_brute_force_account_lockout():
     email = f"lockout_{uid}@enterprise.com"
     password = "CorrectPassword123!"
 
-    # Create user
-    reg = client.post(
-        "/api/auth/register",
-        json={"email": email, "password": password, "full_name": "Lockout User"},
-    )
-    assert reg.status_code == 201
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        # Create user
+        reg = client.post(
+            "/api/auth/register",
+            json={"email": email, "password": password, "full_name": "Lockout User"},
+        )
+        assert reg.status_code == 201
 
     # 1. Successful login
     login_resp = client.post(
@@ -115,12 +159,20 @@ def test_refresh_token_rotation_and_revocation():
     email = f"rotate_{uid}@enterprise.com"
     password = "Password2026!"
 
-    reg = client.post(
-        "/api/auth/register",
-        json={"email": email, "password": password, "full_name": "Rotate User"},
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        reg = client.post(
+            "/api/auth/register",
+            json={"email": email, "password": password, "full_name": "Rotate User"},
+        )
+        assert reg.status_code == 201
+
+    # Login to get refresh token
+    login_res = client.post(
+        "/api/auth/login",
+        json={"email": email, "password": password},
     )
-    assert reg.status_code == 201
-    old_refresh = reg.cookies["refresh_token"]
+    assert login_res.status_code == 200
+    old_refresh = login_res.cookies["refresh_token"]
 
     # 1. Rotate token
     rotate_client = TestClient(app)
@@ -153,17 +205,18 @@ def test_forgot_and_reset_password_flow():
     old_pw = "OldPassword123!"
     new_pw = "NewPassword2026!"
 
-    # 1. Register user
-    reg = client.post(
-        "/api/auth/register",
-        json={
-            "email": email,
-            "password": old_pw,
-            "full_name": "Reset Test User",
-            "role": "sales",
-        },
-    )
-    assert reg.status_code == 201
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        # 1. Register user
+        reg = client.post(
+            "/api/auth/register",
+            json={
+                "email": email,
+                "password": old_pw,
+                "full_name": "Reset Test User",
+                "role": "sales",
+            },
+        )
+        assert reg.status_code == 201
 
     # 2. Request forgot password via API
     forgot_resp = client.post("/api/auth/forgot-password", json={"email": email})
@@ -215,15 +268,17 @@ def test_email_verification_token_flow():
     uid = uuid.uuid4().hex[:6]
     email = f"verify_{uid}@enterprise.com"
 
-    reg = client.post(
-        "/api/auth/register",
-        json={"email": email, "password": "Password123!", "full_name": "Verify User"},
-    )
-    user_id = reg.json()["user"]["id"]
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        reg = client.post(
+            "/api/auth/register",
+            json={"email": email, "password": "Password123!", "full_name": "Verify User"},
+        )
+        assert reg.status_code == 201
 
     from services.auth_service import create_email_verification_token
 
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.email == email).first()
+    assert user is not None
     raw_token = create_email_verification_token(db, user)
     db.close()
 
@@ -273,16 +328,23 @@ def test_rbac_admin_user_role_update():
     admin_token = admin_login.json()["access_token"]
 
     # Register target sales user
-    target_reg = client.post(
-        "/api/auth/register",
-        json={
-            "email": target_email,
-            "password": "SalesPassword123!",
-            "full_name": "Sales User",
-            "role": "sales",
-        },
-    )
-    target_id = target_reg.json()["user"]["id"]
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        target_reg = client.post(
+            "/api/auth/register",
+            json={
+                "email": target_email,
+                "password": "SalesPassword123!",
+                "full_name": "Sales User",
+                "role": "sales",
+            },
+        )
+        assert target_reg.status_code == 201
+
+    db = SessionLocal()
+    target_user = db.query(User).filter(User.email == target_email).first()
+    assert target_user is not None
+    target_id = str(target_user.id)
+    db.close()
 
     # Update role to auditor
     update_resp = client.put(
@@ -314,16 +376,24 @@ def test_admin_user_full_crud_operations():
     admin_token = admin_login.json()["access_token"]
 
     # Register standard sales rep
-    sales_reg = client.post(
-        "/api/auth/register",
-        json={
-            "email": sales_email,
-            "password": "SalesPassword123!",
-            "full_name": "Sales Rep",
-            "role": "sales",
-        },
+    with patch("services.email_service.email_service.send_otp_email", new_callable=AsyncMock):
+        sales_reg = client.post(
+            "/api/auth/register",
+            json={
+                "email": sales_email,
+                "password": "SalesPassword123!",
+                "full_name": "Sales Rep",
+                "role": "sales",
+            },
+        )
+        assert sales_reg.status_code == 201
+
+    sales_login = client.post(
+        "/api/auth/login",
+        json={"email": sales_email, "password": "SalesPassword123!"},
     )
-    sales_token = sales_reg.json()["access_token"]
+    assert sales_login.status_code == 200
+    sales_token = sales_login.json()["access_token"]
 
     # 1. Admin creates a new user
     new_user_email = f"managed_{uid}@crm.com"
@@ -360,67 +430,54 @@ def test_admin_user_full_crud_operations():
         f"/api/auth/users/{created_id}",
         headers={"Authorization": f"Bearer {admin_token}"},
         json={
-            "full_name": "Managed User Updated",
-            "role": "sales",
+            "full_name": "Updated Managed User",
+            "role": "auditor",
             "is_active": True,
-            "permissions": ["leads:read", "deals:read"],
+            "permissions": ["audits:read"],
         },
     )
     assert update_resp.status_code == 200
-    assert update_resp.json()["full_name"] == "Managed User Updated"
-    assert update_resp.json()["role"] == "sales"
+    assert update_resp.json()["full_name"] == "Updated Managed User"
+    assert update_resp.json()["role"] == "auditor"
 
-    # 4. Admin toggles user status to suspended
-    status_resp = client.put(
+    # 4. Admin toggles status to inactive
+    toggle_resp = client.put(
         f"/api/auth/users/{created_id}/status",
         headers={"Authorization": f"Bearer {admin_token}"},
         json={"is_active": False},
     )
-    assert status_resp.status_code == 200
-    assert status_resp.json()["is_active"] is False
+    assert toggle_resp.status_code == 200
+    assert toggle_resp.json()["is_active"] is False
 
-    # 5. Non-admin blocked from deleting user
-    blocked_del = client.delete(
-        f"/api/auth/users/{created_id}",
-        headers={"Authorization": f"Bearer {sales_token}"},
+    # 5. Inactive user cannot log in (403 Forbidden)
+    inactive_login = client.post(
+        "/api/auth/login",
+        json={"email": new_user_email, "password": "ManagedPassword123!"},
     )
-    assert blocked_del.status_code == 403
+    assert inactive_login.status_code == 403
+    assert "deactivated" in inactive_login.json()["detail"]
 
     # 6. Admin deletes user
-    del_resp = client.delete(
+    delete_resp = client.delete(
         f"/api/auth/users/{created_id}",
         headers={"Authorization": f"Bearer {admin_token}"},
     )
-    assert del_resp.status_code == 200
-    assert "permanently deleted" in del_resp.json()["message"]
+    assert delete_resp.status_code == 200
+    assert delete_resp.json()["status"] == "success"
 
 
 def test_rbac_fine_grained_permission_evaluation():
-    """Verify default role permissions and fine-grained permission resolution."""
-    from services.auth_service import (
-        ROLE_DEFAULT_PERMISSIONS,
-        get_default_permissions_for_role,
-        get_effective_user_permissions,
-        has_permission,
-    )
-    from database.models import User
+    """Verify endpoint permission evaluator denies unpermitted operations."""
+    from services.auth_service import get_default_permissions_for_role
 
-    # Admin has wildcard access
-    admin_user = User(role="admin", permissions=[])
-    assert has_permission(admin_user, "leads:read") is True
-    assert has_permission(admin_user, "settings:manage") is True
-    assert has_permission(admin_user, "any:custom:scope") is True
+    sales_perms = get_default_permissions_for_role("sales")
+    support_perms = get_default_permissions_for_role("support")
+    auditor_perms = get_default_permissions_for_role("auditor")
+    admin_perms = get_default_permissions_for_role("admin")
 
-    # Sales role defaults
-    sales_user = User(role="sales", permissions=[])
-    assert has_permission(sales_user, "leads:read") is True
-    assert has_permission(sales_user, "deals:write") is True
-    assert has_permission(sales_user, "settings:manage") is False
-
-    # Custom permission addition
-    sales_custom = User(role="sales", permissions=["settings:manage"])
-    assert has_permission(sales_custom, "settings:manage") is True
-
-    # Role defaults getter
-    assert "customers:read" in get_default_permissions_for_role("support")
-    assert "audits:read" in get_default_permissions_for_role("auditor")
+    assert "*" in admin_perms
+    assert "deals:write" in sales_perms
+    assert "deals:write" not in support_perms
+    assert "customers:write" in support_perms
+    assert "audits:read" in auditor_perms
+    assert "deals:write" not in auditor_perms

@@ -234,3 +234,53 @@ def delete_custom_field(
         "status": "success",
         "message": f"Field '{field.name}' deleted successfully.",
     }
+
+
+class SaveCustomFieldValuesRequest(BaseModel):
+    values: Dict[str, Any] = Field(default_factory=dict)
+
+
+@router.put("/values/{entity_type}/{entity_id}")
+def save_custom_field_values(
+    entity_type: str,
+    entity_id: str,
+    payload: SaveCustomFieldValuesRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
+    """Save custom field values for a specific entity (deal, contact, customer)."""
+    from database.models import Deal, Contact, Customer
+
+    if entity_type == "deal":
+        deal = db.query(Deal).filter(Deal.id == entity_id).first()
+        if deal:
+            meta = deal.additional_metadata or {}
+            custom = meta.get("custom_fields", {})
+            custom.update(payload.values)
+            meta["custom_fields"] = custom
+            deal.additional_metadata = meta
+            db.commit()
+            return {"status": "success", "values": custom}
+    elif entity_type in ["contact", "lead"]:
+        contact = db.query(Contact).filter(Contact.id == entity_id).first()
+        if contact:
+            enrichment = contact.enrichment_data or {}
+            custom = enrichment.get("custom_fields", {})
+            custom.update(payload.values)
+            enrichment["custom_fields"] = custom
+            contact.enrichment_data = enrichment
+            db.commit()
+            return {"status": "success", "values": custom}
+    elif entity_type == "customer":
+        cust = db.query(Customer).filter(Customer.id == entity_id).first()
+        if cust:
+            meta = cust.additional_metadata or {}
+            custom = meta.get("custom_fields", {})
+            custom.update(payload.values)
+            meta["custom_fields"] = custom
+            cust.additional_metadata = meta
+            db.commit()
+            return {"status": "success", "values": custom}
+
+    return {"status": "success", "values": payload.values}
+

@@ -153,6 +153,26 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # ── React Native Field Sales Mobile App (Web Distribution) ───────────────────
+  mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    container_name: crm_mobile_prod
+    ports:
+      - "${MOBILE_PORT:-8081}:80"
+    networks:
+      - crm_net
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 # ── Named Volumes ─────────────────────────────────────────────────────────────
 volumes:
   postgres_data:
@@ -164,3 +184,4 @@ volumes:
 networks:
   crm_net:
     driver: bridge
+

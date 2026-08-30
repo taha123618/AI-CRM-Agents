@@ -219,7 +219,7 @@ Agents communicate via:
 - [x] AI Deal War Room & Strategy Studio (`docs/war-room.md`)
 - [x] Customer Journey & Churn Prevention Studio (`docs/customer-journey.md`)
 - [x] AI SDR Multi-Touch Outreach Cadences (`docs/sdr-sequences.md`)
-- [ ] Mobile app (React Native)
+- [x] Field Sales Mobile App with FlashList, Live Voice Studio & Offline Sync (`mobile/README.md`)
 
 ---
 

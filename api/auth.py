@@ -30,9 +30,13 @@ from services.auth_service import (
     require_role,
     get_current_user,
     get_default_permissions_for_role,
+    create_otp_token,
+    verify_otp_token,
+    OTP_EXPIRE_MINUTES,
 )
 from services.audit_service import record_audit_log
 from services.task_queue_service import task_queue
+from services.email_service import email_service
 
 router = APIRouter()
 
@@ -160,16 +164,30 @@ class RefreshTokenRequest(BaseModel):
     refresh_token: Optional[str] = None
 
 
+class OtpVerifyRequest(BaseModel):
+    email: EmailStr
+    otp: str = Field(..., min_length=6, max_length=6, description="6-digit OTP code")
+
+
+class ResendOtpRequest(BaseModel):
+    email: EmailStr
+
+
+class OtpPendingResponse(BaseModel):
+    status: str
+    email: str
+    message: str
+
+
 @router.post(
-    "/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
+    "/register", response_model=OtpPendingResponse, status_code=status.HTTP_201_CREATED
 )
 async def register(
     payload: UserRegisterRequest,
     request: Request,
-    response: Response,
     db: Session = Depends(get_db),
 ):
-    """Register a new CRM user, set secure HTTP-only cookies, and return JWT access token."""
+    """Register a new CRM user and send a 6-digit OTP to their email for 2FA verification."""
     # Password complexity validation
     pw_error = validate_password_strength(payload.password)
     if pw_error:
@@ -182,6 +200,20 @@ async def register(
         db.query(User).filter(User.email == payload.email.lower().strip()).first()
     )
     if existing:
+        if not existing.is_verified:
+            # Allow resending OTP for unverified accounts
+            otp = create_otp_token(db, existing.id)
+            await email_service.send_otp_email(
+                to_email=existing.email,
+                recipient_name=existing.full_name,
+                otp_code=otp,
+                expires_in_minutes=OTP_EXPIRE_MINUTES,
+            )
+            return OtpPendingResponse(
+                status="otp_sent",
+                email=existing.email,
+                message=f"A new verification code has been sent to {existing.email}. Please check your inbox.",
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="A user with this email address already exists",
@@ -204,21 +236,78 @@ async def register(
         full_name=payload.full_name.strip(),
         role=user_role,
         is_active=True,
-        is_verified=True,
+        is_verified=False,  # Requires OTP verification
         permissions=user_permissions,
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
+    # Generate OTP and dispatch email
+    otp = create_otp_token(db, new_user.id)
+    await email_service.send_otp_email(
+        to_email=new_user.email,
+        recipient_name=new_user.full_name,
+        otp_code=otp,
+        expires_in_minutes=OTP_EXPIRE_MINUTES,
+    )
+
+    client_ip = request.client.host if request.client else None
+    record_audit_log(
+        db=db,
+        entity_type="user",
+        entity_id=str(new_user.id),
+        action="user_registered_pending_otp",
+        actor=new_user.email,
+        user_id=str(new_user.id),
+        details={"role": new_user.role, "email": new_user.email},
+        ip_address=client_ip,
+    )
+
+    return OtpPendingResponse(
+        status="otp_sent",
+        email=new_user.email,
+        message=f"A 6-digit verification code has been sent to {new_user.email}. Please check your inbox.",
+    )
+
+
+@router.post("/verify-otp", response_model=TokenResponse)
+async def verify_otp(
+    payload: OtpVerifyRequest,
+    request: Request,
+    response: Response,
+    db: Session = Depends(get_db),
+):
+    """Verify the OTP emailed on registration and issue JWT tokens to complete sign-in."""
+    user = db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No pending registration found for this email address.",
+        )
+
+    if user.is_verified and user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This account has already been verified. Please sign in.",
+        )
+
+    # Will raise HTTPException on invalid/expired OTP
+    verify_otp_token(db, user.id, payload.otp)
+
+    # Mark user as verified
+    user.is_verified = True
+    db.commit()
+    db.refresh(user)
+
     token_payload = {
-        "sub": str(new_user.id),
-        "email": new_user.email,
-        "role": new_user.role,
+        "sub": str(user.id),
+        "email": user.email,
+        "role": user.role,
     }
     access_token = create_access_token(token_payload)
     refresh_token = create_refresh_token(token_payload)
-    store_refresh_token(db, new_user.id, refresh_token)
+    store_refresh_token(db, user.id, refresh_token)
 
     set_auth_cookies(response, access_token, refresh_token)
 
@@ -226,11 +315,11 @@ async def register(
     record_audit_log(
         db=db,
         entity_type="user",
-        entity_id=str(new_user.id),
-        action="user_registered",
-        actor=new_user.email,
-        user_id=str(new_user.id),
-        details={"role": new_user.role, "email": new_user.email},
+        entity_id=str(user.id),
+        action="user_otp_verified",
+        actor=user.email,
+        user_id=str(user.id),
+        details={"email": user.email, "role": user.role},
         ip_address=client_ip,
     )
 
@@ -239,19 +328,38 @@ async def register(
         token_type="bearer",
         refresh_token=refresh_token,
         user=UserResponse(
-            id=str(new_user.id),
-            email=new_user.email,
-            full_name=new_user.full_name,
-            role=new_user.role,
-            is_active=new_user.is_active,
-            is_verified=new_user.is_verified,
-            permissions=new_user.permissions or [],
-            last_login_at=new_user.last_login_at.isoformat()
-            if new_user.last_login_at
-            else None,
-            created_at=new_user.created_at.isoformat() if new_user.created_at else None,
+            id=str(user.id),
+            email=user.email,
+            full_name=user.full_name,
+            role=user.role,
+            is_active=user.is_active,
+            is_verified=user.is_verified,
+            permissions=user.permissions or [],
+            last_login_at=user.last_login_at.isoformat() if user.last_login_at else None,
+            created_at=user.created_at.isoformat() if user.created_at else None,
         ),
     )
+
+
+@router.post("/resend-otp", status_code=status.HTTP_200_OK)
+async def resend_otp(
+    payload: ResendOtpRequest,
+    db: Session = Depends(get_db),
+):
+    """Resend the OTP email for an unverified account (rate-limited by single-use invalidation)."""
+    user = db.query(User).filter(User.email == payload.email.lower().strip()).first()
+    # Always respond the same way to prevent user enumeration
+    if not user or user.is_verified:
+        return {"status": "ok", "message": "If the email is registered and unverified, a new code has been dispatched."}
+
+    otp = create_otp_token(db, user.id)
+    await email_service.send_otp_email(
+        to_email=user.email,
+        recipient_name=user.full_name,
+        otp_code=otp,
+        expires_in_minutes=OTP_EXPIRE_MINUTES,
+    )
+    return {"status": "ok", "message": "A new verification code has been dispatched to your email."}
 
 
 @router.post("/login", response_model=TokenResponse)

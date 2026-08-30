@@ -11,12 +11,13 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
-[![Tests](https://img.shields.io/badge/Tests-190%20Backend%20%7C%2086%20Frontend%20Passing-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-196%20Backend%20%7C%2086%20Frontend%20Passing-success?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Mobile](https://img.shields.io/badge/Mobile-Expo%20SDK%2057%20%7C%2078%20Routes-blueviolet?style=for-the-badge&logo=expo&logoColor=white)](mobile/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 [![Design](https://img.shields.io/badge/Design-Tactical%20Command-FFB800?style=for-the-badge)](design.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[📖 Documentation](docs/) • [🚀 Quickstart](QUICKSTART.md) • [✨ Features Checklist](Features.md) • [🏗️ Architecture](docs/ai-architecture.md) • [🔒 Security](docs/security.md) • [🎨 Design System](design.md) • [🤝 Contributing](CONTRIBUTING.md)
+[📖 Documentation](docs/) • [🚀 Quickstart](QUICKSTART.md) • [✨ Features Checklist](Features.md) • [📱 Mobile App](mobile/README.md) • [🏗️ Architecture](docs/ai-architecture.md) • [🔒 Security](docs/security.md) • [🎨 Design System](design.md) • [🤝 Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -351,13 +352,24 @@ ai-crm-agents/
 │   ├── nginx.conf                #   Production reverse proxy config
 │   └── vite.config.ts            #   Vite build tooling and test configuration
 │
+├── mobile/                       # Field Sales Mobile Application (Expo SDK 57 + React Native)
+│   ├── src/
+│   │   ├── app/                  #   Expo Router file-based routes (20 static routes)
+│   │   ├── components/           #   Dynamic Custom Fields & Tactical UI components
+│   │   ├── stores/               #   Zustand offline state stores
+│   │   └── services/             #   API client & AsyncStorage action queue
+│   ├── Dockerfile                #   Multi-stage mobile web build (Bun + Nginx)
+│   ├── Dockerfile.dev            #   Development Metro bundler container
+│   ├── nginx.conf                #   Production reverse proxy config
+│   └── app.json                  #   Expo application manifest
+│
 ├── .agents/                      # AI Coding Assistant Knowledge & Skills
 │   ├── AGENTS.md                 #   Single source of truth for architectural guidelines
-│   ├── skills/                   #   8 specialized skill definitions
+│   ├── skills/                   #   10 specialized skill definitions
 │   └── scripts/sync_rules.py     #   Tool rule synchronization utility
 │
 ├── .github/workflows/            # CI/CD Workflows
-│   ├── ci.yml                    #   Lint, Pytest, Vitest, Type-check, Docker build
+│   ├── ci.yml                    #   Lint, Pytest, Vitest, Mobile QA, Type-check, Docker build
 │   └── docker-build.yml          #   Trivy container security vulnerability scanner
 │
 ├── docs/                         # Comprehensive Documentation Hub
@@ -365,7 +377,7 @@ ai-crm-agents/
 ├── run.py                        # Local development runner
 ├── Makefile                      # Developer command-line interface
 ├── Dockerfile                    # Backend multi-stage production container
-├── docker-compose.yml            # Production container stack
+├── docker-compose.yml            # Production container stack (web, worker, db, redis, frontend, mobile)
 ├── docker-compose.dev.yml        # Development container stack (hot-reload)
 ├── requirements.txt              # Python production dependencies
 └── alembic.ini                   # Database migration configuration
@@ -378,13 +390,13 @@ ai-crm-agents/
 ### Prerequisites
 
 - **Docker Option**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) 24.0+
-- **Local Native Option**: Python 3.9+, Node.js 20+, PostgreSQL 14+, Redis 7+
+- **Local Native Option**: Python 3.9+, Node.js 20+, Bun (for Mobile), PostgreSQL 14+, Redis 7+
 
 ---
 
 ### Option A — Docker Quick Start (Recommended)
 
-Start the entire production or development stack with a single command:
+Start the entire production or development stack (Backend, Worker, Database, Redis, Web Frontend, and Mobile Web) with a single command:
 
 ```bash
 # 1. Clone repository
@@ -403,9 +415,11 @@ docker-compose up -d --build
 
 #### Application Endpoints:
 - 🖥️ **React Web Application**: `http://localhost:3000` (Dev) / `http://localhost:80` (Prod)
+- 📱 **Field Sales Mobile Web**: `http://localhost:8081` (Dev/Prod)
 - ⚡ **FastAPI Backend API**: `http://localhost:8000`
 - 📚 **Interactive Swagger API Docs**: `http://localhost:8000/docs`
 - 📖 **ReDoc Documentation**: `http://localhost:8000/redoc`
+
 
 ---
 

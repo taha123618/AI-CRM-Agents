@@ -558,6 +558,100 @@ Best regards,
         result["correlation_id"] = correlation_id
         return result
 
+    def render_otp_email(
+        self,
+        recipient_name: str,
+        otp_code: str,
+        expires_in_minutes: int = 2,
+    ) -> tuple[str, str]:
+        """Render a branded OTP verification email for 2FA registration."""
+        safe_name = recipient_name.split("<")[0].strip() or "Operator"
+        html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Verification Code — {APP_NAME}</title>
+  <style>
+    body {{ margin: 0; padding: 0; background: #0B0C10; font-family: 'Courier New', monospace; }}
+    .wrapper {{ max-width: 520px; margin: 0 auto; padding: 32px 16px; }}
+    .card {{ background: #121212; border: 1px solid #3A4552; padding: 32px; }}
+    .header {{ text-align: center; border-bottom: 1px solid #3A4552; padding-bottom: 20px; margin-bottom: 24px; }}
+    .brand {{ font-size: 11px; font-weight: 700; color: #FFB800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }}
+    .title {{ font-size: 20px; font-weight: 800; color: #F1F5F9; margin: 0; }}
+    .greeting {{ font-size: 13px; color: #94A3B8; margin-bottom: 20px; }}
+    .otp-label {{ font-size: 10px; font-weight: 700; color: #FFB800; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }}
+    .otp-box {{ background: #0B0C10; border: 1px solid #FFB800; padding: 20px; text-align: center; margin: 16px 0; }}
+    .otp-code {{ font-size: 40px; font-weight: 900; color: #FFB800; letter-spacing: 12px; margin: 0; font-family: 'Courier New', monospace; }}
+    .otp-expires {{ font-size: 10px; color: #64748B; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }}
+    .notice {{ background: #1a1a1a; border-left: 3px solid #FF2A54; padding: 12px 14px; margin: 20px 0; font-size: 11px; color: #94A3B8; }}
+    .footer {{ text-align: center; font-size: 10px; color: #3A4552; margin-top: 24px; border-top: 1px solid #3A4552; padding-top: 16px; }}
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="header">
+        <div class="brand">{APP_NAME}</div>
+        <div class="title">Verify Your Identity</div>
+      </div>
+      <div class="greeting">Hi {safe_name},</div>
+      <p style="font-size: 13px; color: #94A3B8; margin-bottom: 4px;">
+        Enter this verification code to complete your account registration:
+      </p>
+      <div class="otp-label">YOUR VERIFICATION CODE</div>
+      <div class="otp-box">
+        <div class="otp-code">{otp_code}</div>
+        <div class="otp-expires">Expires in {expires_in_minutes} minutes &bull; Single use only</div>
+      </div>
+      <div class="notice">
+        <strong style="color: #FF2A54;">SECURITY NOTICE:</strong> Never share this code with anyone.
+        {APP_NAME} staff will never ask for your verification code. If you didn't request this,
+        please ignore this email — your account remains secure.
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2026 {APP_NAME}. Enterprise Multi-Agent Sales &amp; Customer Intelligence.
+    </div>
+  </div>
+</body>
+</html>"""
+
+        text_content = f"""Hello {safe_name},
+
+Your verification code for {APP_NAME}:
+
+  {otp_code}
+
+This code expires in {expires_in_minutes} minutes and can only be used once.
+
+SECURITY: Never share this code. {APP_NAME} will never ask for it.
+If you did not request this, please ignore this message.
+
+— {APP_NAME} Security Team
+"""
+        return html_content, text_content
+
+    async def send_otp_email(
+        self,
+        to_email: str,
+        recipient_name: str,
+        otp_code: str,
+        expires_in_minutes: int = 2,
+    ) -> Dict[str, Any]:
+        """Format and dispatch OTP verification email for 2FA registration."""
+        subject = f"Your Verification Code: {otp_code} — {APP_NAME}"
+        html_body, text_body = self.render_otp_email(
+            recipient_name=recipient_name,
+            otp_code=otp_code,
+            expires_in_minutes=expires_in_minutes,
+        )
+        return await self.send_email_async(
+            to_email=to_email,
+            subject=subject,
+            html_body=html_body,
+            text_body=text_body,
+        )
+
 
 # Singleton default instance
 email_service = EmailService()

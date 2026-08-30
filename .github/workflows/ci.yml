@@ -98,9 +98,37 @@ jobs:
       - name: Build Production SPA Bundle
         run: npm run build
 
+  mobile-qa:
+    name: Mobile Lint, Doctor, Type-Check & Export
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Mobile Dependencies
+        run: bun install
+
+      - name: Run Expo Doctor
+        run: bunx expo-doctor
+
+      - name: Run TypeScript Strict Check
+        run: npx tsc --noEmit
+
+      - name: Export Static Production Bundle (Expo Router)
+        run: bunx expo export --platform web
+
   docker-build:
     name: Docker Multi-Stage Build Verification
-    needs: [backend-qa, frontend-qa]
+    needs: [backend-qa, frontend-qa, mobile-qa]
     runs-on: ubuntu-latest
 
     steps:
@@ -129,3 +157,15 @@ jobs:
           tags: ai-crm-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Build Mobile Nginx Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./mobile
+          file: ./mobile/Dockerfile
+          push: false
+          tags: ai-crm-mobile:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+

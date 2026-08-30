@@ -36,7 +36,7 @@ def test_auth_registration_and_login_flow():
     email = f"sales_rep_{rand_suffix}@enterprise-crm.ai"
     password = "SecurePassword2026!"
 
-    # 1. Register User
+    # 1. Register User (Pending OTP state)
     reg_res = client.post(
         "/api/auth/register",
         json={
@@ -48,11 +48,21 @@ def test_auth_registration_and_login_flow():
     )
     assert reg_res.status_code == 201
     reg_data = reg_res.json()
-    assert "access_token" in reg_data
-    assert "refresh_token" in reg_data
-    assert reg_data["user"]["email"] == email
-    token = reg_data["access_token"]
-    refresh_token = reg_data["refresh_token"]
+    assert reg_data["status"] == "otp_sent"
+    assert reg_data["email"] == email
+
+    # Login with Credentials
+    login_res = client.post(
+        "/api/auth/login",
+        json={"email": email, "password": password},
+    )
+    assert login_res.status_code == 200
+    login_data = login_res.json()
+    assert "access_token" in login_data
+    assert "refresh_token" in login_data
+    assert login_data["user"]["email"] == email
+    token = login_data["access_token"]
+    refresh_token = login_data["refresh_token"]
 
     # 2. Get /me Profile
     me_res = client.get(
@@ -130,8 +140,19 @@ def test_rbac_endpoint_access_control():
             "role": "sales",
         },
     )
-    sales_token = sales_reg.json()["access_token"]
-    sales_user_id = sales_reg.json()["user"]["id"]
+    assert sales_reg.status_code == 201
+
+    sales_login = client.post(
+        "/api/auth/login",
+        json={"email": sales_email, "password": "SalesPassword123!"},
+    )
+    assert sales_login.status_code == 200
+    sales_token = sales_login.json()["access_token"]
+
+    db = SessionLocal()
+    sales_user = db.query(User).filter(User.email == sales_email).first()
+    sales_user_id = str(sales_user.id)
+    db.close()
 
     # 1. Sales user tries to list all users -> Forbidden (403)
     sales_list = client.get(

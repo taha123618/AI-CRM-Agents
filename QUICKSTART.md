@@ -57,6 +57,7 @@ docker-compose up -d --build
 ### 4. Access the Application
 
 - 🖥️ **React Frontend Application**: http://localhost:3000
+- 📱 **Field Sales Mobile Web**: http://localhost:8081
 - ⚡ **FastAPI Backend API**: http://localhost:8000
 - 🌐 **Interactive OpenAPI Docs**: http://localhost:8000/docs
 - 🔌 **WebSocket Real-time Stream**: ws://localhost:8000/ws
@@ -123,12 +124,27 @@ alembic upgrade head
 python run.py
 ```
 
-### 5. Start the frontend
+### 5. Start the frontend web application
 
 ```bash
 cd frontend
 npm install
 npm run dev
+```
+
+### 6. Start the Field Sales Mobile App (Expo)
+
+```bash
+cd mobile
+cp .env.example .env
+bun install # or npm install
+bunx expo start
+
+# Launch on iOS Simulator
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bunx expo run:ios
+
+# Or launch on Android Emulator
+bunx expo run:android
 ```
 
 ---
