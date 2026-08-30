@@ -29,13 +29,15 @@ If you discover a security vulnerability or potential threat in this repository:
 ## 🔒 Security Architecture & Best Practices for Deployments
 
 ### Authentication & Session Security
+- **Two-Factor Authentication (2FA)**: Mandatory 6-digit OTP delivery via Gmail SMTP for new accounts, single-use SHA-256 token hash persistence (`OtpToken`), 2-minute expiration, and strict rate-limiting on resend requests.
+- **Eye/EyeOff Password Visibility & Match**: Password visibility toggling and live password match validation on all registration/login interfaces.
 - **SECRET_KEY**: No hardcoded fallback. Environment variable must be set. Ephemeral key generated if missing (tokens invalid after restart).
 - **Password Complexity**: Minimum 8 characters with uppercase, lowercase, digit, and special character requirements. Common weak passwords blocked.
 - **JWT Tokens**: HS256-signed with unique `jti` claim per token. Access tokens expire in 24 hours. Refresh tokens expire in 7 days with DB-backed revocation.
 - **Token Rotation**: Refresh token rotation on every `/api/auth/refresh` call. Old tokens immediately revoked in DB.
 - **HTTP-Only Cookies**: Authentication tokens stored in `HttpOnly`, `Secure` (production), `SameSite=Strict` (production) cookies.
 - **Brute-Force Protection**: Account lockout after 5 consecutive failed login attempts (15-minute lockout).
-- **Zero User Enumeration**: `/api/auth/forgot-password` returns identical responses regardless of email existence.
+- **Zero User Enumeration**: `/api/auth/forgot-password` and `/api/auth/resend-otp` return identical responses regardless of email existence.
 - **No Auth Bypass**: `get_current_user()` returns `None` for unauthenticated requests — no automatic admin fallback.
 - **SSO Security**: Social SSO (Google/Microsoft) provisions users with minimal default permissions.
 

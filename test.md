@@ -166,11 +166,13 @@
 
 ## 🔐 Security
 
-- End-to-end encryption
-- Role-based access control
-- API authentication (JWT)
-- Audit logging
-- Data privacy compliance (GDPR)
+- Two-Factor Authentication (2FA) via Gmail SMTP 6-digit OTP (2-min TTL)
+- Eye/EyeOff password visibility toggling & real-time confirmation match
+- End-to-end encryption & HTTP-only cookies
+- Role-based access control (RBAC matrix)
+- API authentication (JWT with token rotation)
+- Audit logging & GDPR compliance
+- Rate limiting & SSRF validation
 
 ## 🏃 Quick Start
 

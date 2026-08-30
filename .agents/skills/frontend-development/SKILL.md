@@ -112,5 +112,12 @@ For public marketing & landing experiences, the application employs a high-perfo
    - Live events from the backend (`/ws`) stream directly into `useAgentStore`.
    - Visual tags (`NEW AI GENERATED`, `NEW AI DATA`, `NEW AI QUALIFIED`, `NEW AI ANALYZED`) clearly indicate newly computed AI data.
 
-5. **Type Safety & Build Verification**:
-   - Always run `npm run type-check`, `npm run test`, and `npm run build` after editing frontend components to ensure 0 TypeScript or bundler errors.
+5. **Authentication & 2FA OTP Registration Flow**:
+   - `RegisterPage.tsx` implements a 2-step inline state machine:
+     - **Step 1 (Provisioning)**: Email, full name, role selection, `Eye`/`EyeOff` password visibility toggling, real-time password strength validation (`PasswordStrengthIndicator`), and live password matching indicator.
+     - **Step 2 (2FA OTP Verification)**: 6 individual digit cells with auto-advance focus, backspace navigation, paste handling, 2-minute countdown timer (`120s`), and 1-click `resendOtp` trigger.
+   - `useAuth` hook exposes `verifyOtp` and `resendOtp` mutations integrating with `authApi`.
+
+6. **Type Safety & Build Verification**:
+   - Always run `npm run type-check`, `npm run test` (86 tests across 24 suites), and `npm run build` after editing frontend components to ensure 0 TypeScript or bundler errors.
+
