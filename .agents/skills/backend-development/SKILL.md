@@ -30,15 +30,17 @@ Use this skill when you are modifying or creating FastAPI API routers, endpoints
    - Coerce SQLAlchemy column attributes to Python primitives (`str()`, `int()`, `float()`) when using them as dictionary keys, in `round()`, or in `dict.get()`.
    - Run `db.commit()` for writes and `db.refresh(db_obj)` when returning updated models.
 
-4. **Authentication, RBAC & Security Patterns**:
+4. **Authentication, 2FA OTP & RBAC Security Patterns**:
+   - Multi-step Two-Factor Authentication (2FA) registration: `POST /api/auth/register` creates pending `is_verified=False` account and sends 6-digit OTP via Gmail SMTP.
+   - OTP Token Lifecycle: Generate via `create_otp_token()` with 2-minute TTL (`OTP_EXPIRE_MINUTES=2`), store as SHA-256 hash in `OtpToken`, verify via `POST /api/auth/verify-otp`, and support resend via `POST /api/auth/resend-otp`.
    - Protect sensitive endpoints using dependency guards: `Depends(require_auth)`, `Depends(require_role(["admin", "sales"]))`, or `Depends(require_permission("deals:write"))`.
    - Compute fine-grained user permissions via `get_effective_user_permissions(user)` based on `ROLE_DEFAULT_PERMISSIONS` and custom assigned permissions.
-   - Prevent user enumeration in auth endpoints (e.g. `POST /api/auth/forgot-password` always returns a generic success message).
+   - Prevent user enumeration in auth endpoints (e.g. `POST /api/auth/forgot-password` and `POST /api/auth/resend-otp` always return uniform responses).
    - Never leak raw tokens, session credentials, or internal passwords in HTTP response bodies or application logs.
 
 5. **Transactional Email & Background Task Queue**:
    - Dispatch long-running or external network tasks (e.g. email delivery, audio analysis) asynchronously via `task_queue.enqueue(...)`, `task_queue.enqueue_email(...)`, or `task_queue.enqueue_password_reset_email(...)`.
-   - Use `EmailService` (`services/email_service.py`) as the single source of truth for SMTP delivery with STARTTLS on port 587 and HTML/text templating.
+   - Use `EmailService` (`services/email_service.py`) as the single source of truth for SMTP delivery with STARTTLS on port 587 and HTML/text templating (including `send_otp_email` for 2FA verification).
    - Always parse envelope senders with `email.utils.parseaddr` to ensure RFC-5321 compliance with strict SMTP servers (e.g., Gmail SMTP).
    - In all email dispatching endpoints (in `/api/emails`, `/api/meetings`, `/api/war-room`, `/api/journey`, and `/api/sequences`), delegate transmissions to `task_queue.enqueue_email(...)` with verified recipient email resolution.
 

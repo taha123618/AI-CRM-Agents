@@ -56,6 +56,7 @@ Use this skill when implementing backend routers, endpoints, integrations, webho
   - **WebSocket XSS**: All incoming WebSocket messages are sanitized via `_sanitize_ws_message()` which strips HTML tags, removes null bytes, and truncates to 4096 characters.
 
 ### 7. Authentication & Password Security
+- **Two-Factor Authentication (2FA)**: Mandatory 6-digit OTP delivery via Gmail SMTP for new registrations, single-use SHA-256 token hash persistence in `OtpToken`, 2-minute expiration (`OTP_EXPIRE_MINUTES=2`), and strict rate-limiting on resend requests.
 - **SECRET_KEY**: Never hardcode SECRET_KEY. Generate ephemeral fallback if env var is missing. Always require SECRET_KEY in production.
 - **Password Complexity**: All passwords must pass `validate_password_strength()`:
   - Minimum 8 characters
@@ -65,7 +66,7 @@ Use this skill when implementing backend routers, endpoints, integrations, webho
   - At least one special character
   - Block common weak passwords
 - **Brute-Force Protection**: Account lockout after 5 consecutive failed login attempts (15-minute lockout).
-- **Account Enumeration Prevention**: `/api/auth/forgot-password` returns identical generic responses for existing and non-existing emails.
+- **Account Enumeration Prevention**: `/api/auth/forgot-password` and `/api/auth/resend-otp` return identical generic responses for existing and non-existing emails.
 - **No Auth Bypass**: `get_current_user()` returns `None` for unauthenticated requests — no automatic admin fallback. `require_auth()` enforces 401.
 
 ### 8. RBAC & Authorization

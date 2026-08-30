@@ -68,8 +68,9 @@ mobile/
 ├── src/
 │   ├── app/                      # Expo Router File-Based Routing (78 Static Routes)
 │   │   ├── (auth)/               # Authentication, Provisioning & Recovery Suite
-│   │   │   ├── login.tsx         # Tactical Login & SSO Gateways
-│   │   │   ├── register.tsx      # Operator Provisioning & RBAC Level Assignment
+│   │   │   ├── login.tsx         # Tactical Login & SSO Gateways (Eye/EyeOff Toggle)
+│   │   │   ├── register.tsx      # Operator Provisioning (Eye/EyeOff, Password Match, routes to OTP)
+│   │   │   ├── verify-otp.tsx    # 6-Digit 2FA OTP Verification & 2-min Countdown
 │   │   │   ├── forgot-password.tsx# Cryptographic Recovery Token Dispatch
 │   │   │   ├── reset-password.tsx# SHA-256 Token Overwrite Form
 │   │   │   └── verify-email.tsx  # Mailbox Verification & Token Validation

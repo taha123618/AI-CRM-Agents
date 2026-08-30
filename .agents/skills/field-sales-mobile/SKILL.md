@@ -55,12 +55,13 @@ Routes are located inside `mobile/src/app/`:
 25. `(tabs)/explore.tsx` & `explore.tsx`: **SaaS Fleet Showcase & ROI Calculator** (Capability overview, architecture specifications, and interactive ROI model).
 26. `voice/record.tsx`: **Live Microphone Speech Recognition Studio** (Real-time speech-to-text transcript capture, editable title/transcript/summary/action items, entity association, and debrief audio playback).
 27. `deals/[id].tsx`: **Deal Details & Dynamic Custom Fields** (AI health score radar, stage progression, and dynamic field editor).
-28. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password, SSO shortcuts, role presets).
-29. `(auth)/register.tsx`: **Operator Provisioning Screen** (Full name, email, password strength meter, RBAC role assignment).
-30. `(auth)/forgot-password.tsx`: **Credential Recovery Screen** (Zero-enumeration reset token dispatch).
-31. `(auth)/reset-password.tsx`: **Password Overwrite Screen** (Single-use SHA-256 token verification & new password complexity validation).
-32. `(auth)/verify-email.tsx`: **Identity Verification Screen** (Mailbox confirmation & token validator).
-33. `unauthorized.tsx`: **403 Access Restriction Screen** (Insufficient privileges error, operator role telemetry, session termination).
+28. `(auth)/login.tsx`: **Tactical Login Screen** (Email, password with Eye/EyeOff visibility toggle, SSO shortcuts, role presets).
+29. `(auth)/register.tsx`: **Operator Provisioning Screen** (Full name, email, Eye/EyeOff password toggle, live password match validator, password strength meter, RBAC role assignment, routes to OTP verification).
+30. `(auth)/verify-otp.tsx`: **2-Factor Authentication Screen** (6-digit cells with auto-advance, backspace navigation, clipboard paste support, 2-minute countdown timer, 1-click resend, and session activation).
+31. `(auth)/forgot-password.tsx`: **Credential Recovery Screen** (Zero-enumeration reset token dispatch).
+32. `(auth)/reset-password.tsx`: **Password Overwrite Screen** (Single-use SHA-256 token verification & new password complexity validation).
+33. `(auth)/verify-email.tsx`: **Identity Verification Screen** (Mailbox confirmation & token validator).
+34. `unauthorized.tsx`: **403 Access Restriction Screen** (Insufficient privileges error, operator role telemetry, session termination).
 
 ---
 

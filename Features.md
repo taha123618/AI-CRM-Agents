@@ -10,6 +10,8 @@ This document serves as the **definitive feature checklist and product roadmap**
 - [x] **Client-Side Preferences & Local Storage State**: UI theme toggle, collapsed sidebar state, and language preferences.
 - [x] **User Language Preference Persistence**: Backend endpoint (`/api/i18n/preferences`) saving user language and direction (`ltr`/`rtl`).
 - [x] **JWT / OAuth2 Authentication**: User registration, login, PBKDF2 password hashing, JWT token issuance, refresh tokens (`/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`).
+- [x] **Multi-Step Two-Factor Authentication (2FA) Registration**: Automated 6-digit OTP delivery via Gmail SMTP (`send_otp_email`), SHA-256 hashed DB persistence (`OtpToken`), 2-minute countdown timer, rate-limited resend, and session activation (`/api/auth/register`, `/api/auth/verify-otp`, `/api/auth/resend-otp`).
+- [x] **Password Visibility & Match Validation**: `Eye`/`EyeOff` visibility toggles on password and confirmation inputs with real-time password match indicators across web and mobile.
 - [x] **Fine-Grained Role-Based Access Control (RBAC)**: Explicit permissions matrix (`ROLE_DEFAULT_PERMISSIONS` for `admin`, `sales`, `support`, `auditor`) with client `PermissionGuard` and backend `require_permission` guards.
 - [x] **Super Admin Public Registration Guard**: Protected registration limiting public role selection to `sales`, `support`, and `auditor`, with default Super Admin seeded at `admin@gmail.com`.
 - [x] **Full-Featured User Management Studio**: `/settings` User Management tab with user search, status filter (`active`, `inactive`, `locked`), role filter, pagination, custom permission editor, password resets, and account lockout toggles.
