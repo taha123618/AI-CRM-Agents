@@ -19,7 +19,7 @@ export const authApi = {
     return data;
   },
 
-  register: async (payload: RegisterPayload): Promise<AuthResponse> => {
+  register: async (payload: RegisterPayload): Promise<{ status: string; email: string; message: string }> => {
     const { data } = await apiClient.post('/api/auth/register', payload);
     return data;
   },
@@ -72,6 +72,16 @@ export const authApi = {
       email_hint: emailHint,
       name_hint: nameHint,
     });
+    return data;
+  },
+
+  verifyOtp: async (email: string, otp: string): Promise<AuthResponse> => {
+    const { data } = await apiClient.post('/api/auth/verify-otp', { email, otp });
+    return data;
+  },
+
+  resendOtp: async (email: string): Promise<{ status: string; message: string }> => {
+    const { data } = await apiClient.post('/api/auth/resend-otp', { email });
     return data;
   },
 };

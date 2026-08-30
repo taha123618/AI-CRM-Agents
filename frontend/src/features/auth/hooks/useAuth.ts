@@ -78,6 +78,11 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: (payload: RegisterPayload) => authApi.register(payload),
+    // Do NOT set user or token here — register now returns OTP pending state
+  });
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: ({ email, otp }: { email: string; otp: string }) => authApi.verifyOtp(email, otp),
     onSuccess: (data) => {
       if (data.access_token) {
         safeStorage.setItem('crm_access_token', data.access_token);
@@ -85,6 +90,10 @@ export function useAuth() {
       setUser(data.user);
       queryClient.setQueryData(['auth-me'], data.user);
     },
+  });
+
+  const resendOtpMutation = useMutation({
+    mutationFn: (email: string) => authApi.resendOtp(email),
   });
 
   const logoutMutation = useMutation({
@@ -138,6 +147,10 @@ export function useAuth() {
     isLoggingIn: loginMutation.isPending,
     register: registerMutation.mutateAsync,
     isRegistering: registerMutation.isPending,
+    verifyOtp: verifyOtpMutation.mutateAsync,
+    isVerifyingOtp: verifyOtpMutation.isPending,
+    resendOtp: resendOtpMutation.mutateAsync,
+    isResendingOtp: resendOtpMutation.isPending,
     logout: logoutMutation.mutateAsync,
     isLoggingOut: logoutMutation.isPending,
     ssoLogin: ssoLoginMutation.mutateAsync,

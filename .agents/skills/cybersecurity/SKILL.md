@@ -1,11 +1,13 @@
 ---
 name: cybersecurity
-description: Guide for database safety, XSS protection, SSRF validation, HTTP header defense, and secure session management.
+description: Guide for database safety, XSS protection, SSRF validation, HTTP header defense, file upload security, and secure session management.
 ---
 
 # Cybersecurity & Threat Modeling Skill
 
-Use this skill when implementing backend routers, endpoints, integrations, webhooks, or processing user-supplied inputs, files, and URLs.
+Use this skill when implementing backend routers, endpoints, integrations, webhooks, or processing user-supplied inputs, files, uploads, and URLs.
+
+---
 
 ## 🛡️ Security Hardening Guidelines
 
@@ -26,17 +28,21 @@ Use this skill when implementing backend routers, endpoints, integrations, webho
   - **DNS Rebinding Protection**: Resolve domain names to IPs via `socket.getaddrinfo()` before verification to prevent DNS Rebinding bypasses.
   - Block metadata endpoints (`metadata.google.internal`, `metadata.gcp.internal`).
 
-### 3. CSV Formula Injection Prevention (Formula Sanitization)
-- **Data Export Protection**: When exporting data to CSV/Excel format (e.g. leads, deals, or audit logs), sanitize every cellular value using `sanitize_csv_cell(value)`:
+### 3. File Upload, Import & Malware Protection
+- **Strict File Type Allowlists**: Only allow safe formats (e.g. `.csv`, `.json`, `.wav`, `.m4a` for voice notes).
+- **Request Body & File Size Limits**: Enforce maximum file size limits (e.g. 10MB limit in `main.py` `limit_request_body`).
+- **Path Traversal Defense**: Never use user-supplied file paths directly. Always sanitize filenames using `os.path.basename()` and store files under server-generated UUID identifiers.
+- **Non-Executable Storage**: Uploaded files and attachments must never be stored in executable web-accessible directories.
+- **CSV Formula Injection Prevention**: When exporting or importing CSV/Excel data, sanitize every cellular value using `sanitize_csv_cell(value)`:
   - Detect dangerous calculation prefix triggers: `=`, `+`, `-`, `@`, `\t`, `\r`.
-  - Prefix malicious trigger patterns with a single quote character (`'`) to neutralize automatic spreadsheet command execution.
+  - Prefix malicious trigger patterns with a single quote character (`'`) to neutralize automatic spreadsheet formula execution.
 
 ### 4. Session & Cookie Hardening
 - **Secure Authentication Cookies**: Enforce secure flags when dispatching JWT or refresh token cookies:
-  - Always enable `HttpOnly=True` to block client-side JavaScript access.
+  - Always enable `HttpOnly=True` to block client-side JavaScript access (`document.cookie`).
   - Set `Secure=True` in production (`APP_ENV=production` or `COOKIE_SECURE=true`) to mandate TLS/SSL transport.
   - Set `SameSite=Strict` in production (when `COOKIE_SECURE=true`) or `SameSite=Lax` in development to prevent Cross-Site Request Forgery (CSRF).
-  - Authentication cookies use `samesite="strict" if COOKIE_SECURE else "lax"`.
+  - Single-use, cryptographically hashed tokens for password recovery and email verification.
 
 ### 5. SQL Injection & Parameter Injection Defense
 - **SQL ORM Safety**: Always utilize SQLAlchemy's query binding mechanisms. Avoid string interpolation or concatenating raw variables into queries:
@@ -59,13 +65,13 @@ Use this skill when implementing backend routers, endpoints, integrations, webho
   - At least one special character
   - Block common weak passwords
 - **Brute-Force Protection**: Account lockout after 5 consecutive failed login attempts (15-minute lockout).
-- **Account Enumeration Prevention**: `/api/auth/forgot-password` returns identical responses for existing and non-existing emails.
+- **Account Enumeration Prevention**: `/api/auth/forgot-password` returns identical generic responses for existing and non-existing emails.
 - **No Auth Bypass**: `get_current_user()` returns `None` for unauthenticated requests — no automatic admin fallback. `require_auth()` enforces 401.
 
 ### 8. RBAC & Authorization
 - **Admin-Only Endpoints**: Webhook CRUD, user management, and audit log export require `require_role(["admin"])`.
 - **Authenticated Endpoints**: Leads, deals, customers, import/export, and agent triggers require `Depends(require_auth)`.
-- **Public Registration**: Admin role cannot be self-registered. Only `sales`, `support`, `auditor` roles are available during public registration.
+- **Public Registration**: Admin role cannot be self-registered. Only `sales`, `support`, `auditor` roles are available during public registration. Seeded super admin account (`admin@gmail.com`) is protected.
 
 ### 9. Rate Limiting & Abuse Prevention
 - **Sliding Window**: Rate limiter uses per-client sliding window tracking.
@@ -78,42 +84,32 @@ Use this skill when implementing backend routers, endpoints, integrations, webho
 - **RFC Headers**: All responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
 
 ### 10. CORS Security
-- **Production CORS**: Wildcard origins (`*`) are automatically replaced in production when `APP_ENV=production`.
+- **Production CORS**: Wildcard origins (`*`) are automatically replaced with explicit allowed domains in production when `APP_ENV=production`.
 - **Allowed Methods**: Restricted to `GET, POST, PUT, PATCH, DELETE, OPTIONS` (no wildcard `*`).
 - **Allowed Headers**: Restricted to `Authorization, Content-Type, Accept`.
 
-### 11. Input Validation & Pydantic
-- **Length Limits**: All string fields use `Field(max_length=N)` to prevent memory abuse.
-- **Range Validation**: Numeric fields use `Field(ge=0, le=100)` for bounded values.
-- **Schema Validation**: Pydantic V2 `model_config = ConfigDict(from_attributes=True)` for ORM models.
+---
 
-### 12. WebSocket Security
-- **Token Authentication**: WebSocket endpoint accepts optional `token` query parameter for authentication.
-- **Message Sanitization**: All incoming messages pass through `_sanitize_ws_message()`:
-  - Strip HTML/script tags via regex
-  - Remove null bytes
-  - Truncate to 4096 characters max
+## 🎯 OWASP Top 10 Coverage Matrix
 
-### 13. Security Testing
-- **Test Suite**: `tests/test_security_hardening_suite.py` covers 32 security-specific tests:
-  - SECRET_KEY not hardcoded
-  - Password complexity validation
-  - Auth guards on protected endpoints
-  - Brute-force account lockout
-  - WebSocket XSS sanitization
-  - CORS production protection
-  - DNS rebinding SSRF protection
-  - Input boundary validation
-  - Rate limiting headers
-  - Security headers presence
-  - Account enumeration prevention
-  - JWT token rejection
-- **Regression Testing**: `tests/test_cybersecurity_suite.py` covers HTTP headers, CSV injection, SSRF, cookies, SQL injection.
-- **Command**: `PYTHONPATH=. ./.venv/bin/python3 -m pytest tests/ -v`
+| OWASP Category | Threat Description | Mitigations in AI-Powered CRM |
+|---|---|---|
+| **A01: Broken Access Control** | Unauthorized privilege escalation or IDOR | Server-side `require_permission` and `require_role` guards, permission matrix checks. |
+| **A02: Cryptographic Failures** | Plaintext tokens or weak hashing | Bcrypt password hashing (12 rounds), ephemeral fallback keys, single-use DB-hashed reset tokens. |
+| **A03: Injection** | SQL, XSS, or CSV formula injection | Parameterized SQLAlchemy queries, `sanitize_csv_cell()`, WebSocket HTML/script tag stripping. |
+| **A04: Insecure Design** | Unprotected rate or volume abuse | Sliding-window `RateLimitingMiddleware` with 5 RPM login limit and 10MB body size cap. |
+| **A05: Security Misconfiguration** | Missing headers, verbose error traces | `SecurityHeadersMiddleware` (CSP, HSTS, X-Frame-Options), clean JSON HTTPException responses. |
+| **A06: Vulnerable Components** | Outdated or compromised dependencies | Trivy container vulnerability scanner (`.github/workflows/docker-build.yml`), pinned pip/npm/bun locks. |
+| **A07: Identification & Auth Failures** | Credential stuffing, brute-force | 5-attempt account lockout (15 min), generic auth error messages, zero-enumeration password recovery. |
+| **A08: Software & Data Integrity** | Deserialization or untrusted webhooks | Pydantic V2 schema validation, frozen lockfiles (`bun.lock`, `requirements.txt`). |
+| **A09: Security Logging & Monitoring** | Undetected intrusion or tampering | Immutable `audit_logs` table tracking mutations, actor metadata, IP tracking, Prometheus metrics. |
+| **A10: Server-Side Request Forgery** | Cloud metadata extraction (`169.254...`) | Strict `is_safe_webhook_url()` with DNS rebinding resolution before outbound transmission. |
 
-## 📋 Security Checklist for New Endpoints
+---
 
-Before deploying any new endpoint:
+## 📋 Security Checklist for Pull Requests
+
+Before deploying or merging code:
 1. [ ] Add `Depends(require_auth)` or `Depends(require_role([...]))` for protected endpoints
 2. [ ] Validate all inputs with Pydantic models (Field constraints for length, range)
 3. [ ] Use SQLAlchemy ORM queries — never raw SQL with user input
@@ -124,4 +120,4 @@ Before deploying any new endpoint:
 8. [ ] Return generic error messages — never leak stack traces or internal details
 9. [ ] Use timezone-aware `datetime.now(timezone.utc)` — never `datetime.utcnow()`
 10. [ ] Add audit logging for significant mutations
-11. [ ] Write security regression tests in `tests/test_security_hardening_suite.py`
+11. [ ] Verify all 59 security tests pass (`pytest tests/test_security_hardening_suite.py tests/test_cybersecurity_suite.py ...`)

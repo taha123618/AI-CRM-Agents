@@ -70,3 +70,13 @@ frontend/.env
 frontend/package-lock.json
 frontend/bun.lock
 frontend/yarn.lock
+
+
+#mobile 
+mobile/node_modules/
+mobile/dist/
+mobile/.expo/
+mobile/.env
+mobile/package-lock.json
+mobile/bun.lock
+mobile/yarn.lock

@@ -134,6 +134,24 @@ services:
       - web
     restart: unless-stopped
 
+  # ── React Native Field Sales Mobile App ──────────────────────────────────────
+  mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile.dev
+    container_name: crm_mobile_dev
+    ports:
+      - "8081:8081"
+      - "19000:19000"
+    volumes:
+      - ./mobile:/app
+      - /app/node_modules
+    networks:
+      - crm_dev_net
+    depends_on:
+      - web
+    restart: unless-stopped
+
 # ── Named Volumes (dev-scoped, separate from production) ──────────────────────
 volumes:
   postgres_data_dev:
@@ -145,3 +163,4 @@ volumes:
 networks:
   crm_dev_net:
     driver: bridge
+
