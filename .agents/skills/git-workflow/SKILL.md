@@ -26,4 +26,9 @@ Use this skill when staging changes, making git commits, creating branches, or p
    - Format code using Black: `black .`
    - Run Flake8 linter: `flake8 .`
    - Run unit tests: `pytest`
-   - Ensure the code builds and all tests pass before pushing.
+   - Ensure the code builds and all tests pass before committing.
+
+4. **NEVER Push to Remote**:
+   - Under NO circumstances should AI agents execute `git push` to remote repositories (GitHub/GitLab/etc.) or ask/propose to push.
+   - The user will ALWAYS review and push changes to GitHub manually.
+   - Agents may prepare branches, stage files, and commit locally with clean messages, but the final `git push` is reserved exclusively for the user.

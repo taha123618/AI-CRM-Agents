@@ -135,6 +135,7 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 ### 8. Git Workflow
 * **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
 * **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add field sales mobile app intelligence`).
+* **NEVER PUSH TO REMOTE**: Under NO circumstances should AI agents execute `git push` to remote repositories (GitHub/GitLab/etc.) or propose/ask to push to remote. The user will ALWAYS review and push changes to GitHub manually. Agents may stage changes and create clean, atomic commits locally, but pushing is strictly reserved for the user.
 
 ---
 
