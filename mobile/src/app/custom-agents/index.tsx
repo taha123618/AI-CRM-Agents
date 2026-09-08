@@ -381,8 +381,12 @@ export default function CustomAgentsScreen() {
                   <Text style={{ fontSize: 10, fontFamily: fonts.mono, color: colors.textMuted }}>
                     {ag.description || `Autonomous AI agent bound to ${ag.model}`}
                   </Text>
+                  <Badge 
+                    label={ag.status?.toUpperCase() || 'IDLE'} 
+                    variant={ag.status === 'running' || ag.status === 'active' ? 'success' : ag.status === 'testing' ? 'primary' : 'muted'} 
+                    size="sm" 
+                  />
                 </View>
-                <Badge label={ag.status?.toUpperCase() || 'IDLE'} variant={ag.status === 'running' || ag.status === 'active' ? 'success' : 'primary'} />
               </View>
 
               <View
