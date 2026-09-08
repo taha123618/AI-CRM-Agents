@@ -9,7 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Shield, Zap, Lock, Mail } from 'lucide-react-native';
@@ -64,18 +65,23 @@ export default function LoginScreen() {
         <View style={{ alignItems: 'center', marginBottom: 28 }}>
           <View
             style={{
-              width: 56,
-              height: 56,
-              borderRadius: 2,
-              backgroundColor: colors.surface,
-              borderColor: colors.borderHighlight,
+              width: 64,
+              height: 64,
+              borderRadius: 0,
+              backgroundColor: '#0B0C10',
+              borderColor: colors.primary,
               borderWidth: 1,
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: 12,
+              overflow: 'hidden',
             }}
           >
-            <Shield size={28} color={colors.primary} />
+            <Image
+              source={require('@/assets/images/icon.png')}
+              style={{ width: 56, height: 56 }}
+              resizeMode="contain"
+            />
           </View>
           <Text
             style={{

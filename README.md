@@ -1,6 +1,8 @@
-# 🤖 Next-Gen Autonomous AI-Powered CRM & Revenue Intelligence
-
 <div align="center">
+
+<img src="frontend/public/logo.png" alt="AI CRM Fleet Logo" width="120" height="120" />
+
+# 🤖 Next-Gen Autonomous AI-Powered CRM & Revenue Intelligence
 
 **Production-ready enterprise CRM powered by a 9-agent autonomous collaborative swarm, Voice AI Call Intelligence, WhatsApp Business Hub, Monte Carlo Stochastic Forecasting, Dynamic I18n, and No-Code Custom Agent Builder.**
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { ShieldAlert } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface AuthLayoutProps {
@@ -14,8 +13,8 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
       {/* Brand Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10 space-y-1 font-mono">
         <Link to="/" className="inline-flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-none bg-card border border-primary flex items-center justify-center text-primary">
-            <ShieldAlert className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-primary flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="AI CRM Logo" className="w-6 h-6 object-contain" />
           </div>
           <span className="text-base font-black tracking-wider text-foreground uppercase group-hover:text-primary transition-none">
             AI-POWERED CRM // TACTICAL

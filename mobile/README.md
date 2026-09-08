@@ -1,8 +1,14 @@
+<div align="center">
+
+<img src="assets/images/icon.png" alt="AI CRM Field Command Icon" width="100" height="100" />
+
 # 📱 AI CRM Field Sales Command Mobile App (React Native & Expo)
 
 A production-ready, high-density **Field Sales Mobile Intelligence Application** powered by modern Expo (SDK 57), React Native 0.86, TypeScript, Zustand, and offline-first AsyncStorage persistence.
 
 Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** backend.
+
+</div>
 
 ---
 

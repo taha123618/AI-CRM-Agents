@@ -1,11 +1,20 @@
 import { Bot, Radio, ShieldCheck, Heart } from 'lucide-react';
 import { useAgentStore } from '@/stores/use-agent-store';
+import { useUIStore } from '@/stores/use-ui-store';
+import { cn } from '@/lib/utils';
 
 export function Footer() {
   const { connectionStatus } = useAgentStore();
+  const { sidebarOpen } = useUIStore();
 
   return (
-    <footer className="border-t border-border bg-background px-6 py-4 mt-12 transition-none font-mono">
+    <footer
+      className={cn(
+        'border-t border-border bg-background px-4 sm:px-6 py-4 mt-12 transition-none font-mono',
+        sidebarOpen ? 'md:ml-64' : 'md:ml-16',
+        'ml-0'
+      )}
+    >
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-muted-foreground">
         <div className="flex items-center gap-2">
           <div className="p-1 rounded-none bg-card text-primary border border-border">
