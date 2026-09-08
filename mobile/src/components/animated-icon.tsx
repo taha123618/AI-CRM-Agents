@@ -1,16 +1,19 @@
 /**
- * Tactical Command Mobile - Modern Animated Splash Screen
- * Features:
- * - High-contrast Void Black (#0B0C10) tactical HUD aesthetic
- * - Corner HUD telemetry brackets
- * - Concentric radar pulse rings with glowing amber aura
- * - Official brand logo emblem with gold micro-border
- * - Live step-based boot sequence ticker:
- *     [ 01/03 ] INITIALIZING 9-AGENT SWARM...
- *     [ 02/03 ] SYNCHRONIZING REVENUE TELEMETRY...
- *     [ 03/03 ] TACTICAL FIELD COMMAND READY
- * - Precision loading progress track (0% -> 100%)
- * - Smooth cinematic fade-out and subtle scale expansion into the app
+ * Tactical Command Mobile - Modern Animated Splash Screen (Native iOS & Android)
+ *
+ * Architecture & Assets:
+ * - Employs `splash-icon.png` (512x512 RGBA with transparent background) inside the
+ *   hardware badge, ensuring seamless blending with Void Black (#0B0C10) and the
+ *   Tactical Gold (#FFB800) micro-border without box-on-box clipping.
+ * - Sits atop the native OS boot splash (`expo-splash-screen`) which initializes with
+ *   the same asset and background color, creating an uninterrupted 60FPS handoff.
+ *
+ * Visual Mechanics:
+ * - Corner HUD telemetry brackets with responsive viewport density scaling.
+ * - Concentric radar pulse rings with staggered scale/opacity repeat loops.
+ * - Hardware badge spring entrance with subtle amber box shadow.
+ * - 4-stage boot sequence ticker tied to a precision simulated telemetry progress bar.
+ * - Cinematic zoom expansion and smooth opacity dismissal on sequence completion.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -33,6 +36,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Colors } from '@/constants/theme';
 
+// 4-stage initialization sequence displayed in the status ticker
 const BOOT_STEPS = [
   'INITIALIZING 9-AGENT SWARM...',
   'SYNCHRONIZING REVENUE TELEMETRY...',

@@ -1,5 +1,14 @@
 /**
- * Tactical Command Mobile - Web Animated Splash Screen
+ * Tactical Command Mobile - Web Animated Splash Screen (Web & PWA Platform Parity)
+ *
+ * Web & PWA Architecture:
+ * - Provides full visual parity with the native React Native splash screen when running
+ *   in mobile web browsers or standalone Progressive Web App (PWA) home screen mode.
+ * - Utilizes `splash-icon.png` (512x512 RGBA with transparent background) inside the
+ *   hardware badge, avoiding unwanted white borders or background mismatch.
+ * - Gracefully dismisses itself in the web DOM without requiring native `expo-splash-screen` APIs.
+ * - Adapts viewport sizing dynamically to handle standard desktop browser windows as well
+ *   as compact mobile device viewports (height < 680px).
  */
 
 import React, { useState, useEffect } from 'react';
@@ -14,6 +23,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Colors } from '@/constants/theme';
 
+// 4-stage initialization sequence displayed in the web status ticker
 const BOOT_STEPS = [
   'INITIALIZING 9-AGENT SWARM...',
   'SYNCHRONIZING REVENUE TELEMETRY...',

@@ -67,6 +67,22 @@ Tightly integrated with the **AI-Powered CRM Autonomous Multi-Agent Swarm** back
 
 ---
 
+## 🎨 App Store, Google Play & Brand Asset Specifications
+
+All mobile icon assets are generated to comply strictly with Apple App Store Connect and Google Play Console listing guidelines:
+
+| Target Surface | Asset Path | Dimensions | Color Mode | Compliance Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **iOS App Store** | `assets/images/icon.png` | 1024×1024 | 24-bit RGB | **No alpha channel** (App Store Connect rejects icons with transparency). Padded for standard iOS squircle corner mask. |
+| **Google Play Store** | `assets/images/play-store-icon.png` | 512×512 | 24-bit RGB | Google Play Console listing standard with matching tactical badge. |
+| **Android Adaptive FG** | `assets/images/android-icon-foreground.png` | 1024×1024 | 32-bit RGBA | Transparent background with emblem positioned within central 66% safe zone (diameter $\le$ 680px). |
+| **Android Adaptive BG** | `assets/images/android-icon-background.png` | 1024×1024 | 32-bit RGBA | Tactical Void Black (`#0B0C10`) with radial gradient. |
+| **Android Themed Icon** | `assets/images/android-icon-monochrome.png` | 1024×1024 | 32-bit RGBA | Pure white silhouette on transparent background for Android 13+ Material You dynamic theming. |
+| **Native Splash Screen**| `assets/images/splash-icon.png` | 512×512 | 32-bit RGBA | High-resolution transparent emblem used by `expo-splash-screen` and `AnimatedSplashOverlay`. |
+| **Expo Web Favicon** | `assets/images/favicon.png` | 48×48 | 24-bit RGB | Clean favicon for Expo web preview. |
+
+---
+
 ## 🏗️ Architecture & Directory Structure
 
 ```text
