@@ -59,6 +59,7 @@ credentials/
 !package.json
 !package-lock.json
 !frontend/public/manifest.json
+!mobile/app.json
 
 
 #frontend

@@ -194,7 +194,7 @@ export function AnimatedSplashOverlay() {
           {/* Logo Badge */}
           <Animated.View style={[styles.logoBadge, logoAnimatedStyle]}>
             <Image
-              source={require('@/assets/images/icon.png')}
+              source={require('@/assets/images/splash-icon.png')}
               style={styles.logoImage}
               resizeMode="contain"
             />

@@ -139,7 +139,7 @@ export function AnimatedSplashOverlay() {
           <Animated.View style={[styles.radarRing, ring1Style]} />
           <Animated.View style={[styles.logoBadge, logoAnimatedStyle]}>
             <Image
-              source={require('@/assets/images/icon.png')}
+              source={require('@/assets/images/splash-icon.png')}
               style={styles.logoImage}
               resizeMode="contain"
             />
