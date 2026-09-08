@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Cpu,
   Menu,
   X,
   ArrowRight,
@@ -37,8 +36,8 @@ export function LandingNavbar({ onNavigateSection }: LandingNavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-none bg-primary text-primary-foreground flex items-center justify-center font-black text-base shadow-sm border border-primary">
-            <Cpu className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-none bg-[#0B0C10] border border-primary flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="AI CRM Logo" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">

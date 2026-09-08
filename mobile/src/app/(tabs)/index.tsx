@@ -10,6 +10,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import {
@@ -94,29 +95,52 @@ export default function DashboardScreen() {
           alignItems: 'center',
         }}
       >
-        <View>
-          <Text
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, marginRight: 8 }}>
+          <View
             style={{
-              fontSize: 11,
-              fontWeight: '700',
-              color: colors.primary,
-              fontFamily: fonts.mono,
-              letterSpacing: 0.5,
-              textTransform: 'uppercase',
+              width: 36,
+              height: 36,
+              backgroundColor: '#0B0C10',
+              borderColor: colors.primary,
+              borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+              flexShrink: 0,
             }}
           >
-            AI CRM FIELD COMMAND
-          </Text>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: '800',
-              color: colors.text,
-              letterSpacing: 0.2,
-            }}
-          >
-            Tactical Overview
-          </Text>
+            <Image
+              source={require('@/assets/images/icon.png')}
+              style={{ width: 30, height: 30 }}
+              resizeMode="contain"
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text
+              numberOfLines={1}
+              style={{
+                fontSize: 10,
+                fontWeight: '700',
+                color: colors.primary,
+                fontFamily: fonts.mono,
+                letterSpacing: 0.5,
+                textTransform: 'uppercase',
+              }}
+            >
+              AI CRM FIELD COMMAND
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                fontSize: 18,
+                fontWeight: '800',
+                color: colors.text,
+                letterSpacing: 0.2,
+              }}
+            >
+              Tactical Overview
+            </Text>
+          </View>
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>

@@ -132,9 +132,14 @@ This project is a production-ready enterprise CRM system powered by a multi-agen
 * **SSRF Defense**: Validate all outbound webhook URLs using `is_safe_webhook_url(...)` to block loopback, link-local metadata (`169.254.169.254`), and private cloud IP ranges in production.
 * **Secure Cookies**: Ensure authentication cookies enforce `Secure=True`, `HttpOnly=True`, and `SameSite=Lax` in production (`APP_ENV=production` or `COOKIE_SECURE=true`).
 
-### 8. Git Workflow
+### 8. Git Workflow & Remote Synchronization Policy
 * **Branches**: Create branches with prefixes: `feature/` for new functionality, `bugfix/` for bug fixes, and `chore/` for tasks.
-* **Commit Messages**: Use clean, descriptive, and imperative commit messages (e.g., `feat: Add field sales mobile app intelligence`).
+* **Commit Messages & Comments**: Every commit must be thoroughly commented with a descriptive subject line and an itemized body explaining:
+  1. What was changed.
+  2. Why the change was made.
+  3. Which files and modules were impacted.
+  Ensure code changes include comprehensive inline and architectural comments so that when pushed to Remote, the repository history and codebase are crystal clear.
+* **NEVER PUSH TO REMOTE**: Under NO circumstances should AI agents execute `git push` to remote repositories (GitHub/GitLab/etc.) or propose/ask to push to remote. The user will ALWAYS review and push changes to GitHub manually. Agents may stage changes (`git add`) and create clean, atomic commits locally with detailed comments, but pushing to Remote is strictly and exclusively reserved for the user.
 
 ---
 

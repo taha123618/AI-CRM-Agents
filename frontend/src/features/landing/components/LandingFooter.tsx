@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Cpu } from 'lucide-react';
 import { useSmoothScroll } from '../context/SmoothScrollContext';
 
 export function LandingFooter() {
@@ -37,8 +36,8 @@ export function LandingFooter() {
         {/* Brand Column */}
         <div className="col-span-2 space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-none bg-primary text-primary-foreground flex items-center justify-center font-black text-sm border border-primary">
-              <Cpu className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-primary flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="AI CRM Logo" className="w-6 h-6 object-contain" />
             </div>
             <span className="font-black text-sm tracking-wider uppercase text-foreground">
               AI·CRM FLEET

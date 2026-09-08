@@ -14,6 +14,7 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   Platform,
+  Image,
 } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import {
@@ -163,14 +164,19 @@ export function SidebarDrawer() {
                 style={{
                   width: 36,
                   height: 36,
-                  backgroundColor: colors.surface,
+                  backgroundColor: '#0B0C10',
                   borderColor: colors.primary,
                   borderWidth: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  overflow: 'hidden',
                 }}
               >
-                <Shield size={18} color={colors.primary} />
+                <Image
+                  source={require('@/assets/images/icon.png')}
+                  style={{ width: 30, height: 30 }}
+                  resizeMode="contain"
+                />
               </View>
               <View>
                 <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>

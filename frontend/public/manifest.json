@@ -1,0 +1,32 @@
+{
+  "name": "AI·CRM Fleet — Autonomous Revenue Intelligence",
+  "short_name": "AI CRM",
+  "description": "Production-ready enterprise CRM powered by a 9-agent autonomous collaborative swarm, Voice AI Call Intelligence, WhatsApp Business Hub, and Monte Carlo Forecasting.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#0B0C10",
+  "theme_color": "#0B0C10",
+  "orientation": "any",
+  "categories": ["business", "productivity", "finance"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

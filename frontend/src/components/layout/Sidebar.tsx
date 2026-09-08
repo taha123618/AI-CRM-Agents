@@ -20,7 +20,6 @@ import {
   Milestone,
   Send,
   Sliders,
-  Terminal,
 } from 'lucide-react';
 import { useUIStore, ActivePage } from '@/stores/use-ui-store';
 import { useTranslation } from '@/features/multi-language';
@@ -63,20 +62,33 @@ export function Sidebar() {
   const handleNav = (id: ActivePage) => {
     setActivePage(id);
     navigate(`/${id}`);
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && sidebarOpen) {
+      toggleSidebar();
+    }
   };
 
   return (
-    <aside
-      className={cn(
-        'fixed top-0 left-0 z-40 h-screen bg-card border-r border-border transition-none flex flex-col font-mono',
-        sidebarOpen ? 'w-64' : 'w-16'
+    <>
+      {/* Mobile Drawer Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          onClick={toggleSidebar}
+          className="fixed inset-0 z-30 bg-black/70 backdrop-blur-xs md:hidden transition-none"
+          aria-hidden="true"
+        />
       )}
-    >
+
+      <aside
+        className={cn(
+          'fixed top-0 left-0 z-40 h-screen bg-card border-r border-border transition-none flex flex-col font-mono',
+          sidebarOpen ? 'w-64 translate-x-0' : 'max-md:-translate-x-full md:w-16'
+        )}
+      >
       {/* Brand Header */}
       <div className="flex items-center justify-between h-14 px-3 border-b border-border bg-background">
         <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-8 h-8 rounded-none bg-primary text-primary-foreground flex items-center justify-center font-mono font-black text-xs shrink-0 border border-primary">
-            <Terminal className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-none bg-[#0B0C10] border border-primary flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="AI CRM Logo" className="w-6 h-6 object-contain" />
           </div>
           {sidebarOpen && (
             <div className="flex flex-col">
@@ -139,6 +151,7 @@ export function Sidebar() {
           <p className="text-[9px] text-muted-foreground mt-0.5 font-mono uppercase">ONLINE • POSTGRES &amp; REDIS</p>
         </div>
       )}
-    </aside>
+      </aside>
+    </>
   );
 }

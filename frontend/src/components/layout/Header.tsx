@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Radio, Bot, Plus, User, LogOut } from 'lucide-react';
+import { Search, Radio, Bot, Plus, User, LogOut, Menu } from 'lucide-react';
 import { useUIStore } from '@/stores/use-ui-store';
 import { useAgentStore } from '@/stores/use-agent-store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
@@ -12,7 +12,7 @@ import { LanguageSelector, LanguageManagerModal, TranslationEditorModal, useTran
 export function Header() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { searchQuery, sidebarOpen, setLeadModalOpen, setDealModalOpen, setActivePage, setGlobalSearchOpen } = useUIStore();
+  const { searchQuery, sidebarOpen, toggleSidebar, setLeadModalOpen, setDealModalOpen, setActivePage, setGlobalSearchOpen } = useUIStore();
   const { connectionStatus, setConnectionStatus, addEvent } = useAgentStore();
   const { user, logout, isLoggingOut } = useAuth();
   const [backendHealth, setBackendHealth] = useState<'healthy' | 'checking' | 'error'>('checking');
@@ -62,25 +62,35 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-30 h-14 bg-card border-b border-border px-4 sm:px-6 flex items-center justify-between transition-none font-mono ${sidebarOpen ? 'ltr:ml-64 rtl:mr-64' : 'ltr:ml-16 rtl:mr-16'
-          }`}
+        className={`sticky top-0 z-30 h-14 bg-card border-b border-border px-3 sm:px-6 flex items-center justify-between transition-none font-mono ${
+          sidebarOpen ? 'md:ltr:ml-64 md:rtl:mr-64' : 'md:ltr:ml-16 md:rtl:mr-16'
+        } ltr:ml-0 rtl:mr-0`}
       >
-        {/* Search & AI Spotlight Bar */}
-        <div className="flex items-center gap-3 w-64 sm:w-80 lg:w-96">
+        {/* Mobile Hamburger Menu + Search & AI Spotlight Bar */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="md:hidden p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted shrink-0 transition-none"
+            title="Toggle Navigation"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+
           <div
             onClick={() => setGlobalSearchOpen(true)}
             className="relative flex items-center w-full cursor-pointer group"
           >
-            <Search className="absolute ltr:left-3 rtl:right-3 w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-none pointer-events-none" />
+            <Search className="absolute ltr:left-2.5 rtl:right-2.5 w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-none pointer-events-none" />
             <input
               type="text"
               readOnly
               value={searchQuery}
               onFocus={() => setGlobalSearchOpen(true)}
-              placeholder="SEARCH OR EXECUTE COMMAND (⌘K)..."
-              className="w-full bg-background text-foreground placeholder:text-muted-foreground text-xs font-mono rounded-none ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 py-1.5 border border-border group-hover:border-primary cursor-pointer transition-none uppercase"
+              placeholder="SEARCH (⌘K)..."
+              className="w-full bg-background text-foreground placeholder:text-muted-foreground text-xs font-mono rounded-none ltr:pl-8 ltr:pr-8 sm:ltr:pl-9 sm:ltr:pr-14 rtl:pr-8 rtl:pl-8 sm:rtl:pr-9 sm:rtl:pl-14 py-1.5 border border-border group-hover:border-primary cursor-pointer transition-none uppercase truncate"
             />
-            <kbd className="absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-primary bg-card border border-border rounded-none pointer-events-none">
+            <kbd className="hidden sm:inline-block absolute ltr:right-2 rtl:left-2 px-1 py-0.2 text-[8px] font-mono text-primary bg-card border border-border rounded-none pointer-events-none">
               ⌘K
             </kbd>
           </div>
@@ -121,15 +131,15 @@ export function Header() {
           </Button>
 
           {/* Quick Add Actions */}
-          <div className="flex items-center gap-1.5">
-            <Button size="sm" variant="primary" onClick={() => setLeadModalOpen(true)} className="text-xs h-7 px-2.5">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            <Button size="sm" variant="primary" onClick={() => setLeadModalOpen(true)} className="text-xs h-7 px-2 sm:px-2.5">
               <Plus className="w-3.5 h-3.5" />
-              <span>{t('leads.qualify_btn', 'LEAD')}</span>
+              <span className="hidden sm:inline">{t('leads.qualify_btn', 'LEAD')}</span>
             </Button>
 
-            <Button variant="primary" size="sm" onClick={() => setDealModalOpen(true)} className="text-xs h-7 px-2.5">
+            <Button variant="primary" size="sm" onClick={() => setDealModalOpen(true)} className="text-xs h-7 px-2 sm:px-2.5">
               <Plus className="w-3.5 h-3.5" />
-              <span>{t('deals.title', 'DEAL')}</span>
+              <span className="hidden sm:inline">{t('deals.title', 'DEAL')}</span>
             </Button>
           </div>
 
