@@ -569,6 +569,15 @@ python3 .agents/scripts/sync_rules.py
 
 ## 📚 Documentation Index
 
+### 📑 Enterprise Specifications & Architecture
+- 📋 [**Product Requirement Document (PRD)**](docs/prd.md)
+- ⚙️ [**Technical Requirement Document (TRD)**](docs/trd.md)
+- 💼 [**Business Requirement Document (BRD)**](docs/brd.md)
+- 📄 [**Functional Requirement Document (FRD)**](docs/frd.md)
+- 🧠 [**Model Requirement Document (MRD)**](docs/mrd.md)
+- 🗄️ [**Data Strategy & Governance Document**](docs/data-strategy.md)
+- 🎯 [**AI Evaluation & Benchmark Framework**](docs/ai-evaluation-framework.md)
+
 ### 🏛️ Core Architecture & Operations
 - 📋 [**Feature Checklist & Roadmap**](Features.md)
 - 🏛️ [**System Architecture Overview**](docs/architecture/overview.md)
